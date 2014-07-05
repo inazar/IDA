@@ -1,0 +1,38 @@
+<div class="later-modal">
+  <div>
+    <button class="cancel" ng-click="setModal('')"><i class="fa fa-times"></i></button>
+
+    <h1>Vad vill du göra med aktiviteten?</h1>
+
+    <h2 class="modal-sub-heading">
+      <b ng-bind="(modalTask.important ? 'A' : 'B') + (modalTask.complex ? (modalTask.important ? 'A' : 'B') : '') + ':'"></b>
+      <span ng-bind="modalTask.title"></span>
+      <span class="time-label" ng-bind="
+modalTask.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (
+  modalTask.startTime && modalTask.planned ? (
+    modalTask.timeType === 'period' ?
+      moment(modalTask.startTime).format('D MMM') + ' - ' + moment(modalTask.endTime).format('D MMM') :
+      moment(modalTask.startTime).format('D MMM')
+  ) :
+  ' '
+)"></span>
+    </h2>
+
+    <div class="divider"></div>
+
+    <div class="postpone">
+      <button ng-click="postpone(modalTask, daysToPostpone)">Skjut upp start</button>
+      <input type="number" ng-init="daysToPostpone=3" ng-model="daysToPostpone">
+      <span>dagar</span>
+    </div>
+    <span class="error"
+      ng-bind="Date.now() > (modalTask.endTime || modalTask.startTime) ? 'Slutdatumet är passerat' : 'Det är bara ' + Math.round(((modalTask.endTime || modalTask.startTime) - Date.now()) / 86400000) + ' dagar kvar till slutdatumet'"></span>
+    <button class="replan">Planera om</button>
+    <button class="breakdown"
+            ng-show="!modalTask.isChild"
+            ng-click="$location.path('/organisera-alla-aktiviteter/' + modalTask.id);setModal('');">
+      Dela upp i mindre uppgifter
+    </button>
+    <button ng-click="setModal('')" class="cancel-2">Avbryt</button>
+  </div>
+</div>

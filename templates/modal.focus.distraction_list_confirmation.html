@@ -1,0 +1,11 @@
+<div class="focus-distraction-list-confirmation-modal">
+  <div>
+    <h1>Du har fortfarande aktiviteter i distraktionslistan. Vill du planera dem nu eller senare?</h1>
+    <button class="cancel" ng-click="setModal('')"><i class="fa fa-times"></i></button>
+    <div class="divider"></div>
+    <!-- Just close the modal: -->
+    <button class="plan-now" ng-click="$root.timeLeft=0;$root.showFocusInputs=false;$root.showNav=false;setModal('')">Planera dem nu</button>
+    <!-- Leave the focus page and go to the todo page: -->
+    <button class="plan-later" ng-click="$root.loadFocusTime=null;$root.timeLeft = 0;$location.path('/todo');setModal('');">Senare. Flytta dem till listan över oplanerade aktiviteter.</button>
+  </div>
+</div>

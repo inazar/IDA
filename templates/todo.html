@@ -1,0 +1,33 @@
+<div ng-init="list = getTodoList();" class="todo-page">
+
+  <form class="add-task">
+    <div><input ng-model="newTask" placeholder="Skapa ny aktivitet..."></div>
+    <button ng-click="addTask()"><i class="fa fa-plus"></i></button>
+  </form>
+
+  <div ng-hide="!$tasks.findWhere({finished:false,planned:false})" class="unplanned">
+    <h2><i class="fa fa-inbox"></i> Oplanerat</h2>
+    <ul class="todo-list">
+      <li class="list-item unplanned"
+          ng-repeat="task in $tasks.where({finished:false,planned:false}) | orderBy:['-updated'] track by task.id"
+          ng-include="'templates/list_item.html'"></li>
+    </ul>
+  </div>
+
+  <div class="todo">
+    <h2>
+      <i class="fa fa-check"></i> Att göra
+      <label>
+        <select ng-change="list = getTodoList()" ng-model="$parent.todoFilter">
+          <option value="today">idag</option>
+          <option value="tomorrow">idag och imorgon</option>
+          <option value="week">en vecka framöver</option>
+        </select>
+      </label>
+    </h2>
+    <ul class="todo-list">
+      <li class="list-item" ng-repeat="task in list track by $index" ng-include="'templates/list_item.html'"></li>
+    </ul>
+  </div>
+
+</div>

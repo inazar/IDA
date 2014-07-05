@@ -1,0 +1,13 @@
+<div ng-init="newTaskTitle = modalTask.title" class="edit-task-name-modal">
+  <div>
+    <button class="cancel" ng-click="setModal('')"><i class="fa fa-times"></i></button>
+
+    <h1>Ändra aktivitetens text:</h1>
+
+    <div class="divider"></div>
+
+    <textarea ng-model="newTaskTitle"></textarea>
+
+    <button class="done" ng-click="modalTask.title=newTaskTitle;saveTask(modalTask, 0, 0, modalTask.duration)">Spara</button>
+  </div>
+</div>

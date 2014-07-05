@@ -1,0 +1,27 @@
+<div class="archive-page">
+  <div class="toggle-tab">
+    <button ng-click="deletedPage=false" class="done" ng-class="{active:!deletedPage}">
+      <i class="fa fa-check-square-o"></i> Gjorda
+    </button><!--
+ --><button ng-click="deletedPage=true" class="deleted" ng-class="{active:deletedPage}">
+      <i class="fa fa-trash-o"></i> Raderade
+    </button>
+  </div>
+
+  <ul ng-if="!deletedPage" class="todo-list">
+    <li class="list-item"
+      ng-repeat="task in $tasks.where({isChild:false,finished:true})|orderBy:['-updated']"
+      ng-include="'templates/list_item.html'"></li>
+  </ul>
+
+  <ul  ng-if="deletedPage" class="todo-list">
+    <li class="list-item"
+      ng-repeat="task in $tasks.where({planned:true,isChild:false,deleted:true})|orderBy:['-updated']"
+      ng-include="'templates/list_item.html'"></li>
+  </ul>
+
+  <div class="confirmation reset-all-tasks">
+    <a ng-click="$tasks.clear();$events.clear();">Radera all app uppgifter</a>
+  </div>
+
+</div>

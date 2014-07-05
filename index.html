@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en" ng-app="app"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en" ng-app="app"><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" ng-app="app"><![endif]--><!--[if gt IE 8]>
+<!--><html class="no-js" lang="en" ng-app="app"><!--<![endif]-->
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, minimal-ui">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title ng-bind="title"></title>
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="stylesheet" href="app.css">
+    </head>
+    <body class="loading" ng-class="{ 'show-nav': showNav }">
+
+      <nav ng-hide="$root.modal || $root.datepicker">
+        <ul>
+          <li><a ng-click="page == '/todo' ? (showNav = false) : $location.path('/todo')" ng-class="{ active: (page == '/todo') }"><span><i class="fa fa-check"></i>Att göra</span></a></li>
+          <li><a ng-click="page == '/organisera-alla-aktiviteter' ? (showNav = false) : $location.path('/organisera-alla-aktiviteter')" ng-class="{ active: (page == '/organisera-alla-aktiviteter') }"><span><i class="fa fa-folder-open"></i>Organisera alla aktiviteter</span></a></li>
+          <li><a ng-click="page == '/fokusera-pa-aktivitet' ? (showNav = false) : $location.path('/fokusera-pa-aktivitet')" ng-class="{ active: (page.indexOf('/fokusera-pa-aktivitet') === 0) }"><span><i class="fa fa-clock-o"></i>Fokusera på aktivitet</span></a></li>
+          <li><a ng-click="page == '/kalender' ? (showNav = false) : $location.path('/kalender')" ng-class="{ active: (page == '/kalender') }"><span><i class="fa fa-calendar"></i>Kalender</span></a></li>
+          <li><a ng-click="page == '/arkiv' ? (showNav = false) : $location.path('/arkiv')" ng-class="{ active: (page == '/arkiv') }"><span><i class="fa fa-archive"></i>Arkiv</span></a></li>
+          <li><a ng-click="page == '/hjalp-och-feedback' ? (showNav = false) : $location.path('/hjalp-och-feedback')" ng-class="{ active: (page == '/hjalp-och-feedback') }"><span><i class="fa fa-question-circle"></i>Hjälp och feedback</span></a></li>
+          <li><a ng-click="page == '/om-adhd-app' ? (showNav = false) : $location.path('/om-adhd-app')" ng-class="{ active: (page == '/om-adhd-app') }"><span><i class="fa fa-info-circle"></i>Om ADHD App</span></a></li>
+          <li><a ng-click="page == '/anvandningsstatistik' ? (showNav = false) : $location.path('/anvandningsstatistik')" ng-class="{ active: (page == '/anvandningsstatistik') }"><span><i class="fa fa-bar-chart-o"></i>Användningsstatistik</span></a></li>
+          <li><a ng-click="closeApp()"><span><i class="fa fa-sign-out"></i>Avsluta</span></a></li>
+        </ul>
+      </nav>
+
+      <div ng-hide="$root.datepicker" id="main">
+        <div id="top" ng-class="{'hide': hideTopNav}">
+          <a class="nav" ng-click="showNav = !showNav"><i class="fa fa-bars"></i></a>
+          <span ng-bind="title"></span>
+          <a class="clean" ng-show="$tasks.findWhere({ checked: true })" ng-click="moveFinishedTasksToArchive()">
+            <i class="fa fa-archive"></i>
+          </a>
+        </div>
+        <div id="context" ng-view></div>
+      </div>
+
+      <div class="modal-container" ng-hide="$root.datepicker" ng-include="$root.modal"></div>
+
+      <div class="modal-container" ng-include="$root.datepicker"></div>
+      
+      <div id="loading">Vänta lite...</div>
+
+      <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+      <script src="app.js"></script>
+    </body>
+</html>

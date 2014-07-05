@@ -1,0 +1,36 @@
+<div ng-class="{breakdown:breakdown}" class="todo-page organize-page">
+  <form ng-hide="breakdown" class="add-task">
+    <div><input ng-model="newTask" placeholder="Skapa ny aktivitet..."></div>
+    <button ng-click="addTask()"><i class="fa fa-plus"></i></button>
+  </form>
+
+  <div class="controls">
+    <div class="sort">
+      <div>sortera</div>
+      <label><select ng-init="sorting = '+startTime'" ng-model="sorting">
+        <option value="+startTime">starttid</option>
+        <option value="+endTime">sluttid</option>
+        <option value="-updated">senast uppdaterad</option>
+        <option value="-important">prioritet</option>
+        <option value="+title">alfabetiskt</option>
+        <option value="-duration">storlek</option>
+      </select></label>
+    </div>
+    <div class="expand-collapse">
+      <div>fäll ut/ihop</div>
+      <button ng-click="showChildren(true)"><i class="fa fa-caret-square-o-down"></i></button>
+      <button ng-click="showChildren(false)"><i class="fa fa-caret-square-o-up"></i></button>
+    </div>
+  </div>
+
+  <ul class="todo-list">
+    <li ng-if="!breakdown" class="list-item"
+        ng-repeat="task in filter({ deleted: false, finished: false, isChild: false, planned: true }) | orderBy:[sorting == '+endTime' ? sortEndtime : sorting, '-complex'] | limitTo:20 track by $index"
+        ng-include="'templates/list_item.html'"></li>
+    <li ng-if="breakdown" class="list-item" ng-repeat="task in breakdown" ng-include="'templates/list_item.html'"></li>
+  </ul>
+
+  <div ng-if="breakdown" class="confirmation">
+    <button ng-click="$location.path('/todo')">Klar</button>
+  </div>
+</div>

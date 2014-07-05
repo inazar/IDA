@@ -1,0 +1,55 @@
+<div class="focus-page">
+
+  <input class="task-label"
+         ng-model="task.title"
+         ng-hide="timeLeft > 0 || !showFocusInputs"
+         placeholder="Ange aktivitet...">
+
+  <p class="task-label" ng-show="timeLeft > 0&&showFocusInputs" ng-bind="task.title"></p>
+
+  <button ng-show="!showFocusInputs" ng-click="showFocusInputs = true;title = 'Fokusera på...';">Starta timer igen</button>
+
+  <div id="duration-picker" ng-hide="timeLeft > 0 || !showFocusInputs"><!--
+  --><label>timmar</label><!--
+  --><label>minuter</label><!--
+  --><br><!--
+  --><input type="number" placeholder="0" ng-model="hours"><!--
+  --><input type="number" placeholder="0" ng-model="minutes"><!--
+  --><br><!--
+  --><button ng-click="setTime()">Börja fokusera <b>endast</b> på uppgiften</button>
+  </div>
+
+  <div id="pie-timer" ng-show="timeLeft > 0">
+    <div ng-click="setModal('templates/modal.focus.stop_timer.html')" id="timer">
+      <div id="slice" ng-class="{ gt50: degrees > 180 }">
+        <div class="pie" ng-style="{ transform: 'rotate(' + degrees + 'deg)', '-webkit-transform': 'rotate(' + degrees + 'deg)' }"></div>
+        <div class="pie fill" ng-show="degrees > 180"></div>
+      </div>
+    </div>
+    <br>
+    <span>
+      <span ng-bind="hoursLeft ? hoursLeft + ' :' : ''"></span>
+      <span ng-bind="hoursLeft ? (minutesLeft < 10 ? '0' + minutesLeft : minutesLeft) : minutesLeft"></span> :
+      <span ng-bind="secondsLeft < 10 ? '0' + secondsLeft : secondsLeft"></span>
+    </span>
+  </div>
+
+  <form class="add-task" ng-show="timeLeft > 0">
+    <div><input ng-model="newTask" placeholder="Skriv in, glöm och fortsätt fokusera!"></div>
+    <button ng-click="addTask()"><i class="fa fa-plus"></i></button>
+  </form>
+  <div id="distraction-list" ng-show="distractionList().length > 0">
+    <span ng-click="showDistractionListForXSeconds()"><i class="fa fa-ban"></i> Distraktionslista</span>
+    <ul ng-show="timeLeft == 0 || showDistractionList" ng-class="{'disabled': timeLeft > 0}">
+      <li class="list-item"
+          ng-repeat="task in distractionList() | orderBy:['-updated'] track by $index"
+          ng-include="'templates/list_item.html'"></li>
+    </ul>
+  </div>
+
+  <p class="distraction-list-empty" ng-hide="timeLeft > 0 || $parent.showFocusInputs || distractionList().length > 0">
+    Du har gått igenom hela Distraktionslistan. Bra jobbat!
+    <a ng-href="#/todo">Till Att Göra-listan</a>
+  </p>
+
+</div>

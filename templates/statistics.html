@@ -1,0 +1,39 @@
+<div class="statistics-page">
+
+  <div class="quick-select">
+    <button ng-click="$parent.modalTask = {
+      startTime: moment().hour(0).minute(0)._d.valueOf(),
+      endTime: moment().hour(23).minute(59)._d.valueOf()
+    };"><span>Idag</span></button><!--
+ --><button ng-click="$parent.modalTask = {
+      startTime: moment().startOf('day').day(moment().day() - 6)._d.valueOf(),
+      endTime: moment()._d.valueOf()
+    };"><span>Senaste veckan</span></button><!--
+ --><button ng-click="$parent.modalTask = {
+      startTime: moment().startOf('day').day(moment().day() - 29)._d.valueOf(),
+      endTime: moment()._d.valueOf()
+    };"><span>Senaste månaden</span></button>
+  </div>
+
+  <div class="date-range-select">
+      <h2>från</h2>
+      <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html')"
+              ng-class="{ 'selected': modalTask.startTime }"
+              ng-bind="$parent.modalTask.startTime ? moment($parent.modalTask.startTime).format('ddd D MMM YYYY') : 'Välj datum'"></button>
+      <br><br>
+      <h2>till</h2>
+      <button ng-click="setDatepicker('templates/modal.pick_endtime.html')"
+              ng-class="{ 'selected': modalTask.endTime }"
+              ng-bind="$parent.modalTask.endTime ? moment($parent.modalTask.endTime).format('ddd D MMM YYYY') : 'Välj datum'"></button>
+  </div>
+
+  <div class="stats-table">
+    <table>
+      <tr ng-repeat="stat in stats">
+        <td class="name" ng-bind="stat.name"></td>
+        <td class="value" ng-bind="stat.value"></td>
+      </tr>
+    </table>
+  </div>
+
+</div>
