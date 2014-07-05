@@ -11,6 +11,8 @@
     <preference name="auto-hide-splash-screen" value="true" />
     <preference name="android-minSdkVersion" value="5" />
 
+    <preference name="permissions" value="none"/>
+
     <name>IDA App</name>
 
     <description>
