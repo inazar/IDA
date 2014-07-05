@@ -27382,7 +27382,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
   $locationProvider.html5Mode(false);
 
-}]).run(['$rootScope', '$location', '$timeout', 'idaTasks', 'idaEvents', function($rootScope, $location, $timeout, $tasks, $events) {
+}]).run(['$rootScope', '$location', '$timeout', '$window', 'idaTasks', 'idaEvents', function($rootScope, $location, $timeout, $window , $tasks, $events) {
 
   angular.extend($rootScope, {
     $tasks: $tasks,
@@ -27400,30 +27400,20 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     repaint: function () {
       // redraw the whole view
       document.body.style.display = 'none';
-      _.defer(function(){ document.body.style.display = 'block'; });
+      $timeout(function(){ document.body.style.display = 'block'; });
     },
     focus: function (id) {
       // start focus mode
       $tasks.focus();
       $location.path('/fokusera-pa-aktivitet/' + id).replace();
     },
-    save: function () {
-      $tasks.save();
-      $events.save();
-    },
     moveFinishedTasksToArchive: function () {
       $tasks.moveFinishedTasksToArchive();
-      $tasks.save();
       $rootScope.sound1.play();
     },
     postpone: function(task, days) {
       task.postpone(days);
       $rootScope.setModal('');
-    },
-    setTimer: function(task, time) {
-      $events.add('reminderSet');
-      task.setTimer(time);
-      $rootScope.save();
     },
     saveTask: function(task, hours, minutes, duration) {
       task.saveTask(hours, minutes, duration);
@@ -27445,12 +27435,12 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       if ($rootScope.modalCallback) { $rootScope.modalCallback(); }
       $rootScope.modalCallback = cb;
       document.getElementById('loading').style.display = 'block';
-      _.defer(function(){
+      $timeout(function(){
         $rootScope.$apply(function(){
           $rootScope.modalTask = id ? $tasks.get(id) : {};
           $rootScope.modal = modal;
         });
-        _.defer(function(){
+        $timeout(function(){
           document.getElementById('loading').style.display = 'none';
           $rootScope.repaint();
         });
@@ -27458,9 +27448,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     },
     setDatepicker: function(modal){
       document.getElementById('loading').style.display = 'block';
-      _.defer(function(){
+      $timeout(function(){
         $rootScope.$apply(function(){ $rootScope.datepicker = modal; });
-        _.defer(function(){
+        $timeout(function(){
           document.getElementById('loading').style.display = 'none';
           document.body.scrollTop = 0;
           $rootScope.repaint();
@@ -27484,20 +27474,18 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     else { document.ontouchmove = undefined; }
   });
 
-  setInterval($rootScope.save, 30000);
-
   document.addEventListener('deviceready', function() {
     document.addEventListener('backbutton', function() { return false; }, false);
-    if (window.device && window.device.platform !== 'Android') { return; }
+    if ($window.device && $window.device.platform !== 'Android') { return; }
     $rootScope.sound1 = new Media('file://' + location.pathname.replace('index.html', 'sound1.mp3'));
     $rootScope.sound2 = new Media('file://' + location.pathname.replace('index.html', 'sound2.mp3'));
   }, false);
 
   if(parseInt(localStorage.getItem('organiseReminder') || 0, 10) < Date.now()) {
-    var time = moment(Date.now() + 1209600000).hour(16).minute(0)._d;
+    var time = moment(Date.now() + 1209600000).hour(16).minute(0)._d, notification;
     localStorage.setItem('organiseReminder', '' + time.valueOf());
-    if (window.plugin) {
-      window.plugin.notification.local.add({
+    if ($window.plugin && (notification = $window.plugin.notification)) {
+      notification.local.add({
         id:         ''+Math.floor(Math.random()*1000000000000),
         date:       time,
         message:    'Det är dags att se över dina aktiviteter. Gå igenom listan och se om det finns någonting du behöver planera om.',
@@ -27507,13 +27495,13 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     }
   }
 
-  _.defer(function(){ document.getElementById('loading').style.display = 'none'; });
+  $timeout(function(){ document.getElementById('loading').style.display = 'none'; });
 
 }]);
 
 /* jshint strict: false */
-/* global App, _ */
-App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$location', '$timeout', 'idaTasks', 'idaEvents', function($scope, $route, $routeParams, $title, $location, $timeout, $tasks, $events) {
+/* global App */
+App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$location', '$timeout', 'idaTasks', function($scope, $route, $routeParams, $title, $location, $timeout, $tasks) {
 
   $scope.$root.title = $title;
 
@@ -27528,28 +27516,26 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
       totalTime = ($scope.hours || 0) * 3600000 + ($scope.minutes || 0) * 60000;
       deadline = new Date(new Date().valueOf() + totalTime);
       $scope.$root.timeLeft = 1;
-      _.defer(function repeat(){
+      $timeout(function repeat(){
         if(!$scope.$root) { return; }
-        $scope.$apply(function(){
-          var timeLeft = $scope.$root.timeLeft;
-          if (timeLeft !== 0) {
-            $scope.$root.timeLeft = deadline - new Date();
+        var timeLeft = $scope.$root.timeLeft;
+        if (timeLeft !== 0) {
+          $scope.$root.timeLeft = deadline - new Date();
+        }
+        $scope.hoursLeft = Math.floor(timeLeft / 3600000) || 0;
+        $scope.minutesLeft = Math.floor((timeLeft % 3600000) / 60000) || 0;
+        $scope.secondsLeft = Math.floor((timeLeft % 60000) / 1000) || 0;
+        $scope.degrees = 2 + Math.round(358 - (timeLeft / totalTime * 358));
+        if (timeLeft > 0) {
+          $timeout(repeat, 1000);
+        } else {
+          $scope.$root.timeLeft = 0;
+          if($tasks.distractionListTasks().length > 0) {
+            $scope.$root.showFocusInputs = false;
+            $scope.$root.showNav = false;
+            $scope.title = 'Gå igenom Distraktionslistan';
           }
-          $scope.hoursLeft = Math.floor(timeLeft / 3600000) || 0;
-          $scope.minutesLeft = Math.floor((timeLeft % 3600000) / 60000) || 0;
-          $scope.secondsLeft = Math.floor((timeLeft % 60000) / 1000) || 0;
-          $scope.degrees = 2 + Math.round(358 - (timeLeft / totalTime * 358));
-          if (timeLeft > 0) {
-            $timeout(repeat, 1000);
-          } else {
-            $scope.$root.timeLeft = 0;
-            if($tasks.distractionListTasks().length > 0) {
-              $scope.$root.showFocusInputs = false;
-              $scope.$root.showNav = false;
-              $scope.title = 'Gå igenom Distraktionslistan';
-            }
-          }
-        });
+        }
       });
     },
     cancel: function () {
@@ -27560,12 +27546,11 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
       if (!$scope.newTask) { return; }
       $tasks.add($scope.newTask);
       $scope.newTask = '';
-      $scope.save();
       $scope.showDistractionListForXSeconds();
     },
     showDistractionListForXSeconds: function () {
       $scope.showDistractionList = true;
-      _.defer(function(){ document.body.scrollTop = document.body.scrollHeight; });
+      $timeout(function(){ document.body.scrollTop = document.body.scrollHeight; });
       $timeout.cancel(distractionListTimer);
       distractionListTimer = $timeout(function(){
         $scope.distractionList = null;
@@ -27622,7 +27607,6 @@ App.controller('OrganiseCtrl', ['$scope', '$routeParams', '$title', 'idaTasks', 
       var task = $tasks.add($scope.newTask);
       $scope.newTask = '';
       $scope.setModal('templates/modal.plan.html', task.id);
-      $tasks.save();
     }
   });
 
@@ -27702,7 +27686,6 @@ App.controller('TodoCtrl', ['$scope', '$route', '$title', 'idaTasks', function($
       if(!$scope.newTask) { return; }
       $tasks.add($scope.newTask);
       $scope.newTask = '';
-      $tasks.save();
     },
     getTodoList: function () { return $tasks.getTodoList($scope.$parent.todoFilter); }
   });
@@ -27829,13 +27812,14 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
   };
 
   Task.prototype.setTimer = function(time) {
+    $events.add('reminderSet');
     this.reminderTime = time || 0;
     this.reminder = time ? true : false;
     if (!$window.plugin || !$window.plugin.notification) { return; }
     var notification = $window.plugin.notification;
     notification.local.cancel(''+this.id);
     if (this.reminderTime) {
-      $window.plugin.notification.local.add({
+      notification.local.add({
         id:         ''+this.id,  // A unique id of the notification
         date:       new Date(this.reminderTime),    // This expects a date object
         message:    this.title,  // The message that is displayed
@@ -27939,7 +27923,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
             return r;
           }())
         }, repeatBase)));
-        if(start < stop) { _.defer(again, start); }
+        if (start < stop) { again(start); }
       }(moment(this.startTime)));
       _tasks.save();
     }
@@ -28054,6 +28038,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     }
     this.tasks.push(task);
     $events.add('taskCreated');
+    this.save();
     return task;
   };
 
@@ -28124,6 +28109,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
       x.finished = true;
       x.checked = false;
     });
+    this.save();
   };
 
   Tasks.prototype.getPickerTasks = function (start, end) {

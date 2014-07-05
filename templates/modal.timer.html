@@ -21,14 +21,14 @@
           <input type="number" ng-model="timerMinutes">
         </div>
       </div>
-      <button class="start" ng-click="setTimer(modalTask, Date.now().valueOf() + ((timerMinutes || 0) * 60000) + ((timerHours || 0) * 3600000));setModal('');">Starta</button>
+      <button class="start" ng-click="modalTask.setTimer(Date.now().valueOf() + ((timerMinutes || 0) * 60000) + ((timerHours || 0) * 3600000));setModal('');">Starta</button>
     </div>
 
     <div ng-init="modalTask.reminderTime && modalTask.trackDuration()" ng-show="modalTask.reminderTime > Date.now()" class="timer">
       <div ng-bind="modalTask.timeRemaining"></div>
-      <button class="clear" ng-click="setTimer(modalTask);setModal('');">Ta bort påminnelse</button>
+      <button class="clear" ng-click="modalTask.setTimer();setModal('');">Ta bort påminnelse</button>
       <br><br>
-      <button class="clear" ng-click="setTimer(modalTask);">Ändra tid</button>
+      <button class="clear" ng-click="modalTask.setTimer();">Ändra tid</button>
     </div>
 
   </div>
