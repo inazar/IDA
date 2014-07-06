@@ -27462,11 +27462,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   $rootScope.$on('$routeChangeSuccess', function (e, route) {
     $rootScope.page = route.$$route.originalPath;
     $rootScope.showNav = false;
-    _.each($rootScope.tasks, function(task){
-      task.expanded = false;
-      task.showChildren = false;
-      task.checked = false;
-    });
+    $tasks.collapse(true);
   });
 
   $rootScope.$watch('showNav', function(showNav) {
@@ -27475,16 +27471,18 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   });
 
   document.addEventListener('deviceready', function() {
+    console.log('deviceready');
     document.addEventListener('backbutton', function() { return false; }, false);
     if ($window.device && $window.device.platform !== 'Android') { return; }
     $rootScope.sound1 = new Media('file://' + location.pathname.replace('index.html', 'sound1.mp3'));
     $rootScope.sound2 = new Media('file://' + location.pathname.replace('index.html', 'sound2.mp3'));
   }, false);
 
-  if(parseInt(localStorage.getItem('organiseReminder') || 0, 10) < Date.now()) {
+  if (parseInt(localStorage.getItem('organiseReminder') || 0, 10) < Date.now()) {
     var time = moment(Date.now() + 1209600000).hour(16).minute(0)._d, notification;
     localStorage.setItem('organiseReminder', '' + time.valueOf());
     if ($window.plugin && (notification = $window.plugin.notification)) {
+      console.log('notification');
       notification.local.add({
         id:         ''+Math.floor(Math.random()*1000000000000),
         date:       time,
@@ -27495,7 +27493,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     }
   }
 
-  $timeout(function(){ document.getElementById('loading').style.display = 'none'; });
+  $timeout(function(){ console.log('hide loading'); document.getElementById('loading').style.display = 'none'; });
 
 }]);
 
@@ -28054,10 +28052,11 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
   Tasks.prototype.where = function(obj) { return _.where(this.tasks, obj); };
 
   // Collapse all expanded tasks
-  Tasks.prototype.collapse = function () {
+  Tasks.prototype.collapse = function (checked) {
     _.each(this.tasks, function (task) {
       task.expanded = false;
       task.showChildren = false;
+      if (checked) { task.checked = false; }
     });
   };
 

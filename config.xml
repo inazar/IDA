@@ -23,8 +23,6 @@
 
     <icon src="icon.png" />
 
-    <plugin name="SplashScreen" value="org.apache.cordova.SplashScreen"/>
-
     <gap:splash src="splash.png" />
     <gap:splash src="Default-568h@2x.png" gap:platform="ios" width="640" height="1136" />
 
