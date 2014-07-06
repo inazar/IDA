@@ -27411,9 +27411,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   });
 
   $rootScope.$on('$routeChangeSuccess', function (e, route) {
-    console.log(route);
-    console.log(Object.keys(route));
-    $rootScope.page = route.$$route.originalPath;
+    if (route.$$route) {
+      $rootScope.page = route.$$route.originalPath;
+    }
     $rootScope.showNav = false;
     $tasks.collapse(true);
   });
@@ -27424,7 +27424,6 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   });
 
   $document[0].addEventListener('deviceready', function() {
-    console.log('deviceready');
     $document[0].addEventListener('backbutton', function() { return false; }, false);
     if ($window.device && $window.device.platform !== 'Android') { return; }
     $rootScope.sound1 = new Media('file://' + location.pathname.replace('index.html', 'sound1.mp3'));
@@ -27435,7 +27434,6 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     var time = moment(Date.now() + 1209600000).hour(16).minute(0)._d, notification;
     localStorage.setItem('organiseReminder', '' + time.valueOf());
     if ($window.plugin && (notification = $window.plugin.notification) && notification.local) {
-      console.log('notification');
       notification.local.add({
         id:         ''+Math.floor(Math.random()*1000000000000),
         date:       time,
@@ -27446,7 +27444,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     }
   }
 
-  $timeout(function(){ console.log('hide loading'); $document[0].getElementById('loading').style.display = 'none'; });
+  $timeout(function(){ $document[0].getElementById('loading').style.display = 'none'; });
 
 }]);
 
