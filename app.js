@@ -27382,11 +27382,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
   $locationProvider.html5Mode(false);
 
-}]).run(['$rootScope', '$location', '$timeout', '$window', 'idaTasks', 'idaEvents', function($rootScope, $location, $timeout, $window , $tasks, $events) {
+}]).run(['$rootScope', '$location', '$timeout', '$window', '$document', 'idaTasks', 'idaEvents', function($rootScope, $location, $timeout, $window, $document, $tasks, $events) {
 
-  console.log('tasks');
-  console.log(typeof $tasks.tasks);
-  console.log($tasks.tasks.length);
+  console.log(Audio);
   angular.extend($rootScope, {
     $tasks: $tasks,
     $events: $events,
@@ -27402,8 +27400,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     Math: Math,
     repaint: function () {
       // redraw the whole view
-      document.body.style.display = 'none';
-      $timeout(function(){ document.body.style.display = 'block'; });
+      $document[0].body.style.display = 'none';
+      $timeout(function(){ $document[0].body.style.display = 'block'; });
     },
     focus: function (id) {
       // start focus mode
@@ -27437,25 +27435,25 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     setModal: function(modal, id, cb){
       if ($rootScope.modalCallback) { $rootScope.modalCallback(); }
       $rootScope.modalCallback = cb;
-      document.getElementById('loading').style.display = 'block';
+      $document[0].getElementById('loading').style.display = 'block';
       $timeout(function(){
         $rootScope.$apply(function(){
           $rootScope.modalTask = id ? $tasks.get(id) : {};
           $rootScope.modal = modal;
         });
         $timeout(function(){
-          document.getElementById('loading').style.display = 'none';
+          $document[0].getElementById('loading').style.display = 'none';
           $rootScope.repaint();
         });
       });
     },
     setDatepicker: function(modal){
-      document.getElementById('loading').style.display = 'block';
+      $document[0].getElementById('loading').style.display = 'block';
       $timeout(function(){
         $rootScope.$apply(function(){ $rootScope.datepicker = modal; });
         $timeout(function(){
-          document.getElementById('loading').style.display = 'none';
-          document.body.scrollTop = 0;
+          $document[0].getElementById('loading').style.display = 'none';
+          $document[0].body.scrollTop = 0;
           $rootScope.repaint();
         });
       });
@@ -27469,13 +27467,13 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   });
 
   $rootScope.$watch('showNav', function(showNav) {
-    if(showNav) { document.ontouchmove = function(e) { e.preventDefault(); }; }
-    else { document.ontouchmove = undefined; }
+    if(showNav) { $document[0].ontouchmove = function(e) { e.preventDefault(); }; }
+    else { $document[0].ontouchmove = undefined; }
   });
 
-  document.addEventListener('deviceready', function() {
+  $document[0].addEventListener('deviceready', function() {
     console.log('deviceready');
-    document.addEventListener('backbutton', function() { return false; }, false);
+    $document[0].addEventListener('backbutton', function() { return false; }, false);
     if ($window.device && $window.device.platform !== 'Android') { return; }
     $rootScope.sound1 = new Media('file://' + location.pathname.replace('index.html', 'sound1.mp3'));
     $rootScope.sound2 = new Media('file://' + location.pathname.replace('index.html', 'sound2.mp3'));
@@ -27496,7 +27494,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     }
   }
 
-  $timeout(function(){ console.log('hide loading'); document.getElementById('loading').style.display = 'none'; });
+  $timeout(function(){ console.log('hide loading'); $document[0].getElementById('loading').style.display = 'none'; });
 
 }]);
 
