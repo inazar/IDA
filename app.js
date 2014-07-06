@@ -27335,7 +27335,6 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 }]).run(['$rootScope', '$location', '$timeout', '$window', '$document', 'idaTasks', 'idaEvents', function($rootScope, $location, $timeout, $window, $document, $tasks, $events) {
 
-  console.log(Audio);
   angular.extend($rootScope, {
     $tasks: $tasks,
     $events: $events,
@@ -27369,7 +27368,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     },
     saveTask: function(task, hours, minutes, duration) {
       task.saveTask(hours, minutes, duration);
-      if($rootScope.page === '/todo') { $location.path('/todo'); }
+      if ($rootScope.page === '/todo') { $location.path('/todo'); }
       $rootScope.setModal('');
     },
     closeApp: function(){
@@ -27412,6 +27411,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   });
 
   $rootScope.$on('$routeChangeSuccess', function (e, route) {
+    console.log(route);
+    console.log(Object.keys(route));
     $rootScope.page = route.$$route.originalPath;
     $rootScope.showNav = false;
     $tasks.collapse(true);
