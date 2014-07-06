@@ -27384,6 +27384,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 }]).run(['$rootScope', '$location', '$timeout', '$window', 'idaTasks', 'idaEvents', function($rootScope, $location, $timeout, $window , $tasks, $events) {
 
+  console.log('tasks');
+  console.log(typeof $tasks.tasks);
+  console.log($tasks.tasks.length);
   angular.extend($rootScope, {
     $tasks: $tasks,
     $events: $events,
@@ -27481,7 +27484,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   if (parseInt(localStorage.getItem('organiseReminder') || 0, 10) < Date.now()) {
     var time = moment(Date.now() + 1209600000).hour(16).minute(0)._d, notification;
     localStorage.setItem('organiseReminder', '' + time.valueOf());
-    if ($window.plugin && (notification = $window.plugin.notification)) {
+    if ($window.plugin && (notification = $window.plugin.notification) && notification.local) {
       console.log('notification');
       notification.local.add({
         id:         ''+Math.floor(Math.random()*1000000000000),
@@ -27813,7 +27816,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     $events.add('reminderSet');
     this.reminderTime = time || 0;
     this.reminder = time ? true : false;
-    if (!$window.plugin || !$window.plugin.notification) { return; }
+    if (!$window.plugin || !$window.plugin.notification || !$window.plugin.notification.local) { return; }
     var notification = $window.plugin.notification;
     notification.local.cancel(''+this.id);
     if (this.reminderTime) {
