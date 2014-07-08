@@ -28404,7 +28404,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
             start = start.year(moment(start).year() + 1);
             break;
         }
-        _tasks.tasks.add(_.extend({
+        _tasks.add(_.extend({
           startTime: start._d.valueOf(),
           showInTodoUntil: (function () {
             var r;
@@ -28660,7 +28660,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
             'week': 168 + shift
           };
       if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && task.showInTodoUntil <= now) { task.finished = true; }
-      return (task.deleted === false && task.planned === true && task.finished === false && task.timeType !== 'none' &&
+      return (!task.deleted && task.planned && !task.finished && task.timeType !== 'none' &&
         task.showInTodoUntil !== 0 && (!task.showInFromUntil || task.showInFromUntil > now) && (!task.showInTodoFrom || task.showInTodoFrom < now) &&
         (task.startTime < moment().startOf('day').hour(hrs[todoFilter]).minute(0)._d.valueOf()));
     }), function (task) {
