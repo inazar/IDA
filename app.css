@@ -1761,6 +1761,169 @@ h2 {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
 
+@-webkit-keyframes scaleOut {
+  from {
+    -webkit-transform: scale(1);
+    opacity: 1; }
+
+  to {
+    -webkit-transform: scale(0.8);
+    opacity: 0; } }
+
+@-moz-keyframes scaleOut {
+  from {
+    -moz-transform: scale(1);
+    opacity: 1; }
+
+  to {
+    -moz-transform: scale(0.8);
+    opacity: 0; } }
+
+@keyframes scaleOut {
+  from {
+    transform: scale(1);
+    opacity: 1; }
+
+  to {
+    transform: scale(0.8);
+    opacity: 0; } }
+
+@-webkit-keyframes superScaleIn {
+  from {
+    -webkit-transform: scale(1.2);
+    opacity: 0; }
+
+  to {
+    -webkit-transform: scale(1);
+    opacity: 1; } }
+
+@-moz-keyframes superScaleIn {
+  from {
+    -moz-transform: scale(1.2);
+    opacity: 0; }
+
+  to {
+    -moz-transform: scale(1);
+    opacity: 1; } }
+
+@keyframes superScaleIn {
+  from {
+    transform: scale(1.2);
+    opacity: 0; }
+
+  to {
+    transform: scale(1);
+    opacity: 1; } }
+
+/**
+ * Popups
+ * --------------------------------------------------
+ */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 12;
+  border: 1px solid #eee;
+  visibility: hidden;
+  width: 250px;
+  max-width: 100%;
+  border-radius: 15px;
+  background-color: rgba(245, 245, 245, 0.9); }
+  .popup.popup-hidden {
+    -webkit-animation-name: scaleOut;
+    -moz-animation-name: scaleOut;
+    animation-name: scaleOut;
+    -webkit-animation-duration: 0.1s;
+    -moz-animation-duration: 0.1s;
+    animation-duration: 0.1s;
+    -webkit-animation-timing-function: ease-in-out;
+    -moz-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-fill-mode: both;
+    -moz-animation-fill-mode: both;
+    animation-fill-mode: both; }
+  .popup.popup-showing {
+    visibility: visible; }
+  .popup.active {
+    -webkit-animation-name: superScaleIn;
+    -moz-animation-name: superScaleIn;
+    animation-name: superScaleIn;
+    -webkit-animation-duration: 0.2s;
+    -moz-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+    -webkit-animation-timing-function: ease-in-out;
+    -moz-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-fill-mode: both;
+    -moz-animation-fill-mode: both;
+    animation-fill-mode: both; }
+
+.popup-head {
+  padding: 15px 0px;
+  border-bottom: 1px solid #eee;
+  text-align: center; }
+
+.popup-title {
+  margin: 0;
+  padding: 0;
+  font-size: 15px; }
+
+.popup-sub-title {
+  margin: 5px 0 0 0;
+  padding: 0;
+  font-weight: normal;
+  font-size: 11px; }
+
+.popup-body {
+  padding: 10px; }
+  .popup-body .popup-icon {
+    font-size: 30px;
+    text-align: center; }
+  .popup-body .popup-text {
+    text-align: center; }
+
+.popup-limit, .popup-prevent {
+  text-align: center; }
+
+.popup-buttons {
+  text-align: center; }
+  .popup-buttons.row {
+    padding: 10px 10px; }
+  .popup-buttons .btn {
+    margin: 0px 5px;
+    min-height: 45px;
+    border-radius: 2px;
+    line-height: 20px; }
+    .popup-buttons .btn:first-child {
+      margin-left: 0px; }
+    .popup-buttons .btn:last-child {
+      margin-right: 0px; }
+
+.popup-open {
+  pointer-events: none; }
+  .popup-open.modal-open .modal {
+    pointer-events: none; }
+  .popup-open .popup-backdrop, .popup-open .popup {
+    pointer-events: auto; }
+
+body {
+  font-family: 'Helvetica', Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.4; }
+
+h2 {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 0 0 0.25em; }
+
+* {
+  text-rendering: auto !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; }
+
 html {
   height: 100%; }
 
@@ -4360,6 +4523,19 @@ div.calendar-page.date-picker {
         padding-left: 15px;
         line-height: 22px;
         white-space: pre-wrap; }
+      .date-picker > ul > li > div.picker-task-add {
+        border-left: 15px solid #333333;
+        padding-left: 15px;
+        line-height: 50px;
+        white-space: pre-wrap;
+        color: #a40aaa; }
+        .date-picker > ul > li > div.picker-task-add::before {
+          content: '\f067';
+          display: inline-block;
+          font-family: FontAwesome;
+          font-style: normal;
+          font-weight: normal;
+          text-decoration: inherit; }
       .date-picker > ul > li > div.exact-busyness {
         width: 60px;
         height: 10px;

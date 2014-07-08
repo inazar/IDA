@@ -27333,9 +27333,10 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
   $locationProvider.html5Mode(false);
 
-}]).run(['$rootScope', '$location', '$timeout', '$window', '$document', 'idaTasks', 'idaEvents', function($rootScope, $location, $timeout, $window, $document, $tasks, $events) {
+}]).run(['$rootScope', '$location', '$route', '$timeout', '$window', '$document', '$q', 'idaTasks', 'idaEvents', 'idaConfig', 'idaPopup', function($rootScope, $location, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popup) {
 
   angular.extend($rootScope, {
+    $config: $config,
     $tasks: $tasks,
     $events: $events,
     $location: $location,
@@ -27367,9 +27368,12 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       $rootScope.setModal('');
     },
     saveTask: function(task, hours, minutes, duration) {
-      task.saveTask(hours, minutes, duration);
-      if ($rootScope.page === '/todo') { $location.path('/todo'); }
-      $rootScope.setModal('');
+      var def = moment($config.defaultDuration);
+      task.saveTask(hours || def.hour(), minutes || def.minute(), duration);
+      $route.reload();
+      // if ($rootScope.page === '/todo') { $location.path('/todo'); }
+      // else if ($rootScope.page === '/kalender') { $location.path('/kalender'); }
+      $timeout(function () { $rootScope.setModal(''); }, 100);
     },
     closeApp: function(){
       return (navigator.app && $rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) ? navigator.app.exitApp() : $location.path('/todo');
@@ -27379,8 +27383,34 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return tp.depth === 0 || tp.depth <= depth && tp.start >= selection[tp.depth-1].start && tp.end <= selection[tp.depth-1].end;
       });
     },
-    playSound: function () {
-      $rootScope.sound2.play();
+    addPickerTask: function (time) {
+      var task = $tasks.add({timeType: 'exact', startTime: moment(time).hour(12)._d.valueOf()});
+      $rootScope.setModal('templates/modal.plan.html', task.id);
+    },
+    completeTask: function (task) {
+      // task.checked = true;
+      $popup.confirm({
+        type: 'taskComplete',
+        sound: $rootScope.sound2,
+        title: 'Klar aktiviteter',
+        template: '<div class="popup-icon"><i class="fa fa-archive"></i></div>' +
+                  '<div class="popup-text">Klar aktiviteter finns <br/> kvar på Arkiv-sidan.</div>',
+        cancelText: 'Ångra',
+        cancelType: '',
+        okText: 'Bra',
+        okType: '',
+      }).then(function (agree) {
+        if (agree) {
+          task.finished = true;
+          $tasks.save();
+          $rootScope.sound1.play();
+        }
+      }, function () {
+          // rejected as user decided not avoid this popup
+          task.finished = true;
+          $tasks.save();
+          $rootScope.sound1.play();
+      });
     },
     setModal: function(modal, id, cb){
       if ($rootScope.modalCallback) { $rootScope.modalCallback(); }
@@ -27543,7 +27573,7 @@ App.controller('PageCtrl', ['$scope', '$title', function ($scope, $title) { $sco
 
 /* jshint strict: false */
 /* global App */
-App.controller('OrganiseCtrl', ['$scope', '$routeParams', '$title', 'idaTasks', 'idaEvents', function ($scope, $routeParams, $title, $tasks, $events) {
+App.controller('OrganiseCtrl', ['$scope', '$routeParams', '$title', 'idaTasks', function ($scope, $routeParams, $title, $tasks) {
 
   $scope.$root.title = $title;
 
@@ -27553,7 +27583,7 @@ App.controller('OrganiseCtrl', ['$scope', '$routeParams', '$title', 'idaTasks', 
     showChildren: function (shown) { $tasks.showChildren(shown); },
     addTask: function (parent) {
       if(!$scope.newTask && !parent) { return; }
-      var task = $tasks.add($scope.newTask);
+      var task = $tasks.add($scope.newTask, parent);
       $scope.newTask = '';
       $scope.setModal('templates/modal.plan.html', task.id);
     }
@@ -27695,6 +27725,459 @@ App.factory('idaConfig', function () {
 
 /* jshint strict: false */
 /* global App, _ */
+
+App.factory('idaPopup', [
+  '$compile',
+  '$controller',
+  '$q',
+  '$sce',
+  '$timeout',
+  '$rootScope',
+  '$document',
+  'idaPopups',
+function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popups) {
+  var config = {
+    stackPushDelay: 50
+  };
+  var POPUP_TPL =
+    '<div class="popup">' +
+      '<div class="popup-head">' +
+        '<h3 class="popup-title" ng-bind-html="title"></h3>' +
+        '<h5 class="popup-sub-title" ng-bind-html="subTitle" ng-if="subTitle"></h5>' +
+      '</div>' +
+      '<div class="popup-body">' +
+      '</div>' +
+      '<div class="popup-buttons row">' +
+        '<button ng-repeat="button in buttons" ng-click="$buttonTapped(button, $event)" class="btn col" ng-class="button.type || \'btn-default\'" ng-bind-html="button.text"></button>' +
+      '</div>' +
+      '<div class="popup-limit row" ng-show="withLimit">' +
+        '<label for="limit">' +
+          'Visa ' +
+          '<select name="limit" id="limit" ng-model="$$_pData.limit">' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+          '</select>' +
+          ' gånger till' +
+        '</label>' +
+      '</div>' +
+      '<div class="popup-prevent row" ng-show="withPrevent">' +
+        '<label for="prevent">' +
+          '<input type="checkbox" name="prevent" ng-model="$$_pData.prevent">' +
+          ' visa inte igen' +
+        '</label>' +
+      '</div>' +
+    '</div>';
+  var popupStack = [];
+
+  function createPopup(options) {
+    options = angular.extend({
+      scope: null,
+      title: '',
+      buttons: [],
+      type: 'generic',
+      withLimit: false,
+      withPrevent: true
+    }, options || {});
+
+    if (!$popups.canShow(options.type)) { return $q.reject(); }
+
+    _.each(['title', 'subTitle', 'template'], function (field) {
+      options[field] = $sce.trustAsHtml(options[field]);
+    });
+    _.each(options.buttons, function (button) {
+      button.text = $sce.trustAsHtml(button.text);
+    });
+
+    var scope = options.scope || $rootScope.$new(), controller;
+    var element = angular.element('<div>').html(POPUP_TPL).contents();
+
+    if (options.controller) {
+      controller = $controller(
+        options.controller,
+        angular.extend(options.locals, { $scope: scope })
+      );
+      element.children().data('$ngControllerController', controller);
+    }
+    angular.element($document[0].body).append(element);
+    $compile(element)(scope);
+
+    return $q.when({ scope: scope, element: element }).then(function (self) {
+      var content = options.template || options.content || '';
+      var responseDeferred = $q.defer();
+
+      self.responseDeferred = responseDeferred;
+
+      //Can't ng-bind-html for popup-body because it can be insecure html
+      //(eg an input in case of prompt)
+      var body = angular.element(self.element[0].querySelector('.popup-body'));
+      if (content) {
+        body.html(content);
+        $compile(body.contents())(self.scope);
+      } else {
+        body.remove();
+      }
+
+      angular.extend(self.scope, {
+        title: options.title,
+        buttons: options.buttons,
+        subTitle: options.subTitle,
+        withLimit: options.withLimit,
+        withPrevent: options.withPrevent,
+        $sound: options.sound,
+        $$_pData: {},
+        $prevent: function () { $popups.prevent(options.type); },
+        $limit: function (num) { $popups.limit(options.type, num); },
+        $buttonTapped: function(button, event) {
+          var result = (button.onTap || angular.noop)(event);
+          event = event.originalEvent || event; //jquery events
+
+          if (!event.defaultPrevented) {
+            responseDeferred.resolve(result);
+          }
+        }
+      });
+
+      self.scope.$watch('$$_pData.limit', function (limit) {
+        if (limit === null || isNaN(Number(limit))) { return; }
+        $popups.limit(options.type, limit);
+      });
+
+      self.scope.$watch('$$_pData.prevent', function (prevent) {
+        $popups.prevent(options.type, prevent);
+      });
+
+      function centerElementByMargin (el) {
+        el.style.marginLeft = (-el.offsetWidth) / 2 + 'px';
+        el.style.marginTop = (-el.offsetHeight) / 2 + 'px';
+      }
+      //Center twice, after raf, to fix a bug with ios and showing elements
+      //that have just been attached to the DOM.
+      function centerElementByMarginTwice (el) {
+        $timeout(function() {
+          centerElementByMargin(el);
+          setTimeout(function() {
+            centerElementByMargin(el);
+            setTimeout(function() {
+              centerElementByMargin(el);
+            });
+          });
+        });
+      }
+
+      self.show = function() {
+        if (self.isShown) { return; }
+
+        self.isShown = true;
+        if (options.sound) {
+          options.sound.play();
+        }
+        $timeout(function() {
+          //if hidden while waiting for raf, don't show
+          if (!self.isShown) { return; }
+
+          self.element.removeClass('popup-hidden');
+          self.element.addClass('popup-showing active');
+          centerElementByMarginTwice(self.element[0]);
+          focusInputOrButton(self.element);
+          if (options.timeout) {
+            $timeout(function() { self.remove(); }, options.timeout);
+          }
+        });
+      };
+      self.hide = function(callback) {
+        callback = callback || angular.noop;
+        if (!self.isShown) { return callback(); }
+
+        self.isShown = false;
+        self.element.removeClass('active');
+        self.element.addClass('popup-hidden');
+        $timeout(callback, 250);
+      };
+      self.remove = function() {
+        if (self.removed) { return; }
+
+        self.hide(function() {
+          self.element.remove();
+          self.scope.$destroy();
+        });
+
+        self.removed = true;
+      };
+
+      $popups.add(options.type);
+      return self;
+    });
+  }
+
+  // function onHardwareBackButton() {
+  //   if (popupStack[0]) { popupStack[0].responseDeferred.resolve(); }
+  // }
+
+  function showPopup(options) {
+    var popupPromise = idaPopup._createPopup(options);
+    var previousPopup = popupStack[0];
+
+    if (previousPopup) { previousPopup.hide(); }
+
+    var resultPromise = $timeout(angular.noop, previousPopup ? config.stackPushDelay : 0)
+    .then(function() { return popupPromise; })
+    .then(function(popup) {
+      if (!previousPopup) {
+        //Add popup-open & backdrop if this is first popup
+        document.body.classList.add('popup-open');
+      //   idaPopup._backButtonActionDone = $ionicPlatform.registerBackButtonAction(
+      //     onHardwareBackButton,
+      //     PLATFORM_BACK_BUTTON_PRIORITY_POPUP
+      //   );
+      }
+      popupStack.unshift(popup);
+      popup.show();
+
+      //DEPRECATED: notify the promise with an object with a close method
+      popup.responseDeferred.notify({
+        close: resultPromise.close
+      });
+
+      return popup.responseDeferred.promise.then(function(result) {
+        var index = popupStack.indexOf(popup);
+        if (index !== -1) {
+          popupStack.splice(index, 1);
+        }
+        popup.remove();
+
+        var previousPopup = popupStack[0];
+        if (previousPopup) {
+          previousPopup.show();
+        } else {
+          //Remove popup-open & backdrop if this is last popup
+          document.body.classList.remove('popup-open');
+          (idaPopup._backButtonActionDone || angular.noop)();
+        }
+
+        return result;
+      });
+    });
+
+    function close(result) {
+      popupPromise.then(function(popup) {
+        if (!popup.removed) {
+          popup.responseDeferred.resolve(result);
+        }
+      });
+    }
+    resultPromise.close = close;
+
+    return resultPromise;
+  }
+
+  function focusInputOrButton(element) {
+    var focusOn = element[0].querySelector('input[autofocus]');
+    if (!focusOn) {
+      focusOn = element[0].querySelector('input');
+      if (!focusOn) {
+        var buttons = element[0].querySelectorAll('button');
+        focusOn = buttons[buttons.length-1];
+      }
+    }
+    if(focusOn) {
+      focusOn.focus();
+    }
+  }
+
+  function showAlert(opts) {
+    return showPopup( angular.extend({
+      buttons: [{
+        text: opts.okText || 'OK',
+        type: opts.okType || 'button-positive',
+        onTap: function() { return true; }
+      }]
+    }, opts || {}) );
+  }
+
+  function showConfirm(opts) {
+    return showPopup( angular.extend({
+      buttons: [{
+        text: opts.cancelText || 'Cancel' ,
+        type: opts.cancelType || 'button-default',
+        onTap: function() { return false; }
+      }, {
+        text: opts.okText || 'OK',
+        type: opts.okType || 'button-positive',
+        onTap: function() { return true; }
+      }]
+    }, opts || {}) );
+  }
+
+  function showPrompt(opts) {
+    var scope = $rootScope.$new(true);
+    scope.data = {};
+    return showPopup( angular.extend({
+      template: '<input ng-model="data.response" type="' + (opts.inputType || 'text') +
+        '" placeholder="' + (opts.inputPlaceholder || '') + '">',
+      scope: scope,
+      buttons: [{
+        text: opts.cancelText || 'Cancel',
+        type: opts.cancelType|| 'button-default',
+        onTap: function() {}
+      }, {
+        text: opts.okText || 'OK',
+        type: opts.okType || 'button-positive',
+        onTap: function() { return scope.data.response || ''; }
+      }]
+    }, opts || {}) );
+  }
+
+  var idaPopup = {
+    /**
+     * @ngdoc method
+     * @description
+     * Show a complex popup. This is the master show function for all popups.
+     *
+     * A complex popup has a `buttons` array, with each button having a `text` and `type`
+     * field, in addition to an `onTap` function.  The `onTap` function, called when
+     * the correspondingbutton on the popup is tapped, will by default close the popup
+     * and resolve the popup promise with its return value.  If you wish to prevent the
+     * default and keep the popup open on button tap, call `event.preventDefault()` on the
+     * passed in tap event.  Details below.
+     *
+     * @name idaPopup#show
+     * @param {object} options The options for the new popup, of the form:
+     *
+     * ```
+     * {
+     *   title: '', // String. The title of the popup.
+     *   subTitle: '', // String (optional). The sub-title of the popup.
+     *   template: '', // String (optional). The html template to place in the popup body.
+     *   scope: null, // Scope (optional). A scope to link to the popup content.
+     *   buttons: [{ //Array[Object] (optional). Buttons to place in the popup footer.
+     *     text: 'Cancel',
+     *     type: 'button-default',
+     *     onTap: function(e) {
+     *       // e.preventDefault() will stop the popup from closing when tapped.
+     *       e.preventDefault();
+     *     }
+     *   }, {
+     *     text: 'OK',
+     *     type: 'button-positive',
+     *     onTap: function(e) {
+     *       // Returning a value will cause the promise to resolve with the given value.
+     *       return scope.data.response;
+     *     }
+     *   }]
+     * }
+     * ```
+     *
+     * @returns {object} A promise which is resolved when the popup is closed. Has an additional
+     * `close` function, which can be used to programmatically close the popup.
+     */
+    show: showPopup,
+
+    /**
+     * @ngdoc method
+     * @name idaPopup#alert
+     * @description Show a simple alert popup with a message and one button that the user can
+     * tap to close the popup.
+     *
+     * @param {object} options The options for showing the alert, of the form:
+     *
+     * ```
+     * {
+     *   title: '', // String. The title of the popup.
+     *   subTitle: '', // String (optional). The sub-title of the popup.
+     *   template: '', // String (optional). The html template to place in the popup body.
+     *   okText: '', // String (default: 'OK'). The text of the OK button.
+     *   okType: '', // String (default: 'button-positive'). The type of the OK button.
+     * }
+     * ```
+     *
+     * @returns {object} A promise which is resolved when the popup is closed. Has one additional
+     * function `close`, which can be called with any value to programmatically close the popup
+     * with the given value.
+     */
+    alert: showAlert,
+
+    /**
+     * @ngdoc method
+     * @name idaPopup#confirm
+     * @description
+     * Show a simple confirm popup with a Cancel and OK button.
+     *
+     * Resolves the promise with true if the user presses the OK button, and false if the
+     * user presses the Cancel button.
+     *
+     * @param {object} options The options for showing the confirm popup, of the form:
+     *
+     * ```
+     * {
+     *   title: '', // String. The title of the popup.
+     *   subTitle: '', // String (optional). The sub-title of the popup.
+     *   template: '', // String (optional). The html template to place in the popup body.
+     *   cancelText: '', // String (default: 'Cancel'). The text of the Cancel button.
+     *   cancelType: '', // String (default: 'button-default'). The type of the Cancel button.
+     *   okText: '', // String (default: 'OK'). The text of the OK button.
+     *   okType: '', // String (default: 'button-positive'). The type of the OK button.
+     * }
+     * ```
+     *
+     * @returns {object} A promise which is resolved when the popup is closed. Has one additional
+     * function `close`, which can be called with any value to programmatically close the popup
+     * with the given value.
+     */
+    confirm: showConfirm,
+
+    /**
+     * @ngdoc method
+     * @name idaPopup#prompt
+     * @description Show a simple prompt popup, which has an input, OK button, and Cancel button.
+     * Resolves the promise with the value of the input if the user presses OK, and with undefined
+     * if the user presses Cancel.
+     *
+     * ```javascript
+     *  idaPopup.prompt({
+     *    title: 'Password Check',
+     *    template: 'Enter your secret password',
+     *    inputType: 'password',
+     *    inputPlaceholder: 'Your password'
+     *  }).then(function(res) {
+     *    console.log('Your password is', res);
+     *  });
+     * ```
+     * @param {object} options The options for showing the prompt popup, of the form:
+     *
+     * ```
+     * {
+     *   title: '', // String. The title of the popup.
+     *   subTitle: '', // String (optional). The sub-title of the popup.
+     *   template: '', // String (optional). The html template to place in the popup body.
+     *   inputType: // String (default: 'text'). The type of input to use
+     *   inputPlaceholder: // String (default: ''). A placeholder to use for the input.
+     *   cancelText: // String (default: 'Cancel'. The text of the Cancel button.
+     *   cancelType: // String (default: 'button-default'). The type of the Cancel button.
+     *   okText: // String (default: 'OK'). The text of the OK button.
+     *   okType: // String (default: 'button-positive'). The type of the OK button.
+     * }
+     * ```
+     *
+     * @returns {object} A promise which is resolved when the popup is closed. Has one additional
+     * function `close`, which can be called with any value to programmatically close the popup
+     * with the given value.
+     */
+    prompt: showPrompt,
+    /**
+     * @private for testing
+     */
+    _createPopup: createPopup,
+    _popupStack: popupStack
+  };
+
+  return idaPopup;
+}]);
+
+
+/* jshint strict: false */
+/* global App, _ */
 App.service('idaEvents', function () {
 
   var Events = function (events) {
@@ -27731,6 +28214,69 @@ App.service('idaEvents', function () {
   };
 
   return new Events();
+
+});
+
+/* jshint strict: false */
+/* global App */
+App.service('idaPopups', function () {
+
+  var Popups = function (popups) {
+    if (popups) {
+      this.popups = popups;
+    } else {
+      try {
+        this.popups = JSON.parse(localStorage.getItem('popups')) || {};
+      } catch (e) {
+        this.popups = {};
+      }
+    }
+  };
+
+  Popups.prototype._get = function(type) {
+    return this.popups[type] ? this.popups[type] : (this.popups[type] = { count: 0 });
+  };
+
+  Popups.prototype.canShow = function(type) {
+    var popup = this._get(type);
+    return !popup.prevent && (typeof popup.limit !== 'number' || popup.limit > 0); 
+  };
+
+  // Clear popups
+  Popups.prototype.clear = function () {
+    this.popups = {};
+    this.save();
+  };
+  // Store tasks to permanent storage
+  Popups.prototype.save = function () {
+    localStorage.setItem('popups', JSON.stringify(this.popups));
+  };
+
+  // Add an event
+  Popups.prototype.add = function (type) {
+    var popup = this._get(type);
+    popup.count += 1;
+    if (popup.limit > 0) {
+      popup.limit -= 1;
+    }
+    this.save();
+  };
+
+  // Prevent popup from showing
+  Popups.prototype.prevent = function (type, prevent) {
+    var popup = this._get(type);
+    popup.prevent = Boolean(prevent);
+    this.save();
+  };
+
+  // Limit the remaining pumber of shows
+  Popups.prototype.limit = function (type, limit) {
+    var popup = this._get(type);
+    popup.limit = Number(limit);
+    this.save();
+  };
+
+  return new Popups();
 
 });
 
@@ -27788,10 +28334,10 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     if(this.timeType !== 'exact') { this.repeated = false; }
     this.startTime = Math.floor(this.startTime / 1000) * 1000;
     if (this.reminder) {
-      if(this.timeType === 'exact') {
+      if (this.timeType === 'exact') {
         this.reminderTime = this.reminderTimeAdvance ? this.startTime - this.reminderTimeAdvance : this.reminderTime;
       } else if(this.timeType === 'period') {
-        switch(this.reminderTimePeriod) {
+        switch (this.reminderTimePeriod) {
           case 'firstDay': this.reminderTime = this.startTime; break;
           case 'lastDay': this.reminderTime = this.endTime; break;
           default: this.reminderTime = this.reminderTime || this.startTime; break;
@@ -27801,25 +28347,25 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     } else {
       this.setTimer();
     }
-    if(this.timeType === 'exact') { delete this.endTime; }
+    if (this.timeType === 'exact') { delete this.endTime; }
     this.duration = duration || (((hours || 0) * 3600000) + ((minutes || 0) * 60000)) || $config.defaultDuration;
     this.updated = new Date().valueOf();
     this.deleted = false;
     this.finished = false;
-    switch(this.showInTodo){
-      default: this.showInTodoUntil = null; break;
+    switch (this.showInTodo) {
       case 'until start time': this.showInTodoUntil = this.startTime + 36000000; break;
       case 'until end of duration': this.showInTodoUntil = this.startTime + this.duration + 36000000; break;
       case 'never': this.showInTodoUntil = 0; break;
+      default: this.showInTodoUntil = null; break;
     }
     this.planned = true;
-    if(this.repeatTask) {
+    if (this.repeatTask) {
       _tasks.tasks = _.reject(_tasks.tasks, function (t) {
         return t.repeatTask === _this.repeatTask && t.id !== _this.id;
       });
       delete this.repeatTask;
     }
-    if(this.repeated) {
+    if (this.repeated) {
       this.repeatTask = this.id;
       var repeatBase = {
         duration: this.duration,
@@ -27841,7 +28387,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
       (function again(start) {
         switch(_this.repeatPeriod){
           case 'weekly':
-            var nextDay = _.min(_this.repeatDays, function(day){
+            var nextDay = _.min(_this.repeatDays, function (day) {
               var left = day - start.day();
               return left < 1 ? left + 7 : left;
             });
@@ -27858,24 +28404,23 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
             start = start.year(moment(start).year() + 1);
             break;
         }
-        _tasks.tasks.push(new Task(_.extend({
-          id: Math.floor(Math.random()*1000000000000),
+        _tasks.tasks.add(_.extend({
           startTime: start._d.valueOf(),
           showInTodoUntil: (function () {
             var r;
-            switch(_this.showInTodo){
-              default: r = null; break;
+            switch (_this.showInTodo) {
               case 'until start time': r = _this.startTime; break;
               case 'until end of duration': r = _this.startTime + _this.duration; break;
               case 'never': r = 0; break;
+              default: r = null; break;
             }
             return r;
           }())
-        }, repeatBase)));
+        }, repeatBase));
         if (start < stop) { again(start); }
       }(moment(this.startTime)));
-      _tasks.save();
     }
+    _tasks.save();
   };
 
   Task.prototype.postpone = function(days) {
@@ -27934,9 +28479,12 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     $timeout(function(){ if (!_this.deleted && !_this.finished) { _this.trackDuration(); } }, 1000);
   };
 
-
   Task.prototype.cancel = function (page) {
-    if(this.timeType !== 'exact') {
+    if (page === '/kalender') {
+      _tasks.clear(this.id);
+      return;
+    }
+    if (this.timeType !== 'exact') {
       this.repeated = false;
     }
     if (page === '/organisera-alla-aktiviteter' && !this.planned) {
@@ -27959,19 +28507,26 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
 	};
 
   // Clear tasks
-  Tasks.prototype.clear = function () {
-    this.tasks = [];
+  Tasks.prototype.clear = function (id) {
+    if (id) {
+      this.tasks = _.reject(this.tasks, function(t) { return t.id === id; });
+    } else {
+      this.tasks = [];
+    }
     this.save();
   };  
 
   // Get the task(s)
   Tasks.prototype.get = function (id) {
-    return id ? _.findWhere(this.tasks, { id: id }) : this.tasks;
+    if (!id) { return this.tasks; }
+    for (var i=0; i<this.tasks.length; i++) {
+      if (this.tasks[i].id === id) { return this.tasks[i]; }
+    }
   };
 
   // Add a task
-  Tasks.prototype.add = function (title, parent) {
-    var task = new Task({title: title});
+  Tasks.prototype.add = function (obj, parent) {
+    var task = new Task(typeof obj === 'string' ? { title: obj } : obj);
     if (parent) {
       parent = _.findWhere(this.tasks, { id: parent });
       parent.children = parent.children || [];
@@ -28035,7 +28590,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
 
   // Delete task
   Tasks.prototype.delete = function (id) {
-    var task = _.findWhere(this.tasks, { id: id });
+    var task = this.get(id);
     if(task.repeatTask) {
       this.tasks = _.reject(this.tasks, function(t) {
         if(t.repeatTask === task.repeatTask && t.id !== task.id) { return true; }

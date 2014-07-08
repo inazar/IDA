@@ -19,7 +19,7 @@
 
     <div class="right">
       <div  class="checkbox-wrapper"
-            ng-click="task.checked=!task.checked; task.checked&&playSound()"
+            ng-click="completeTask(task)"
             ng-hide="task.finished||task.deleted">
         <div class="checkbox"><i class="fa fa-check" ng-show="task.checked"></i></div>
       </div>

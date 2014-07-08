@@ -92,8 +92,8 @@
             cirka
           </button>
         </div>
-        <input class="hours" ng-model="hours" ng-init="hours = Math.floor(modalTask.duration / 3600000)" type="number" placeholder="0">
-        <input class="minutes" ng-model="minutes" ng-init="minutes = Math.floor((modalTask.duration % 3600000) / 60000)" type="number" placeholder="0">
+        <input class="hours" ng-model="hours" ng-init="hours = Math.floor(modalTask.duration / 3600000)" type="number" placeholder="{{moment($config.defaultDuration).hour()}}">
+        <input class="minutes" ng-model="minutes" ng-init="minutes = Math.floor((modalTask.duration % 3600000) / 60000)" type="number" placeholder="{{moment($config.defaultDuration).minute()}}">
       </div>
     </div>
     <br>
@@ -117,15 +117,15 @@
   </div>
 
   <div ng-show="modalTask.timeType == 'exact'">
-    <div class="checkbox" ng-click="modalTask.reminder=!modalTask.reminder;modalTask.reminderTimeAdvance=0;">
+    <div class="checkbox" ng-click="modalTask.reminder=!modalTask.reminder;modalTask.reminderTimeAdvance=1;">
       <i class="fa fa-check" ng-show="modalTask.reminder"></i>
     </div>
-    <span ng-click="modalTask.reminder = !modalTask.reminder; modalTask.reminderTimeAdvance=0">
+    <span ng-click="modalTask.reminder = !modalTask.reminder; modalTask.reminderTimeAdvance=1">
       Lägg till påminnelse
     </span><br>
     <label class="reminder" ng-show="modalTask.reminder">
       <select ng-model="modalTask.reminderTimeAdvance"
-              ng-init="modalTask.reminderTimeAdvance = modalTask.reminderTimeAdvance || 0">
+              ng-init="modalTask.reminderTimeAdvance = modalTask.reminderTimeAdvance || 1">
         <option value="0">Välj exakt</option>
         <option value="1">Vid vald tid</option>
         <option value="300000">5 minuter innan</option>
@@ -232,6 +232,7 @@
   </div>
 
   <div ng-show="
+    (modalTask.title) &&
     (modalTask.important == true || modalTask.important == false) &&
     (modalTask.complex == true || modalTask.complex == false) &&
     (

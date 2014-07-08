@@ -22,6 +22,7 @@
         <i ng-show="tp.subLabel" ng-bind="tp.subLabel"></i>
       </span>
 
+      <div ng-if="show && tp.depth==2 && tp.start <= $parent.time && tp.end > $parent.time" class="picker-task-add" ng-click="addPickerTask(tp.time)"> Add new task</div>
       <div ng-init="pickerTasks = $tasks.getPickerTasks(tp.start, tp.end)" ng-if="show && tp.depth == 2 && tp.start <= $parent.time && tp.end > $parent.time" ng-bind="pickerTasks" class="picker-tasks"></div>
 
       <div class="exact-busyness">

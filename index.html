@@ -37,7 +37,7 @@
             <i class="fa fa-archive"></i>
           </a>
         </div>
-        <div id="context" ng-view></div>
+        <div id="context" ng-view ng-hide="$root.modal || $root.datepicker"></div>
       </div>
 
       <div class="modal-container" ng-hide="$root.datepicker" ng-include="$root.modal"></div>
