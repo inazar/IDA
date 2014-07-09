@@ -27671,6 +27671,32 @@ App.controller('TodoCtrl', ['$scope', '$route', '$title', 'idaTasks', function($
 }]);
 
 /* jshint strict: false */
+/* global App */
+App.directive('idaHelp', ['$rootScope', 'idaPopup', function ($rootScope, $popup) {
+  return {
+    restrict: 'A',
+    transclude: true,
+    template: '<div class="help-container"><div ng-transclude class="help-line"></div><button ng-click="show()" class="help-button">?</button></div>',
+    scope: {
+      title: '@helpTitle',
+      template: '@idaHelp'
+    },
+    link: function ($scope, element, attrs) {
+      $scope.show = function () {
+        $rootScope.help = $scope.template;
+        $popup.alert({
+          title: $scope.title || '',
+          template: '<div ng-include="$root.help"></div>',
+          okText: 'Ok',
+          okType: '',
+          withPrevent: false
+        }).then(function () { $rootScope.help = ''; });
+      };
+    }
+  };
+}]);
+
+/* jshint strict: false */
 /* global App, _ */
 App.directive('idaHold', function () {
   return {
@@ -27703,6 +27729,94 @@ App.directive('idaHold', function () {
     }
   };
 });
+
+/* jshint strict: false */
+/* global App, moment */
+App.directive('idaTimepicker', [function () {
+  return {
+    restrict: 'A',
+    replace: true,
+    template: '<input type="text" class="timepicker" placeholder="hh:mm" ng-model="$viewValue">',
+    scope: {
+      hours: '=?modelHours',
+      minutes: '=?modelMinutes',
+      date: '=?modelDate'
+    },
+    link: function ($scope, element) {
+      angular.extend($scope, {
+        $viewValue: '',
+        _focus: false
+      });
+
+      if (angular.isNumber($scope.minutes)) {
+        if (!angular.isNumber($scope.hours)) { $scope.hours = 0; }
+        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
+      } else if (angular.isNumber($scope.hours)) {
+        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours;
+      }
+
+      var date;
+      if (angular.isNumber($scope.date)) {
+        date = moment($scope.date);
+        $scope.hours = date.hour();
+        $scope.minutes = date.minute();
+        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
+      }
+
+      $scope.$watch('$viewValue', function (val, prev) {
+        if (!$scope._focus) { return; }
+        var time = (val || '').replace(/[^0-9:]/, '').split(':'), hour = parseInt(time[0], 10), minute = parseInt(time[1], 10), h, m;
+        if (isNaN(hour)) {
+          if (isNaN(minute)) {
+            $scope.$viewValue = '';
+            $scope.hours = $scope.minutes = undefined;
+          } else {
+            $scope.$viewValue = '00:' + (minute < 10 && time[1].charAt(0) === '0' ? '0' : '') + minute;
+            $scope.hours = 0;
+          }
+        } else {
+          // normalize hours by throwing away last digits
+          while (hour && hour > 23) { hour = Math.floor(hour/10); }
+          if (prev.split(':')[1] === '' && time[1] === undefined) {
+            hour = Math.floor(hour/10);
+            if (time[0].charAt(0) === '0') { time[0] = '0'; }
+          }
+          $scope.hours = hour;
+          h = time[0].slice(0, 2) === '00' ? '00' : (hour > 0 && hour < 10 && time[0].charAt(0) === '0' ? '0' : '') + hour;
+          // if hour has two digits - add ':' to separate minutes
+          if ((hour > 9 || (time[0].length > 1 && time[0].charAt(0) === '0')) && isNaN(minute)) { return ($scope.$viewValue = h + ':'); }
+          if (isNaN(minute)) {
+            // minutes not entered yet - show hours keeping leading zero
+            if (time[1] === '' && h.length === 1) { h = '0' + h; }
+            $scope.$viewValue = h + (time[1] === '' ? ':' : '');
+            $scope.minutes = undefined;
+          } else {
+            // normalize minutes by throwing away last digits
+            while (!isNaN(minute) && minute > 59) { minute = Math.floor(minute/10); }
+            $scope.minutes = minute;
+            m = time[1].slice(0, 2) === '00' ? '00' : (minute > 0 && minute < 10 && time[1].charAt(0) === '0' ? '0' : '') + minute;
+            $scope.$viewValue = h + ':' + m;
+          }
+        }
+      });
+
+      $scope.$watch(function () {
+        return ($scope.hours || 0) + ':' + ($scope.minutes || 0);
+      }, function () {
+        $scope.date = moment($scope.date).hours($scope.hours || 0).minutes($scope.minutes || 0).seconds(0).millisecond(0)._d.valueOf();
+      });
+
+      element.on('focus', function () { $scope._focus = true; });
+
+      element.on('blur', function () {
+        $scope._focus = false;
+        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
+      });
+
+      $scope.$on('$destroy', function () { element.off('focus'); element.off('blur'); });
+    }
+  };
+}]);
 
 /* jshint strict: false */
 /* global App */
@@ -27741,32 +27855,34 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
   };
   var POPUP_TPL =
     '<div class="popup">' +
-      '<div class="popup-head">' +
-        '<h3 class="popup-title" ng-bind-html="title"></h3>' +
-        '<h5 class="popup-sub-title" ng-bind-html="subTitle" ng-if="subTitle"></h5>' +
-      '</div>' +
-      '<div class="popup-body">' +
-      '</div>' +
-      '<div class="popup-buttons row">' +
-        '<button ng-repeat="button in buttons" ng-click="$buttonTapped(button, $event)" class="btn col" ng-class="button.type || \'btn-default\'" ng-bind-html="button.text"></button>' +
-      '</div>' +
-      '<div class="popup-limit row" ng-show="withLimit">' +
-        '<label for="limit">' +
-          'Visa ' +
-          '<select name="limit" id="limit" ng-model="$$_pData.limit">' +
-            '<option value="1">1</option>' +
-            '<option value="2">2</option>' +
-            '<option value="5">5</option>' +
-            '<option value="10">10</option>' +
-          '</select>' +
-          ' gånger till' +
-        '</label>' +
-      '</div>' +
-      '<div class="popup-prevent row" ng-show="withPrevent">' +
-        '<label for="prevent">' +
-          '<input type="checkbox" name="prevent" ng-model="$$_pData.prevent">' +
-          ' visa inte igen' +
-        '</label>' +
+      '<div class="popup-box">' +
+        '<div class="popup-head" ng-if="title">' +
+          '<h3 class="popup-title" ng-bind-html="title"></h3>' +
+          '<h5 class="popup-sub-title" ng-bind-html="subTitle" ng-if="subTitle"></h5>' +
+        '</div>' +
+        '<div class="popup-body">' +
+        '</div>' +
+        '<div class="popup-buttons row">' +
+          '<button ng-repeat="button in buttons" ng-click="$buttonTapped(button, $event)" class="btn col" ng-class="button.type || \'btn-default\'" ng-bind-html="button.text"></button>' +
+        '</div>' +
+        '<div class="popup-limit row" ng-if="withLimit">' +
+          '<label for="limit">' +
+            'Visa ' +
+            '<select name="limit" id="limit" ng-model="$$_pData.limit">' +
+              '<option value="1">1</option>' +
+              '<option value="2">2</option>' +
+              '<option value="5">5</option>' +
+              '<option value="10">10</option>' +
+            '</select>' +
+            ' gånger till' +
+          '</label>' +
+        '</div>' +
+        '<div class="popup-prevent row" ng-if="withPrevent">' +
+          '<label for="prevent">' +
+            '<input type="checkbox" name="prevent" ng-model="$$_pData.prevent">' +
+            ' visa inte igen' +
+          '</label>' +
+        '</div>' +
       '</div>' +
     '</div>';
   var popupStack = [];
@@ -27834,6 +27950,8 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
           event = event.originalEvent || event; //jquery events
 
           if (!event.defaultPrevented) {
+            event.stopPropagation();
+            event.preventDefault();
             responseDeferred.resolve(result);
           }
         }
@@ -27851,6 +27969,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
       function centerElementByMargin (el) {
         el.style.marginLeft = (-el.offsetWidth) / 2 + 'px';
         el.style.marginTop = (-el.offsetHeight) / 2 + 'px';
+        el.querySelector('.popup-box').style.height = el.clientHeight + 'px';
       }
       //Center twice, after raf, to fix a bug with ios and showing elements
       //that have just been attached to the DOM.
@@ -27982,7 +28101,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
       }
     }
     if(focusOn) {
-      focusOn.focus();
+      $timeout(function () { focusOn.focus(); }, 100);
     }
   }
 
@@ -28331,9 +28450,11 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
 
   Task.prototype.saveTask = function (hours, minutes, duration) {
     var _this = this;
-    if(this.timeType !== 'exact') { this.repeated = false; }
+    if (this.timeType !== 'exact') { this.repeated = false; }
+    else { this.repeated = this.repeatPeriod !== 'once'; }
     this.startTime = Math.floor(this.startTime / 1000) * 1000;
-    if (this.reminder) {
+    if (this.reminder || this.reminderTimeAdvance > 0) {
+      this.reminder = true;
       if (this.timeType === 'exact') {
         this.reminderTime = this.reminderTimeAdvance ? this.startTime - this.reminderTimeAdvance : this.reminderTime;
       } else if(this.timeType === 'period') {
@@ -28345,6 +28466,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
       }
       this.setTimer(this.reminderTime);
     } else {
+      this.reminder = false;
       this.setTimer();
     }
     if (this.timeType === 'exact') { delete this.endTime; }

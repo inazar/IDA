@@ -51,8 +51,8 @@
   <div class="confirmation" ng-init="timeHour = moment(time).hour() + 1;timeMinute = 0;">
     <span ng-bind="time ? moment(time).format('ddd D MMM YYYY') : ''"></span>
 
-    <input type="number" ng-model="timeHour" ng-focus="timeHour = ''" placeholder="hh">:<input type="number" ng-focus="timeMinute = ''" ng-model="timeMinute" placeholder="mm">
-    <button ng-click="modalTask.reminderTime = moment(time).hours(timeHour || 0).minutes(timeMinute || 0).seconds(0).millisecond(0)._d.valueOf(); setDatepicker('')" ng-disabled="!time">Klar</button>
+<!--     <input type="number" ng-model="timeHour" ng-focus="timeHour = ''" placeholder="hh">:<input type="number" ng-focus="timeMinute = ''" ng-model="timeMinute" placeholder="mm">
+ -->    <button ng-click="modalTask.reminderTime = moment(time).hours(timeHour || 0).minutes(timeMinute || 0).seconds(0).millisecond(0)._d.valueOf(); setDatepicker('')" ng-disabled="!time">Klar</button>
   </div>
 
 </div>

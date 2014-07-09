@@ -1823,11 +1823,12 @@ h2 {
   position: fixed;
   top: 50%;
   left: 50%;
-  z-index: 12;
+  z-index: 1500;
   border: 1px solid #eee;
   visibility: hidden;
   width: 250px;
-  max-width: 100%;
+  max-height: 80%;
+  overflow: hidden;
   border-radius: 15px;
   background-color: rgba(245, 245, 245, 0.9); }
   .popup.popup-hidden {
@@ -1859,15 +1860,33 @@ h2 {
     -moz-animation-fill-mode: both;
     animation-fill-mode: both; }
 
+.popup-box {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-top: 10px; }
+
 .popup-head {
-  padding: 15px 0px;
+  padding: 10px 0px;
   border-bottom: 1px solid #eee;
   text-align: center; }
 
 .popup-title {
   margin: 0;
   padding: 0;
-  font-size: 15px; }
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
 
 .popup-sub-title {
   margin: 5px 0 0 0;
@@ -1876,7 +1895,14 @@ h2 {
   font-size: 11px; }
 
 .popup-body {
-  padding: 10px; }
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -moz-box-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: scroll;
+  padding: 0 10px; }
   .popup-body .popup-icon {
     font-size: 30px;
     text-align: center; }
@@ -2053,8 +2079,11 @@ body {
     margin-left: 80%; }
 
 .modal-container {
-  min-height: 100%;
-  width: 100%; }
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0; }
   .modal-container > div {
     z-index: 999; }
 
@@ -2901,6 +2930,56 @@ div.focus-distraction-list-confirmation-modal {
     .confirmation > button:disabled {
       opacity: 0.3; }
 
+.help-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -webkit-flex-direction: horizontal;
+  -moz-flex-direction: horizontal;
+  -ms-flex-direction: horizontal;
+  flex-direction: horizontal;
+  -webkit-box-pack: right;
+  -ms-flex-pack: right;
+  -webkit-justify-content: right;
+  -moz-justify-content: right;
+  justify-content: right;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center; }
+
+.help-line {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -moz-box-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1; }
+
+.help-button {
+  width: 25px;
+  height: 25px;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  -webkit-border-radius: 12.5px;
+  border-radius: 12.5px;
+  background: #5d96c5;
+  color: #f2f2f2;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 5px 0 10px;
+  padding: 0; }
+
+.timepicker {
+  width: 60px; }
+
 .plan {
   background: white;
   border: 5px solid #eee;
@@ -2932,7 +3011,7 @@ div.focus-distraction-list-confirmation-modal {
     outline: 0;
     padding: 0.45em 10px;
     width: 100%; }
-  .plan > div.priority > button {
+  .plan > div.priority .help-line > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
     -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
@@ -2953,18 +3032,80 @@ div.focus-distraction-list-confirmation-modal {
     width: 100%;
     font-size: 1.2em;
     padding: 13px 0 14px;
-    font-size: 2em;
+    font-size: 1.5em;
+    width: 23%;
+    margin-left: 2%; }
+    .plan > div.priority .help-line > button:active, .plan > div.priority .help-line > button.active {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      background: #bbb;
+      border-top: 2px solid #9b9b9b;
+      top: 0px; }
+    .plan > div.priority .help-line > button::first-child {
+      margin-left: 0; }
+    .plan > div.priority .help-line > button.active {
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #57065a;
+      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-user-select: none;
+      background: #a40aaa;
+      border: none;
+      color: white;
+      display: inline-block;
+      font-weight: bold;
+      padding: 3px 10px 4px;
+      position: relative;
+      text-align: center;
+      top: -2px;
+      border-top: 2px solid transparent;
+      text-decoration: none;
+      outline: 0;
+      width: 100%;
+      font-size: 1.2em;
+      padding: 13px 0 14px;
+      font-size: 1.5em;
+      width: 23%; }
+      .plan > div.priority .help-line > button.active:active, .plan > div.priority .help-line > button.active.active {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #8b0992;
+        border-top: 2px solid #57065a;
+        top: 0px; }
+  .plan > div.type .help-line > button {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
+    box-shadow: 0 2px 0 0 #9b9b9b;
+    -webkit-user-select: none;
+    background: #d4d4d4;
+    border: none;
+    color: #4a4a4a;
+    display: inline-block;
+    font-weight: bold;
+    padding: 3px 10px 4px;
+    position: relative;
+    text-align: center;
+    top: -2px;
+    border-top: 2px solid transparent;
+    text-decoration: none;
+    outline: 0;
+    width: 100%;
+    font-size: 1.2em;
+    padding: 13px 0 14px;
+    font-size: 0.9em;
     margin-bottom: 6px;
-    width: 49%; }
-    .plan > div.priority > button:active, .plan > div.priority > button.active {
+    width: 31%;
+    margin-left: 2%; }
+    .plan > div.type .help-line > button:active, .plan > div.type .help-line > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-    .plan > div.priority > button:nth-child(2n) {
-      margin-left: 2%; }
-    .plan > div.priority > button.active {
+    .plan > div.type .help-line > button::first-child {
+      margin-left: 0; }
+    .plan > div.type .help-line > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
       -webkit-box-shadow: 0 2px 0 0 #57065a;
@@ -2985,109 +3126,47 @@ div.focus-distraction-list-confirmation-modal {
       width: 100%;
       font-size: 1.2em;
       padding: 13px 0 14px;
-      font-size: 2em;
-      margin-bottom: 6px;
-      width: 49%; }
-      .plan > div.priority > button.active:active, .plan > div.priority > button.active.active {
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #57065a;
-        top: 0px; }
-      .plan > div.priority > button.active:nth-child(2n) {
-        margin-left: 2%; }
-  .plan > div.type > button {
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
-    box-shadow: 0 2px 0 0 #9b9b9b;
-    -webkit-user-select: none;
-    background: #d4d4d4;
-    border: none;
-    color: #4a4a4a;
-    display: inline-block;
-    font-weight: bold;
-    padding: 3px 10px 4px;
-    position: relative;
-    text-align: center;
-    top: -2px;
-    border-top: 2px solid transparent;
-    text-decoration: none;
-    outline: 0;
-    width: 100%;
-    font-size: 1.2em;
-    padding: 13px 0 14px;
-    margin-bottom: 6px; }
-    .plan > div.type > button:active, .plan > div.type > button.active {
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      background: #bbb;
-      border-top: 2px solid #9b9b9b;
-      top: 0px; }
-    .plan > div.type > button.active {
-      -webkit-border-radius: 4px;
-      border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
-      -webkit-user-select: none;
-      background: #a40aaa;
-      border: none;
-      color: white;
-      display: inline-block;
-      font-weight: bold;
-      padding: 3px 10px 4px;
-      position: relative;
-      text-align: center;
-      top: -2px;
-      border-top: 2px solid transparent;
-      text-decoration: none;
-      outline: 0;
-      width: 100%;
-      font-size: 1.2em;
-      padding: 13px 0 14px;
+      font-size: 0.9em;
+      width: 31%;
       margin-bottom: 6px; }
-      .plan > div.type > button.active:active, .plan > div.type > button.active.active {
+      .plan > div.type .help-line > button.active:active, .plan > div.type .help-line > button.active.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
         border-top: 2px solid #57065a;
         top: 0px; }
-  .plan > div.exact > button.start-time {
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
-    box-shadow: 0 2px 0 0 #9b9b9b;
-    -webkit-user-select: none;
-    background: #d4d4d4;
-    border: none;
-    color: #4a4a4a;
-    display: inline-block;
-    font-weight: bold;
-    padding: 3px 10px 4px;
-    position: relative;
-    text-align: center;
-    top: -2px;
-    border-top: 2px solid transparent;
-    text-decoration: none;
-    outline: 0;
-    width: 100%;
-    font-size: 1.2em;
-    padding: 13px 0 14px; }
-    .plan > div.exact > button.start-time:active, .plan > div.exact > button.start-time.active {
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      background: #bbb;
-      border-top: 2px solid #9b9b9b;
-      top: 0px; }
-    .plan > div.exact > button.start-time.selected {
+  .plan > div.exact .help-line {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: horizontal;
+    -moz-flex-direction: horizontal;
+    -ms-flex-direction: horizontal;
+    flex-direction: horizontal;
+    -webkit-box-pack: right;
+    -ms-flex-pack: right;
+    -webkit-justify-content: right;
+    -moz-justify-content: right;
+    justify-content: right;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center; }
+    .plan > div.exact .help-line > button.start-time {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
+      box-shadow: 0 2px 0 0 #9b9b9b;
       -webkit-user-select: none;
-      background: #a40aaa;
+      background: #d4d4d4;
       border: none;
-      color: white;
+      color: #4a4a4a;
       display: inline-block;
       font-weight: bold;
       padding: 3px 10px 4px;
@@ -3099,33 +3178,68 @@ div.focus-distraction-list-confirmation-modal {
       outline: 0;
       width: 100%;
       font-size: 1.2em;
-      padding: 13px 0 14px; }
-      .plan > div.exact > button.start-time.selected:active, .plan > div.exact > button.start-time.selected.active {
+      padding: 13px 0 14px;
+      font-size: 1em;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-box-flex: 1;
+      -moz-flex: 1;
+      -ms-flex: 1;
+      flex: 1; }
+      .plan > div.exact .help-line > button.start-time:active, .plan > div.exact .help-line > button.start-time.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #57065a;
+        background: #bbb;
+        border-top: 2px solid #9b9b9b;
         top: 0px; }
-  .plan > div.period {
+      .plan > div.exact .help-line > button.start-time.selected {
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 2px 0 0 #57065a;
+        box-shadow: 0 2px 0 0 #57065a;
+        -webkit-user-select: none;
+        background: #a40aaa;
+        border: none;
+        color: white;
+        display: inline-block;
+        font-weight: bold;
+        padding: 3px 10px 4px;
+        position: relative;
+        text-align: center;
+        top: -2px;
+        border-top: 2px solid transparent;
+        text-decoration: none;
+        outline: 0;
+        width: 100%;
+        font-size: 1.2em;
+        padding: 13px 0 14px;
+        font-size: 1em; }
+        .plan > div.exact .help-line > button.start-time.selected:active, .plan > div.exact .help-line > button.start-time.selected.active {
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          background: #8b0992;
+          border-top: 2px solid #57065a;
+          top: 0px; }
+  .plan > div.period .help-line {
     margin: 0 0 30px; }
-    .plan > div.period > label {
+    .plan > div.period .help-line > label {
       color: white;
       display: inline-block;
       position: relative;
       width: 100%;
       font-size: 1.2em; }
-      .plan > div.period > label::before {
+      .plan > div.period .help-line > label::before {
         content: '\f0d7';
         display: inline-block;
         font-family: FontAwesome;
         font-style: normal;
         font-weight: normal;
         text-decoration: inherit; }
-      .plan > div.period > label::before {
+      .plan > div.period .help-line > label::before {
         position: absolute;
         right: 10px;
         top: 3px; }
-      .plan > div.period > label > select {
+      .plan > div.period .help-line > label > select {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
@@ -3141,21 +3255,21 @@ div.focus-distraction-list-confirmation-modal {
         font-weight: bold;
         outline: 0;
         padding: 3px 30px 4px 10px; }
-        .plan > div.period > label > select:focus {
+        .plan > div.period .help-line > label > select:focus {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8b0992;
           border-top: 2px solid #57065a; }
-      .plan > div.period > label::before {
+      .plan > div.period .help-line > label::before {
         right: 20px;
         top: 6px;
         font-size: 1.4em; }
-      .plan > div.period > label > select {
+      .plan > div.period .help-line > label > select {
         width: 100%;
         padding: 10px 50px 12px 20px; }
-    .plan > div.period > div.within-x-days {
+    .plan > div.period .help-line > div.within-x-days {
       margin: 20px 0 0; }
-      .plan > div.period > div.within-x-days > input {
+      .plan > div.period .help-line > div.within-x-days > input {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
@@ -3167,9 +3281,9 @@ div.focus-distraction-list-confirmation-modal {
         outline: 0;
         padding: 0.45em 10px;
         width: 60px; }
-    .plan > div.period > div.datepickers {
+    .plan > div.period .help-line > div.datepickers {
       margin: 10px 0 0; }
-      .plan > div.period > div.datepickers > button {
+      .plan > div.period .help-line > div.datepickers > button {
         -webkit-border-radius: 4px;
         border-radius: 4px;
         -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
@@ -3190,13 +3304,13 @@ div.focus-distraction-list-confirmation-modal {
         width: 100%;
         font-size: 1.2em;
         padding: 13px 0 14px; }
-        .plan > div.period > div.datepickers > button:active, .plan > div.period > div.datepickers > button.active {
+        .plan > div.period .help-line > div.datepickers > button:active, .plan > div.period .help-line > div.datepickers > button.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #bbb;
           border-top: 2px solid #9b9b9b;
           top: 0px; }
-        .plan > div.period > div.datepickers > button.selected {
+        .plan > div.period .help-line > div.datepickers > button.selected {
           -webkit-border-radius: 4px;
           border-radius: 4px;
           -webkit-box-shadow: 0 2px 0 0 #57065a;
@@ -3217,23 +3331,23 @@ div.focus-distraction-list-confirmation-modal {
           width: 100%;
           font-size: 1.2em;
           padding: 13px 0 14px; }
-          .plan > div.period > div.datepickers > button.selected:active, .plan > div.period > div.datepickers > button.selected.active {
+          .plan > div.period .help-line > div.datepickers > button.selected:active, .plan > div.period .help-line > div.datepickers > button.selected.active {
             -webkit-box-shadow: none;
             box-shadow: none;
             background: #8b0992;
             border-top: 2px solid #57065a;
             top: 0px; }
-  .plan > div > div.duration > div {
+  .plan > div > div.duration .help-line > div {
     overflow: auto; }
-    .plan > div > div.duration > div > span {
+    .plan > div > div.duration .help-line > div > span {
       display: block;
       float: left; }
-      .plan > div > div.duration > div > span.hours {
+      .plan > div > div.duration .help-line > div > span.hours {
         width: 25%;
         margin: 0 2% 0 27%; }
-      .plan > div > div.duration > div > span.minutes {
+      .plan > div > div.duration .help-line > div > span.minutes {
         width: 46%; }
-    .plan > div > div.duration > div > div.estimate-toggle {
+    .plan > div > div.duration .help-line > div > div.estimate-toggle {
       -webkit-border-radius: 4px;
       border-radius: 4px;
       overflow: hidden;
@@ -3242,7 +3356,7 @@ div.focus-distraction-list-confirmation-modal {
       display: inline-block;
       height: 50px;
       margin-right: 2%; }
-      .plan > div > div.duration > div > div.estimate-toggle > button {
+      .plan > div > div.duration .help-line > div > div.estimate-toggle > button {
         -webkit-user-select: none;
         background: #d4d4d4;
         border: none;
@@ -3255,11 +3369,11 @@ div.focus-distraction-list-confirmation-modal {
         padding: 0 10px;
         text-align: left;
         width: 100%; }
-        .plan > div > div.duration > div > div.estimate-toggle > button.active {
+        .plan > div > div.duration .help-line > div > div.estimate-toggle > button.active {
           opacity: 1;
           background: #a40aaa;
           color: white; }
-    .plan > div > div.duration > div > input {
+    .plan > div > div.duration .help-line > div > input {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
@@ -3276,29 +3390,29 @@ div.focus-distraction-list-confirmation-modal {
       line-height: 30px;
       text-align: right;
       padding: 10px 20px 10px 10px; }
-      .plan > div > div.duration > div > input.hours {
+      .plan > div > div.duration .help-line > div > input.hours {
         margin-right: 2%;
         width: 25%; }
-      .plan > div > div.duration > div > input.minutes {
+      .plan > div > div.duration .help-line > div > input.minutes {
         width: 46%; }
-  .plan > div > label.show-in-todo {
+  .plan > div > label.show-in-todo .help-line {
     color: white;
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em; }
-    .plan > div > label.show-in-todo::before {
+    .plan > div > label.show-in-todo .help-line::before {
       content: '\f0d7';
       display: inline-block;
       font-family: FontAwesome;
       font-style: normal;
       font-weight: normal;
       text-decoration: inherit; }
-    .plan > div > label.show-in-todo::before {
+    .plan > div > label.show-in-todo .help-line::before {
       position: absolute;
       right: 10px;
       top: 3px; }
-    .plan > div > label.show-in-todo > select {
+    .plan > div > label.show-in-todo .help-line > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
@@ -3314,16 +3428,16 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      .plan > div > label.show-in-todo > select:focus {
+      .plan > div > label.show-in-todo .help-line > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
         border-top: 2px solid #57065a; }
-    .plan > div > label.show-in-todo::before {
+    .plan > div > label.show-in-todo .help-line::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
-    .plan > div > label.show-in-todo > select {
+    .plan > div > label.show-in-todo .help-line > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
   .plan > div > div.checkbox {
@@ -3341,25 +3455,25 @@ div.focus-distraction-list-confirmation-modal {
       left: 0;
       position: absolute;
       top: 0; }
-  .plan > div > label.reminder {
+  .plan > div > .reminder .help-line > label {
     color: white;
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin-top: 10px; }
-    .plan > div > label.reminder::before {
+    .plan > div > .reminder .help-line > label::before {
       content: '\f0d7';
       display: inline-block;
       font-family: FontAwesome;
       font-style: normal;
       font-weight: normal;
       text-decoration: inherit; }
-    .plan > div > label.reminder::before {
+    .plan > div > .reminder .help-line > label::before {
       position: absolute;
       right: 10px;
       top: 3px; }
-    .plan > div > label.reminder > select {
+    .plan > div > .reminder .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
@@ -3375,37 +3489,122 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      .plan > div > label.reminder > select:focus {
+      .plan > div > .reminder .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
         border-top: 2px solid #57065a; }
-    .plan > div > label.reminder::before {
+    .plan > div > .reminder .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
-    .plan > div > label.reminder > select {
+    .plan > div > .reminder .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
-  .plan > div > div.repeated > label {
+  .plan > div > .reminder .help-line > .reminder-time {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: horizontal;
+    -moz-flex-direction: horizontal;
+    -ms-flex-direction: horizontal;
+    flex-direction: horizontal;
+    -webkit-box-pack: right;
+    -ms-flex-pack: right;
+    -webkit-justify-content: right;
+    -moz-justify-content: right;
+    justify-content: right;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center; }
+    .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder {
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
+      box-shadow: 0 2px 0 0 #9b9b9b;
+      -webkit-user-select: none;
+      background: #d4d4d4;
+      border: none;
+      color: #4a4a4a;
+      display: inline-block;
+      font-weight: bold;
+      padding: 3px 10px 4px;
+      position: relative;
+      text-align: center;
+      top: -2px;
+      border-top: 2px solid transparent;
+      text-decoration: none;
+      outline: 0;
+      width: 100%;
+      font-size: 1.2em;
+      padding: 13px 0 14px;
+      font-size: 1em;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-box-flex: 1;
+      -moz-flex: 1;
+      -ms-flex: 1;
+      flex: 1; }
+      .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder:active, .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.active {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #bbb;
+        border-top: 2px solid #9b9b9b;
+        top: 0px; }
+      .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected {
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 2px 0 0 #57065a;
+        box-shadow: 0 2px 0 0 #57065a;
+        -webkit-user-select: none;
+        background: #a40aaa;
+        border: none;
+        color: white;
+        display: inline-block;
+        font-weight: bold;
+        padding: 3px 10px 4px;
+        position: relative;
+        text-align: center;
+        top: -2px;
+        border-top: 2px solid transparent;
+        text-decoration: none;
+        outline: 0;
+        width: 100%;
+        font-size: 1.2em;
+        padding: 13px 0 14px;
+        font-size: 1em; }
+        .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected:active, .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected.active {
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          background: #8b0992;
+          border-top: 2px solid #57065a;
+          top: 0px; }
+  .plan > div > div.repeated .help-line > label {
     color: white;
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin: 10px 0 20px; }
-    .plan > div > div.repeated > label::before {
+    .plan > div > div.repeated .help-line > label::before {
       content: '\f0d7';
       display: inline-block;
       font-family: FontAwesome;
       font-style: normal;
       font-weight: normal;
       text-decoration: inherit; }
-    .plan > div > div.repeated > label::before {
+    .plan > div > div.repeated .help-line > label::before {
       position: absolute;
       right: 10px;
       top: 3px; }
-    .plan > div > div.repeated > label > select {
+    .plan > div > div.repeated .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
@@ -3421,19 +3620,19 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      .plan > div > div.repeated > label > select:focus {
+      .plan > div > div.repeated .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
         border-top: 2px solid #57065a; }
-    .plan > div > div.repeated > label::before {
+    .plan > div > div.repeated .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
-    .plan > div > div.repeated > label > select {
+    .plan > div > div.repeated .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
-  .plan > div > div.repeated > input {
+  .plan > div > div.repeated .help-line input.period-input {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -3446,13 +3645,13 @@ div.focus-distraction-list-confirmation-modal {
     padding: 0.45em 10px;
     text-align: right;
     width: 60px; }
-  .plan > div > div.repeated > div.weekly-repeat {
+  .plan > div > div.repeated .help-line .weekly-repeat {
     margin: 10px 0; }
-    .plan > div > div.repeated > div.weekly-repeat > div {
+    .plan > div > div.repeated .help-line .weekly-repeat > div {
       display: inline-block;
-      margin-right: 6px;
+      margin-right: 1px;
       padding: 10px 0; }
-      .plan > div > div.repeated > div.weekly-repeat > div > div.checkbox {
+      .plan > div > div.repeated .help-line .weekly-repeat > div > div.checkbox {
         -webkit-border-radius: 4px;
         border-radius: 4px;
         border: 1px solid #999;
@@ -3464,12 +3663,13 @@ div.focus-distraction-list-confirmation-modal {
         margin-right: 5px;
         z-index: 1;
         margin-right: 0; }
-        .plan > div > div.repeated > div.weekly-repeat > div > div.checkbox > i {
+        .plan > div > div.repeated .help-line .weekly-repeat > div > div.checkbox > i {
           left: 0;
           position: absolute;
           top: 0; }
+  .plan .reminder-time {
+    margin-top: 20px; }
   .plan .exact-reminder {
-    margin-top: 20px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
     -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
