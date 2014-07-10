@@ -1925,6 +1925,9 @@ h2 {
       margin-left: 0px; }
     .popup-buttons .btn:last-child {
       margin-right: 0px; }
+    .popup-buttons .btn.active {
+      background: #a40aaa;
+      color: white; }
 
 .popup-open {
   pointer-events: none; }
@@ -1949,6 +1952,24 @@ h2 {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
+
+.purple {
+  color: #a40aaa; }
+
+.gray {
+  color: #555; }
+
+.green {
+  color: #48B82C; }
+
+.red {
+  color: #DD2330; }
+
+.blue {
+  color: #5d96c5; }
+
+.large {
+  font-size: 1.5em; }
 
 html {
   height: 100%; }
@@ -1978,33 +1999,43 @@ body {
       padding: 0;
       position: absolute;
       top: 5%;
-      width: 100%; }
+      width: 80%; }
       body > nav > ul > li {
         height: 11%;
         width: 100%; }
-        body > nav > ul > li > a {
-          color: white;
-          display: block;
-          font-size: 1em;
+        body > nav > ul > li.active .help-container {
+          background: #a40aaa; }
+        body > nav > ul > li .help-button {
+          margin-right: 10px; }
+        body > nav > ul > li .help-container {
+          height: 100%; }
+        body > nav > ul > li .help-line {
           height: 100%;
-          line-height: 0;
-          min-width: 200px;
           position: relative;
-          text-decoration: none;
-          width: 100%; }
-          body > nav > ul > li > a.active {
-            background: #a40aaa; }
-          body > nav > ul > li > a > span {
+          -webkit-box-flex: 1;
+          -webkit-flex: 1;
+          -moz-box-flex: 1;
+          -moz-flex: 1;
+          -ms-flex: 1;
+          flex: 1; }
+          body > nav > ul > li .help-line > a {
+            color: white;
+            display: block;
+            font-size: 1em;
+            height: 100%;
+            line-height: 0;
+            text-decoration: none; }
+          body > nav > ul > li .help-line span {
             display: inline-block;
-            left: 1.5em;
+            left: 1em;
             position: absolute;
             top: 50%;
             vertical-align: middle; }
-            body > nav > ul > li > a > span > i.fa {
+            body > nav > ul > li .help-line span > i.fa {
               display: inline-block;
               line-height: 0;
               vertical-align: top;
-              width: 2em; }
+              width: 1.5em; }
   body #loading {
     position: fixed;
     left: 0;
@@ -3034,14 +3065,14 @@ div.focus-distraction-list-confirmation-modal {
     padding: 13px 0 14px;
     font-size: 1.5em;
     width: 23%;
-    margin-left: 2%; }
+    margin-left: 2.5%; }
     .plan > div.priority .help-line > button:active, .plan > div.priority .help-line > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-    .plan > div.priority .help-line > button::first-child {
+    .plan > div.priority .help-line > button:first-child {
       margin-left: 0; }
     .plan > div.priority .help-line > button.active {
       -webkit-border-radius: 4px;
@@ -3094,16 +3125,15 @@ div.focus-distraction-list-confirmation-modal {
     font-size: 1.2em;
     padding: 13px 0 14px;
     font-size: 0.9em;
-    margin-bottom: 6px;
     width: 31%;
-    margin-left: 2%; }
+    margin-left: 3%; }
     .plan > div.type .help-line > button:active, .plan > div.type .help-line > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-    .plan > div.type .help-line > button::first-child {
+    .plan > div.type .help-line > button:first-child {
       margin-left: 0; }
     .plan > div.type .help-line > button.active {
       -webkit-border-radius: 4px;
@@ -3127,8 +3157,7 @@ div.focus-distraction-list-confirmation-modal {
       font-size: 1.2em;
       padding: 13px 0 14px;
       font-size: 0.9em;
-      width: 31%;
-      margin-bottom: 6px; }
+      width: 31%; }
       .plan > div.type .help-line > button.active:active, .plan > div.type .help-line > button.active.active {
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -3220,78 +3249,91 @@ div.focus-distraction-list-confirmation-modal {
           background: #8b0992;
           border-top: 2px solid #57065a;
           top: 0px; }
-  .plan > div.period .help-line {
-    margin: 0 0 30px; }
-    .plan > div.period .help-line > label {
+  .plan > div.period .help-line > label {
+    color: white;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    font-size: 1.2em; }
+    .plan > div.period .help-line > label::before {
+      content: '\f0d7';
+      display: inline-block;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      text-decoration: inherit; }
+    .plan > div.period .help-line > label::before {
+      position: absolute;
+      right: 10px;
+      top: 3px; }
+    .plan > div.period .help-line > label > select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #57065a;
+      box-shadow: 0 2px 0 0 #57065a;
+      background: #a40aaa;
+      border: none;
+      border-top: 2px solid transparent;
       color: white;
       display: inline-block;
-      position: relative;
+      font-weight: bold;
+      outline: 0;
+      padding: 3px 30px 4px 10px; }
+      .plan > div.period .help-line > label > select:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #8b0992;
+        border-top: 2px solid #57065a; }
+    .plan > div.period .help-line > label::before {
+      right: 20px;
+      top: 6px;
+      font-size: 1.4em; }
+    .plan > div.period .help-line > label > select {
       width: 100%;
-      font-size: 1.2em; }
-      .plan > div.period .help-line > label::before {
-        content: '\f0d7';
-        display: inline-block;
-        font-family: FontAwesome;
-        font-style: normal;
-        font-weight: normal;
-        text-decoration: inherit; }
-      .plan > div.period .help-line > label::before {
-        position: absolute;
-        right: 10px;
-        top: 3px; }
-      .plan > div.period .help-line > label > select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
+      padding: 10px 50px 12px 20px; }
+  .plan > div.period > div.datepickers {
+    margin: 10px 40px 0 0; }
+    .plan > div.period > div.datepickers > button {
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
+      box-shadow: 0 2px 0 0 #9b9b9b;
+      -webkit-user-select: none;
+      background: #d4d4d4;
+      border: none;
+      color: #4a4a4a;
+      display: inline-block;
+      font-weight: bold;
+      padding: 3px 10px 4px;
+      position: relative;
+      text-align: center;
+      top: -2px;
+      border-top: 2px solid transparent;
+      text-decoration: none;
+      outline: 0;
+      width: 100%;
+      font-size: 1.2em;
+      padding: 13px 0 14px;
+      font-size: 1.2em;
+      padding: 5px 0 5px; }
+      .plan > div.period > div.datepickers > button:active, .plan > div.period > div.datepickers > button.active {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #bbb;
+        border-top: 2px solid #9b9b9b;
+        top: 0px; }
+      .plan > div.period > div.datepickers > button.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
         -webkit-box-shadow: 0 2px 0 0 #57065a;
         box-shadow: 0 2px 0 0 #57065a;
+        -webkit-user-select: none;
         background: #a40aaa;
         border: none;
-        border-top: 2px solid transparent;
         color: white;
-        display: inline-block;
-        font-weight: bold;
-        outline: 0;
-        padding: 3px 30px 4px 10px; }
-        .plan > div.period .help-line > label > select:focus {
-          -webkit-box-shadow: none;
-          box-shadow: none;
-          background: #8b0992;
-          border-top: 2px solid #57065a; }
-      .plan > div.period .help-line > label::before {
-        right: 20px;
-        top: 6px;
-        font-size: 1.4em; }
-      .plan > div.period .help-line > label > select {
-        width: 100%;
-        padding: 10px 50px 12px 20px; }
-    .plan > div.period .help-line > div.within-x-days {
-      margin: 20px 0 0; }
-      .plan > div.period .help-line > div.within-x-days > input {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        -webkit-border-radius: 4px;
-        border-radius: 4px;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        border: 1px solid #979797;
-        outline: 0;
-        padding: 0.45em 10px;
-        width: 60px; }
-    .plan > div.period .help-line > div.datepickers {
-      margin: 10px 0 0; }
-      .plan > div.period .help-line > div.datepickers > button {
-        -webkit-border-radius: 4px;
-        border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
-        box-shadow: 0 2px 0 0 #9b9b9b;
-        -webkit-user-select: none;
-        background: #d4d4d4;
-        border: none;
-        color: #4a4a4a;
         display: inline-block;
         font-weight: bold;
         padding: 3px 10px 4px;
@@ -3303,59 +3345,87 @@ div.focus-distraction-list-confirmation-modal {
         outline: 0;
         width: 100%;
         font-size: 1.2em;
-        padding: 13px 0 14px; }
-        .plan > div.period .help-line > div.datepickers > button:active, .plan > div.period .help-line > div.datepickers > button.active {
+        padding: 13px 0 14px;
+        font-size: 1.2em;
+        padding: 5px 0 5px; }
+        .plan > div.period > div.datepickers > button.selected:active, .plan > div.period > div.datepickers > button.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
-          background: #bbb;
-          border-top: 2px solid #9b9b9b;
+          background: #8b0992;
+          border-top: 2px solid #57065a;
           top: 0px; }
-        .plan > div.period .help-line > div.datepickers > button.selected {
-          -webkit-border-radius: 4px;
-          border-radius: 4px;
-          -webkit-box-shadow: 0 2px 0 0 #57065a;
-          box-shadow: 0 2px 0 0 #57065a;
-          -webkit-user-select: none;
-          background: #a40aaa;
-          border: none;
-          color: white;
-          display: inline-block;
-          font-weight: bold;
-          padding: 3px 10px 4px;
-          position: relative;
-          text-align: center;
-          top: -2px;
-          border-top: 2px solid transparent;
-          text-decoration: none;
-          outline: 0;
-          width: 100%;
-          font-size: 1.2em;
-          padding: 13px 0 14px; }
-          .plan > div.period .help-line > div.datepickers > button.selected:active, .plan > div.period .help-line > div.datepickers > button.selected.active {
-            -webkit-box-shadow: none;
-            box-shadow: none;
-            background: #8b0992;
-            border-top: 2px solid #57065a;
-            top: 0px; }
+        .plan > div.period > div.datepickers > button.selected:first-child {
+          -webkit-border-bottom-left-radius: 0;
+          border-bottom-left-radius: 0;
+          -webkit-border-bottom-right-radius: 0;
+          border-bottom-right-radius: 0; }
+        .plan > div.period > div.datepickers > button.selected:last-child {
+          -webkit-border-top-left-radius: 0;
+          border-top-left-radius: 0;
+          -webkit-border-top-right-radius: 0;
+          border-top-right-radius: 0; }
+      .plan > div.period > div.datepickers > button:first-child {
+        -webkit-border-bottom-left-radius: 0;
+        border-bottom-left-radius: 0;
+        -webkit-border-bottom-right-radius: 0;
+        border-bottom-right-radius: 0; }
+      .plan > div.period > div.datepickers > button:last-child {
+        -webkit-border-top-left-radius: 0;
+        border-top-left-radius: 0;
+        -webkit-border-top-right-radius: 0;
+        border-top-right-radius: 0; }
+  .plan > div.within-x-days {
+    margin-top: 20px; }
+    .plan > div.within-x-days > input {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border: 1px solid #979797;
+      outline: 0;
+      padding: 0.45em 10px;
+      width: 60px; }
   .plan > div > div.duration .help-line > div {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: horizontal;
+    -moz-flex-direction: horizontal;
+    -ms-flex-direction: horizontal;
+    flex-direction: horizontal;
+    -webkit-box-pack: right;
+    -ms-flex-pack: right;
+    -webkit-justify-content: right;
+    -moz-justify-content: right;
+    justify-content: right;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
     overflow: auto; }
-    .plan > div > div.duration .help-line > div > span {
-      display: block;
-      float: left; }
-      .plan > div > div.duration .help-line > div > span.hours {
-        width: 25%;
-        margin: 0 2% 0 27%; }
-      .plan > div > div.duration .help-line > div > span.minutes {
-        width: 46%; }
     .plan > div > div.duration .help-line > div > div.estimate-toggle {
       -webkit-border-radius: 4px;
       border-radius: 4px;
       overflow: hidden;
-      float: left;
-      width: 25%;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-box-flex: 1;
+      -moz-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      width: 100%;
       display: inline-block;
       height: 50px;
-      margin-right: 2%; }
+      margin-right: 1.2em; }
       .plan > div > div.duration .help-line > div > div.estimate-toggle > button {
         -webkit-user-select: none;
         background: #d4d4d4;
@@ -3367,34 +3437,12 @@ div.focus-distraction-list-confirmation-modal {
         opacity: 0.4;
         outline: 0;
         padding: 0 10px;
-        text-align: left;
+        text-align: center;
         width: 100%; }
         .plan > div > div.duration .help-line > div > div.estimate-toggle > button.active {
           opacity: 1;
           background: #a40aaa;
           color: white; }
-    .plan > div > div.duration .help-line > div > input {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      -webkit-border-radius: 4px;
-      border-radius: 4px;
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      border: 1px solid #979797;
-      outline: 0;
-      padding: 0.45em 10px;
-      float: left;
-      font-size: 1.8em;
-      height: 50px;
-      line-height: 30px;
-      text-align: right;
-      padding: 10px 20px 10px 10px; }
-      .plan > div > div.duration .help-line > div > input.hours {
-        margin-right: 2%;
-        width: 25%; }
-      .plan > div > div.duration .help-line > div > input.minutes {
-        width: 46%; }
   .plan > div > label.show-in-todo .help-line {
     color: white;
     display: inline-block;
@@ -3592,7 +3640,7 @@ div.focus-distraction-list-confirmation-modal {
     position: relative;
     width: 100%;
     font-size: 1.2em;
-    margin: 10px 0 20px; }
+    margin: 10px 0; }
     .plan > div > div.repeated .help-line > label::before {
       content: '\f0d7';
       display: inline-block;
@@ -3723,11 +3771,75 @@ div.focus-distraction-list-confirmation-modal {
         background: #8b0992;
         border-top: 2px solid #57065a;
         top: 0px; }
-  .plan > div.period-reminder {
-    margin: 0 0 30px; }
-    .plan > div.period-reminder > label {
-      margin-bottom: 10px; }
-    .plan > div.period-reminder > button {
+  .plan div.period-reminder .help-line > label {
+    color: white;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    font-size: 1.2em; }
+    .plan div.period-reminder .help-line > label::before {
+      content: '\f0d7';
+      display: inline-block;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      text-decoration: inherit; }
+    .plan div.period-reminder .help-line > label::before {
+      position: absolute;
+      right: 10px;
+      top: 3px; }
+    .plan div.period-reminder .help-line > label > select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #57065a;
+      box-shadow: 0 2px 0 0 #57065a;
+      background: #a40aaa;
+      border: none;
+      border-top: 2px solid transparent;
+      color: white;
+      display: inline-block;
+      font-weight: bold;
+      outline: 0;
+      padding: 3px 30px 4px 10px; }
+      .plan div.period-reminder .help-line > label > select:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #8b0992;
+        border-top: 2px solid #57065a; }
+    .plan div.period-reminder .help-line > label::before {
+      right: 20px;
+      top: 6px;
+      font-size: 1.4em; }
+    .plan div.period-reminder .help-line > label > select {
+      width: 100%;
+      padding: 10px 50px 12px 20px; }
+  .plan div.period-reminder .help-line > .reminder-time {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: horizontal;
+    -moz-flex-direction: horizontal;
+    -ms-flex-direction: horizontal;
+    flex-direction: horizontal;
+    -webkit-box-pack: right;
+    -ms-flex-pack: right;
+    -webkit-justify-content: right;
+    -moz-justify-content: right;
+    justify-content: right;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center; }
+    .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder {
       -webkit-border-radius: 4px;
       border-radius: 4px;
       -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
@@ -3747,14 +3859,21 @@ div.focus-distraction-list-confirmation-modal {
       outline: 0;
       width: 100%;
       font-size: 1.2em;
-      padding: 13px 0 14px; }
-      .plan > div.period-reminder > button:active, .plan > div.period-reminder > button.active {
+      padding: 13px 0 14px;
+      font-size: 1em;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-box-flex: 1;
+      -moz-flex: 1;
+      -ms-flex: 1;
+      flex: 1; }
+      .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder:active, .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
-      .plan > div.period-reminder > button.selected {
+      .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
         -webkit-box-shadow: 0 2px 0 0 #57065a;
@@ -3774,8 +3893,9 @@ div.focus-distraction-list-confirmation-modal {
         outline: 0;
         width: 100%;
         font-size: 1.2em;
-        padding: 13px 0 14px; }
-        .plan > div.period-reminder > button.selected:active, .plan > div.period-reminder > button.selected.active {
+        padding: 13px 0 14px;
+        font-size: 1em; }
+        .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected:active, .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8b0992;
@@ -4962,6 +5082,45 @@ div.help-page > div.help-text > p {
   margin: 0 0 0.8em; }
 div.help-page > div.help-text h3, div.help-page > div.help-text h4 {
   margin-bottom: 0; }
+
+span.alert {
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 11px;
+  line-height: 14px;
+  padding: 0 3px 0 4px;
+  border: 1px solid #cccccc; }
+  span.alert::before {
+    content: '\f0f3\00a0';
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit; }
+
+div.exact-busyness {
+  width: 25px;
+  height: 10px;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  overflow: hidden;
+  line-height: 0;
+  white-space: nowrap;
+  font-size: 0;
+  display: inline-block; }
+  div.exact-busyness > div.exact-times {
+    height: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    display: inline-block;
+    width: 15px; }
+  div.exact-busyness > div.circa-times {
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background: linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    height: 10px;
+    display: inline-block;
+    width: 10px; }
 
 div.about-page > h1 {
   color: #555;

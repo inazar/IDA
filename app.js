@@ -27368,8 +27368,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       $rootScope.setModal('');
     },
     saveTask: function(task, hours, minutes, duration) {
-      var def = moment($config.defaultDuration);
-      task.saveTask(hours || def.hour(), minutes || def.minute(), duration);
+      task.saveTask(hours, minutes, duration);
       $route.reload();
       // if ($rootScope.page === '/todo') { $location.path('/todo'); }
       // else if ($rootScope.page === '/kalender') { $location.path('/kalender'); }
@@ -27440,6 +27439,18 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     },
   });
 
+  $rootScope.$watch('modalTask.timeType', function (curr, prev) {
+    if (curr === 'none' && prev !== 'none') {
+      $popup.confirm({
+        type: 'notimeTask',
+        template: '<div class="popup-text"><p>OBS! Saknas tidsinställning syns bara aktiviteten i Att-Göra-listan om det är en underaktivitet. Annars riskerar den glömmas.</p><p>Är du säker på att du vill låta bli att sätta en tid?</p></div>',
+        cancelText: 'Nej',
+        okText: 'Ja',
+        okType: 'active'
+      }).then(function (agree) { if (!agree) { $rootScope.modalTask.timeType = ''; } });
+    }
+  });
+
   $rootScope.$on('$routeChangeSuccess', function (e, route) {
     if (route.$$route) {
       $rootScope.page = route.$$route.originalPath;
@@ -27449,7 +27460,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   });
 
   $rootScope.$watch('showNav', function(showNav) {
-    if(showNav) { $document[0].ontouchmove = function(e) { e.preventDefault(); }; }
+    if(showNav) { $document[0].ontouchmove = function(e) { if (!$rootScope.$$_popupShown) { e.preventDefault(); } }; }
     else { $document[0].ontouchmove = undefined; }
   });
 
@@ -27732,7 +27743,7 @@ App.directive('idaHold', function () {
 
 /* jshint strict: false */
 /* global App, moment */
-App.directive('idaTimepicker', [function () {
+App.directive('idaTimepicker', ['$timeout', function ($timeout) {
   return {
     restrict: 'A',
     replace: true,
@@ -27810,7 +27821,11 @@ App.directive('idaTimepicker', [function () {
 
       element.on('blur', function () {
         $scope._focus = false;
-        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
+        $timeout(function () {
+          if (angular.isNumber($scope.hours)) { $scope.minutes = $scope.minutes || 0; }
+          else { return ($scope.$viewValue = ''); }
+          $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
+        });
       });
 
       $scope.$on('$destroy', function () { element.off('focus'); element.off('blur'); });
@@ -27989,6 +28004,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
         if (self.isShown) { return; }
 
         self.isShown = true;
+        $rootScope.$$_popupShown = true;
         if (options.sound) {
           options.sound.play();
         }
@@ -28010,6 +28026,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
         if (!self.isShown) { return callback(); }
 
         self.isShown = false;
+        $rootScope.$$_popupShown = false;
         self.element.removeClass('active');
         self.element.addClass('popup-hidden');
         $timeout(callback, 250);

@@ -1,4 +1,4 @@
-<div ng-init="periods = $tasks.getTimePeriods(); time = 0; depth = 2; selection = [
+<div ng-init="periods = $tasks.getTimePeriods(); time = modalTask.endTime || 0; depth = 2; selection = [
 {start:periods[0].start,end:periods[0].end},
 {start:periods[1].start,end:periods[1].end}
 ]" class="calendar-page date-picker">
