@@ -27349,6 +27349,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     moment: moment,
     Date: Date,
     Math: Math,
+    $timer: {},
     repaint: function () {
       // redraw the whole view
       $document[0].body.style.display = 'none';
@@ -27448,6 +27449,40 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         okText: 'Ja',
         okType: 'active'
       }).then(function (agree) { if (!agree) { $rootScope.modalTask.timeType = ''; } });
+    }
+  });
+
+  $rootScope.$watch('$timer.type', function (curr) {
+    var time;
+    switch (curr) {
+      case 'period':
+        $rootScope.$timer.timerHours = 0;
+        $rootScope.$timer.timerMinutes = 30;
+        break;
+      case 'today':
+        time = moment(Date.now()+30 * 60 * 1000);
+        $rootScope.$timer.timerHours = time.hour();
+        $rootScope.$timer.timerMinutes = time.minute();
+        break;
+      case 'other':
+        angular.extend($rootScope.modalTask, {
+          timeType: 'exact',
+          duration: 1800000,
+          complex: false,
+          important: true
+        });
+        $rootScope.setModal('templates/modal.plan.html', $rootScope.modalTask.id, function () {
+          if ($rootScope.page === '/todo') { $tasks.reload(); $route.reload(); }
+        });
+        $timeout(function () {
+          $popup.alert({
+            type: 'planningReminder',
+            withPrevent: false,
+            withLimit: 3,
+            template: 'reminders on later days the user needs to plan the task but that it has been pre-set so that the user just needs to set the time for the reminder.'
+          });
+        })
+        break;
     }
   });
 
@@ -27763,7 +27798,7 @@ App.directive('idaTimepicker', ['$timeout', function ($timeout) {
         if (!angular.isNumber($scope.hours)) { $scope.hours = 0; }
         $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
       } else if (angular.isNumber($scope.hours)) {
-        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours;
+        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':';
       }
 
       var date;
@@ -27815,6 +27850,12 @@ App.directive('idaTimepicker', ['$timeout', function ($timeout) {
         return ($scope.hours || 0) + ':' + ($scope.minutes || 0);
       }, function () {
         $scope.date = moment($scope.date).hours($scope.hours || 0).minutes($scope.minutes || 0).seconds(0).millisecond(0)._d.valueOf();
+      });
+
+      $scope.$watch('date', function (curr, prev) {
+        if (!angular.isNumber(curr) || curr === prev) { return; }
+        var time = moment(curr);
+        $scope.$viewValue = (time.hours() < 10 ? '0' : '') + time.hours() + ':' + (time.minutes() < 10 ? '0' : '') + time.minutes();
       });
 
       element.on('focus', function () { $scope._focus = true; });
@@ -27880,7 +27921,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
         '<div class="popup-buttons row">' +
           '<button ng-repeat="button in buttons" ng-click="$buttonTapped(button, $event)" class="btn col" ng-class="button.type || \'btn-default\'" ng-bind-html="button.text"></button>' +
         '</div>' +
-        '<div class="popup-limit row" ng-if="withLimit">' +
+        '<div class="popup-limit row" ng-if="withLimit===true">' +
           '<label for="limit">' +
             'Visa ' +
             '<select name="limit" id="limit" ng-model="$$_pData.limit">' +
@@ -27913,6 +27954,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
     }, options || {});
 
     if (!$popups.canShow(options.type)) { return $q.reject(); }
+    if ($popups.limited(options.type, options.withLimit)) { options.withLimit = false; }
 
     _.each(['title', 'subTitle', 'template'], function (field) {
       options[field] = $sce.trustAsHtml(options[field]);
@@ -28378,6 +28420,17 @@ App.service('idaPopups', function () {
     return !popup.prevent && (typeof popup.limit !== 'number' || popup.limit > 0); 
   };
 
+  Popups.prototype.limited = function(type, limit) {
+    var popup = this._get(type);
+    if (angular.isNumber(popup.limit)) { return true; }
+    if (angular.isNumber(limit)) {
+      popup.limit = limit;
+      this.save();
+      return true;
+    }
+    return false;
+  };
+
   // Clear popups
   Popups.prototype.clear = function () {
     this.popups = {};
@@ -28637,13 +28690,17 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     if (tasks) {
       this.tasks = _.map(tasks, function (task) { return task instanceof Task ? task : new Task(); });
     } else {
+      this.reload();
+    }
+	};
+
+  Tasks.prototype.reload = function() {
       try {
         this.tasks = _.map(JSON.parse(localStorage.getItem('tasks')) || [], function (task) { return new Task(task); });
       } catch (e) {
         this.tasks = [];
       }
-    }
-	};
+  };
 
   // Clear tasks
   Tasks.prototype.clear = function (id) {

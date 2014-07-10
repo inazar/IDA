@@ -59,7 +59,7 @@
           <button ng-hide="task.planned||task.finished||task.deleted||page.indexOf('/fokusera-pa-aktivitet')===0"
                   ng-click="setModal('templates/modal.timer.html', task.id, planningCallback)">
             <i class="fa fa-bell-o"></i>
-            Timer
+            Påminn
           </button>
           <button ng-hide="task.finished||task.deleted"
                   ng-click="setModal('templates/modal.delete.html', task.id);">

@@ -2,7 +2,7 @@
   <div>
     <button class="cancel" ng-click="setModal('')"><i class="fa fa-times"></i></button>
 
-    <h1>Om hur lång tid vill du bli påmind?</h1>
+    <h1>När vill du bli påmind?</h1>
 
     <h2 class="modal-sub-heading">
       <span ng-bind="modalTask.title"></span>
@@ -10,24 +10,26 @@
 
     <div class="divider"></div>
 
-    <div ng-hide="modalTask.reminderTime > Date.now()" ng-init="timerHours=0;timerMinutes=15" class="time-inputs">
-      <div>
-        <div class="hours">
-          <span>timmar</span>
-          <input type="number" ng-model="timerHours">
-        </div>
-        <div class="minutes">
-          <span>minuter</span>
-          <input type="number" ng-model="timerMinutes">
-        </div>
+    <div ng-hide="modalTask.reminderTime > Date.now()">
+      <div class="time-inputs" ng-init="$timer.timerHours=0;$timer.timerMinutes=30;">
+        <label class="time-options">
+          <select ng-model="$timer.type"
+                  ng-init="$timer.type='period'">
+            <option value="period">Påminn om</option>
+            <option value="today">Idag klockan</option>
+            <option value="other">Påminn imorgon eller senare</option>
+          </select>
+        </label>
+        <div class="time-picker" ida-timepicker model-hours="$root.$timer.timerHours" model-minutes="$root.$timer.timerMinutes" ng-show="$timer.type!=='other'"></div>
       </div>
-      <button class="start" ng-click="modalTask.setTimer(Date.now().valueOf() + ((timerMinutes || 0) * 60000) + ((timerHours || 0) * 3600000));setModal('');">Starta</button>
+      <br>
+      <button class="start" ng-click="($timer.type==='period' ? modalTask.setTimer(Date.now().valueOf() + (($timer.timerMinutes || 0) * 60000) + (($timer.timerHours || 0) * 3600000)) : modalTask.setTimer(moment(Date.now()).hour($timer.timerHours).minute($timer.timerMinutes).seconds(0).millisecond(0)._d.valueOf()));setModal('');">Starta</button>
     </div>
 
     <div ng-init="modalTask.reminderTime && modalTask.trackDuration()" ng-show="modalTask.reminderTime > Date.now()" class="timer">
       <div ng-bind="modalTask.timeRemaining"></div>
       <button class="clear" ng-click="modalTask.setTimer();setModal('');">Ta bort påminnelse</button>
-      <br><br>
+      <br>
       <button class="clear" ng-click="modalTask.setTimer();">Ändra tid</button>
     </div>
 
