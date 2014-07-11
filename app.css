@@ -3263,7 +3263,8 @@ div.focus-distraction-list-confirmation-modal {
       -moz-box-flex: 1;
       -moz-flex: 1;
       -ms-flex: 1;
-      flex: 1; }
+      flex: 1;
+      display: block; }
       .plan > div.exact .help-line > button.start-time:active, .plan > div.exact .help-line > button.start-time.active {
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -3291,7 +3292,8 @@ div.focus-distraction-list-confirmation-modal {
         width: 100%;
         font-size: 1.2em;
         padding: 13px 0 14px;
-        font-size: 1em; }
+        font-size: 1em;
+        display: block; }
         .plan > div.exact .help-line > button.start-time.selected:active, .plan > div.exact .help-line > button.start-time.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
@@ -3472,7 +3474,7 @@ div.focus-distraction-list-confirmation-modal {
       -ms-flex: 1;
       flex: 1;
       width: 100%;
-      display: inline-block;
+      display: block;
       height: 50px;
       margin-right: 1.2em; }
       .plan > div > div.duration .help-line > div > div.estimate-toggle > button {
@@ -3497,7 +3499,8 @@ div.focus-distraction-list-confirmation-modal {
     display: inline-block;
     position: relative;
     width: 100%;
-    font-size: 1.2em; }
+    font-size: 1.2em;
+    display: block; }
     .plan > div > label.show-in-todo .help-line::before {
       content: '\f0d7';
       display: inline-block;
@@ -3648,7 +3651,8 @@ div.focus-distraction-list-confirmation-modal {
       -moz-box-flex: 1;
       -moz-flex: 1;
       -ms-flex: 1;
-      flex: 1; }
+      flex: 1;
+      display: block; }
       .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder:active, .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.active {
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -3676,7 +3680,8 @@ div.focus-distraction-list-confirmation-modal {
         width: 100%;
         font-size: 1.2em;
         padding: 13px 0 14px;
-        font-size: 1em; }
+        font-size: 1em;
+        display: block; }
         .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected:active, .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
