@@ -51,12 +51,12 @@
   </div>
 
   <div class="period" ng-show="modalTask.timeType == 'period'">
-    <div class="datepickers" ng-show="modalTask.timeInputType == 'exact'">
-      <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html')"
+    <div class="datepickers">
+      <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html');modalTask.timeInputType='exact'"
               ng-class="{ 'selected': modalTask.startTime }"
               ng-bind="modalTask.startTime ? 'Från '+moment(modalTask.startTime).format('ddd D MMM YYYY') : 'Välj från datum'"></button>
 
-      <button ng-click="setDatepicker('templates/modal.pick_endtime.html')"
+      <button ng-click="setDatepicker('templates/modal.pick_endtime.html');modalTask.timeInputType='exact'"
               ng-class="{ 'selected': modalTask.endTime }"
               ng-bind="modalTask.endTime ? 'Till '+moment(modalTask.endTime).format('ddd D MMM YYYY') : 'Välj till datum'"></button>
     </div>
@@ -75,6 +75,7 @@
             Tar cirka
           </button>
         </div>
+        <span>&nbsp;kl&nbsp;</span>
         <div ida-timepicker model-hours="$parent.hours" model-minutes="$parent.minutes"></div>
       </div>
     </div>
@@ -159,19 +160,24 @@
     </div>
   </div>
 
-  <div ng-show="modalTask.timeType == 'period'">
+  <div ng-show="modalTask.timeType=='period'&&modalTask.startTime&&modalTask.endTime">
     <div ida-help class="period-reminder">
-      <label class="reminder" ng-show="modalTask.reminder">
+      <label class="reminder">
         <select ng-model="modalTask.reminderTimePeriod"
-                ng-init="modalTask.reminderTimePeriod = modalTask.reminderTime ? 'exact' : 'firstDay'">
-          <option value="firstDay">Första dagen i perioden</option>
-          <option value="lastDay">Sista dagen i perioden</option>
+                ng-change="modalTask.setReminderTime()"
+                ng-init="modalTask.reminderTimePeriod = modalTask.reminderTimePeriod || (modalTask.reminderTime ? 'exact' : 'firstDay')">
+          <option value="none">Ingen påminnelse</option>
+          <option value="firstDay">Påminn första dagen</option>
+          <option value="nearFirst">Påminn nära början</option>
+          <option value="middle">Påminn i mitten</option>
+          <option value="nearLast">Påminn nära slutet</option>
+          <option value="lastDay">Påminn sista dagen</option>
           <option value="exact">Påminn exakt tid</option>
         </select>
       </label>
-      <div class="reminder-time" ng-show="modalTask.reminderTimePeriod == 'exact'" ng-init="modalTask.reminderTime = modalTask.reminderTime || Date.now()">
+      <div class="reminder-time" ng-init="modalTask.reminderTime = modalTask.reminderTime || Date.now()">
         <button class="exact-reminder"
-              ng-click="setDatepicker('templates/modal.pick_remindertime.html')"
+              ng-click="setDatepicker('templates/modal.pick_remindertime.html');modalTask.reminderTimePeriod='exact'"
               ng-class="{ 'selected': modalTask.reminderTime }"
               ng-bind="modalTask.reminderTime ? moment(modalTask.reminderTime).format('D MMMM YYYY') : 'Välj datum och tid'"></button>
         <span >&nbsp;kl&nbsp;</span>
@@ -180,24 +186,15 @@
     </div>
   </div>
 
-  <br>
+  <br><br>
 
   <div ng-show="modalTask.timeType == 'exact' || modalTask.timeType == 'period'">
     <label ida-help class="show-in-todo">
       <select ng-model="modalTask.showInTodo">
         <option value="until marked as done">Flytta bort när markerats Klar</option>
-        <option value="until start time">Flytta bort vid starttid</option>
-        <option value="until end of duration">Flytta bort när borde vara klar</option>
-        <option value="never">Visas ej på Att-Göra</option>
+        <option value="until end of duration">Flytta bort efter tidsperioden</option>
       </select>
     </label>
-<!--     <label class="show-in-todo"  ng-show="modalTask.timeType == 'period'">
-      <select>
-        <option>under tidsperioden</option><
-        <option>tills markerats som klar</option><
-      </select>
-    </label>
- -->
   </div>
 
   <br>

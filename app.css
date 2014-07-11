@@ -1830,7 +1830,7 @@ h2 {
   max-height: 80%;
   overflow: hidden;
   border-radius: 15px;
-  background-color: rgba(245, 245, 245, 0.95); }
+  background-color: rgba(235, 235, 235, 0.95); }
   .popup.popup-hidden {
     -webkit-animation-name: scaleOut;
     -moz-animation-name: scaleOut;
@@ -1910,7 +1910,8 @@ h2 {
     text-align: center; }
 
 .popup-limit, .popup-prevent {
-  text-align: center; }
+  text-align: center;
+  margin-bottom: 10px; }
 
 .popup-buttons {
   text-align: center; }
@@ -1918,16 +1919,63 @@ h2 {
     padding: 10px 10px; }
   .popup-buttons .btn {
     margin: 0px 5px;
+    padding: 0 16px;
     min-height: 45px;
-    border-radius: 2px;
-    line-height: 20px; }
+    border-radius: 5px;
+    line-height: 20px;
+    background-color: rgba(255, 255, 255, 0.00784314);
+    border: 1px solid #4c4c4c;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
+    box-shadow: 0 2px 0 0 #9b9b9b;
+    -webkit-user-select: none;
+    background: #d4d4d4;
+    border: none;
+    color: #4a4a4a;
+    display: inline-block;
+    font-weight: bold;
+    padding: 3px 10px 4px;
+    position: relative;
+    text-align: center;
+    top: -2px;
+    border-top: 2px solid transparent;
+    text-decoration: none;
+    outline: 0; }
+    .popup-buttons .btn:active, .popup-buttons .btn.active {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      background: #bbb;
+      border-top: 2px solid #9b9b9b;
+      top: 0px; }
     .popup-buttons .btn:first-child {
       margin-left: 0px; }
     .popup-buttons .btn:last-child {
       margin-right: 0px; }
-    .popup-buttons .btn.active {
+    .popup-buttons .btn.btn-main {
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-user-select: none;
       background: #a40aaa;
-      color: white; }
+      border: none;
+      color: white;
+      display: inline-block;
+      font-weight: bold;
+      padding: 3px 10px 4px;
+      position: relative;
+      text-align: center;
+      top: -2px;
+      border-top: 2px solid transparent;
+      text-decoration: none;
+      outline: 0; }
+      .popup-buttons .btn.btn-main:active, .popup-buttons .btn.btn-main.active {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #8b0992;
+        border-top: 2px solid #5d0662;
+        top: 0px; }
 
 .popup-open {
   pointer-events: none; }
@@ -1975,139 +2023,144 @@ html {
   height: 100%; }
 
 body {
+  position: absolute;
   height: 100%;
-  font-size: 0.95em;
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: scroll; }
-  body > nav {
-    -webkit-transition: all 300ms;
-    transition: all 300ms;
-    overflow: hidden;
-    background: #333;
-    display: block;
+  width: 100%; }
+  body > #wrapper {
     height: 100%;
-    left: -100%;
-    position: fixed;
-    top: 0;
-    width: 100%; }
-    body > nav > ul {
-      height: 95%;
-      list-style: none;
-      margin: 0;
-      opacity: 0.5;
-      padding: 0;
-      position: absolute;
-      top: 5%;
-      width: 80%; }
-      body > nav > ul > li {
-        height: 11%;
-        width: 100%; }
-        body > nav > ul > li.active .help-container {
-          background: #a40aaa; }
-        body > nav > ul > li .help-button {
-          margin-right: 10px; }
-        body > nav > ul > li .help-container {
-          height: 100%; }
-        body > nav > ul > li .help-line {
-          height: 100%;
-          position: relative;
-          -webkit-box-flex: 1;
-          -webkit-flex: 1;
-          -moz-box-flex: 1;
-          -moz-flex: 1;
-          -ms-flex: 1;
-          flex: 1; }
-          body > nav > ul > li .help-line > a {
-            color: white;
-            display: block;
-            font-size: 1em;
-            height: 100%;
-            line-height: 0;
-            text-decoration: none; }
-          body > nav > ul > li .help-line span {
-            display: inline-block;
-            left: 1em;
-            position: absolute;
-            top: 50%;
-            vertical-align: middle; }
-            body > nav > ul > li .help-line span > i.fa {
-              display: inline-block;
-              line-height: 0;
-              vertical-align: top;
-              width: 1.5em; }
-  body #loading {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: white;
-    background: rgba(255, 255, 255, 0.7);
-    text-align: center;
-    line-height: 300px;
-    font-weight: bold;
-    font-size: 14px;
-    z-index: 9999999; }
-  body > div#main {
-    -webkit-box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
-    box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
-    -webkit-transition: all 300ms;
-    transition: all 300ms;
-    background: white;
-    min-height: 100%;
-    padding: 60px 5px 5px 5px;
+    font-size: 0.95em;
     position: relative;
-    width: 100%; }
-    body > div#main > div#top {
-      -webkit-transition: margin-left 300ms;
-      transition: margin-left 300ms;
-      background: #a40aaa;
-      border-bottom: 2px solid #57065a;
-      color: white;
-      font-size: 1.15em;
-      font-weight: bold;
-      height: 45px;
-      left: 0;
-      line-height: 45px;
+    overflow-x: hidden;
+    overflow-y: scroll; }
+    body > #wrapper > nav {
+      -webkit-transition: all 300ms;
+      transition: all 300ms;
+      overflow: hidden;
+      background: #333;
+      display: block;
+      height: 100%;
+      left: -100%;
       position: fixed;
-      z-index: 11;
-      text-align: center;
       top: 0;
       width: 100%; }
-      body > div#main > div#top > a {
-        display: block;
+      body > #wrapper > nav > ul {
+        height: 95%;
+        list-style: none;
+        margin: 0;
+        opacity: 0.5;
+        padding: 0;
         position: absolute;
-        top: 0; }
-        body > div#main > div#top > a > i {
-          display: inline-block;
-          font-size: 1.3em;
-          height: 45px;
-          line-height: 45px;
-          padding: 0 0.65em; }
-        body > div#main > div#top > a.nav {
-          left: 0; }
-        body > div#main > div#top > a.clean {
-          display: inline-block;
-          right: 0;
-          width: 54px; }
-      body > div#main > div#top.hide {
-        background: white;
-        border-bottom: 1px solid transparent;
-        color: black; }
-        body > div#main > div#top.hide > a {
-          display: none; }
-    body > div#main > div#context {
-      width: 100%; }
-  body.show-nav > nav {
-    left: 0; }
-    body.show-nav > nav > ul {
+        top: 5%;
+        width: 80%; }
+        body > #wrapper > nav > ul > li {
+          height: 11%;
+          width: 100%; }
+          body > #wrapper > nav > ul > li.active .help-container {
+            background: #a40aaa; }
+          body > #wrapper > nav > ul > li .help-button {
+            margin-right: 10px; }
+          body > #wrapper > nav > ul > li .help-container {
+            height: 100%; }
+          body > #wrapper > nav > ul > li .help-line {
+            height: 100%;
+            position: relative;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -moz-box-flex: 1;
+            -moz-flex: 1;
+            -ms-flex: 1;
+            flex: 1; }
+            body > #wrapper > nav > ul > li .help-line > a {
+              color: white;
+              display: block;
+              font-size: 1em;
+              height: 100%;
+              line-height: 0;
+              text-decoration: none; }
+            body > #wrapper > nav > ul > li .help-line span {
+              display: inline-block;
+              left: 1em;
+              position: absolute;
+              top: 50%;
+              vertical-align: middle; }
+              body > #wrapper > nav > ul > li .help-line span > i.fa {
+                display: inline-block;
+                line-height: 0;
+                vertical-align: top;
+                width: 1.5em; }
+    body > #wrapper #loading {
+      position: fixed;
       left: 0;
-      opacity: 1; }
-  body.show-nav #context {
-    pointer-events: none; }
-  body.show-nav > div#main, body.show-nav #top, body.show-nav .confirmation {
-    margin-left: 80%; }
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      background: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      line-height: 300px;
+      font-weight: bold;
+      font-size: 14px;
+      z-index: 9999999; }
+    body > #wrapper > div#main {
+      -webkit-box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
+      box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
+      -webkit-transition: all 300ms;
+      transition: all 300ms;
+      background: white;
+      min-height: 100%;
+      padding: 60px 5px 5px 5px;
+      position: relative;
+      width: 100%; }
+      body > #wrapper > div#main > div#top {
+        -webkit-transition: margin-left 300ms;
+        transition: margin-left 300ms;
+        background: #a40aaa;
+        border-bottom: 2px solid #5d0662;
+        color: white;
+        font-size: 1.15em;
+        font-weight: bold;
+        height: 45px;
+        left: 0;
+        line-height: 45px;
+        position: fixed;
+        z-index: 11;
+        text-align: center;
+        top: 0;
+        width: 100%; }
+        body > #wrapper > div#main > div#top > a {
+          display: block;
+          position: absolute;
+          top: 0; }
+          body > #wrapper > div#main > div#top > a > i {
+            display: inline-block;
+            font-size: 1.3em;
+            height: 45px;
+            line-height: 45px;
+            padding: 0 0.65em; }
+          body > #wrapper > div#main > div#top > a.nav {
+            left: 0; }
+          body > #wrapper > div#main > div#top > a.clean {
+            display: inline-block;
+            right: 0;
+            width: 54px; }
+        body > #wrapper > div#main > div#top.hide {
+          background: white;
+          border-bottom: 1px solid transparent;
+          color: black; }
+          body > #wrapper > div#main > div#top.hide > a {
+            display: none; }
+      body > #wrapper > div#main > div#context {
+        width: 100%; }
+
+body.show-nav #wrapper > nav {
+  left: 0; }
+  body.show-nav #wrapper > nav > ul {
+    left: 0;
+    opacity: 1; }
+body.show-nav #wrapper #context {
+  pointer-events: none; }
+body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #wrapper .confirmation {
+  margin-left: 80%; }
 
 .modal-container {
   height: 100%;
@@ -2159,8 +2212,8 @@ div.delete-task-modal {
   div.delete-task-modal > div > button.yes {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2185,7 +2238,7 @@ div.delete-task-modal {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
   div.delete-task-modal > div > button.no {
     -webkit-border-radius: 4px;
@@ -2278,8 +2331,8 @@ div.edit-task-name-modal {
   div.edit-task-name-modal > div > button.done {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2304,7 +2357,7 @@ div.edit-task-name-modal {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
 
 div.later-modal {
@@ -2351,8 +2404,8 @@ div.later-modal {
     div.later-modal > div > div.postpone > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -2379,7 +2432,7 @@ div.later-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a;
+        border-top: 2px solid #5d0662;
         top: 0px; }
     div.later-modal > div > div.postpone > input {
       -webkit-appearance: none;
@@ -2410,8 +2463,8 @@ div.later-modal {
   div.later-modal > div > button.replan {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2437,13 +2490,13 @@ div.later-modal {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
   div.later-modal > div > button.breakdown {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2469,7 +2522,7 @@ div.later-modal {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
   div.later-modal > div > button.cancel-2 {
     -webkit-border-radius: 4px;
@@ -2593,8 +2646,8 @@ div.timer-modal {
         appearance: none;
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #57065a;
-        box-shadow: 0 2px 0 0 #57065a;
+        -webkit-box-shadow: 0 2px 0 0 #5d0662;
+        box-shadow: 0 2px 0 0 #5d0662;
         background: #a40aaa;
         border: none;
         border-top: 2px solid transparent;
@@ -2607,7 +2660,7 @@ div.timer-modal {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8b0992;
-          border-top: 2px solid #57065a; }
+          border-top: 2px solid #5d0662; }
       div.timer-modal > div > div > div.time-inputs > label.time-options::before {
         right: 20px;
         top: 6px;
@@ -2622,8 +2675,8 @@ div.timer-modal {
   div.timer-modal > div > div > button.start {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2648,7 +2701,7 @@ div.timer-modal {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
   div.timer-modal > div > div.timer {
     overflow: auto; }
@@ -2662,8 +2715,8 @@ div.timer-modal {
     div.timer-modal > div > div.timer > button.clear {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -2689,7 +2742,7 @@ div.timer-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a;
+        border-top: 2px solid #5d0662;
         top: 0px; }
 
 div.pick-parent-task-modal {
@@ -2773,8 +2826,8 @@ div.focus-stop-timer-modal {
   div.focus-stop-timer-modal > div > button.reset-timer, div.focus-stop-timer-modal > div > button.stop-focussing {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2801,7 +2854,7 @@ div.focus-stop-timer-modal {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
   div.focus-stop-timer-modal > div > button.continue-focussing {
     -webkit-border-radius: 4px;
@@ -2880,8 +2933,8 @@ div.focus-distraction-list-confirmation-modal {
   div.focus-distraction-list-confirmation-modal > div > button.plan-now {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2908,7 +2961,7 @@ div.focus-distraction-list-confirmation-modal {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
   div.focus-distraction-list-confirmation-modal > div > button.plan-later {
     -webkit-border-radius: 4px;
@@ -2957,8 +3010,8 @@ div.focus-distraction-list-confirmation-modal {
     .confirmation.reset-all-tasks > a {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -2976,13 +3029,13 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a;
+        border-top: 2px solid #5d0662;
         top: 0px; }
   .confirmation > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -3005,7 +3058,7 @@ div.focus-distraction-list-confirmation-modal {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
     .confirmation > button:disabled {
       opacity: 0.3; }
@@ -3126,8 +3179,8 @@ div.focus-distraction-list-confirmation-modal {
     .plan > div.priority .help-line > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -3150,7 +3203,7 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a;
+        border-top: 2px solid #5d0662;
         top: 0px; }
   .plan > div.type .help-line > button {
     -webkit-border-radius: 4px;
@@ -3187,8 +3240,8 @@ div.focus-distraction-list-confirmation-modal {
     .plan > div.type .help-line > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -3211,7 +3264,7 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a;
+        border-top: 2px solid #5d0662;
         top: 0px; }
   .plan > div.exact .help-line {
     display: -webkit-box;
@@ -3274,8 +3327,8 @@ div.focus-distraction-list-confirmation-modal {
       .plan > div.exact .help-line > button.start-time.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #57065a;
-        box-shadow: 0 2px 0 0 #57065a;
+        -webkit-box-shadow: 0 2px 0 0 #5d0662;
+        box-shadow: 0 2px 0 0 #5d0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -3298,7 +3351,7 @@ div.focus-distraction-list-confirmation-modal {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8b0992;
-          border-top: 2px solid #57065a;
+          border-top: 2px solid #5d0662;
           top: 0px; }
   .plan > div.period .help-line > label {
     color: white;
@@ -3323,8 +3376,8 @@ div.focus-distraction-list-confirmation-modal {
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -3337,7 +3390,7 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a; }
+        border-top: 2px solid #5d0662; }
     .plan > div.period .help-line > label::before {
       right: 20px;
       top: 6px;
@@ -3379,8 +3432,8 @@ div.focus-distraction-list-confirmation-modal {
       .plan > div.period > div.datepickers > button.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #57065a;
-        box-shadow: 0 2px 0 0 #57065a;
+        -webkit-box-shadow: 0 2px 0 0 #5d0662;
+        box-shadow: 0 2px 0 0 #5d0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -3403,7 +3456,7 @@ div.focus-distraction-list-confirmation-modal {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8b0992;
-          border-top: 2px solid #57065a;
+          border-top: 2px solid #5d0662;
           top: 0px; }
         .plan > div.period > div.datepickers > button.selected:first-child {
           -webkit-border-bottom-left-radius: 0;
@@ -3463,6 +3516,8 @@ div.focus-distraction-list-confirmation-modal {
     -moz-align-items: center;
     align-items: center;
     overflow: auto; }
+    .plan > div > div.duration .help-line > div > span {
+      visibility: hidden; }
     .plan > div > div.duration .help-line > div > div.estimate-toggle {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -3475,8 +3530,7 @@ div.focus-distraction-list-confirmation-modal {
       flex: 1;
       width: 100%;
       display: block;
-      height: 50px;
-      margin-right: 1.2em; }
+      height: 50px; }
       .plan > div > div.duration .help-line > div > div.estimate-toggle > button {
         -webkit-user-select: none;
         background: #d4d4d4;
@@ -3518,8 +3572,8 @@ div.focus-distraction-list-confirmation-modal {
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -3532,7 +3586,7 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a; }
+        border-top: 2px solid #5d0662; }
     .plan > div > label.show-in-todo .help-line::before {
       right: 20px;
       top: 6px;
@@ -3579,8 +3633,8 @@ div.focus-distraction-list-confirmation-modal {
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -3593,7 +3647,7 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a; }
+        border-top: 2px solid #5d0662; }
     .plan > div > .reminder .help-line > label::before {
       right: 20px;
       top: 6px;
@@ -3662,8 +3716,8 @@ div.focus-distraction-list-confirmation-modal {
       .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #57065a;
-        box-shadow: 0 2px 0 0 #57065a;
+        -webkit-box-shadow: 0 2px 0 0 #5d0662;
+        box-shadow: 0 2px 0 0 #5d0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -3686,7 +3740,7 @@ div.focus-distraction-list-confirmation-modal {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8b0992;
-          border-top: 2px solid #57065a;
+          border-top: 2px solid #5d0662;
           top: 0px; }
   .plan > div > div.repeated .help-line > label {
     color: white;
@@ -3712,8 +3766,8 @@ div.focus-distraction-list-confirmation-modal {
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -3726,7 +3780,7 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a; }
+        border-top: 2px solid #5d0662; }
     .plan > div > div.repeated .help-line > label::before {
       right: 20px;
       top: 6px;
@@ -3801,8 +3855,8 @@ div.focus-distraction-list-confirmation-modal {
     .plan .exact-reminder.selected {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -3823,7 +3877,7 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a;
+        border-top: 2px solid #5d0662;
         top: 0px; }
   .plan div.period-reminder .help-line > label {
     color: white;
@@ -3848,8 +3902,8 @@ div.focus-distraction-list-confirmation-modal {
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -3862,7 +3916,7 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a; }
+        border-top: 2px solid #5d0662; }
     .plan div.period-reminder .help-line > label::before {
       right: 20px;
       top: 6px;
@@ -3920,7 +3974,8 @@ div.focus-distraction-list-confirmation-modal {
       -moz-box-flex: 1;
       -moz-flex: 1;
       -ms-flex: 1;
-      flex: 1; }
+      flex: 1;
+      display: block; }
       .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder:active, .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.active {
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -3930,8 +3985,8 @@ div.focus-distraction-list-confirmation-modal {
       .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #57065a;
-        box-shadow: 0 2px 0 0 #57065a;
+        -webkit-box-shadow: 0 2px 0 0 #5d0662;
+        box-shadow: 0 2px 0 0 #5d0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -3948,12 +4003,13 @@ div.focus-distraction-list-confirmation-modal {
         width: 100%;
         font-size: 1.2em;
         padding: 13px 0 14px;
-        font-size: 1em; }
+        font-size: 1em;
+        display: block; }
         .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected:active, .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8b0992;
-          border-top: 2px solid #57065a;
+          border-top: 2px solid #5d0662;
           top: 0px; }
   .plan > div.no-time > div.confirm-no-time {
     overflow: auto;
@@ -3993,8 +4049,8 @@ div.focus-distraction-list-confirmation-modal {
       .plan > div.no-time > div.confirm-no-time > button.active {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #57065a;
-        box-shadow: 0 2px 0 0 #57065a;
+        -webkit-box-shadow: 0 2px 0 0 #5d0662;
+        box-shadow: 0 2px 0 0 #5d0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -4018,13 +4074,13 @@ div.focus-distraction-list-confirmation-modal {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8b0992;
-          border-top: 2px solid #57065a;
+          border-top: 2px solid #5d0662;
           top: 0px; }
   .plan > div > button.save {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -4048,7 +4104,7 @@ div.focus-distraction-list-confirmation-modal {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
 
 .list-item .list-item > div.is-child {
@@ -4367,8 +4423,8 @@ form.add-task {
   form.add-task > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -4393,7 +4449,7 @@ form.add-task {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
 
 div.todo-page .list-item > .finished, div.todo-page .list-item > .deleted {
@@ -4436,8 +4492,8 @@ div.todo-page > div.todo > h2 {
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -4450,7 +4506,7 @@ div.todo-page > div.todo > h2 {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a; }
+        border-top: 2px solid #5d0662; }
 div.todo-page > label.temp {
   color: white;
   display: inline-block;
@@ -4474,8 +4530,8 @@ div.todo-page > label.temp {
     appearance: none;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     background: #a40aaa;
     border: none;
     border-top: 2px solid transparent;
@@ -4488,7 +4544,7 @@ div.todo-page > label.temp {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a; }
+      border-top: 2px solid #5d0662; }
   div.todo-page > label.temp::before {
     right: 20px;
     top: 6px;
@@ -4536,8 +4592,8 @@ div.organize-page > div.controls {
           appearance: none;
           -webkit-border-radius: 4px;
           border-radius: 4px;
-          -webkit-box-shadow: 0 2px 0 0 #57065a;
-          box-shadow: 0 2px 0 0 #57065a;
+          -webkit-box-shadow: 0 2px 0 0 #5d0662;
+          box-shadow: 0 2px 0 0 #5d0662;
           background: #a40aaa;
           border: none;
           border-top: 2px solid transparent;
@@ -4550,7 +4606,7 @@ div.organize-page > div.controls {
             -webkit-box-shadow: none;
             box-shadow: none;
             background: #8b0992;
-            border-top: 2px solid #57065a; }
+            border-top: 2px solid #5d0662; }
         div.organize-page > div.controls > div.sort > label > select {
           width: 100%; }
     div.organize-page > div.controls > div.expand-collapse {
@@ -4646,8 +4702,8 @@ div.focus-page > div#duration-picker {
   div.focus-page > div#duration-picker > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -4669,7 +4725,7 @@ div.focus-page > div#duration-picker {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
     div.focus-page > div#duration-picker > button b {
       font-size: 1.2em; }
@@ -4717,8 +4773,8 @@ div.focus-page > form.add-task {
 div.focus-page > button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 2px 0 0 #57065a;
-  box-shadow: 0 2px 0 0 #57065a;
+  -webkit-box-shadow: 0 2px 0 0 #5d0662;
+  box-shadow: 0 2px 0 0 #5d0662;
   -webkit-user-select: none;
   background: #a40aaa;
   border: none;
@@ -4739,7 +4795,7 @@ div.focus-page > button {
     -webkit-box-shadow: none;
     box-shadow: none;
     background: #8b0992;
-    border-top: 2px solid #57065a;
+    border-top: 2px solid #5d0662;
     top: 0px; }
   div.focus-page > button b {
     font-size: 1.2em; }
@@ -4762,8 +4818,8 @@ div.focus-page > p.distraction-list-empty {
   div.focus-page > p.distraction-list-empty > a {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -4782,7 +4838,7 @@ div.focus-page > p.distraction-list-empty {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
 
 div.calendar-page.date-picker {
@@ -4988,8 +5044,8 @@ div.calendar-page.date-picker {
     .date-picker > div.confirmation > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -5014,7 +5070,7 @@ div.calendar-page.date-picker {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a;
+        border-top: 2px solid #5d0662;
         top: 0px; }
       .date-picker > div.confirmation > button:disabled {
         opacity: 0.3; }
@@ -5058,8 +5114,8 @@ div.archive-page > div.toggle-tab {
     div.archive-page > div.toggle-tab > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #57065a;
-      box-shadow: 0 2px 0 0 #57065a;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -5081,7 +5137,7 @@ div.archive-page > div.toggle-tab {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
-        border-top: 2px solid #57065a;
+        border-top: 2px solid #5d0662;
         top: 0px; }
       div.archive-page > div.toggle-tab > button.active.done {
         -webkit-border-radius: 4px 0 0 4px;
@@ -5099,8 +5155,8 @@ div.archive-page > ul {
 div.help-page > a.feedback {
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 2px 0 0 #57065a;
-  box-shadow: 0 2px 0 0 #57065a;
+  -webkit-box-shadow: 0 2px 0 0 #5d0662;
+  box-shadow: 0 2px 0 0 #5d0662;
   -webkit-user-select: none;
   background: #a40aaa;
   border: none;
@@ -5122,7 +5178,7 @@ div.help-page > a.feedback {
     -webkit-box-shadow: none;
     box-shadow: none;
     background: #8b0992;
-    border-top: 2px solid #57065a;
+    border-top: 2px solid #5d0662;
     top: 0px; }
 div.help-page > div.help-text > h1 {
   color: #555;
@@ -5194,8 +5250,8 @@ div.statistics-page > div.quick-select {
   div.statistics-page > div.quick-select > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -5223,7 +5279,7 @@ div.statistics-page > div.quick-select {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
     div.statistics-page > div.quick-select > button:last-child {
       margin-right: 0; }
@@ -5235,8 +5291,8 @@ div.statistics-page > div.date-range-select {
   div.statistics-page > div.date-range-select > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #57065a;
-    box-shadow: 0 2px 0 0 #57065a;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -5257,7 +5313,7 @@ div.statistics-page > div.date-range-select {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
-      border-top: 2px solid #57065a;
+      border-top: 2px solid #5d0662;
       top: 0px; }
 div.statistics-page > div.stats-table {
   margin: 0 -5px; }

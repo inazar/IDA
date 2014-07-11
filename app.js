@@ -27438,7 +27438,26 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         });
       });
     },
+    setReminderTime: function (task, type) {
+      var p;
+      switch (type) {
+        case 'firstDay': return task.startTime;
+        case 'lastDay': return task.endTime;
+        case 'nearFirst': p = 0.15; break;
+        case 'nearLast': p = 0.5; break;
+        case 'middle': p = 0.85; break;
+        case 'exact': return task.reminderTime || (task.reminderTimeAdvance ? task.startTime - task.reminderTimeAdvance : task.reminderTime);
+        default: task.reminder = false; return;
+      }
+      return moment(task.startTime + (task.endTime - task.startTime) * p).hours(10).minutes(0).seconds(0).milliseconds(0)._d.valueOf();
+    }
   });
+
+  function _updateReminder () {
+    if ($rootScope.modalTask && $rootScope.modalTask.reminderTimePeriod && $rootScope.modalTask.reminderTimePeriod !== 'exact' && $rootScope.modalTask.startTime && $rootScope.modalTask.endTime) { $rootScope.modalTask.setReminderTime(); }
+  }
+  $rootScope.$watch('modalTask.startTime', _updateReminder);
+  $rootScope.$watch('modalTask.endTime', _updateReminder);
 
   $rootScope.$watch('modalTask.timeType', function (curr, prev) {
     if (curr === 'none' && prev !== 'none') {
@@ -27494,10 +27513,13 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     $tasks.collapse(true);
   });
 
-  $rootScope.$watch('showNav', function(showNav) {
-    if(showNav) { $document[0].ontouchmove = function(e) { if (!$rootScope.$$_popupShown) { e.preventDefault(); } }; }
-    else { $document[0].ontouchmove = undefined; }
-  });
+  $window.onload = function () {
+    var wrapper = $document[0].getElementById('wrapper');
+    $rootScope.$watch('showNav', function(showNav) {
+      if (showNav) { wrapper.ontouchmove = function(e) { e.preventDefault(); }; }
+      else { wrapper.ontouchmove = undefined; }
+    });
+  };
 
   $document[0].addEventListener('deviceready', function() {
     $document[0].addEventListener('backbutton', function() { return false; }, false);
@@ -27875,9 +27897,10 @@ App.directive('idaTimepicker', ['$timeout', function ($timeout) {
 }]);
 
 /* jshint strict: false */
-/* global App */
+/* global App, moment */
 App.factory('idaConfig', function () {
   var defaults = {
+    defaultReminder: +moment(0).hours(10),
     defaultDuration: 1800000,
     daysBeforeDoubleVaugnessPunishment: 15,
     percentageUsableTime: 0.6,
@@ -28055,7 +28078,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
           if (!self.isShown) { return; }
 
           self.element.removeClass('popup-hidden');
-          self.element.addClass('popup-showing active');
+          self.element.addClass('popup-showing btn-main');
           centerElementByMarginTwice(self.element[0]);
           focusInputOrButton(self.element);
           if (options.timeout) {
@@ -28069,7 +28092,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
 
         self.isShown = false;
         $rootScope.$$_popupShown = false;
-        self.element.removeClass('active');
+        self.element.removeClass('btn-main');
         self.element.addClass('popup-hidden');
         $timeout(callback, 250);
       };
@@ -28168,7 +28191,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
     return showPopup( angular.extend({
       buttons: [{
         text: opts.okText || 'OK',
-        type: opts.okType || 'button-positive',
+        type: opts.okType || 'btn-main',
         onTap: function() { return true; }
       }]
     }, opts || {}) );
@@ -28178,11 +28201,11 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
     return showPopup( angular.extend({
       buttons: [{
         text: opts.cancelText || 'Cancel' ,
-        type: opts.cancelType || 'button-default',
+        type: opts.cancelType || 'btn-default',
         onTap: function() { return false; }
       }, {
         text: opts.okText || 'OK',
-        type: opts.okType || 'button-positive',
+        type: opts.okType || 'btn-main',
         onTap: function() { return true; }
       }]
     }, opts || {}) );
@@ -28197,11 +28220,11 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
       scope: scope,
       buttons: [{
         text: opts.cancelText || 'Cancel',
-        type: opts.cancelType|| 'button-default',
+        type: opts.cancelType|| 'btn-default',
         onTap: function() {}
       }, {
         text: opts.okText || 'OK',
-        type: opts.okType || 'button-positive',
+        type: opts.okType || 'btn-main',
         onTap: function() { return scope.data.response || ''; }
       }]
     }, opts || {}) );
@@ -28238,7 +28261,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
      *     }
      *   }, {
      *     text: 'OK',
-     *     type: 'button-positive',
+     *     type: 'btn-main',
      *     onTap: function(e) {
      *       // Returning a value will cause the promise to resolve with the given value.
      *       return scope.data.response;
@@ -28266,7 +28289,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
      *   subTitle: '', // String (optional). The sub-title of the popup.
      *   template: '', // String (optional). The html template to place in the popup body.
      *   okText: '', // String (default: 'OK'). The text of the OK button.
-     *   okType: '', // String (default: 'button-positive'). The type of the OK button.
+     *   okType: '', // String (default: 'btn-main'). The type of the OK button.
      * }
      * ```
      *
@@ -28295,7 +28318,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
      *   cancelText: '', // String (default: 'Cancel'). The text of the Cancel button.
      *   cancelType: '', // String (default: 'button-default'). The type of the Cancel button.
      *   okText: '', // String (default: 'OK'). The text of the OK button.
-     *   okType: '', // String (default: 'button-positive'). The type of the OK button.
+     *   okType: '', // String (default: 'btn-main'). The type of the OK button.
      * }
      * ```
      *
@@ -28334,7 +28357,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
      *   cancelText: // String (default: 'Cancel'. The text of the Cancel button.
      *   cancelType: // String (default: 'button-default'). The type of the Cancel button.
      *   okText: // String (default: 'OK'). The text of the OK button.
-     *   okType: // String (default: 'button-positive'). The type of the OK button.
+     *   okType: // String (default: 'btn-main'). The type of the OK button.
      * }
      * ```
      *
@@ -28518,6 +28541,20 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     }
   };
 
+  Task.prototype.setReminderTime = function() {
+    var p, def = moment($config.defaultReminder);
+    switch (this.reminderTimePeriod) {
+      case 'firstDay': return this.startTime;
+      case 'lastDay': return this.endTime;
+      case 'nearFirst': p = 0.15; break;
+      case 'nearLast': p = 0.85; break;
+      case 'middle': p = 0.5; break;
+      case 'exact': return this.reminderTime || (this.reminderTimeAdvance ? this.startTime - this.reminderTimeAdvance : this.reminderTime);
+      default: this.reminder = false; return;
+    }
+    return (this.reminderTime = moment(this.startTime + (this.endTime - this.startTime) * p).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0)._d.valueOf());
+  };
+
   Task.prototype.saveTask = function (hours, minutes, duration) {
     var _this = this;
     if (this.timeType !== 'exact') { this.repeated = false; }
@@ -28527,12 +28564,8 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
       this.reminder = true;
       if (this.timeType === 'exact') {
         this.reminderTime = this.reminderTimeAdvance ? this.startTime - this.reminderTimeAdvance : this.reminderTime;
-      } else if(this.timeType === 'period') {
-        switch (this.reminderTimePeriod) {
-          case 'firstDay': this.reminderTime = this.startTime; break;
-          case 'lastDay': this.reminderTime = this.endTime; break;
-          default: this.reminderTime = this.reminderTime || this.startTime; break;
-        }
+      } else if(this.timeType === 'period' && !this.reminderTime) {
+        this.reminderTime = this.setReminderTime();
       }
       this.setTimer(this.reminderTime);
     } else {
