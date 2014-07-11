@@ -1826,11 +1826,11 @@ h2 {
   z-index: 1500;
   border: 1px solid #eee;
   visibility: hidden;
-  width: 250px;
+  width: 80%;
   max-height: 80%;
   overflow: hidden;
   border-radius: 15px;
-  background-color: rgba(245, 245, 245, 0.9); }
+  background-color: rgba(245, 245, 245, 0.95); }
   .popup.popup-hidden {
     -webkit-animation-name: scaleOut;
     -moz-animation-name: scaleOut;
@@ -2574,7 +2574,8 @@ div.timer-modal {
       -moz-box-flex: 1;
       -moz-flex: 1;
       -ms-flex: 1;
-      flex: 1; }
+      flex: 1;
+      display: block; }
       div.timer-modal > div > div > div.time-inputs > label.time-options::before {
         content: '\f0d7';
         display: inline-block;
