@@ -43,7 +43,7 @@
     <ul ng-show="timeLeft == 0 || showDistractionList" ng-class="{'disabled': timeLeft > 0}">
       <li class="list-item"
           ng-repeat="task in distractionList() | orderBy:['-updated'] track by $index"
-          ng-include="'templates/list_item.html'"></li>
+          ida-item="task"></li>
     </ul>
   </div>
 

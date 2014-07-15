@@ -165,7 +165,7 @@
       <label class="reminder">
         <select ng-model="modalTask.reminderTimePeriod"
                 ng-change="modalTask.setReminderTime()"
-                ng-init="modalTask.reminderTimePeriod = modalTask.reminderTimePeriod || (modalTask.reminderTime ? 'exact' : 'firstDay')">
+                ng-init="modalTask.reminderTimePeriod = modalTask.reminderTimePeriod || (modalTask.reminderTime ? 'none' : 'firstDay')">
           <option value="none">Ingen påminnelse</option>
           <option value="firstDay">Påminn första dagen</option>
           <option value="nearFirst">Påminn nära början</option>

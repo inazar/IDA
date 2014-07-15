@@ -11,13 +11,13 @@
   <ul ng-if="!deletedPage" class="todo-list">
     <li class="list-item"
       ng-repeat="task in $tasks.where({isChild:false,finished:true})|orderBy:['-updated']"
-      ng-include="'templates/list_item.html'"></li>
+      ida-item="task"></li>
   </ul>
 
   <ul  ng-if="deletedPage" class="todo-list">
     <li class="list-item"
       ng-repeat="task in $tasks.where({planned:true,isChild:false,deleted:true})|orderBy:['-updated']"
-      ng-include="'templates/list_item.html'"></li>
+      ida-item="task"></li>
   </ul>
 
   <div class="confirmation reset-all-tasks">

@@ -27646,7 +27646,7 @@ App.controller('OrganiseCtrl', ['$scope', '$routeParams', '$title', 'idaTasks', 
   $scope.$root.title = $title;
 
   angular.extend($scope, {
-    filter: function(tasks, object) { return $tasks.filter(object); },
+    filter: function(object) { return $tasks.filter(object); },
     sortEndtime: function (task) { return task.endTime || task.startTime; },
     showChildren: function (shown) { $tasks.showChildren(shown); },
     addTask: function (parent) {
@@ -27734,7 +27734,7 @@ App.controller('TodoCtrl', ['$scope', '$route', '$title', 'idaTasks', function($
       $tasks.add($scope.newTask);
       $scope.newTask = '';
     },
-    getTodoList: function () { return $tasks.getTodoList($scope.$parent.todoFilter); }
+    getTodoList: function () { return $tasks.getTodoList($scope.$root.todoFilter); }
   });
 }]);
 
@@ -27797,6 +27797,43 @@ App.directive('idaHold', function () {
     }
   };
 });
+
+/* jshint strict: false */
+/* global App */
+App.directive('idaItem', [function () {
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'templates/list_item.html',
+    scope: {
+      task: '=idaItem'
+    },
+    link: function ($scope, element, attrs) {
+      $scope.task.trackDuration(true);
+      $scope.$on('$destroy', function () { $scope.task.trackDuration(); });
+      $scope.moment = $scope.$root.moment;
+    }
+  };
+}]);
+
+App.directive('idaItemChildren', ['$compile', function ($compile) {
+  return {
+    restrict: 'A',
+    scope: {
+      task: '=idaItemChildren'
+    },
+    link: function ($scope, element, attrs) {
+      if ($scope.task.children && $scope.task.children.length) {
+        var i, children = $scope.task.children;
+        $scope.children = $scope.$root.$tasks.getChildren(children);
+        for(var i=0; i<children.length; i++) {
+          element.append('<li ida-item="children['+i+']"></li>');
+        }
+        $compile(element.contents())($scope);
+      }
+    }
+  };
+}]);
 
 /* jshint strict: false */
 /* global App, moment */
@@ -28056,9 +28093,9 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
       function centerElementByMarginTwice (el) {
         $timeout(function() {
           centerElementByMargin(el);
-          setTimeout(function() {
+          $timeout(function() {
             centerElementByMargin(el);
-            setTimeout(function() {
+            $timeout(function() {
               centerElementByMargin(el);
             });
           });
@@ -28494,7 +28531,7 @@ App.service('idaPopups', function () {
 
 /* jshint strict: false */
 /* global App, moment, _ */
-App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', function ($window, $timeout, $events, $config) {
+App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaConfig', function ($window, $timeout, $interval, $events, $config) {
 
   var _tasks;
 	var Task = function (task) {
@@ -28512,7 +28549,14 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     this.children = [];
     this.timeCreated = new Date().valueOf();
     _.extend(this, task);
+    this._durationTimer = null;
 	};
+
+  Task.prototype._strip = function() {
+    var clone = _.extend({}, this);
+    delete clone._durationTimer;
+    return clone;
+  };
 
   Task.prototype.checkDay = function(i) {
     this.repeatDays = this.repeatDays.indexOf(i) === -1 ? this.repeatDays.concat([i]) : _.without(this.repeatDays, i);
@@ -28563,7 +28607,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     if (this.reminder || this.reminderTimeAdvance > 0) {
       this.reminder = true;
       if (this.timeType === 'exact') {
-        this.reminderTime = this.reminderTimeAdvance ? this.startTime - this.reminderTimeAdvance : this.reminderTime;
+        this.reminderTime = this.reminderTimeAdvance ? this.startTime - (this.reminderTimeAdvance === "1" ? 0 : this.reminderTimeAdvance) : this.reminderTime;
       } else if(this.timeType === 'period' && !this.reminderTime) {
         this.reminderTime = this.setReminderTime();
       }
@@ -28694,14 +28738,29 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
     }
   };
 
-  Task.prototype.trackDuration = function() {
+  Task.prototype._updateRemaining = function() {
     var duration = this.reminderTime - new Date().valueOf(),
         hrs = Math.floor(duration / 3600000),
         min = Math.floor((duration % 3600000) / 60000),
-        sec = Math.floor((duration % 60000) / 1000),
-        _this = this;
+        sec = Math.floor((duration % 60000) / 1000);
     this.timeRemaining = duration > 0 ? (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '') : '0s';
-    $timeout(function(){ if (!_this.deleted && !_this.finished) { _this.trackDuration(); } }, 1000);
+  };
+
+  Task.prototype.trackDuration = function(start) {
+    var _this = this;
+    if (start) {
+      this._durationTimer = $interval(function () {
+        if (_this.deleted || _this.finished) {
+          $interval.cancel(_this._durationTimer);
+          _this._durationTimer = null;
+        } else { _this._updateRemaining(); }
+      }, 1000);
+    } else {
+      if (_this._durationTimer) {
+        $interval.cancel(_this._durationTimer);
+        _this._durationTimer = null;
+      }
+    }
   };
 
   Task.prototype.cancel = function (page) {
@@ -28800,7 +28859,7 @@ App.service('idaTasks', ['$window', '$timeout', 'idaEvents', 'idaConfig', functi
 
   // Store tasks to permanent storage
   Tasks.prototype.save = function () {
-    localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    localStorage.setItem('tasks', JSON.stringify(_.map(this.tasks, function (task) { return task._strip(); })));
   };
 
   // Change focused task
