@@ -27321,10 +27321,10 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     $routeProvider
       .when('/todo', { templateUrl: 'templates/todo.html', controller: 'TodoCtrl', resolve: {$title: function () { return 'Att Göra'; }}})
       .when('/organisera-alla-aktiviteter', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: function () { return 'Organisera alla aktiviteter'; }}})
-      .when('/organisera-alla-aktiviteter/:breakdown', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: function () { return 'Dela upp aktiviteten'; }}})
+      .when('/organisera-alla-aktiviteter/:breakdown', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: ['$rootScope', '$route', function ($rootScope, $route) { return 'Dela upp ' + $rootScope.$tasks.get($route.current.params.breakdown).title; }]}})
       .when('/fokusera-pa-aktivitet', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}})
       .when('/fokusera-pa-aktivitet/:task', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}})
-      .when('/kalender', { templateUrl: 'templates/calender.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Kalender'; }}})
+      .when('/kalender', { templateUrl: 'templates/calender.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Kalender'; }}, reloadOnSearch: false})
       .when('/arkiv', { templateUrl: 'templates/archive.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Arkiv'; }}})
       .when('/hjalp-och-feedback', { templateUrl: 'templates/help.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Hjälp och feedback'; }}})
       .when('/om-adhd-app', { templateUrl: 'templates/about.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Om ADHD App'; }}})
@@ -27333,7 +27333,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
   $locationProvider.html5Mode(false);
 
-}]).run(['$rootScope', '$location', '$route', '$timeout', '$window', '$document', '$q', 'idaTasks', 'idaEvents', 'idaConfig', 'idaPopup', function($rootScope, $location, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popup) {
+}]).run(['$rootScope', '$location', '$anchorScroll', '$route', '$timeout', '$window', '$document', '$q', 'idaTasks', 'idaEvents', 'idaConfig', 'idaPopup', function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popup) {
 
   angular.extend($rootScope, {
     $config: $config,
@@ -27355,9 +27355,13 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       $document[0].body.style.display = 'none';
       $timeout(function(){ $document[0].body.style.display = 'block'; });
     },
+    reload: function () {
+      $rootScope.$tasks.save();
+      $route.reload();
+    },
     focus: function (id) {
       // start focus mode
-      $tasks.focus();
+      $tasks.focus(id);
       $location.path('/fokusera-pa-aktivitet/' + id).replace();
     },
     moveFinishedTasksToArchive: function () {
@@ -27450,6 +27454,13 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         default: task.reminder = false; return;
       }
       return moment(task.startTime + (task.endTime - task.startTime) * p).hours(10).minutes(0).seconds(0).milliseconds(0)._d.valueOf();
+    },
+    scrollTo: function (tag) {
+      $timeout(function () { 
+        $location.hash(tag);
+        $anchorScroll();
+        $timeout(function () { $location.hash(''); });
+      }, 10);
     }
   });
 
@@ -27500,7 +27511,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             withLimit: 3,
             template: 'reminders on later days the user needs to plan the task but that it has been pre-set so that the user just needs to set the time for the reminder.'
           });
-        })
+        });
         break;
     }
   });
@@ -27522,10 +27533,31 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   };
 
   $document[0].addEventListener('deviceready', function() {
+    var notification, vibrate;
     $document[0].addEventListener('backbutton', function() { return false; }, false);
     if ($window.device && $window.device.platform !== 'Android') { return; }
     $rootScope.sound1 = new Media('file://' + location.pathname.replace('index.html', 'sound1.mp3'));
     $rootScope.sound2 = new Media('file://' + location.pathname.replace('index.html', 'sound2.mp3'));
+    if ((notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
+      notification.local.ontrigger = function (id, state) {
+        var task = $tasks.get(id);
+        vibrate(1000);
+        if (state === 'foreground' && task && task.title) {
+          $popup.confirm({
+            type: 'notification',
+            title: 'Påminnelse',
+            template: '<div class="text-center">'+task.title+'</div>',
+            okText: 'Fokusera',
+            cancelText: 'Ok'
+          }).then(function (check) {
+            if (check) {
+              $rootScope.setModal('');
+              $location.path('/fokusera-pa-aktivitet/' + id).replace();
+            }
+          });
+        }
+      };
+    }
   }, false);
 
   if (parseInt(localStorage.getItem('organiseReminder') || 0, 10) < Date.now()) {
@@ -27548,14 +27580,14 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 /* jshint strict: false */
 /* global App */
-App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$location', '$timeout', 'idaTasks', function($scope, $route, $routeParams, $title, $location, $timeout, $tasks) {
+App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$location', '$timeout', 'idaTasks', 'idaPopup', function($scope, $route, $routeParams, $title, $location, $timeout, $tasks, $popup) {
 
   $scope.$root.title = $title;
 
   var totalTime, deadline, distractionListTimer;
 
   angular.extend($scope, {
-    minutes: 20,
+    minutes: 25,
     task: $routeParams.task ? $tasks.get(''+$routeParams.task) : {},
     preventConfirmation: false,
     setTime: function () {
@@ -27605,6 +27637,21 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
     },
     distractionList: function () { return $tasks.distractionListTasks($scope.$root.loadFocusTime); }
   });
+
+  if ($scope.task.duration) {
+    if ($scope.task.duration < 30 * 60 * 1000) {
+      $scope.minutes = Math.min($scope.task.duration/60/1000, 25);
+    } else {
+      if ($scope.task.duration > 60 * 60 * 1000) {
+        $scope.minutes = 60;
+      }
+      $popup.alert({
+        type: 'focus',
+        title: 'Lång aktivitet?',
+        template: '<div class="popup-text">Ställ in 25 min för arbete, 5 min för paus, 25 min arbete o.s.v.<div>'
+      });
+    }
+  }
 
   $scope.$root.loadFocusTime = $routeParams.loadFocusTime || $scope.$root.loadFocusTime || new Date().valueOf();
   $scope.$root.showFocusInputs = true;
@@ -27728,7 +27775,6 @@ App.controller('TodoCtrl', ['$scope', '$route', '$title', 'idaTasks', function($
   $scope.$root.title = $title;
 
   angular.extend($scope, {
-    planningCallback: $route.reload,
     addTask: function () {
       if(!$scope.newTask) { return; }
       $tasks.add($scope.newTask);
@@ -27799,7 +27845,7 @@ App.directive('idaHold', function () {
 });
 
 /* jshint strict: false */
-/* global App */
+/* global App, moment */
 App.directive('idaItem', [function () {
   return {
     restrict: 'A',
@@ -27808,10 +27854,33 @@ App.directive('idaItem', [function () {
     scope: {
       task: '=idaItem'
     },
-    link: function ($scope, element, attrs) {
+    link: function ($scope) {
       $scope.task.trackDuration(true);
       $scope.$on('$destroy', function () { $scope.task.trackDuration(); });
       $scope.moment = $scope.$root.moment;
+      $scope.priorityLabel = function (task) {
+        return (task.important?'A':'B')+(task.complex?(task.important?'A':'B'):'');
+      };
+      $scope.durationLabel = function (task) {
+        var label, today = Math.floor(Date.now()/86400000), endTime = task.startTime + task.duration;
+        if (task.timeType==='exact') {
+          label = (today===Math.floor(task.startTime/86400000) ? moment(task.startTime).format('HH:mm') : moment(task.startTime).format('dd HH:mm'));
+          if (task.durationType) {
+            label += ' - ' + (task.timeEstimated ? 'ca ' : '');
+            label += (today===Math.floor(endTime/86400000) ? moment(endTime).format('HH:mm') : moment(endTime).format('dd HH:mm'));
+          }
+          return label;
+        } else {
+          return $scope.priorityLabel(task);
+        }
+      };
+      $scope.timeLabel = function (task) {
+        var label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType==='period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
+        if (task.planned && task.timeType === 'period') {
+          label += ' (' + moment.duration(task.endTime - task.startTime).humanize() + ')';
+        }
+        return label;
+      };
     }
   };
 }]);
@@ -27822,11 +27891,11 @@ App.directive('idaItemChildren', ['$compile', function ($compile) {
     scope: {
       task: '=idaItemChildren'
     },
-    link: function ($scope, element, attrs) {
+    link: function ($scope, element) {
       if ($scope.task.children && $scope.task.children.length) {
         var i, children = $scope.task.children;
         $scope.children = $scope.$root.$tasks.getChildren(children);
-        for(var i=0; i<children.length; i++) {
+        for(i=0; i<children.length; i++) {
           element.append('<li ida-item="children['+i+']"></li>');
         }
         $compile(element.contents())($scope);
@@ -27837,101 +27906,147 @@ App.directive('idaItemChildren', ['$compile', function ($compile) {
 
 /* jshint strict: false */
 /* global App, moment */
+
 App.directive('idaTimepicker', ['$timeout', function ($timeout) {
   return {
     restrict: 'A',
     replace: true,
-    template: '<input type="text" class="timepicker" placeholder="hh:mm" ng-model="$viewValue">',
+    template: '<form>' +
+              '<input type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="23" ng-model="$hours">' +
+              ':<input type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes"></form>',
     scope: {
-      hours: '=?modelHours',
-      minutes: '=?modelMinutes',
-      date: '=?modelDate'
+      $hours: '=?modelHours',
+      $minutes: '=?modelMinutes',
+      $date: '=?modelDate'
     },
-    link: function ($scope, element) {
-      angular.extend($scope, {
-        $viewValue: '',
-        _focus: false
-      });
-
-      if (angular.isNumber($scope.minutes)) {
-        if (!angular.isNumber($scope.hours)) { $scope.hours = 0; }
-        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
-      } else if (angular.isNumber($scope.hours)) {
-        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':';
+    link: function ($scope) {
+      if ($scope.$date !== undefined) {
+        $scope.$hours = moment($scope.$date).hours();
+        $scope.$minutes = moment($scope.$date).minutes();
       }
-
-      var date;
-      if (angular.isNumber($scope.date)) {
-        date = moment($scope.date);
-        $scope.hours = date.hour();
-        $scope.minutes = date.minute();
-        $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
-      }
-
-      $scope.$watch('$viewValue', function (val, prev) {
-        if (!$scope._focus) { return; }
-        var time = (val || '').replace(/[^0-9:]/, '').split(':'), hour = parseInt(time[0], 10), minute = parseInt(time[1], 10), h, m;
-        if (isNaN(hour)) {
-          if (isNaN(minute)) {
-            $scope.$viewValue = '';
-            $scope.hours = $scope.minutes = undefined;
-          } else {
-            $scope.$viewValue = '00:' + (minute < 10 && time[1].charAt(0) === '0' ? '0' : '') + minute;
-            $scope.hours = 0;
+      $timeout(function () {
+        $scope.$watch('$hours', function (curr) {
+          if (!angular.isNumber(curr)) { return; }
+          // if (!$scope.hours) { return ($scope.hours = prev); }
+          // $scope.minutes = $scope.minutes || 0;
+          if ($scope.$date !== undefined) {
+            $scope.$date = moment($scope.$date).hours(curr).minutes($scope.$minutes).seconds(0).milliseconds(0)._d.valueOf();
           }
-        } else {
-          // normalize hours by throwing away last digits
-          while (hour && hour > 23) { hour = Math.floor(hour/10); }
-          if (prev.split(':')[1] === '' && time[1] === undefined) {
-            hour = Math.floor(hour/10);
-            if (time[0].charAt(0) === '0') { time[0] = '0'; }
+        });
+        $scope.$watch('$minutes', function (curr) {
+          if (!angular.isNumber(curr)) { return; }
+          // if (!$scope.pickerForm.minutes.$valid) { return ($scope.minutes = prev); }
+          // $scope.hours = $scope.hours || 0;
+          if ($scope.$date !== undefined) {
+            $scope.$date = moment($scope.$date).hours($scope.$hours).minutes(curr).seconds(0).milliseconds(0)._d.valueOf();
           }
-          $scope.hours = hour;
-          h = time[0].slice(0, 2) === '00' ? '00' : (hour > 0 && hour < 10 && time[0].charAt(0) === '0' ? '0' : '') + hour;
-          // if hour has two digits - add ':' to separate minutes
-          if ((hour > 9 || (time[0].length > 1 && time[0].charAt(0) === '0')) && isNaN(minute)) { return ($scope.$viewValue = h + ':'); }
-          if (isNaN(minute)) {
-            // minutes not entered yet - show hours keeping leading zero
-            if (time[1] === '' && h.length === 1) { h = '0' + h; }
-            $scope.$viewValue = h + (time[1] === '' ? ':' : '');
-            $scope.minutes = undefined;
-          } else {
-            // normalize minutes by throwing away last digits
-            while (!isNaN(minute) && minute > 59) { minute = Math.floor(minute/10); }
-            $scope.minutes = minute;
-            m = time[1].slice(0, 2) === '00' ? '00' : (minute > 0 && minute < 10 && time[1].charAt(0) === '0' ? '0' : '') + minute;
-            $scope.$viewValue = h + ':' + m;
-          }
-        }
-      });
-
-      $scope.$watch(function () {
-        return ($scope.hours || 0) + ':' + ($scope.minutes || 0);
-      }, function () {
-        $scope.date = moment($scope.date).hours($scope.hours || 0).minutes($scope.minutes || 0).seconds(0).millisecond(0)._d.valueOf();
-      });
-
-      $scope.$watch('date', function (curr, prev) {
-        if (!angular.isNumber(curr) || curr === prev) { return; }
-        var time = moment(curr);
-        $scope.$viewValue = (time.hours() < 10 ? '0' : '') + time.hours() + ':' + (time.minutes() < 10 ? '0' : '') + time.minutes();
-      });
-
-      element.on('focus', function () { $scope._focus = true; });
-
-      element.on('blur', function () {
-        $scope._focus = false;
-        $timeout(function () {
-          if (angular.isNumber($scope.hours)) { $scope.minutes = $scope.minutes || 0; }
-          else { return ($scope.$viewValue = ''); }
-          $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
+        });
+        $scope.$watch('$date', function (curr) {
+          if (!angular.isNumber(curr)) { return; }
+          var date = moment($scope.$date);
+          $scope.$hours = date.hours();
+          $scope.$minutes = date.minutes();
         });
       });
-
-      $scope.$on('$destroy', function () { element.off('focus'); element.off('blur'); });
     }
   };
 }]);
+
+// App.directive('idaTimepicker', ['$timeout', function ($timeout) {
+//   return {
+//     restrict: 'A',
+//     replace: true,
+//     template: '<input type="text" class="timepicker" placeholder="hh:mm" ng-model="$viewValue">',
+//     scope: {
+//       hours: '=?modelHours',
+//       minutes: '=?modelMinutes',
+//       date: '=?modelDate'
+//     },
+//     link: function ($scope, element) {
+//       angular.extend($scope, {
+//         $viewValue: '',
+//         _focus: false
+//       });
+
+//       if (angular.isNumber($scope.minutes)) {
+//         if (!angular.isNumber($scope.hours)) { $scope.hours = 0; }
+//         $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
+//       } else if (angular.isNumber($scope.hours)) {
+//         $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':';
+//       }
+
+//       var date;
+//       if (angular.isNumber($scope.date)) {
+//         date = moment($scope.date);
+//         $scope.hours = date.hour();
+//         $scope.minutes = date.minute();
+//         $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
+//       }
+
+//       $scope.$watch('$viewValue', function (val, prev) {
+//         if (!$scope._focus) { return; }
+//         var time = (val || '').replace(/[^0-9:]/, '').split(':'), hour = parseInt(time[0], 10), minute = parseInt(time[1], 10), h, m;
+//         if (isNaN(hour)) {
+//           if (isNaN(minute)) {
+//             $scope.$viewValue = '';
+//             $scope.hours = $scope.minutes = undefined;
+//           } else {
+//             $scope.$viewValue = '00:' + (minute < 10 && time[1].charAt(0) === '0' ? '0' : '') + minute;
+//             $scope.hours = 0;
+//           }
+//         } else {
+//           // normalize hours by throwing away last digits
+//           while (hour && hour > 23) { hour = Math.floor(hour/10); }
+//           if (prev.split(':')[1] === '' && time[1] === undefined) {
+//             hour = Math.floor(hour/10);
+//             if (time[0].charAt(0) === '0') { time[0] = '0'; }
+//           }
+//           $scope.hours = hour;
+//           h = time[0].slice(0, 2) === '00' ? '00' : (hour > 0 && hour < 10 && time[0].charAt(0) === '0' ? '0' : '') + hour;
+//           // if hour has two digits - add ':' to separate minutes
+//           if ((hour > 9 || (time[0].length > 1 && time[0].charAt(0) === '0')) && isNaN(minute)) { return ($scope.$viewValue = h + ':'); }
+//           if (isNaN(minute)) {
+//             // minutes not entered yet - show hours keeping leading zero
+//             if (time[1] === '' && h.length === 1) { h = '0' + h; }
+//             $scope.$viewValue = h + (time[1] === '' ? ':' : '');
+//             $scope.minutes = undefined;
+//           } else {
+//             // normalize minutes by throwing away last digits
+//             while (!isNaN(minute) && minute > 59) { minute = Math.floor(minute/10); }
+//             $scope.minutes = minute;
+//             m = time[1].slice(0, 2) === '00' ? '00' : (minute > 0 && minute < 10 && time[1].charAt(0) === '0' ? '0' : '') + minute;
+//             $scope.$viewValue = h + ':' + m;
+//           }
+//         }
+//       });
+
+//       $scope.$watch(function () {
+//         return ($scope.hours || 0) + ':' + ($scope.minutes || 0);
+//       }, function () {
+//         $scope.date = moment($scope.date).hours($scope.hours || 0).minutes($scope.minutes || 0).seconds(0).millisecond(0)._d.valueOf();
+//       });
+
+//       $scope.$watch('date', function (curr, prev) {
+//         if (!angular.isNumber(curr) || curr === prev) { return; }
+//         var time = moment(curr);
+//         $scope.$viewValue = (time.hours() < 10 ? '0' : '') + time.hours() + ':' + (time.minutes() < 10 ? '0' : '') + time.minutes();
+//       });
+
+//       element.on('focus', function () { $scope._focus = true; });
+
+//       element.on('blur', function () {
+//         $scope._focus = false;
+//         $timeout(function () {
+//           if (angular.isNumber($scope.hours)) { $scope.minutes = $scope.minutes || 0; }
+//           else { return ($scope.$viewValue = ''); }
+//           $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
+//         });
+//       });
+
+//       $scope.$on('$destroy', function () { element.off('focus'); element.off('blur'); });
+//     }
+//   };
+// }]);
 
 /* jshint strict: false */
 /* global App, moment */
@@ -28604,10 +28719,10 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
     if (this.timeType !== 'exact') { this.repeated = false; }
     else { this.repeated = this.repeatPeriod !== 'once'; }
     this.startTime = Math.floor(this.startTime / 1000) * 1000;
-    if (this.reminder || this.reminderTimeAdvance > 0) {
+    if (this.reminderTimeAdvance >= 0) {
       this.reminder = true;
       if (this.timeType === 'exact') {
-        this.reminderTime = this.reminderTimeAdvance ? this.startTime - (this.reminderTimeAdvance === "1" ? 0 : this.reminderTimeAdvance) : this.reminderTime;
+        this.reminderTime = this.reminderTimeAdvance > 0 ? this.startTime - (this.reminderTimeAdvance === '1' ? 0 : this.reminderTimeAdvance) : this.reminderTime;
       } else if(this.timeType === 'period' && !this.reminderTime) {
         this.reminderTime = this.setReminderTime();
       }
@@ -28617,7 +28732,15 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       this.setTimer();
     }
     if (this.timeType === 'exact') { delete this.endTime; }
-    this.duration = duration || (((hours || 0) * 3600000) + ((minutes || 0) * 60000)) || $config.defaultDuration;
+    if (duration || hours || minutes) {
+      this.duration = duration || (((hours || 0) * 3600000) + ((minutes || 0) * 60000));
+      if (this.duration !== $config.defaultDuration) {
+        this.durationType = true;
+      }
+    } else {
+      this.duration = $config.defaultDuration;
+      this.durationType = false;
+    }
     this.updated = new Date().valueOf();
     this.deleted = false;
     this.finished = false;
@@ -28930,6 +29053,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         task.parent = '';
       }
     });
+    this.save();
   };
 
   Tasks.prototype.getWithin = function (start, end) {

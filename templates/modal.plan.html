@@ -83,11 +83,11 @@
 
   <br>
 
-  <div ng-show="modalTask.timeType == 'exact'">
+  <div ng-show="modalTask.timeType=='exact'">
     <div ida-help class="reminder">
       <label>
         <select ng-model="modalTask.reminderTimeAdvance"
-                ng-init="modalTask.reminderTimeAdvance = modalTask.reminderTimeAdvance || -1">
+                ng-init="modalTask.reminderTimeAdvance = modalTask.reminderTimeAdvance||-1">
           <option value="-1">Ingen påminnelse</option>
           <option value="1">Påminn vid start</option>
           <option value="300000">Påminn 5 minuter innan</option>
@@ -101,11 +101,11 @@
           <option value="0">Påminn exakt tid</option>
         </select>
       </label>
-      <div class="reminder-time" ng-show="modalTask.reminderTimeAdvance == 0" ng-init="modalTask.reminderTime = modalTask.reminderTime || Date.now()">
-        <button class="exact-reminder" ng-if="modalTask.reminderTimeAdvance == 0"
+      <div class="reminder-time" ng-show="modalTask.reminderTimeAdvance==0" ng-init="modalTask.reminderTime=modalTask.reminderTime||Date.now()">
+        <button class="exact-reminder" ng-if="modalTask.reminderTimeAdvance==0"
               ng-click="setDatepicker('templates/modal.pick_remindertime.html')"
-              ng-class="{ 'selected': modalTask.reminderTime }"
-              ng-bind="modalTask.reminderTime ? moment(modalTask.reminderTime).format('D MMMM YYYY') : 'Välj datum och tid'"></button>
+              ng-class="{'selected':modalTask.reminderTime}"
+              ng-bind="modalTask.reminderTime?moment(modalTask.reminderTime).format('D MMMM YYYY'):'Välj datum och tid'"></button>
         <span >&nbsp;kl&nbsp;</span>
         <div ida-timepicker model-date="modalTask.reminderTime"></div>
       </div>
@@ -164,7 +164,7 @@
     <div ida-help class="period-reminder">
       <label class="reminder">
         <select ng-model="modalTask.reminderTimePeriod"
-                ng-change="modalTask.setReminderTime()"
+                ng-change="modalTask.reminderTime = modalTask.setReminderTime()"
                 ng-init="modalTask.reminderTimePeriod = modalTask.reminderTimePeriod || (modalTask.reminderTime ? 'none' : 'firstDay')">
           <option value="none">Ingen påminnelse</option>
           <option value="firstDay">Påminn första dagen</option>
@@ -175,7 +175,7 @@
           <option value="exact">Påminn exakt tid</option>
         </select>
       </label>
-      <div class="reminder-time" ng-init="modalTask.reminderTime = modalTask.reminderTime || Date.now()">
+      <div class="reminder-time" ng-init="modalTask.reminderTime = modalTask.reminderTime || Date.now()" ng-hide="modalTask.reminderTimePeriod==='none'">
         <button class="exact-reminder"
               ng-click="setDatepicker('templates/modal.pick_remindertime.html');modalTask.reminderTimePeriod='exact'"
               ng-class="{ 'selected': modalTask.reminderTime }"
@@ -186,7 +186,7 @@
     </div>
   </div>
 
-  <br><br>
+  <br>
 
   <div ng-show="modalTask.timeType == 'exact' || modalTask.timeType == 'period'">
     <label ida-help class="show-in-todo">

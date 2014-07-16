@@ -3,15 +3,14 @@
 {start:periods[1].start,end:periods[1].end}
 ]" class="calendar-page date-picker">
   <ul>
-    <li ng-init="show=true;"
+    <li id="tag{{tp.time}}" ng-init="show=true;"
       ng-class="{ weekend: tp.isWeekend, 'hide-button': tp.depth === 2 }"
       ng-style="{'margin-left': (tp.depth * 15) + 'px' }"
       ng-repeat="tp in selectDepth(periods, depth, selection) track by $index">
-
       <button ng-click="
         $parent.depth = $parent.depth !== tp.depth && tp.start == $parent.selection[tp.depth].start ? tp.depth : (tp.depth + 1);
         $parent.selection[tp.depth].start = tp.start;
-        $parent.selection[tp.depth].end = tp.end;repaint()"
+        $parent.selection[tp.depth].end = tp.end;repaint();scrollTo('tag'+tp.time)"
               ng-class="{ active:
                 tp.depth < $parent.depth
                   && tp.start == $parent.selection[tp.depth].start

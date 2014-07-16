@@ -4,7 +4,7 @@
     <button ng-click="addTask()"><i class="fa fa-plus"></i></button>
   </form>
 
-  <div class="controls">
+  <div class="controls" ng-hide="breakdown">
     <div class="sort">
       <div>sortera</div>
       <label><select ng-init="sorting = '+startTime'" ng-model="sorting">
@@ -22,6 +22,7 @@
       <button ng-click="showChildren(false)"><i class="fa fa-caret-square-o-up"></i></button>
     </div>
   </div>
+  <div class="controls" ng-hide="!breakdown">Skapa en underaktivitet genom att trycka på <i class="fa fa-plus-square-o gray"></i></div>
 
   <ul class="todo-list">
     <li ng-if="!breakdown" class="list-item"
