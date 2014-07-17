@@ -27371,6 +27371,16 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     postpone: function(task, days) {
       task.postpone(days);
       $rootScope.setModal('');
+      $rootScope.getTodoList();
+    },
+    replan: function (task, hours, minutes) {
+      if (!hours&&!minutes) { return; }
+      task.timeType = 'exact';
+      task.reminderTimeAdvance = '0';
+      task.reminderTime=moment().hours(hours).minutes(minutes).seconds(0).milliseconds(0)._d.valueOf();
+      $rootScope.saveTask(task, null, null, task.duration);
+      $rootScope.setModal('');
+      $rootScope.getTodoList();
     },
     saveTask: function(task, hours, minutes, duration) {
       task.saveTask(hours, minutes, duration);
@@ -27387,6 +27397,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return tp.depth === 0 || tp.depth <= depth && tp.start >= selection[tp.depth-1].start && tp.end <= selection[tp.depth-1].end;
       });
     },
+    getTodoList: function () { return ($rootScope.$list = $tasks.getTodoList($rootScope.todoFilter)); },
     addPickerTask: function (time) {
       var task = $tasks.add({timeType: 'exact', startTime: moment(time).hour(12)._d.valueOf()});
       $rootScope.setModal('templates/modal.plan.html', task.id);
@@ -27463,6 +27474,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       }, 10);
     }
   });
+
+  $rootScope.getTodoList();
 
   function _updateReminder () {
     if ($rootScope.modalTask && $rootScope.modalTask.reminderTimePeriod && $rootScope.modalTask.reminderTimePeriod !== 'exact' && $rootScope.modalTask.startTime && $rootScope.modalTask.endTime) { $rootScope.modalTask.setReminderTime(); }
@@ -27779,8 +27792,7 @@ App.controller('TodoCtrl', ['$scope', '$route', '$title', 'idaTasks', function($
       if(!$scope.newTask) { return; }
       $tasks.add($scope.newTask);
       $scope.newTask = '';
-    },
-    getTodoList: function () { return $tasks.getTodoList($scope.$root.todoFilter); }
+    }
   });
 }]);
 
@@ -27790,12 +27802,13 @@ App.directive('idaHelp', ['$rootScope', 'idaPopup', function ($rootScope, $popup
   return {
     restrict: 'A',
     transclude: true,
-    template: '<div class="help-container"><div ng-transclude class="help-line"></div><button ng-click="show()" class="help-button">?</button></div>',
+    template: '<div class="help-container"><div ng-transclude class="help-line"></div><button ng-class="{invisible: invisible}" ng-click="show()" class="help-button">?</button></div>',
     scope: {
       title: '@helpTitle',
       template: '@idaHelp'
     },
     link: function ($scope, element, attrs) {
+      if ($scope.template === 'hidden') { $scope.invisible = true; }
       $scope.show = function () {
         $rootScope.help = $scope.template;
         $popup.alert({
@@ -28775,7 +28788,17 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         repeatLength: this.repeatLength,
         isChild: this.isChild
       };
-      var stop = moment(Date.now() + 63113900000);
+      var stop;
+      switch (this.repeatType) {
+        case 'week':
+        case 'month':
+        case 'year':
+          stop = moment().add(this.repeatType+'s', 1).valueOf();
+          break;
+        case 'date':
+          stop = moment(this.repeatLimit).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf();
+          break;
+      }
       (function again(start) {
         switch(_this.repeatPeriod){
           case 'weekly':
@@ -28811,6 +28834,9 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         }, repeatBase));
         if (start < stop) { again(start); }
       }(moment(this.startTime)));
+    } else {
+      delete this.repeatType;
+      delete this.repeatLimit;
     }
     _tasks.save();
   };
@@ -28820,6 +28846,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
     if(this.endTime && this.endTime < this.startTime) {
       this.endTime = this.startTime;
     }
+    _tasks.save();
   };
 
   Task.prototype.updatePeriodInput = function () {

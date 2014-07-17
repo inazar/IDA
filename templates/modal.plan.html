@@ -101,12 +101,14 @@
           <option value="0">Påminn exakt tid</option>
         </select>
       </label>
+    </div>
+    <div ida-help="hidden" class="reminder">
       <div class="reminder-time" ng-show="modalTask.reminderTimeAdvance==0" ng-init="modalTask.reminderTime=modalTask.reminderTime||Date.now()">
         <button class="exact-reminder" ng-if="modalTask.reminderTimeAdvance==0"
               ng-click="setDatepicker('templates/modal.pick_remindertime.html')"
               ng-class="{'selected':modalTask.reminderTime}"
               ng-bind="modalTask.reminderTime?moment(modalTask.reminderTime).format('D MMMM YYYY'):'Välj datum och tid'"></button>
-        <span >&nbsp;kl&nbsp;</span>
+        <span>&nbsp;kl&nbsp;</span>
         <div ida-timepicker model-date="modalTask.reminderTime"></div>
       </div>
     </div>
@@ -121,40 +123,57 @@
           <option value="yearly">Återkommer årligen</option>
         </select>
       </label>
-      <div ng-if="modalTask.repeatPeriod!='once'">
-        <div ng-if="modalTask.repeatPeriod!='weekly'">
-          <span>Upprepa var</span>
-          <input class="period-input" ng-init="modalTask.repeatLength = modalTask.repeatLength || 1"
-                 ng-model="modalTask.repeatLength"
-                 type="number">
-          <span ng-show="modalTask.repeatPeriod=='daily'">Dag</span>
-          <span ng-show="modalTask.repeatPeriod=='weekly'">Veck</span>
-          <span ng-show="modalTask.repeatPeriod=='monthly'">Månad</span>
-          <span ng-show="modalTask.repeatPeriod=='yearly'">År</span>
-          <br>
+    </div>
+    <div ida-help="hidden" class="repeated"  ng-if="modalTask.repeatPeriod!='once'">
+      <div ng-if="modalTask.repeatPeriod!='weekly'">
+        <span>Upprepa var</span>
+        <input class="period-input" ng-init="modalTask.repeatLength = modalTask.repeatLength || 1"
+               ng-model="modalTask.repeatLength"
+               type="number">
+        <span ng-show="modalTask.repeatPeriod=='daily'">Dag</span>
+        <span ng-show="modalTask.repeatPeriod=='weekly'">Veck</span>
+        <span ng-show="modalTask.repeatPeriod=='monthly'">Månad</span>
+        <span ng-show="modalTask.repeatPeriod=='yearly'">År</span>
+        <br>
+      </div>
+      <div class="weekly-repeat" ng-show="modalTask.repeatPeriod == 'weekly'">
+        <div ng-click="modalTask.checkDay(1)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(1) !== -1"></i></div> M
         </div>
-        <div class="weekly-repeat" ng-show="modalTask.repeatPeriod == 'weekly'">
-          <div ng-click="modalTask.checkDay(1)">
-            <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(1) !== -1"></i></div> M
-          </div>
-          <div ng-click="modalTask.checkDay(2)">
-            <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(2) !== -1"></i></div> T
-          </div>
-          <div ng-click="modalTask.checkDay(3)">
-            <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(3) !== -1"></i></div> O
-          </div>
-          <div ng-click="modalTask.checkDay(4)">
-            <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(4) !== -1"></i></div> T
-          </div>
-          <div ng-click="modalTask.checkDay(5)">
-            <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(5) !== -1"></i></div> F
-          </div>
-          <div ng-click="modalTask.checkDay(6)">
-            <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(6) !== -1"></i></div> L
-          </div>
-          <div ng-click="modalTask.checkDay(0)">
-            <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(0) !== -1"></i></div> S
-          </div>
+        <div ng-click="modalTask.checkDay(2)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(2) !== -1"></i></div> T
+        </div>
+        <div ng-click="modalTask.checkDay(3)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(3) !== -1"></i></div> O
+        </div>
+        <div ng-click="modalTask.checkDay(4)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(4) !== -1"></i></div> T
+        </div>
+        <div ng-click="modalTask.checkDay(5)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(5) !== -1"></i></div> F
+        </div>
+        <div ng-click="modalTask.checkDay(6)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(6) !== -1"></i></div> L
+        </div>
+        <div ng-click="modalTask.checkDay(0)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(0) !== -1"></i></div> S
+        </div>
+      </div>
+      <div ng-if="modalTask.repeatPeriod!=='once'" ng-init="modalTask.repeatType=modalTask.repeatType||'week'">
+        <label class="repeat-end">
+          <select ng-model="modalTask.repeatType"
+                  ng-change="">
+            <option value="week">Upprepa under 1 vecka</option>
+            <option value="month">Upprepa under en månad</option>
+            <option value="year">Upprepa under ett år</option>
+            <option value="date">Upprepa till en viss dag</option>
+          </select>
+        </label>
+        <div class="repeat-time" ng-if="modalTask.repeatType==='date'">
+          <button class="repeat-limit"
+                ng-click="setDatepicker('templates/modal.pick_repeattime.html')"
+                ng-class="{'selected':modalTask.repeatLimit}"
+                ng-bind="modalTask.repeatLimit?moment(modalTask.repeatLimit).format('D MMMM YYYY'):'Välj datum'"></button>
         </div>
       </div>
     </div>
@@ -180,7 +199,7 @@
               ng-click="setDatepicker('templates/modal.pick_remindertime.html');modalTask.reminderTimePeriod='exact'"
               ng-class="{ 'selected': modalTask.reminderTime }"
               ng-bind="modalTask.reminderTime ? moment(modalTask.reminderTime).format('D MMMM YYYY') : 'Välj datum och tid'"></button>
-        <span >&nbsp;kl&nbsp;</span>
+        <span>&nbsp;kl&nbsp;</span>
         <div ida-timepicker model-date="modalTask.reminderTime"></div>
       </div>
     </div>
@@ -203,6 +222,7 @@
     (modalTask.title) &&
     (modalTask.important == true || modalTask.important == false) &&
     (modalTask.complex == true || modalTask.complex == false) &&
+    (modalTask.repeatPeriod === 'once' || modalTask.repeatType !=='date' || modalTask.repeatLimit) &&
     (
       (modalTask.timeType == 'exact'&& modalTask.startTime) ||
       (modalTask.timeType == 'period'&& modalTask.startTime && modalTask.endTime) ||

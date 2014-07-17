@@ -49,10 +49,10 @@
               <i class="fa fa-clock-o"></i>
               Fokusera
             </button>
-            <button ng-show="task.planned&&!task.finished&&!task.deleted&&$root.page.indexOf('/organisera-alla-aktiviteter')!==0"
+            <button ng-show="task.planned&&!task.finished&&!task.deleted"
                     ng-click="$root.setModal('templates/modal.later.html', task.id)">
               <i class="fa fa-angle-double-right"></i>
-              Senare
+              Påminn mm
             </button>
             <button ng-hide="task.planned||task.finished||task.deleted||$root.page.indexOf('/fokusera-pa-aktivitet')===0"
                     ng-click="$root.setModal('templates/modal.timer.html', task.id, $root.reload)">

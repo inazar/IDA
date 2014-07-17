@@ -1,4 +1,4 @@
-<div ng-init="list = getTodoList();" class="todo-page">
+<div class="todo-page">
 
   <form class="add-task">
     <div><input ng-model="newTask" placeholder="Skapa ny aktivitet..."></div>
@@ -18,7 +18,7 @@
     <h2>
       <i class="fa fa-check"></i> Att göra
       <label>
-        <select ng-change="list = getTodoList()" ng-model="$root.todoFilter">
+        <select ng-change="getTodoList()" ng-model="$root.todoFilter">
           <option value="today">idag</option>
           <option value="tomorrow">idag och imorgon</option>
           <option value="week">en vecka framöver</option>
@@ -26,7 +26,7 @@
       </label>
     </h2>
     <ul class="todo-list">
-      <li class="list-item" ng-repeat="task in list track by $index" ida-item="task"></li>
+      <li class="list-item" ng-repeat="task in $root.$list track by $index" ida-item="task"></li>
     </ul>
   </div>
 

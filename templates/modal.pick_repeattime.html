@@ -1,0 +1,58 @@
+<div ng-init="periods = $tasks.getTimePeriods(); time = modalTask.repeatLimit || Date.now(); depth = 2; selection = [
+{start:periods[0].start,end:periods[0].end},
+{start:periods[1].start,end:periods[1].end}
+]" class="calendar-page date-picker">
+  <ul>
+    <li ng-init="show=true;"
+      ng-class="{ weekend: tp.isWeekend, 'hide-button': tp.depth === 2 }"
+      ng-style="{'margin-left': (tp.depth * 15) + 'px' }"
+      ng-repeat="tp in selectDepth(periods, depth, selection) track by $index">
+
+      <button ng-click="
+        $parent.depth = $parent.depth !== tp.depth && tp.start == $parent.selection[tp.depth].start ? tp.depth : (tp.depth + 1);
+        $parent.selection[tp.depth].start = tp.start;
+        $parent.selection[tp.depth].end = tp.end;repaint()"
+              ng-class="{ active:
+                tp.depth < $parent.depth
+                  && tp.start == $parent.selection[tp.depth].start
+                  && tp.end == $parent.selection[tp.depth].end }"></button>
+
+      <span ng-click="show=!show;$parent.depth = tp.depth;$parent.time = tp.start" ng-class="{ 'active': tp.depth == $parent.depth && tp.start <= $parent.time && tp.end > $parent.time, 'no-sub-label': !tp.subLabel }">
+        <span ng-bind="tp.label"></span><br>
+        <i ng-show="tp.subLabel" ng-bind="tp.subLabel"></i>
+      </span>
+
+      <div ng-init="pickerTasks = $tasks.getPickerTasks(tp.start, tp.end)" ng-if="show && tp.depth == 2 && tp.start <= $parent.time && tp.end > $parent.time" ng-bind="pickerTasks" class="picker-tasks"></div>
+
+      <div class="exact-busyness">
+        <div class="exact-times" ng-style="{ width: tp.exact + '%'}"></div>
+        <div class="circa-times" ng-style="{ right: tp.exact + '%', width: tp.circa + '%'}"></div>
+      </div>
+
+      <div class="overall-busyness">
+        <div ng-style="{ width:(100*tp.busyness)+'%', height:(100*tp.busyness)+'%'}"
+             ng-class="{ 'color-0': 0.0 <= tp.busyness && tp.busyness < 0.1,
+                         'color-1': 0.1 <= tp.busyness && tp.busyness < 0.2,
+                         'color-2': 0.2 <= tp.busyness && tp.busyness < 0.3,
+                         'color-3': 0.3 <= tp.busyness && tp.busyness < 0.4,
+                         'color-4': 0.4 <= tp.busyness && tp.busyness < 0.5,
+                         'color-5': 0.5 <= tp.busyness && tp.busyness < 0.6,
+                         'color-6': 0.6 <= tp.busyness && tp.busyness < 0.7,
+                         'color-7': 0.7 <= tp.busyness && tp.busyness < 0.8,
+                         'color-8': 0.8 <= tp.busyness && tp.busyness < 0.9,
+                         'color-9': 0.9 <= tp.busyness && tp.busyness }">
+          <i ng-show="tp.busyness >= 1.0" class="fa fa-exclamation"></i>
+        </div>
+      </div>
+
+    </li>
+  </ul>
+
+  <div class="confirmation" ng-init="timeHour = moment(time).hour() + 1;timeMinute = 0;">
+    <span ng-bind="time ? moment(time).format('ddd D MMM YYYY') : ''"></span>
+
+<!--     <input type="number" ng-model="timeHour" ng-focus="timeHour = ''" placeholder="hh">:<input type="number" ng-focus="timeMinute = ''" ng-model="timeMinute" placeholder="mm">
+ -->    <button ng-click="modalTask.repeatLimit = moment(time).hours(timeHour || 0).minutes(timeMinute || 0).seconds(0).millisecond(0)._d.valueOf(); setDatepicker('')" ng-disabled="!time">Klar</button>
+  </div>
+
+</div>

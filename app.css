@@ -2019,6 +2019,9 @@ h2 {
 .large {
   font-size: 1.5em; }
 
+.invisible {
+  visibility: hidden; }
+
 html {
   height: 100%; }
 
@@ -2402,10 +2405,12 @@ div.later-modal {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
-  div.later-modal > div > div.postpone {
+  div.later-modal > div > div.reminder-in > span {
+    visibility: hidden; }
+  div.later-modal > div > div.reminder-in, div.later-modal > div div.reminder-today {
     padding: 5px 0 0;
     overflow: auto; }
-    div.later-modal > div > div.postpone > button {
+    div.later-modal > div > div.reminder-in > button, div.later-modal > div div.reminder-today > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
       -webkit-box-shadow: 0 2px 0 0 #5d0662;
@@ -2432,13 +2437,13 @@ div.later-modal {
       margin-right: 5px;
       padding: 6px 20px 7px;
       width: auto; }
-      div.later-modal > div > div.postpone > button:active, div.later-modal > div > div.postpone > button.active {
+      div.later-modal > div > div.reminder-in > button:active, div.later-modal > div > div.reminder-in > button.active, div.later-modal > div div.reminder-today > button:active, div.later-modal > div div.reminder-today > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8b0992;
         border-top: 2px solid #5d0662;
         top: 0px; }
-    div.later-modal > div > div.postpone > input {
+    div.later-modal > div > div.reminder-in > input, div.later-modal > div div.reminder-today > input {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
@@ -2455,16 +2460,12 @@ div.later-modal {
       padding: 6px 10px 7px;
       text-align: right;
       width: 60px; }
-    div.later-modal > div > div.postpone > span {
+    div.later-modal > div > div.reminder-in > span, div.later-modal > div div.reminder-today > span {
       display: inline-block;
       float: left;
       font-size: 1.2em;
       padding: 6px 0 7px; }
-  div.later-modal > div > span.error {
-    display: inline-block;
-    color: #DD2330;
-    font-style: italic; }
-  div.later-modal > div > button.replan {
+  div.later-modal > div > button.breakdown, div.later-modal > div button.postpone {
     -webkit-border-radius: 4px;
     border-radius: 4px;
     -webkit-box-shadow: 0 2px 0 0 #5d0662;
@@ -2490,73 +2491,11 @@ div.later-modal {
     margin-top: 10px;
     padding: 6px 20px 7px;
     width: auto; }
-    div.later-modal > div > button.replan:active, div.later-modal > div > button.replan.active {
+    div.later-modal > div > button.breakdown:active, div.later-modal > div > button.breakdown.active, div.later-modal > div button.postpone:active, div.later-modal > div button.postpone.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8b0992;
       border-top: 2px solid #5d0662;
-      top: 0px; }
-  div.later-modal > div > button.breakdown {
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
-    -webkit-user-select: none;
-    background: #a40aaa;
-    border: none;
-    color: white;
-    display: inline-block;
-    font-weight: bold;
-    padding: 3px 10px 4px;
-    position: relative;
-    text-align: center;
-    top: -2px;
-    border-top: 2px solid transparent;
-    text-decoration: none;
-    outline: 0;
-    width: 100%;
-    font-size: 1.2em;
-    padding: 13px 0 14px;
-    display: block;
-    margin-bottom: 15px;
-    margin-top: 10px;
-    padding: 6px 20px 7px;
-    width: auto; }
-    div.later-modal > div > button.breakdown:active, div.later-modal > div > button.breakdown.active {
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
-      top: 0px; }
-  div.later-modal > div > button.cancel-2 {
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
-    box-shadow: 0 2px 0 0 #9b9b9b;
-    -webkit-user-select: none;
-    background: #d4d4d4;
-    border: none;
-    color: #4a4a4a;
-    display: inline-block;
-    font-weight: bold;
-    padding: 3px 10px 4px;
-    position: relative;
-    text-align: center;
-    top: -2px;
-    border-top: 2px solid transparent;
-    text-decoration: none;
-    outline: 0;
-    width: 100%;
-    font-size: 1.2em;
-    padding: 13px 0 14px;
-    display: block;
-    padding: 6px 20px 7px;
-    width: auto; }
-    div.later-modal > div > button.cancel-2:active, div.later-modal > div > button.cancel-2.active {
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      background: #bbb;
-      border-top: 2px solid #9b9b9b;
       top: 0px; }
 
 div.timer-modal {
@@ -3118,10 +3057,12 @@ div.focus-distraction-list-confirmation-modal {
   width: 60px; }
 
 input.timepicker-field {
+  width: 3em;
   padding: 7px 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  border: 1px solid #999; }
+  border: 1px solid #999;
+  display: inline-block; }
 
 .plan {
   background: white;
@@ -3834,6 +3775,111 @@ input.timepicker-field {
           left: 0;
           position: absolute;
           top: 0; }
+  .plan > div > div.repeated .help-line .repeat-end {
+    color: white;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    font-size: 1.2em;
+    margin: 10px 0 0; }
+    .plan > div > div.repeated .help-line .repeat-end::before {
+      content: '\f0d7';
+      display: inline-block;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      text-decoration: inherit; }
+    .plan > div > div.repeated .help-line .repeat-end::before {
+      position: absolute;
+      right: 10px;
+      top: 3px; }
+    .plan > div > div.repeated .help-line .repeat-end > select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
+      background: #a40aaa;
+      border: none;
+      border-top: 2px solid transparent;
+      color: white;
+      display: inline-block;
+      font-weight: bold;
+      outline: 0;
+      padding: 3px 30px 4px 10px; }
+      .plan > div > div.repeated .help-line .repeat-end > select:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #8b0992;
+        border-top: 2px solid #5d0662; }
+    .plan > div > div.repeated .help-line .repeat-end::before {
+      right: 20px;
+      top: 6px;
+      font-size: 1.4em; }
+    .plan > div > div.repeated .help-line .repeat-end > select {
+      width: 100%;
+      padding: 10px 50px 12px 20px; }
+  .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
+    box-shadow: 0 2px 0 0 #9b9b9b;
+    -webkit-user-select: none;
+    background: #d4d4d4;
+    border: none;
+    color: #4a4a4a;
+    display: inline-block;
+    font-weight: bold;
+    padding: 3px 10px 4px;
+    position: relative;
+    text-align: center;
+    top: -2px;
+    border-top: 2px solid transparent;
+    text-decoration: none;
+    outline: 0;
+    width: 100%;
+    font-size: 1.2em;
+    padding: 13px 0 14px;
+    margin: 10px 0 0;
+    display: block;
+    font-size: 1em; }
+    .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit:active, .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.active {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      background: #bbb;
+      border-top: 2px solid #9b9b9b;
+      top: 0px; }
+    .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.selected {
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-user-select: none;
+      background: #a40aaa;
+      border: none;
+      color: white;
+      display: inline-block;
+      font-weight: bold;
+      padding: 3px 10px 4px;
+      position: relative;
+      text-align: center;
+      top: -2px;
+      border-top: 2px solid transparent;
+      text-decoration: none;
+      outline: 0;
+      width: 100%;
+      font-size: 1.2em;
+      padding: 13px 0 14px;
+      font-size: 1em;
+      display: block; }
+      .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.selected:active, .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.selected.active {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #8b0992;
+        border-top: 2px solid #5d0662;
+        top: 0px; }
   .plan .reminder-time {
     margin: 10px 0 0; }
   .plan .exact-reminder {

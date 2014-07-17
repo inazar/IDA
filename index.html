@@ -13,19 +13,19 @@
       <meta name="author" content="">
       <link rel="stylesheet" href="app.css">
     </head>
-    <body class="loading" ng-class="{ 'show-nav': showNav }">
+    <body class="loading" ng-class="{ 'show-nav': $root.showNav }">
 
       <div id="wrapper">
         <nav ng-hide="$root.modal || $root.datepicker">
           <ul>
-            <li ida-help="templates/help/todo.html" help-title="Att-göra-listan" ng-class="{ active: (page == '/todo') }"><a ng-click="page == '/todo' ? (showNav = false) : $location.path('/todo')"><span><i class="fa fa-check"></i>Att göra</span></a></li>
-            <li ida-help="templates/help/organize.html" help-title="Organisera alla aktiviteter" ng-class="{ active: (page == '/organisera-alla-aktiviteter') }"><a ng-click="page == '/organisera-alla-aktiviteter' ? (showNav = false) : $location.path('/organisera-alla-aktiviteter')"><span><i class="fa fa-folder-open"></i>Organisera alla aktiviteter</span></a></li>
-            <li ida-help="templates/help/focus.html" help-title="Fokusera på aktivitet" ng-class="{ active: (page.indexOf('/fokusera-pa-aktivitet') === 0) }"><a ng-click="page == '/fokusera-pa-aktivitet' ? (showNav = false) : $location.path('/fokusera-pa-aktivitet')"><span><i class="fa fa-clock-o"></i>Fokusera på aktivitet</span></a></li>
-            <li ida-help="templates/help/calendar.html" help-title="Kalender" ng-class="{ active: (page == '/kalender') }"><a ng-click="page == '/kalender' ? (showNav = false) : $location.path('/kalender')"><span><i class="fa fa-calendar"></i>Kalender</span></a></li>
-            <li ida-help="templates/help/archive.html" help-title="Arkiv" ng-class="{ active: (page == '/arkiv') }"><a ng-click="page == '/arkiv' ? (showNav = false) : $location.path('/arkiv')"><span><i class="fa fa-archive"></i>Arkiv</span></a></li>
-            <li ida-help="templates/help/help.html" help-title="Hjälp och feedback" ng-class="{ active: (page == '/hjalp-och-feedback') }"><a ng-click="page == '/hjalp-och-feedback' ? (showNav = false) : $location.path('/hjalp-och-feedback')"><span><i class="fa fa-question-circle"></i>Hjälp och feedback</span></a></li>
-            <li ida-help="templates/help/about.html" help-title="Om IDA-appen" ng-class="{ active: (page == '/om-adhd-app') }"><a ng-click="page == '/om-adhd-app' ? (showNav = false) : $location.path('/om-adhd-app')"><span><i class="fa fa-info-circle"></i>Om IDA-appen</span></a></li>
-            <li ida-help="templates/help/statistics.html" help-title="Användningsstatistik" ng-class="{ active: (page == '/anvandningsstatistik') }"><a ng-click="page == '/anvandningsstatistik' ? (showNav = false) : $location.path('/anvandningsstatistik')"><span><i class="fa fa-bar-chart-o"></i>Användningsstatistik</span></a></li>
+            <li ida-help="templates/help/todo.html" help-title="Att-göra-listan" ng-class="{ active: (page == '/todo') }"><a ng-click="page == '/todo' ? ($root.showNav = false) : $location.path('/todo')"><span><i class="fa fa-check"></i>Att göra</span></a></li>
+            <li ida-help="templates/help/organize.html" help-title="Organisera alla aktiviteter" ng-class="{ active: (page == '/organisera-alla-aktiviteter') }"><a ng-click="page == '/organisera-alla-aktiviteter' ? ($root.showNav = false) : $location.path('/organisera-alla-aktiviteter')"><span><i class="fa fa-folder-open"></i>Organisera alla aktiviteter</span></a></li>
+            <li ida-help="templates/help/focus.html" help-title="Fokusera på aktivitet" ng-class="{ active: (page.indexOf('/fokusera-pa-aktivitet') === 0) }"><a ng-click="page == '/fokusera-pa-aktivitet' ? ($root.showNav = false) : $location.path('/fokusera-pa-aktivitet')"><span><i class="fa fa-clock-o"></i>Fokusera på aktivitet</span></a></li>
+            <li ida-help="templates/help/calendar.html" help-title="Kalender" ng-class="{ active: (page == '/kalender') }"><a ng-click="page == '/kalender' ? ($root.showNav = false) : $location.path('/kalender')"><span><i class="fa fa-calendar"></i>Kalender</span></a></li>
+            <li ida-help="templates/help/archive.html" help-title="Arkiv" ng-class="{ active: (page == '/arkiv') }"><a ng-click="page == '/arkiv' ? ($root.showNav = false) : $location.path('/arkiv')"><span><i class="fa fa-archive"></i>Arkiv</span></a></li>
+            <li ida-help="templates/help/help.html" help-title="Hjälp och feedback" ng-class="{ active: (page == '/hjalp-och-feedback') }"><a ng-click="page == '/hjalp-och-feedback' ? ($root.showNav = false) : $location.path('/hjalp-och-feedback')"><span><i class="fa fa-question-circle"></i>Hjälp och feedback</span></a></li>
+            <li ida-help="templates/help/about.html" help-title="Om IDA-appen" ng-class="{ active: (page == '/om-adhd-app') }"><a ng-click="page == '/om-adhd-app' ? ($root.showNav = false) : $location.path('/om-adhd-app')"><span><i class="fa fa-info-circle"></i>Om IDA-appen</span></a></li>
+            <li ida-help="templates/help/statistics.html" help-title="Användningsstatistik" ng-class="{ active: (page == '/anvandningsstatistik') }"><a ng-click="page == '/anvandningsstatistik' ? ($root.showNav = false) : $location.path('/anvandningsstatistik')"><span><i class="fa fa-bar-chart-o"></i>Användningsstatistik</span></a></li>
             <li ida-help="templates/help/exit.html" help-title="Avsluta"><a ng-click="closeApp()"><span><i class="fa fa-sign-out"></i>Avsluta</span></a></li>
           </ul>
         </nav>

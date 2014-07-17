@@ -20,6 +20,27 @@ modalTask.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (
 
     <div class="divider"></div>
 
+    <div class="reminder-in" ng-init="$hoursIn=null;$minutesIn=30;$now=moment(Date.now())">
+      <button class="reminder" ng-click="replan(modalTask, $now.hours()+$hoursIn, $now.minutes()+$minutesIn)">Påminn om</button>
+      <span>&nbsp;kl&nbsp;</span>
+      <div ida-timepicker model-minutes="$minutesIn" model-hours="$hoursIn"></div>
+    </div>
+    <div class="reminder-today" ng-init="$hoursToday=moment().hours();$minutesToday=moment().minutes()">
+      <button class="reminder" ng-click="replan(modalTask, $hoursToday, $minutesToday)">Påminn idag</button>
+      <span>&nbsp;kl&nbsp;</span>
+      <div ida-timepicker model-minutes="$minutesToday" model-hours="$hoursToday"></div>
+    </div>
+    <button class="breakdown"
+            ng-show="!modalTask.isChild"
+            ng-click="$location.path('/organisera-alla-aktiviteter/' + modalTask.id);setModal('');">
+      Dela upp i mindre uppgifter
+    </button>
+    <button class="postpone" ng-if="modalTask.timeType==='exact'" ng-click="postpone(modalTask, 1)">Skjut upp till samma tid imorgon</button>
+    <button class="postpone" ng-if="modalTask.timeType==='period'&&Math.floor(Date.now()/86400000)<Math.floor(modalTask.endTime/86400000)" ng-click="postpone(modalTask, 1)">Skjut upp start till imorgon</button>
+
+
+<!-- 
+
     <div class="postpone">
       <button ng-click="postpone(modalTask, daysToPostpone)">Skjut upp start</button>
       <input type="number" ng-init="daysToPostpone=3" ng-model="daysToPostpone">
@@ -34,5 +55,5 @@ modalTask.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (
       Dela upp i mindre uppgifter
     </button>
     <button ng-click="setModal('')" class="cancel-2">Avbryt</button>
-  </div>
+ -->  </div>
 </div>
