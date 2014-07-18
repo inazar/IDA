@@ -38,9 +38,11 @@
               <i class="fa fa-archive"></i>
             </a>
             <a class="avsluta ng-hide" ng-click="closeApp()" ng-show="page==='/todo'"><i class="fa fa-sign-out"></i></a>
-            <a class="avsluta ng-hide" ng-click="$location.path('/todo')" ng-show="page!=='/todo'"><i class="fa fa-check-square"></i></a>
+            <a class="avsluta ng-hide" ng-click="$location.path('/todo')" ng-show="page!=='/todo'"><i class="fa fa-reply"></i></a>
           </div>
-          <div id="context" ng-view ng-hide="$root.modal || $root.datepicker"></div>
+          <div id="context-wrapper">
+            <div id="context" ng-view ng-hide="$root.modal || $root.datepicker"></div>
+          </div>
         </div>
 
         <div class="modal-container" ng-hide="$root.datepicker" ng-include="$root.modal"></div>

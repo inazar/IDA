@@ -27319,12 +27319,12 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
     // define app routes
     $routeProvider
-      .when('/todo', { templateUrl: 'templates/todo.html', controller: 'TodoCtrl', resolve: {$title: function () { return 'Att Göra'; }}})
+      .when('/todo', { templateUrl: 'templates/todo.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Att Göra'; }}})
       .when('/organisera-alla-aktiviteter', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: function () { return 'Organisera alla aktiviteter'; }}})
       .when('/organisera-alla-aktiviteter/:breakdown', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: ['$rootScope', '$route', function ($rootScope, $route) { return 'Dela upp ' + $rootScope.$tasks.get($route.current.params.breakdown).title; }]}})
       .when('/fokusera-pa-aktivitet', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}})
       .when('/fokusera-pa-aktivitet/:task', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}})
-      .when('/kalender', { templateUrl: 'templates/calender.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Kalender'; }}, reloadOnSearch: false})
+      .when('/kalender', { templateUrl: 'templates/kalender.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Kalender'; }}, reloadOnSearch: false})
       .when('/arkiv', { templateUrl: 'templates/archive.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Arkiv'; }}})
       .when('/hjalp-och-feedback', { templateUrl: 'templates/help.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Hjälp och feedback'; }}})
       .when('/om-adhd-app', { templateUrl: 'templates/about.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Om ADHD App'; }}})
@@ -27375,12 +27375,22 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     },
     replan: function (task, hours, minutes) {
       if (!hours&&!minutes) { return; }
-      task.timeType = 'exact';
-      task.reminderTimeAdvance = '0';
-      task.reminderTime=moment().hours(hours).minutes(minutes).seconds(0).milliseconds(0)._d.valueOf();
+      switch (task.timeType) {
+        case 'exact':
+          task.reminderTimeAdvance = '0';
+          break;
+        case 'period':
+          task.reminderTimePeriod = 'exact';
+          break;
+      }
+      task.reminderTime=moment(task.reminderTime).hours(hours).minutes(minutes).seconds(0).milliseconds(0)._d.valueOf();
       $rootScope.saveTask(task, null, null, task.duration);
       $rootScope.setModal('');
       $rootScope.getTodoList();
+    },
+    addTask: function (name, parent) {
+      if (!name) { return; }
+      return $tasks.add(name, parent);
     },
     saveTask: function(task, hours, minutes, duration) {
       task.saveTask(hours, minutes, duration);
@@ -27391,11 +27401,6 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     },
     closeApp: function(){
       return (navigator.app && $rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) ? navigator.app.exitApp() : $location.path('/todo');
-    },
-    selectDepth: function(periods, depth, selection) {
-      return _.filter(periods, function(tp){
-        return tp.depth === 0 || tp.depth <= depth && tp.start >= selection[tp.depth-1].start && tp.end <= selection[tp.depth-1].end;
-      });
     },
     getTodoList: function () { return ($rootScope.$list = $tasks.getTodoList($rootScope.todoFilter)); },
     addPickerTask: function (time) {
@@ -27465,13 +27470,6 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         default: task.reminder = false; return;
       }
       return moment(task.startTime + (task.endTime - task.startTime) * p).hours(10).minutes(0).seconds(0).milliseconds(0)._d.valueOf();
-    },
-    scrollTo: function (tag) {
-      $timeout(function () { 
-        $location.hash(tag);
-        $anchorScroll();
-        $timeout(function () { $location.hash(''); });
-      }, 10);
     }
   });
 
@@ -27518,11 +27516,17 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           if ($rootScope.page === '/todo') { $tasks.reload(); $route.reload(); }
         });
         $timeout(function () {
-          $popup.alert({
+          $popup.confirm({
             type: 'planningReminder',
             withPrevent: false,
             withLimit: 3,
-            template: 'reminders on later days the user needs to plan the task but that it has been pre-set so that the user just needs to set the time for the reminder.'
+            template: 'Om du vill sätta en påminnelse på en annan dag än idag måste du planera aktivietet. Här har IDA hjälpt tid med en standardplanering, så om du bara vill göra en enkel påminnelser tryck på knappen under "Påminn exakt tid".',
+            okText: 'Ok',
+            cancelText: 'Ångra'
+          }).then(function (agree) {
+            if (!agree) {
+              $rootScope.setModal('templates/modal.timer.html', $rootScope.modalTask.id, $rootScope.reload);
+            }
           });
         });
         break;
@@ -27633,12 +27637,6 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
     cancel: function () {
       deadline = new Date();
       $scope.$root.timeLeft = 0;
-    },
-    addTask: function () {
-      if (!$scope.newTask) { return; }
-      $tasks.add($scope.newTask);
-      $scope.newTask = '';
-      $scope.showDistractionListForXSeconds();
     },
     showDistractionListForXSeconds: function () {
       $scope.showDistractionList = true;
@@ -27782,18 +27780,52 @@ App.controller('StatisticsCtrl', ['$scope', '$title', 'idaTasks', 'idaEvents', f
 }]);
 
 /* jshint strict: false */
-/* global App*/
-App.controller('TodoCtrl', ['$scope', '$route', '$title', 'idaTasks', function($scope, $route, $title, $tasks){
-
-  $scope.$root.title = $title;
-
-  angular.extend($scope, {
-    addTask: function () {
-      if(!$scope.newTask) { return; }
-      $tasks.add($scope.newTask);
-      $scope.newTask = '';
+/* global App, moment, _ */
+App.directive('idaCalendar', ['idaTasks', '$timeout', '$location', '$anchorScroll', function ($tasks, $timeout, $location, $anchorScroll) {
+  return {
+    restrict: 'A',
+    transclude: true,
+    templateUrl: 'templates/calendar.html',
+    scope: {
+      task: '=?calendarTask',
+      time: '=?idaCalendar',
+      $create: '@calendarCreate',
+      $validate: '@calendarValidate'
+    },
+    link: function ($scope, element, attrs, ctrl, $transclude) {
+      angular.extend($scope, {
+        time: $scope.time || moment().seconds(0).milliseconds(0).valueOf(),
+        task: $scope.task || {},
+        depth: 2,
+        periods: $tasks.getTimePeriods(),
+        isMarked: function (time, tp) {
+          return tp.depth === 2 && time && Math.floor(tp.start/1000)*1000 <= time && tp.end > time;
+        },
+        isValid: function (tp) {
+          return $scope.$validate ? $scope.$eval($scope.$validate, tp) : true;
+        },
+        selectDepth: function(periods, depth, selection) {
+          return _.filter(periods, function(tp){
+            return tp.depth === 0 || tp.depth <= depth && tp.start >= selection[tp.depth-1].start && tp.end <= selection[tp.depth-1].end;
+          });
+        },
+        scrollTo: function (tag) {
+          $timeout(function () { 
+            $location.hash(tag);
+            $anchorScroll();
+            $timeout(function () { $location.hash(''); });
+          }, 10);
+        }
+      });
+      $scope.$hours = moment($scope.time).hours();
+      $scope.$minutes = moment($scope.time).minutes();
+      $scope.selection = [
+        {start: $scope.periods[0].start, end: $scope.periods[0].end},
+        {start: $scope.periods[1].start, end: $scope.periods[1].end}
+      ];
+      $transclude($scope, function (clone) { element.append(clone); });
     }
-  });
+  };
 }]);
 
 /* jshint strict: false */
@@ -27924,7 +27956,7 @@ App.directive('idaTimepicker', ['$timeout', function ($timeout) {
   return {
     restrict: 'A',
     replace: true,
-    template: '<form>' +
+    template: '<form class="time-picker">' +
               '<input type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="23" ng-model="$hours">' +
               ':<input type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes"></form>',
     scope: {
@@ -28724,7 +28756,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       case 'exact': return this.reminderTime || (this.reminderTimeAdvance ? this.startTime - this.reminderTimeAdvance : this.reminderTime);
       default: this.reminder = false; return;
     }
-    return (this.reminderTime = moment(this.startTime + (this.endTime - this.startTime) * p).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0)._d.valueOf());
+    return (this.reminderTime = moment(this.startTime + (this.endTime - this.startTime) * p).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0).valueOf());
   };
 
   Task.prototype.saveTask = function (hours, minutes, duration) {
@@ -28820,7 +28852,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
             break;
         }
         _tasks.add(_.extend({
-          startTime: start._d.valueOf(),
+          startTime: start.valueOf(),
           showInTodoUntil: (function () {
             var r;
             switch (_this.showInTodo) {
@@ -28842,7 +28874,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
   };
 
   Task.prototype.postpone = function(days) {
-    this.startTime = moment().day(moment().day() + days)._d.valueOf();
+    this.startTime = moment().day(moment().day() + days).valueOf();
     if(this.endTime && this.endTime < this.startTime) {
       this.endTime = this.startTime;
     }
@@ -28853,37 +28885,37 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
     if(this.timeType !== 'period' || this.xDays === '') { return; }
     switch(this.timeInputType) {
       case 'today':
-        this.startTime = Date.now().valueOf();
-        this.endTime = moment().hour(23).minute(59)._d.valueOf();
+        this.startTime = moment().hour(0).minute(0).seconds(0).milliseconds(0).valueOf();
+        this.endTime = moment().hour(23).minute(59).seconds(0).milliseconds(0).valueOf();
         break;
       case 'x-days':
         this.xDays = this.xDays || 1;
-        this.startTime = Date.now().valueOf();
-        this.endTime = moment().day(moment().day() + this.xDays)._d.valueOf();
+        this.startTime = moment().hour(0).minute(0).seconds(0).milliseconds(0).valueOf();
+        this.endTime = moment().day(moment().day() + this.xDays).seconds(0).milliseconds(0).valueOf();
         break;
       case 'tomorrow':
-        this.startTime = moment().hour(24).minute(0)._d.valueOf();
-        this.endTime = moment().hour(48).minute(-1)._d.valueOf();
+        this.startTime = moment().hour(24).minute(0).seconds(0).milliseconds(0).valueOf();
+        this.endTime = moment().hour(48).minute(-1).seconds(0).milliseconds(0).valueOf();
         break;
       case 'week':
-        this.startTime = Date.now().valueOf();
-        this.endTime = moment().startOf('week').day(7).hour(23).minute(59)._d.valueOf();
+        this.startTime = moment().hour(0).minute(0).seconds(0).milliseconds(0).valueOf();
+        this.endTime = moment().startOf('week').day(7).hour(23).minute(59).seconds(0).milliseconds(0).valueOf();
         break;
       case 'next-week':
-        this.startTime = moment().startOf('week').day(8).hour(0).minute(0)._d.valueOf();
-        this.endTime = moment().startOf('week').day(14).hour(23).minute(59)._d.valueOf();
+        this.startTime = moment().startOf('week').day(8).hour(0).minute(0).seconds(0).milliseconds(0).valueOf();
+        this.endTime = moment().startOf('week').day(14).hour(23).minute(59).seconds(0).milliseconds(0).valueOf();
         break;
       case 'month':
-        this.startTime = Date.now().valueOf();
-        this.endTime = moment().month(moment().month() + 1).date(0).hour(23).minute(59)._d.valueOf();
+        this.startTime = moment().hour(0).minute(0).seconds(0).milliseconds(0).valueOf();
+        this.endTime = moment().month(moment().month() + 1).date(0).hour(23).minute(59).seconds(0).milliseconds(0).valueOf();
         break;
       case 'next-month':
-        this.startTime = moment().month(moment().month() + 1).date(1).hour(0).minute(0)._d.valueOf();
-        this.endTime = moment().month(moment().month() + 2).date(0).hour(23).minute(59)._d.valueOf();
+        this.startTime = moment().month(moment().month() + 1).date(1).hour(0).minute(0).seconds(0).milliseconds(0).valueOf();
+        this.endTime = moment().month(moment().month() + 2).date(0).hour(23).minute(59).seconds(0).milliseconds(0).valueOf();
         break;
       case 'three-months':
-        this.startTime = Date.now().valueOf();
-        this.endTime = moment().month(moment().month() + 3).hour(23).minute(59)._d.valueOf();
+        this.startTime = moment().hour(0).minute(0).seconds(0).milliseconds(0).valueOf();
+        this.endTime = moment().month(moment().month() + 3).hour(23).minute(59).seconds(0).milliseconds(0).valueOf();
         break;
     }
   };
@@ -28926,6 +28958,18 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       this.planned = true;
       _tasks.save();
     }
+  };
+
+  Task.prototype.rename = function(title) {
+    var i, child;
+    this.title = title;
+    if (this.children && this.children.length) {
+      for (i=0; i<this.children.length; i++) {
+        child = _tasks.get(this.children[i]);
+        if (child) { child.parent = title; }
+      }
+    }
+    _tasks.save();
   };
 
 	var Tasks = function (tasks) {
@@ -28972,6 +29016,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       parent.isParent = true;
       parent.showChildren = true;
       task.parent = parent.title;
+      task.pid = parent.id;
       task.title = '';
       task.startTime = parent.startTime;
       task.endTime = parent.endTime;
@@ -29101,7 +29146,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && task.showInTodoUntil <= now) { task.finished = true; }
       return (!task.deleted && task.planned && !task.finished && task.timeType !== 'none' &&
         task.showInTodoUntil !== 0 && (!task.showInFromUntil || task.showInFromUntil > now) && (!task.showInTodoFrom || task.showInTodoFrom < now) &&
-        (task.startTime < moment().startOf('day').hour(hrs[todoFilter]).minute(0)._d.valueOf()));
+        (task.startTime < moment().startOf('day').hour(hrs[todoFilter]).minute(0).valueOf()));
     }), function (task) {
       // exact time or periods with reminder within filter values     + 20000
       // else if time period and important                            + 30000
@@ -29135,27 +29180,27 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         value += 3000000 - (task.startTime % 2630000000) / 10000;
       } else if (
         task.important && (
-          task.endTime < moment().hour(1 * 24 + shift)._d.valueOf() || (
+          task.endTime < moment().hour(1 * 24 + shift).valueOf() || (
             task.complex && (
               (
                 !task.isParent && $scope.$parent.todoFilter === 'week' && (
-                  task.endTime < moment().hour(2 * 24 + shift)._d.valueOf() ||
-                  (task.endTime < moment().hour(3 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 7 * 86400000) ||
-                  (task.endTime < moment().hour(5 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 15 * 86400000) ||
-                  (task.endTime < moment().hour(7 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 22 * 86400000) ||
-                  (task.endTime < moment().hour(9 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 28 * 86400000)
+                  task.endTime < moment().hour(2 * 24 + shift).valueOf() ||
+                  (task.endTime < moment().hour(3 * 24 + shift).valueOf() && task.endTime - task.startTime > 7 * 86400000) ||
+                  (task.endTime < moment().hour(5 * 24 + shift).valueOf() && task.endTime - task.startTime > 15 * 86400000) ||
+                  (task.endTime < moment().hour(7 * 24 + shift).valueOf() && task.endTime - task.startTime > 22 * 86400000) ||
+                  (task.endTime < moment().hour(9 * 24 + shift).valueOf() && task.endTime - task.startTime > 28 * 86400000)
                 )
               ) || (
-                (task.endTime < moment().hour(2 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 3 * 86400000) ||
-                (task.endTime < moment().hour(3 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 7 * 86400000) ||
-                (task.endTime < moment().hour(4 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 14 * 86400000) ||
-                (task.endTime < moment().hour(5 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 20 * 86400000)
+                (task.endTime < moment().hour(2 * 24 + shift).valueOf() && task.endTime - task.startTime > 3 * 86400000) ||
+                (task.endTime < moment().hour(3 * 24 + shift).valueOf() && task.endTime - task.startTime > 7 * 86400000) ||
+                (task.endTime < moment().hour(4 * 24 + shift).valueOf() && task.endTime - task.startTime > 14 * 86400000) ||
+                (task.endTime < moment().hour(5 * 24 + shift).valueOf() && task.endTime - task.startTime > 20 * 86400000)
               )
             )
           ) || (
-            (task.endTime < moment().hour(2 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 4 * 86400000) ||
-            (task.endTime < moment().hour(3 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 9 * 86400000) ||
-            (task.endTime < moment().hour(4 * 24 + shift)._d.valueOf() && task.endTime - task.startTime > 25 * 86400000)
+            (task.endTime < moment().hour(2 * 24 + shift).valueOf() && task.endTime - task.startTime > 4 * 86400000) ||
+            (task.endTime < moment().hour(3 * 24 + shift).valueOf() && task.endTime - task.startTime > 9 * 86400000) ||
+            (task.endTime < moment().hour(4 * 24 + shift).valueOf() && task.endTime - task.startTime > 25 * 86400000)
           )
         )
       ) { value += 3000000; }
@@ -29173,7 +29218,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         _this = this;
 
     (function(){
-      var calc, now = moment().startOf('day')._d.valueOf();
+      var calc, now = moment().startOf('day').valueOf();
 
       calc = _.reduce(_this.tasks, function(memo, task){
         if (task.deleted || task.finished || task.timeType !== 'exact' || task.startTime < now || !task.planned) { return memo; }
@@ -29204,13 +29249,13 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         });
       });
     }());
-    time = moment().hours(0).minutes(0).seconds(0);
-    while(stop > time._d.valueOf()) {
+    time = moment().hours(0).minutes(0).seconds(0).milliseconds(0);
+    while(stop > time.valueOf()) {
       if(time.year() !== year) {
         year = time.year();
         curYear = periods.push({
-          time: time._d.valueOf(),
-          start: time._d.valueOf(),
+          time: time.valueOf(),
+          start: time.valueOf(),
           end: new Date(time.year() + 1, 0, 1, 0, 0, 0, 0).valueOf(),
           depth: 0,
           label: time.format('YYYY'),
@@ -29221,8 +29266,8 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         month = time.month();
         //week = -1;
         curMonth = periods.push({
-          time: time._d.valueOf(),
-          start: time._d.valueOf(),
+          time: time.valueOf(),
+          start: time.valueOf(),
           depth: 1,
           label: time.format('MMMM'),
           subLabel: '',
@@ -29235,8 +29280,8 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         week = time.week();
 
         curWeek = periods.push({
-          start: time._d.valueOf(),
-          time: time._d.valueOf(),
+          start: time.valueOf(),
+          time: time.valueOf(),
           depth: 2,
           label: 'Vecka ' + week,
           subLabel: moment().year(year).week(week-1).day(1).format('D MMM') + '-' + moment().year(year).week(week-1).day(1).day(7).format('D MMM'),
@@ -29246,8 +29291,8 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       }*/
 
       curDay = periods.push({
-        start: time._d.valueOf(),
-        time: time._d.valueOf(),
+        start: time.valueOf(),
+        time: time.valueOf(),
         depth: 2,
         label: time.format('ddd D MMM'),
         isWeekend: time.day() === 6 || time.day() === 0,
@@ -29262,9 +29307,9 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
                 _.filter(_this.tasks, function(task){
                   return (task.deleted === false && task.planned === true && task.finished === false &&
                     ((
-                      task.timeType === 'exact' && task.startTime >= time._d.valueOf() && task.startTime < (time._d.valueOf() + 86400000)
+                      task.timeType === 'exact' && task.startTime >= time.valueOf() && task.startTime < (time.valueOf() + 86400000)
                     ) || (
-                      task.timeType === 'period' && (time._d.valueOf() + 86400000) > task.startTime && time._d.valueOf() < task.endTime
+                      task.timeType === 'period' && (time.valueOf() + 86400000) > task.startTime && time.valueOf() < task.endTime
                     ))
                   );
                 }),
@@ -29277,7 +29322,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
 
                   if(task.timeType === 'period') {
 
-                    var x = Math.ceil((time._d.valueOf() - task.startTime) / 86400000),
+                    var x = Math.ceil((time.valueOf() - task.startTime) / 86400000),
                         d = Math.ceil((task.endTime - task.startTime) / 86400000),
                         f = 1 / d + ( x - ( d + 1 ) / 2 ) * 2 * s / ( d * d ),
                         o = 1+((d-1)/vp),

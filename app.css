@@ -2033,8 +2033,7 @@ body {
     height: 100%;
     font-size: 0.95em;
     position: relative;
-    overflow-x: hidden;
-    overflow-y: scroll; }
+    overflow: hidden; }
     body > #wrapper > nav {
       -webkit-transition: all 300ms;
       transition: all 300ms;
@@ -2111,9 +2110,9 @@ body {
       transition: all 300ms;
       background: white;
       min-height: 100%;
-      padding: 60px 5px 5px 5px;
       position: relative;
-      width: 100%; }
+      width: 100%;
+      overflow: hidden; }
       body > #wrapper > div#main > div#top {
         -webkit-transition: margin-left 300ms;
         transition: margin-left 300ms;
@@ -2129,7 +2128,16 @@ body {
         z-index: 11;
         text-align: center;
         top: 0;
-        width: 100%; }
+        width: 100%;
+        padding: 0 50px 0 50px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box; }
+        body > #wrapper > div#main > div#top > span {
+          display: block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis; }
         body > #wrapper > div#main > div#top > a {
           display: block;
           position: absolute;
@@ -2156,15 +2164,27 @@ body {
           color: black; }
           body > #wrapper > div#main > div#top.hide > a {
             display: none; }
-      body > #wrapper > div#main > div#context {
-        width: 100%; }
+      body > #wrapper > div#main > #context-wrapper {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        position: absolute;
+        top: 45px;
+        bottom: 0;
+        width: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll; }
+        body > #wrapper > div#main > #context-wrapper > #context {
+          padding: 15px 5px 5px 5px;
+          width: 100%;
+          height: 100%; }
 
 body.show-nav #wrapper > nav {
   left: 0; }
   body.show-nav #wrapper > nav > ul {
     left: 0;
     opacity: 1; }
-body.show-nav #wrapper #context {
+body.show-nav #wrapper #context-wrapper {
   pointer-events: none; }
 body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #wrapper .confirmation {
   margin-left: 80%; }
@@ -2174,7 +2194,9 @@ body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #w
   width: 100%;
   position: absolute;
   top: 0;
-  left: 0; }
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: scroll; }
   .modal-container > div {
     z-index: 999; }
 
@@ -3005,6 +3027,68 @@ div.focus-distraction-list-confirmation-modal {
       top: 0px; }
     .confirmation > button:disabled {
       opacity: 0.3; }
+  .confirmation .modal-buttons {
+    text-align: right; }
+    .confirmation .modal-buttons > button {
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
+      box-shadow: 0 2px 0 0 #9b9b9b;
+      -webkit-user-select: none;
+      background: #d4d4d4;
+      border: none;
+      color: #4a4a4a;
+      display: inline-block;
+      font-weight: bold;
+      padding: 3px 10px 4px;
+      position: relative;
+      text-align: center;
+      top: -2px;
+      border-top: 2px solid transparent;
+      text-decoration: none;
+      outline: 0;
+      width: 100%;
+      font-size: 1.2em;
+      padding: 13px 0 14px;
+      width: auto;
+      padding: 5px 20px 6px; }
+      .confirmation .modal-buttons > button:active, .confirmation .modal-buttons > button.active {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #bbb;
+        border-top: 2px solid #9b9b9b;
+        top: 0px; }
+      .confirmation .modal-buttons > button:disabled {
+        opacity: 0.3; }
+      .confirmation .modal-buttons > button.main {
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 2px 0 0 #5d0662;
+        box-shadow: 0 2px 0 0 #5d0662;
+        -webkit-user-select: none;
+        background: #a40aaa;
+        border: none;
+        color: white;
+        display: inline-block;
+        font-weight: bold;
+        padding: 3px 10px 4px;
+        position: relative;
+        text-align: center;
+        top: -2px;
+        border-top: 2px solid transparent;
+        text-decoration: none;
+        outline: 0;
+        width: 100%;
+        font-size: 1.2em;
+        padding: 13px 0 14px;
+        width: auto;
+        padding: 5px 20px 6px; }
+        .confirmation .modal-buttons > button.main:active, .confirmation .modal-buttons > button.main.active {
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          background: #8b0992;
+          border-top: 2px solid #5d0662;
+          top: 0px; }
 
 .help-container {
   display: -webkit-box;
@@ -4909,6 +4993,9 @@ div.calendar-page.date-picker {
   div.calendar-page.date-picker > ul {
     margin: 0 -5px; }
 
+.time-picker {
+  display: inline-block; }
+
 .date-picker {
   position: relative;
   padding: 52px 0 71px; }
@@ -5015,13 +5102,15 @@ div.calendar-page.date-picker {
         border-left: 15px solid #333333;
         padding-left: 15px;
         line-height: 22px;
-        white-space: pre-wrap; }
+        white-space: pre-wrap;
+        background: white; }
       .date-picker > ul > li > div.picker-task-add {
         border-left: 15px solid #333333;
         padding-left: 15px;
         line-height: 50px;
         white-space: pre-wrap;
-        color: #a40aaa; }
+        color: #a40aaa;
+        background: white; }
         .date-picker > ul > li > div.picker-task-add::before {
           content: '\f067';
           display: inline-block;

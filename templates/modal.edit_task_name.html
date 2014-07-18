@@ -8,6 +8,6 @@
 
     <textarea ng-model="newTaskTitle"></textarea>
 
-    <button class="done" ng-click="modalTask.title=newTaskTitle;saveTask(modalTask, 0, 0, modalTask.duration)">Spara</button>
+    <button class="done" ng-click="modalTask.rename(newTaskTitle);setModal('')">Spara</button>
   </div>
 </div>

@@ -36,7 +36,7 @@
 
   <form class="add-task" ng-show="timeLeft > 0">
     <div><input ng-model="newTask" placeholder="Skriv in, glöm och fortsätt fokusera!"></div>
-    <button ng-click="addTask()"><i class="fa fa-plus"></i></button>
+    <button ng-click="addTask(newTask)&&(newTask=''||showDistractionListForXSeconds())"><i class="fa fa-plus"></i></button>
   </form>
   <div id="distraction-list" ng-show="distractionList().length > 0">
     <span ng-click="showDistractionListForXSeconds()"><i class="fa fa-ban"></i> Distraktionslista</span>

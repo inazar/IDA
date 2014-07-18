@@ -1,12 +1,12 @@
-<div ng-init="periods = $tasks.getTimePeriods(); time = Date.now(); depth = 2; selection = [
-{start:periods[0].start,end:periods[0].end},
-{start:periods[1].start,end:periods[1].end}
-]" class="calendar-page date-picker">
+<!-- <div class="calendar-page date-picker"> -->
   <ul>
     <li id="tag{{tp.time}}" ng-init="show=true;"
-      ng-class="{ weekend: tp.isWeekend, 'hide-button': tp.depth === 2 }"
+      ng-class="{ weekend: tp.isWeekend, 'hide-button': tp.depth === 2,
+        'start-day': isMarked(task.startTime, tp),
+        'end-day': isMarked(task.endTime, tp) }"
       ng-style="{'margin-left': (tp.depth * 15) + 'px' }"
       ng-repeat="tp in selectDepth(periods, depth, selection) track by $index">
+
       <button ng-click="
         $parent.depth = $parent.depth !== tp.depth && tp.start == $parent.selection[tp.depth].start ? tp.depth : (tp.depth + 1);
         $parent.selection[tp.depth].start = tp.start;
@@ -16,13 +16,14 @@
                   && tp.start == $parent.selection[tp.depth].start
                   && tp.end == $parent.selection[tp.depth].end }"></button>
 
-      <span ng-click="(tp.start <= $parent.time && tp.end > $parent.time && (show=!show)); $parent.depth = tp.depth;$parent.time = tp.start" ng-class="{ 'active': tp.depth == $parent.depth && tp.start <= $parent.time && tp.end > $parent.time, 'no-sub-label': !tp.subLabel }">
+      <span ng-click="show=!show;$parent.depth=tp.depth;(isValid(tp)&&($parent.time=tp.start))" ng-class="{ 'active': tp.depth == $parent.depth && tp.start <= $parent.time && tp.end > $parent.time, 'no-sub-label': !tp.subLabel }">
         <span ng-bind="tp.label"></span><br>
         <i ng-show="tp.subLabel" ng-bind="tp.subLabel"></i>
       </span>
 
-      <div ng-init="pickerTasks = $tasks.getPickerTasks(tp.start, tp.end)" ng-if="show && tp.depth == 2 && tp.start <= $parent.time && tp.end > $parent.time" ng-bind="pickerTasks" class="picker-tasks"></div>
-      <div ng-if="show && tp.depth==2 && tp.start <= $parent.time && tp.end > $parent.time" class="picker-task-add" ng-click="addPickerTask(tp.time)"> Lägg till aktivitet</div>
+      <div ng-init="pickerTasks = $root.$tasks.getPickerTasks(tp.start, tp.end)" ng-if="show && tp.depth == 2 && tp.start <= $parent.time && tp.end > $parent.time" ng-bind="pickerTasks" class="picker-tasks"></div>
+
+      <div ng-if="$create && show && tp.depth==2 && tp.start <= $parent.time && tp.end > $parent.time" class="picker-task-add" ng-click="addPickerTask(tp.time)"> Lägg till aktivitet</div>
 
       <div class="exact-busyness">
         <div class="exact-times" ng-style="{ width: tp.exact + '%'}"></div>
@@ -44,7 +45,6 @@
           <i ng-show="tp.busyness >= 1.0" class="fa fa-exclamation"></i>
         </div>
       </div>
-
     </li>
   </ul>
-</div>
+<!-- </div> -->

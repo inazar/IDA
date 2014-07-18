@@ -2,7 +2,7 @@
 
   <form class="add-task">
     <div><input ng-model="newTask" placeholder="Skapa ny aktivitet..."></div>
-    <button ng-click="addTask()"><i class="fa fa-plus"></i></button>
+    <button ng-click="addTask(newTask);newTask=''"><i class="fa fa-plus"></i></button>
   </form>
 
   <div ng-hide="!$tasks.findWhere({finished:false,planned:false})" class="unplanned">
