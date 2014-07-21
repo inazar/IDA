@@ -1,38 +1,38 @@
 <div class="plan">
   <h3>Planera aktivitet</h3>
-  <button class="cancel" ng-click="modalTask.cancel(page);setModal('')"><i class="fa fa-times"></i></button>
+  <button class="cancel" ng-click="modal.task.cancel(page);modal.$dismiss()"><i class="fa fa-times"></i></button>
 
-  <input placeholder="Aktivitetens namn" class="task-title" type="text" ng-model="modalTask.title">
+  <input placeholder="Aktivitetens namn" class="task-title" type="text" ng-model="modal.task.title">
 
   <br><br>
 
-  <div ida-help='templates/modal.help.priority.html' class="priority"><!-- 
-     --><button ng-class="{ active: modalTask.complex == false && modalTask.important }" ng-click="modalTask.complex=false;modalTask.important=true;">A</button><!-- 
-     --><button ng-class="{ active: modalTask.complex && modalTask.important }" ng-click="modalTask.complex=true;modalTask.important=true;">AA</button><!-- 
-     --><button ng-class="{ active: modalTask.complex == false && !modalTask.important }" ng-click="modalTask.complex=false;modalTask.important=false;">B</button><!-- 
-     --><button ng-class="{ active: modalTask.complex && modalTask.important == false }" ng-click="modalTask.complex=true;modalTask.important=false;">BB</button></div>
+  <div ida-help class="priority"><!-- 
+     --><button ng-class="{ active: modal.task.complex == false && modal.task.important }" ng-click="modal.task.complex=false;modal.task.important=true;">A</button><!-- 
+     --><button ng-class="{ active: modal.task.complex && modal.task.important }" ng-click="modal.task.complex=true;modal.task.important=true;">AA</button><!-- 
+     --><button ng-class="{ active: modal.task.complex == false && !modal.task.important }" ng-click="modal.task.complex=false;modal.task.important=false;">B</button><!-- 
+     --><button ng-class="{ active: modal.task.complex && modal.task.important == false }" ng-click="modal.task.complex=true;modal.task.important=false;">BB</button></div>
 
   <br>
 
   <div ida-help class="type"><!-- 
-     --><button ng-class="{ active: modalTask.timeType == 'exact' }" ng-click="modalTask.timeType='exact'">Exakt tid</button><!-- 
-     --><button ng-class="{ active: modalTask.timeType == 'period' }" ng-click="modalTask.timeType='period';modalTask.updatePeriodInput();">Tidsperiod</button><!-- 
-     --><button ng-class="{ active: modalTask.timeType == 'none' }" ng-click="modalTask.timeType='none'">Ingen tid</button></div>
+     --><button ng-class="{ active: modal.task.timeType == 'exact' }" ng-click="modal.task.timeType='exact'">Exakt tid</button><!-- 
+     --><button ng-class="{ active: modal.task.timeType == 'period' }" ng-click="modal.task.timeType='period';modal.task.updatePeriodInput();">Tidsperiod</button><!-- 
+     --><button ng-class="{ active: modal.task.timeType == 'none' }" ng-click="modal.task.timeType='none'">Ingen tid</button></div>
 
   <br>
 
-  <div ida-help class="exact" ng-show="modalTask.timeType == 'exact'">
+  <div ida-help class="exact" ng-show="modal.task.timeType == 'exact'">
     <button class="start-time"
             ng-click="setDatepicker('templates/modal.pick_starttime.html')"
-            ng-class="{ 'selected': modalTask.startTime }"
-            ng-bind="modalTask.startTime ? 'Börjar ' + moment(modalTask.startTime).format('D MMMM YYYY') : 'Välj datum och tid'"></button>
+            ng-class="{ 'selected': modal.task.startTime }"
+            ng-bind="modal.task.startTime ? 'Börjar ' + moment(modal.task.startTime).format('D MMMM YYYY') : 'Välj datum och tid'"></button>
     <span>&nbsp;kl&nbsp;</span>
-    <div ida-timepicker model-date="modalTask.startTime"></div>
+    <div ida-timepicker model-date="modal.task.startTime"></div>
   </div>
 
-  <div ida-help class="period" ng-show="modalTask.timeType == 'period'">
+  <div ida-help class="period" ng-show="modal.task.timeType == 'period'">
     <label>
-      <select ng-change="modalTask.updatePeriodInput()" ng-init="modalTask.timeInputType = modalTask.startTime ? 'exact' : 'today';modalTask.updatePeriodInput();" ng-model="modalTask.timeInputType">
+      <select ng-change="modal.task.updatePeriodInput()" ng-init="modal.task.timeInputType = modal.task.startTime ? 'exact' : 'today';modal.task.updatePeriodInput();" ng-model="modal.task.timeInputType">
         <option value="today">Görs idag</option><!-- Today -->
         <option value="x-days">Görs inom X dagar</option><!-- Within X days (shows input field below where you enter number of days) -->
         <option value="tomorrow">Görs imorgon</option><!-- Tomorrow -->
@@ -46,32 +46,32 @@
     </label>
   </div>
 
-  <div class="within-x-days" ng-show="modalTask.timeType == 'period' && modalTask.timeInputType == 'x-days'">
-    Inom <input ng-change="modalTask.updatePeriodInput()" ng-model="modalTask.xDays" type="number" value="1"> dagar
+  <div class="within-x-days" ng-show="modal.task.timeType == 'period' && modal.task.timeInputType == 'x-days'">
+    Inom <input ng-change="modal.task.updatePeriodInput()" ng-model="modal.task.xDays" type="number" value="1"> dagar
   </div>
 
-  <div class="period" ng-show="modalTask.timeType == 'period'">
+  <div class="period" ng-show="modal.task.timeType == 'period'">
     <div class="datepickers">
-      <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html');modalTask.timeInputType='exact'"
-              ng-class="{ 'selected': modalTask.startTime }"
-              ng-bind="modalTask.startTime ? 'Från '+moment(modalTask.startTime).format('ddd D MMM YYYY') : 'Välj från datum'"></button>
+      <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html');modal.task.timeInputType='exact'"
+              ng-class="{ 'selected': modal.task.startTime }"
+              ng-bind="modal.task.startTime ? 'Från '+moment(modal.task.startTime).format('ddd D MMM YYYY') : 'Välj från datum'"></button>
 
-      <button ng-click="setDatepicker('templates/modal.pick_endtime.html');modalTask.timeInputType='exact'"
-              ng-class="{ 'selected': modalTask.endTime }"
-              ng-bind="modalTask.endTime ? 'Till '+moment(modalTask.endTime).format('ddd D MMM YYYY') : 'Välj till datum'"></button>
+      <button ng-click="setDatepicker('templates/modal.pick_endtime.html');modal.task.timeInputType='exact'"
+              ng-class="{ 'selected': modal.task.endTime }"
+              ng-bind="modal.task.endTime ? 'Till '+moment(modal.task.endTime).format('ddd D MMM YYYY') : 'Välj till datum'"></button>
     </div>
   </div>
 
   <br>
 
-  <div ng-show="modalTask.timeType == 'exact' || modalTask.timeType == 'period'">
+  <div ng-show="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
     <div ida-help class="duration">
-      <div ng-init="$parent.hours = Math.floor(modalTask.duration / 3600000)||undefined;$parent.minutes = Math.floor((modalTask.duration % 3600000) / 60000)||undefined;">
-        <div class="estimate-toggle" ng-click="modalTask.timeEstimated=!modalTask.timeEstimated">
-          <button ng-class="{ active: !modalTask.timeEstimated }">
+      <div ng-init="$parent.hours = Math.floor(modal.task.duration / 3600000)||undefined;$parent.minutes = Math.floor((modal.task.duration % 3600000) / 60000)||undefined;">
+        <div class="estimate-toggle" ng-click="modal.task.timeEstimated=!modal.task.timeEstimated">
+          <button ng-class="{ active: !modal.task.timeEstimated }">
             Tar ganska exakt
           </button>
-          <button ng-class="{ active: modalTask.timeEstimated }">
+          <button ng-class="{ active: modal.task.timeEstimated }">
             Tar cirka
           </button>
         </div>
@@ -83,11 +83,11 @@
 
   <br>
 
-  <div ng-show="modalTask.timeType=='exact'">
+  <div ng-show="modal.task.timeType=='exact'">
     <div ida-help class="reminder">
       <label>
-        <select ng-model="modalTask.reminderTimeAdvance"
-                ng-init="modalTask.reminderTimeAdvance = modalTask.reminderTimeAdvance||-1">
+        <select ng-model="modal.task.reminderTimeAdvance"
+                ng-init="modal.task.reminderTimeAdvance = modal.task.reminderTimeAdvance||-1">
           <option value="-1">Ingen påminnelse</option>
           <option value="1">Påminn vid start</option>
           <option value="300000">Påminn 5 minuter innan</option>
@@ -103,19 +103,19 @@
       </label>
     </div>
     <div ida-help="hidden" class="reminder">
-      <div class="reminder-time" ng-show="modalTask.reminderTimeAdvance==0" ng-init="modalTask.reminderTime=modalTask.reminderTime||Date.now()">
-        <button class="exact-reminder" ng-if="modalTask.reminderTimeAdvance==0"
+      <div class="reminder-time" ng-show="modal.task.reminderTimeAdvance==0" ng-init="modal.task.reminderTime=modal.task.reminderTime||Date.now()">
+        <button class="exact-reminder" ng-if="modal.task.reminderTimeAdvance==0"
               ng-click="setDatepicker('templates/modal.pick_remindertime.html')"
-              ng-class="{'selected':modalTask.reminderTime}"
-              ng-bind="modalTask.reminderTime?moment(modalTask.reminderTime).format('D MMMM YYYY'):'Välj datum och tid'"></button>
+              ng-class="{'selected':modal.task.reminderTime}"
+              ng-bind="modal.task.reminderTime?moment(modal.task.reminderTime).format('D MMMM YYYY'):'Välj datum och tid'"></button>
         <span>&nbsp;kl&nbsp;</span>
-        <div ida-timepicker model-date="modalTask.reminderTime"></div>
+        <div ida-timepicker model-date="modal.task.reminderTime"></div>
       </div>
     </div>
 
-    <div ida-help class="repeated" ng-init="modalTask.repeatPeriod = modalTask.repeatPeriod || 'once'">
+    <div ida-help class="repeated" ng-init="modal.task.repeatPeriod = modal.task.repeatPeriod || 'once'">
       <label>
-        <select ng-model="modalTask.repeatPeriod">
+        <select ng-model="modal.task.repeatPeriod">
           <option value="once">Upprepas inte</option>
           <option value="daily">Återkommer dagligen</option>
           <option value="weekly">Återkommer veckovis</option>
@@ -124,44 +124,44 @@
         </select>
       </label>
     </div>
-    <div ida-help="hidden" class="repeated"  ng-if="modalTask.repeatPeriod!='once'">
-      <div ng-if="modalTask.repeatPeriod!='weekly'">
+    <div ida-help="hidden" class="repeated"  ng-if="modal.task.repeatPeriod!='once'">
+      <div ng-if="modal.task.repeatPeriod!='weekly'">
         <span>Upprepa var</span>
-        <input class="period-input" ng-init="modalTask.repeatLength = modalTask.repeatLength || 1"
-               ng-model="modalTask.repeatLength"
+        <input class="period-input" ng-init="modal.task.repeatLength = modal.task.repeatLength || 1"
+               ng-model="modal.task.repeatLength"
                type="number">
-        <span ng-show="modalTask.repeatPeriod=='daily'">Dag</span>
-        <span ng-show="modalTask.repeatPeriod=='weekly'">Veck</span>
-        <span ng-show="modalTask.repeatPeriod=='monthly'">Månad</span>
-        <span ng-show="modalTask.repeatPeriod=='yearly'">År</span>
+        <span ng-show="modal.task.repeatPeriod=='daily'">Dag</span>
+        <span ng-show="modal.task.repeatPeriod=='weekly'">Veck</span>
+        <span ng-show="modal.task.repeatPeriod=='monthly'">Månad</span>
+        <span ng-show="modal.task.repeatPeriod=='yearly'">År</span>
         <br>
       </div>
-      <div class="weekly-repeat" ng-show="modalTask.repeatPeriod == 'weekly'">
-        <div ng-click="modalTask.checkDay(1)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(1) !== -1"></i></div> M
+      <div class="weekly-repeat" ng-show="modal.task.repeatPeriod == 'weekly'">
+        <div ng-click="modal.task.checkDay(1)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(1) !== -1"></i></div> M
         </div>
-        <div ng-click="modalTask.checkDay(2)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(2) !== -1"></i></div> T
+        <div ng-click="modal.task.checkDay(2)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(2) !== -1"></i></div> T
         </div>
-        <div ng-click="modalTask.checkDay(3)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(3) !== -1"></i></div> O
+        <div ng-click="modal.task.checkDay(3)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(3) !== -1"></i></div> O
         </div>
-        <div ng-click="modalTask.checkDay(4)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(4) !== -1"></i></div> T
+        <div ng-click="modal.task.checkDay(4)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(4) !== -1"></i></div> T
         </div>
-        <div ng-click="modalTask.checkDay(5)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(5) !== -1"></i></div> F
+        <div ng-click="modal.task.checkDay(5)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(5) !== -1"></i></div> F
         </div>
-        <div ng-click="modalTask.checkDay(6)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(6) !== -1"></i></div> L
+        <div ng-click="modal.task.checkDay(6)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(6) !== -1"></i></div> L
         </div>
-        <div ng-click="modalTask.checkDay(0)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modalTask.repeatDays.indexOf(0) !== -1"></i></div> S
+        <div ng-click="modal.task.checkDay(0)">
+          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(0) !== -1"></i></div> S
         </div>
       </div>
-      <div ng-if="modalTask.repeatPeriod!=='once'" ng-init="modalTask.repeatType=modalTask.repeatType||'week'">
+      <div ng-if="modal.task.repeatPeriod!=='once'" ng-init="modal.task.repeatType=modal.task.repeatType||'week'">
         <label class="repeat-end">
-          <select ng-model="modalTask.repeatType"
+          <select ng-model="modal.task.repeatType"
                   ng-change="">
             <option value="week">Upprepa under 1 vecka</option>
             <option value="month">Upprepa under en månad</option>
@@ -169,22 +169,22 @@
             <option value="date">Upprepa till en viss dag</option>
           </select>
         </label>
-        <div class="repeat-time" ng-if="modalTask.repeatType==='date'">
+        <div class="repeat-time" ng-if="modal.task.repeatType==='date'">
           <button class="repeat-limit"
                 ng-click="setDatepicker('templates/modal.pick_repeattime.html')"
-                ng-class="{'selected':modalTask.repeatLimit}"
-                ng-bind="modalTask.repeatLimit?moment(modalTask.repeatLimit).format('D MMMM YYYY'):'Välj datum'"></button>
+                ng-class="{'selected':modal.task.repeatLimit}"
+                ng-bind="modal.task.repeatLimit?moment(modal.task.repeatLimit).format('D MMMM YYYY'):'Välj datum'"></button>
         </div>
       </div>
     </div>
   </div>
 
-  <div ng-show="modalTask.timeType=='period'&&modalTask.startTime&&modalTask.endTime">
+  <div ng-show="modal.task.timeType=='period'&&modal.task.startTime&&modal.task.endTime">
     <div ida-help class="period-reminder">
       <label class="reminder">
-        <select ng-model="modalTask.reminderTimePeriod"
-                ng-change="modalTask.reminderTime = modalTask.setReminderTime()"
-                ng-init="modalTask.reminderTimePeriod = modalTask.reminderTimePeriod || (modalTask.reminderTime ? 'none' : 'firstDay')">
+        <select ng-model="modal.task.reminderTimePeriod"
+                ng-change="modal.task.reminderTime = modal.task.setReminderTime()"
+                ng-init="modal.task.reminderTimePeriod = modal.task.reminderTimePeriod || (modal.task.reminderTime ? 'none' : 'firstDay')">
           <option value="none">Ingen påminnelse</option>
           <option value="firstDay">Påminn första dagen</option>
           <option value="nearFirst">Påminn nära början</option>
@@ -194,22 +194,22 @@
           <option value="exact">Påminn exakt tid</option>
         </select>
       </label>
-      <div class="reminder-time" ng-init="modalTask.reminderTime = modalTask.reminderTime || Date.now()" ng-hide="modalTask.reminderTimePeriod==='none'">
+      <div class="reminder-time" ng-init="modal.task.reminderTime = modal.task.reminderTime || Date.now()" ng-hide="modal.task.reminderTimePeriod==='none'">
         <button class="exact-reminder"
-              ng-click="setDatepicker('templates/modal.pick_remindertime.html');modalTask.reminderTimePeriod='exact'"
-              ng-class="{ 'selected': modalTask.reminderTime }"
-              ng-bind="modalTask.reminderTime ? moment(modalTask.reminderTime).format('D MMMM YYYY') : 'Välj datum och tid'"></button>
+              ng-click="setDatepicker('templates/modal.pick_remindertime.html');modal.task.reminderTimePeriod='exact'"
+              ng-class="{ 'selected': modal.task.reminderTime }"
+              ng-bind="modal.task.reminderTime ? moment(modal.task.reminderTime).format('D MMMM YYYY') : 'Välj datum och tid'"></button>
         <span>&nbsp;kl&nbsp;</span>
-        <div ida-timepicker model-date="modalTask.reminderTime"></div>
+        <div ida-timepicker model-date="modal.task.reminderTime"></div>
       </div>
     </div>
   </div>
 
   <br>
 
-  <div ng-show="modalTask.timeType == 'exact' || modalTask.timeType == 'period'">
+  <div ng-show="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
     <label ida-help class="show-in-todo">
-      <select ng-model="modalTask.showInTodo">
+      <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Flytta bort när markerats Klar</option>
         <option value="until end of duration">Flytta bort efter tidsperioden</option>
       </select>
@@ -219,16 +219,16 @@
   <br>
 
   <div ng-show="
-    (modalTask.title) &&
-    (modalTask.important == true || modalTask.important == false) &&
-    (modalTask.complex == true || modalTask.complex == false) &&
-    (modalTask.repeatPeriod === 'once' || modalTask.repeatType !=='date' || modalTask.repeatLimit) &&
+    (modal.task.title) &&
+    (modal.task.important == true || modal.task.important == false) &&
+    (modal.task.complex == true || modal.task.complex == false) &&
+    (modal.task.repeatPeriod === 'once' || modal.task.repeatType !=='date' || modal.task.repeatLimit) &&
     (
-      (modalTask.timeType == 'exact'&& modalTask.startTime) ||
-      (modalTask.timeType == 'period'&& modalTask.startTime && modalTask.endTime) ||
-      (modalTask.timeType == 'none' && confirmNoTime)
+      (modal.task.timeType == 'exact'&& modal.task.startTime) ||
+      (modal.task.timeType == 'period'&& modal.task.startTime && modal.task.endTime) ||
+      (modal.task.timeType == 'none' && confirmNoTime)
     )">
-    <button class="save" ng-click="saveTask(modalTask, hours, minutes)">Spara</button>
+    <button class="save" ng-click="modal.$close({hours: hours, minutes: minutes}, 100)">Spara</button>
   </div>
 
 </div>

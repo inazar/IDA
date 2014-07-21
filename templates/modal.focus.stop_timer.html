@@ -1,26 +1,26 @@
 <div ng-init="haveDistractions = $tasks.distractionListTasks(loadFocusTime).length > 0" class="focus-stop-timer-modal">
   <div>
-    <button class="cancel" ng-click="setModal('')"><i class="fa fa-times"></i></button>
+    <button class="cancel" ng-click="modal.$dismiss()"><i class="fa fa-times"></i></button>
 
     <div class="divider"></div>
 
     <!-- Clear the timer: -->
-    <button class="reset-timer" ng-click="$parent.timeLeft = 0;setModal('')">Ställ om timern</button>
+    <button class="reset-timer" ng-click="$parent.timeLeft = 0;modal.$close('stop')">Ställ om timern</button>
 
     <!-- If distraction list is empty, leave the focus page and go to the todo page: -->
     <!-- If distraction list is NOT empty, clear the timer and open up modal.focus.distraction_list_confirmation.html: -->
     <button ng-hide="haveDistractions" class="stop-focussing"
-      ng-click="$parent.timeLeft = 0;$location.path('/todo');setModal('')">
+      ng-click="$parent.timeLeft = 0;$location.path('/todo');modal.$close('todo')">
       Sluta fokusera
     </button>
 
     <button ng-show="haveDistractions" class="stop-focussing"
-      ng-click="$parent.timeLeft = 0;$parent.showFocusInputs = false;setModal('')">
+      ng-click="$parent.timeLeft = 0;$parent.showFocusInputs = false;modal.$close('dlist')">
       Sluta fokusera och gå igenom distraktionslistan
     </button>
 
 
     <!-- Just close the modal: -->
-    <button class="continue-focussing" ng-click="setModal('')">Fortsätt fokusera</button>
+    <button class="continue-focussing" ng-click="modal.$close()">Fortsätt fokusera</button>
   </div>
 </div>

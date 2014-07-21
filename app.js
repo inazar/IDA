@@ -27333,267 +27333,296 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
   $locationProvider.html5Mode(false);
 
-}]).run(['$rootScope', '$location', '$anchorScroll', '$route', '$timeout', '$window', '$document', '$q', 'idaTasks', 'idaEvents', 'idaConfig', 'idaPopup', function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popup) {
+}]).run([
+  '$rootScope',
+  '$location',
+  '$anchorScroll',
+  '$route',
+  '$timeout',
+  '$window',
+  '$document',
+  '$q',
+  'idaTasks',
+  'idaEvents',
+  'idaConfig',
+  'idaPopup',
+  'idaLoading',
+  'idaModal',
+  function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popup, $loading, $modal) {
 
-  angular.extend($rootScope, {
-    $config: $config,
-    $tasks: $tasks,
-    $events: $events,
-    $location: $location,
-    title: 'AHDH App',
-    loadFocusTime: null,
-    timeLeft: null,
-    todoFilter: 'today',
-    sound1: new Audio('sound1.mp3'),
-    sound2: new Audio('sound2.mp3'),
-    moment: moment,
-    Date: Date,
-    Math: Math,
-    $timer: {},
-    repaint: function () {
-      // redraw the whole view
-      $document[0].body.style.display = 'none';
-      $timeout(function(){ $document[0].body.style.display = 'block'; });
-    },
-    reload: function () {
-      $rootScope.$tasks.save();
-      $route.reload();
-    },
-    focus: function (id) {
-      // start focus mode
-      $tasks.focus(id);
-      $location.path('/fokusera-pa-aktivitet/' + id).replace();
-    },
-    moveFinishedTasksToArchive: function () {
-      $tasks.moveFinishedTasksToArchive();
-      $rootScope.sound1.play();
-    },
-    postpone: function(task, days) {
-      task.postpone(days);
-      $rootScope.setModal('');
-      $rootScope.getTodoList();
-    },
-    replan: function (task, hours, minutes) {
-      if (!hours&&!minutes) { return; }
-      switch (task.timeType) {
-        case 'exact':
-          task.reminderTimeAdvance = '0';
-          break;
-        case 'period':
-          task.reminderTimePeriod = 'exact';
-          break;
-      }
-      task.reminderTime=moment(task.reminderTime).hours(hours).minutes(minutes).seconds(0).milliseconds(0)._d.valueOf();
-      $rootScope.saveTask(task, null, null, task.duration);
-      $rootScope.setModal('');
-      $rootScope.getTodoList();
-    },
-    addTask: function (name, parent) {
-      if (!name) { return; }
-      return $tasks.add(name, parent);
-    },
-    saveTask: function(task, hours, minutes, duration) {
-      task.saveTask(hours, minutes, duration);
-      $route.reload();
-      // if ($rootScope.page === '/todo') { $location.path('/todo'); }
-      // else if ($rootScope.page === '/kalender') { $location.path('/kalender'); }
-      $timeout(function () { $rootScope.setModal(''); }, 100);
-    },
-    closeApp: function(){
-      return (navigator.app && $rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) ? navigator.app.exitApp() : $location.path('/todo');
-    },
-    getTodoList: function () { return ($rootScope.$list = $tasks.getTodoList($rootScope.todoFilter)); },
-    addPickerTask: function (time) {
-      var task = $tasks.add({timeType: 'exact', startTime: moment(time).hour(12)._d.valueOf()});
-      $rootScope.setModal('templates/modal.plan.html', task.id);
-    },
-    completeTask: function (task) {
-      // task.checked = true;
-      $popup.confirm({
-        type: 'taskComplete',
-        sound: $rootScope.sound2,
-        title: 'Klar aktiviteter',
-        template: '<div class="popup-icon"><i class="fa fa-archive"></i></div>' +
-                  '<div class="popup-text">Klar aktiviteter finns <br/> kvar på Arkiv-sidan.</div>',
-        cancelText: 'Ångra',
-        cancelType: '',
-        okText: 'Bra',
-        okType: '',
-      }).then(function (agree) {
-        if (agree) {
-          task.finished = true;
-          $tasks.save();
-          $rootScope.sound1.play();
+    angular.extend($rootScope, {
+      $config: $config,
+      $tasks: $tasks,
+      $events: $events,
+      $location: $location,
+      title: 'AHDH App',
+      loadFocusTime: null,
+      timeLeft: null,
+      todoFilter: 'today',
+      sound1: new Audio('sound1.mp3'),
+      sound2: new Audio('sound2.mp3'),
+      moment: moment,
+      Date: Date,
+      Math: Math,
+      $timer: {},
+      $modal: null,
+      repaint: function () {
+        // redraw the whole view
+        $document[0].body.style.display = 'none';
+        $timeout(function(){ $document[0].body.style.display = 'block'; });
+      },
+      reload: function () {
+        $rootScope.$tasks.save();
+        $route.reload();
+      },
+      focus: function (id) {
+        // start focus mode
+        $tasks.focus(id);
+        $location.path('/fokusera-pa-aktivitet/' + id).replace();
+      },
+      moveFinishedTasksToArchive: function () {
+        $tasks.moveFinishedTasksToArchive();
+        $rootScope.sound1.play();
+      },
+      postpone: function(task, days) {
+        task.postpone(days);
+        $rootScope.getTodoList();
+      },
+      replan: function (task, hours, minutes) {
+        if (!hours&&!minutes) { return; }
+        switch (task.timeType) {
+          case 'exact':
+            task.reminderTimeAdvance = '0';
+            break;
+          case 'period':
+            task.reminderTimePeriod = 'exact';
+            break;
         }
-      }, function () {
-          // rejected as user decided not avoid this popup
-          task.finished = true;
-          $tasks.save();
-          $rootScope.sound1.play();
-      });
-    },
-    setModal: function(modal, id, cb){
-      if ($rootScope.modalCallback) { $rootScope.modalCallback(); }
-      $rootScope.modalCallback = cb;
-      $document[0].getElementById('loading').style.display = 'block';
-      $timeout(function(){
-        $rootScope.$apply(function(){
-          $rootScope.modalTask = id ? $tasks.get(id) : {};
-          $rootScope.modal = modal;
-        });
-        $timeout(function(){
-          $document[0].getElementById('loading').style.display = 'none';
-          $rootScope.repaint();
-        });
-      });
-    },
-    setDatepicker: function(modal){
-      $document[0].getElementById('loading').style.display = 'block';
-      $timeout(function(){
-        $rootScope.$apply(function(){ $rootScope.datepicker = modal; });
-        $timeout(function(){
-          $document[0].getElementById('loading').style.display = 'none';
-          $document[0].body.scrollTop = 0;
-          $rootScope.repaint();
-        });
-      });
-    },
-    setReminderTime: function (task, type) {
-      var p;
-      switch (type) {
-        case 'firstDay': return task.startTime;
-        case 'lastDay': return task.endTime;
-        case 'nearFirst': p = 0.15; break;
-        case 'nearLast': p = 0.5; break;
-        case 'middle': p = 0.85; break;
-        case 'exact': return task.reminderTime || (task.reminderTimeAdvance ? task.startTime - task.reminderTimeAdvance : task.reminderTime);
-        default: task.reminder = false; return;
-      }
-      return moment(task.startTime + (task.endTime - task.startTime) * p).hours(10).minutes(0).seconds(0).milliseconds(0)._d.valueOf();
-    }
-  });
-
-  $rootScope.getTodoList();
-
-  function _updateReminder () {
-    if ($rootScope.modalTask && $rootScope.modalTask.reminderTimePeriod && $rootScope.modalTask.reminderTimePeriod !== 'exact' && $rootScope.modalTask.startTime && $rootScope.modalTask.endTime) { $rootScope.modalTask.setReminderTime(); }
-  }
-  $rootScope.$watch('modalTask.startTime', _updateReminder);
-  $rootScope.$watch('modalTask.endTime', _updateReminder);
-
-  $rootScope.$watch('modalTask.timeType', function (curr, prev) {
-    if (curr === 'none' && prev !== 'none') {
-      $popup.confirm({
-        type: 'notimeTask',
-        template: '<div class="popup-text"><p>OBS! Saknas tidsinställning syns bara aktiviteten i Att-Göra-listan om det är en underaktivitet. Annars riskerar den glömmas.</p><p>Är du säker på att du vill låta bli att sätta en tid?</p></div>',
-        cancelText: 'Nej',
-        okText: 'Ja',
-        okType: 'active'
-      }).then(function (agree) { if (!agree) { $rootScope.modalTask.timeType = ''; } });
-    }
-  });
-
-  $rootScope.$watch('$timer.type', function (curr) {
-    var time;
-    switch (curr) {
-      case 'period':
-        $rootScope.$timer.timerHours = 0;
-        $rootScope.$timer.timerMinutes = 30;
-        break;
-      case 'today':
-        time = moment(Date.now()+30 * 60 * 1000);
-        $rootScope.$timer.timerHours = time.hour();
-        $rootScope.$timer.timerMinutes = time.minute();
-        break;
-      case 'other':
-        angular.extend($rootScope.modalTask, {
-          timeType: 'exact',
-          duration: 1800000,
-          complex: false,
-          important: true
-        });
-        $rootScope.setModal('templates/modal.plan.html', $rootScope.modalTask.id, function () {
-          if ($rootScope.page === '/todo') { $tasks.reload(); $route.reload(); }
-        });
-        $timeout(function () {
-          $popup.confirm({
-            type: 'planningReminder',
-            withPrevent: false,
-            withLimit: 3,
-            template: 'Om du vill sätta en påminnelse på en annan dag än idag måste du planera aktivietet. Här har IDA hjälpt tid med en standardplanering, så om du bara vill göra en enkel påminnelser tryck på knappen under "Påminn exakt tid".',
-            okText: 'Ok',
-            cancelText: 'Ångra'
-          }).then(function (agree) {
-            if (!agree) {
-              $rootScope.setModal('templates/modal.timer.html', $rootScope.modalTask.id, $rootScope.reload);
-            }
+        task.reminderTime=moment(task.reminderTime).hours(hours).minutes(minutes).seconds(0).milliseconds(0)._d.valueOf();
+        task.saveTask(null, null, task.duration);
+        $rootScope.getTodoList();
+        $rootScope.modal.$close();
+      },
+      addTask: function (name, parent) {
+        if (!name) { return; }
+        return $tasks.add(name, parent);
+      },
+      closeApp: function(){
+        return (navigator.app && $rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) ? navigator.app.exitApp() : $location.path('/todo');
+      },
+      getTodoList: function () { return ($rootScope.$list = $tasks.getTodoList($rootScope.todoFilter)); },
+      warnOverbook: function (warn) {
+        var d = true;
+        if (warn) {
+          d = $popup.confirm({
+            type: 'overbook',
+            title: 'Overbook warning',
+            template: '<div class="popup-icon"><i class="fa fa-exclamation-circle red"></i></div>' +
+                      '<div class="popup-text">This day is overbooked</div>',
+            cancelText: 'Ångra',
+            okText: 'Bra',
           });
+        }
+        return $q.when(d);
+      },
+      completeTask: function (task) {
+        // task.checked = true;
+        $popup.confirm({
+          type: 'taskComplete',
+          sound: $rootScope.sound2,
+          title: 'Klar aktiviteter',
+          template: '<div class="popup-icon"><i class="fa fa-archive"></i></div>' +
+                    '<div class="popup-text">Klar aktiviteter finns <br/> kvar på Arkiv-sidan.</div>',
+          cancelText: 'Ångra',
+          cancelType: '',
+          okText: 'Bra',
+          okType: '',
+        }).then(function (agree) {
+          if (agree) {
+            task.finished = true;
+            $tasks.save();
+            $rootScope.sound1.play();
+          }
+        }, function () {
+            // rejected as user decided not avoid this popup
+            task.finished = true;
+            $tasks.save();
+            $rootScope.sound1.play();
         });
-        break;
-    }
-  });
-
-  $rootScope.$on('$routeChangeSuccess', function (e, route) {
-    if (route.$$route) {
-      $rootScope.page = route.$$route.originalPath;
-    }
-    $rootScope.showNav = false;
-    $tasks.collapse(true);
-  });
-
-  $window.onload = function () {
-    var wrapper = $document[0].getElementById('wrapper');
-    $rootScope.$watch('showNav', function(showNav) {
-      if (showNav) { wrapper.ontouchmove = function(e) { e.preventDefault(); }; }
-      else { wrapper.ontouchmove = undefined; }
-    });
-  };
-
-  $document[0].addEventListener('deviceready', function() {
-    var notification, vibrate;
-    $document[0].addEventListener('backbutton', function() { return false; }, false);
-    if ($window.device && $window.device.platform !== 'Android') { return; }
-    $rootScope.sound1 = new Media('file://' + location.pathname.replace('index.html', 'sound1.mp3'));
-    $rootScope.sound2 = new Media('file://' + location.pathname.replace('index.html', 'sound2.mp3'));
-    if ((notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
-      notification.local.ontrigger = function (id, state) {
+      },
+      editTask: function (id) {
+        // find the task
         var task = $tasks.get(id);
-        vibrate(1000);
-        if (state === 'foreground' && task && task.title) {
-          $popup.confirm({
-            type: 'notification',
-            title: 'Påminnelse',
-            template: '<div class="text-center">'+task.title+'</div>',
-            okText: 'Fokusera',
-            cancelText: 'Ok'
-          }).then(function (check) {
-            if (check) {
-              $rootScope.setModal('');
-              $location.path('/fokusera-pa-aktivitet/' + id).replace();
-            }
-          });
+        if (task.repeatTask) {
+          // if task is repeated
+          task = $tasks.get(task.repeatTask)._strip();
+          var start = moment(task.startTime);
+          task.startTime = moment().hours(start.hours()).minutes(start.minutes()).seconds(0).milliseconds(0).valueOf();
+          if (task.repeatType === 'date') {
+            task.repeatLimit = moment(task.repeatLimit).add('milliseconds', task.startTime - start.valueOf());
+          }
+          delete task.id;
+          task = $tasks.add(task);
         }
-      };
-    }
-  }, false);
+        return $modal('templates/modal.plan.html', task).$promise.then(function (obj) {
+          task.saveTask(obj.hours, obj.minutes);
+          $rootScope.getTodoList();
+          return obj;
+        }, function () {
+          $tasks.reload();
+        });
+      },
+      setModal: function(modal, id, success) {
+        modal = $modal(modal, id ? $tasks.get(id) : $tasks.create());
+        if (success) { modal.$promise.then(success); }
+        return modal.$promise;
+      },
+      setDatepicker: function(modal){
+        $loading.show();
+        $timeout(function(){
+          $rootScope.$apply(function(){ $rootScope.datepicker = modal; });
+          $timeout(function(){
+            $loading.hide();
+            $document[0].body.scrollTop = 0;
+            $rootScope.repaint();
+          });
+        });
+      },
+      setReminderTime: function (task, type) {
+        var p;
+        switch (type) {
+          case 'firstDay': return task.startTime;
+          case 'lastDay': return task.endTime;
+          case 'nearFirst': p = 0.15; break;
+          case 'nearLast': p = 0.5; break;
+          case 'middle': p = 0.85; break;
+          case 'exact': return task.reminderTime || (task.reminderTimeAdvance ? task.startTime - task.reminderTimeAdvance : task.reminderTime);
+          default: task.reminder = false; return;
+        }
+        return moment(task.startTime + (task.endTime - task.startTime) * p).hours(10).minutes(0).seconds(0).milliseconds(0)._d.valueOf();
+      }
+    });
 
-  if (parseInt(localStorage.getItem('organiseReminder') || 0, 10) < Date.now()) {
-    var time = moment(Date.now() + 1209600000).hour(16).minute(0)._d, notification;
-    localStorage.setItem('organiseReminder', '' + time.valueOf());
-    if ($window.plugin && (notification = $window.plugin.notification) && notification.local) {
-      notification.local.add({
-        id:         ''+Math.floor(Math.random()*1000000000000),
-        date:       time,
-        message:    'Det är dags att se över dina aktiviteter. Gå igenom listan och se om det finns någonting du behöver planera om.',
-        title:      'Påminnelse',
-        autoCancel: true
+    $rootScope.getTodoList();
+
+    function _updateReminder () {
+      if ($rootScope.modal && $rootScope.modal.task && $rootScope.modal.task.reminderTimePeriod && $rootScope.modal.task.reminderTimePeriod !== 'exact' && $rootScope.modal.task.startTime && $rootScope.modal.task.endTime) { $rootScope.modal.task.setReminderTime(); }
+    }
+    $rootScope.$watch('modal.task.startTime', _updateReminder);
+    $rootScope.$watch('modal.task.endTime', _updateReminder);
+
+    $rootScope.$watch('modal.task.timeType', function (curr, prev) {
+      if (curr === 'none' && prev !== 'none') {
+        $popup.confirm({
+          type: 'notimeTask',
+          template: '<div class="popup-text"><p>OBS! Saknas tidsinställning syns bara aktiviteten i Att-Göra-listan om det är en underaktivitet. Annars riskerar den glömmas.</p><p>Är du säker på att du vill låta bli att sätta en tid?</p></div>',
+          cancelText: 'Nej',
+          okText: 'Ja',
+          okType: 'active'
+        }).then(function (agree) { if (!agree) { $rootScope.modal.task.timeType = ''; } });
+      }
+    });
+
+    $rootScope.$watch('$timer.type', function (curr) {
+      var time;
+      switch (curr) {
+        case 'period':
+          $rootScope.$timer.timerHours = 0;
+          $rootScope.$timer.timerMinutes = 30;
+          break;
+        case 'today':
+          time = moment(Date.now()+30 * 60 * 1000);
+          $rootScope.$timer.timerHours = time.hour();
+          $rootScope.$timer.timerMinutes = time.minute();
+          break;
+        case 'other':
+          angular.extend($rootScope.modal.task, {
+            timeType: 'exact',
+            duration: 1800000,
+            complex: false,
+            important: true
+          });
+          $rootScope.editTask($rootScope.modal.task.id).finally($rootScope.modal.$dismiss);
+          $timeout(function () {
+            $popup.confirm({
+              type: 'planningReminder',
+              withPrevent: false,
+              withLimit: 3,
+              template: 'Om du vill sätta en påminnelse på en annan dag än idag måste du planera aktivietet. Här har IDA hjälpt tid med en standardplanering, så om du bara vill göra en enkel påminnelser tryck på knappen under "Påminn exakt tid".',
+              okText: 'Ok',
+              cancelText: 'Ångra'
+            }).then(function (agree) {
+              if (!agree) {
+                $rootScope.modal.$dismiss();
+              }
+            });
+          });
+          break;
+      }
+    });
+
+    $rootScope.$on('$routeChangeSuccess', function (e, route) {
+      if (route.$$route) {
+        $rootScope.page = route.$$route.originalPath;
+      }
+      $rootScope.showNav = false;
+      $tasks.collapse(true);
+    });
+
+    $window.onload = function () {
+      var wrapper = $document[0].getElementById('wrapper');
+      $rootScope.$watch('showNav', function(showNav) {
+        if (showNav) { wrapper.ontouchmove = function(e) { e.preventDefault(); }; }
+        else { wrapper.ontouchmove = undefined; }
       });
+    };
+
+    $document[0].addEventListener('deviceready', function() {
+      var notification, vibrate;
+      $document[0].addEventListener('backbutton', function() { return false; }, false);
+      if ($window.device && $window.device.platform !== 'Android') { return; }
+      $rootScope.sound1 = new Media('file://' + location.pathname.replace('index.html', 'sound1.mp3'));
+      $rootScope.sound2 = new Media('file://' + location.pathname.replace('index.html', 'sound2.mp3'));
+      if ((notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
+        notification.local.ontrigger = function (id, state) {
+          var task = $tasks.get(id);
+          vibrate(1000);
+          if (state === 'foreground' && task && task.title) {
+            $popup.confirm({
+              type: 'notification',
+              title: 'Påminnelse',
+              template: '<div class="text-center">'+task.title+'</div>',
+              okText: 'Fokusera',
+              cancelText: 'Ok'
+            }).then(function (check) {
+              if (check) {
+                $rootScope.modal.$close();
+                $location.path('/fokusera-pa-aktivitet/' + id).replace();
+              }
+            });
+          }
+        };
+      }
+    }, false);
+
+    if (parseInt(localStorage.getItem('organiseReminder') || 0, 10) < Date.now()) {
+      var time = moment(Date.now() + 1209600000).hour(16).minute(0)._d, notification;
+      localStorage.setItem('organiseReminder', '' + time.valueOf());
+      if ($window.plugin && (notification = $window.plugin.notification) && notification.local) {
+        notification.local.add({
+          id:         ''+Math.floor(Math.random()*1000000000000),
+          date:       time,
+          message:    'Det är dags att se över dina aktiviteter. Gå igenom listan och se om det finns någonting du behöver planera om.',
+          title:      'Påminnelse',
+          autoCancel: true
+        });
+      }
     }
+
+    $timeout(function(){ $document[0].getElementById('loading').style.display = 'none'; });
+
   }
-
-  $timeout(function(){ $document[0].getElementById('loading').style.display = 'none'; });
-
-}]);
+]);
 
 /* jshint strict: false */
 /* global App */
@@ -27776,12 +27805,12 @@ App.controller('StatisticsCtrl', ['$scope', '$title', 'idaTasks', 'idaEvents', f
     });
   };
 
-  $scope.$watch(function(){ return $scope.$parent.modalTask.endTime + $scope.$parent.modalTask.startTime; }, $scope.refresh);
+  $scope.$watch(function(){ return $scope.$parent.modal.task.endTime + $scope.$parent.modal.task.startTime; }, $scope.refresh);
 }]);
 
 /* jshint strict: false */
 /* global App, moment, _ */
-App.directive('idaCalendar', ['idaTasks', '$timeout', '$location', '$anchorScroll', function ($tasks, $timeout, $location, $anchorScroll) {
+App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$anchorScroll', function ($tasks, $timeout, $q, $location, $anchorScroll) {
   return {
     restrict: 'A',
     transclude: true,
@@ -27798,11 +27827,23 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$location', '$anchorScrol
         task: $scope.task || {},
         depth: 2,
         periods: $tasks.getTimePeriods(),
+        addPickerTask: function (time, warn) {
+          $scope.$root.warnOverbook(warn).then(function (agree) {
+            if (agree) {
+              var task = $tasks.add({timeType: 'exact', startTime: moment(time).hour(10).valueOf()});
+              $scope.$root.setModal('templates/modal.plan.html', task.id);
+            }
+          });
+        },
         isMarked: function (time, tp) {
           return tp.depth === 2 && time && Math.floor(tp.start/1000)*1000 <= time && tp.end > time;
         },
         isValid: function (tp) {
-          return $scope.$validate ? $scope.$eval($scope.$validate, tp) : true;
+          if (tp.start === moment($scope.time).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf()) { return; }
+          $scope.tp = tp;
+          $q.when($scope.$validate ? $scope.$eval($scope.$validate) : true).then(function (agree) {
+            if (agree) { $scope.time = tp.start; }
+          });
         },
         selectDepth: function(periods, depth, selection) {
           return _.filter(periods, function(tp){
@@ -28112,6 +28153,62 @@ App.factory('idaConfig', function () {
   }
   return angular.extend(defaults, current);
 });
+
+/* jshint strict: false */
+/* global App */
+
+App.service('idaModal', [
+  '$rootScope',
+  '$document',
+  '$timeout',
+  '$q',
+  'idaLoading',
+  function($rootScope, $document, $timeout, $q, $loading) {
+
+    var _modals = [];
+
+    function _popModal () {
+      _modals.shift();
+      $timeout(function(){
+        $rootScope.modal = _modals.length ? _modals[0] : null;
+        $loading.hide();
+      });
+    }
+
+    return function (template, task, options) {
+      var d = $q.defer();
+      options = angular.extend({
+        template: template,
+        task: task,
+        $promise: d.promise,
+        $dismiss: function (err) {
+          _popModal();
+          d.reject(err);
+        },
+        $close: function (res, delay) {
+          if (delay) {
+            $timeout(function () {
+              _popModal();
+              d.resolve(res);
+            }, delay);
+          } else {
+            _popModal();
+            d.resolve(res);
+          }
+        }
+      }, options);
+
+      _modals.unshift(options);
+      $loading.show();
+      $timeout(function(){
+        $rootScope.modal = options;
+        $loading.hide(true);
+      });
+
+      return options;
+    };
+  }
+]);
 
 /* jshint strict: false */
 /* global App, _ */
@@ -28617,6 +28714,30 @@ App.service('idaEvents', function () {
 
 /* jshint strict: false */
 /* global App */
+App.service('idaLoading', ['$document', '$timeout', function ($document, $timeout) {
+  var Loading = function () {};
+
+  Loading.prototype.show = function(time) {
+    $document[0].getElementById('loading').style.display = 'block';
+    var _this = this;
+    if (time) { $timeout(function () { _this.hide(); }, time); }
+  };
+
+  Loading.prototype.hide = function(skip) {
+    $timeout(function(){
+      $document[0].getElementById('loading').style.display = 'none';
+      if (!skip) {
+        $document[0].body.style.display = 'none';
+        $timeout(function(){ $document[0].body.style.display = 'block'; });
+      }
+    });
+  };
+
+  return new Loading();
+}]);
+
+/* jshint strict: false */
+/* global App */
 App.service('idaPopups', function () {
 
   var Popups = function (popups) {
@@ -28694,8 +28815,7 @@ App.service('idaPopups', function () {
 App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaConfig', function ($window, $timeout, $interval, $events, $config) {
 
   var _tasks;
-	var Task = function (task) {
-    this.id = ''+Math.floor(Math.random()*1000000000000);
+	var Task = function (task, collection) {
     this.planned = false;
     this.isChild = false;
     this.finished = false;
@@ -28708,13 +28828,19 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
     this.showInTodoFrom = 0;
     this.children = [];
     this.timeCreated = new Date().valueOf();
-    _.extend(this, task);
+    if (task) {  _.extend(this, task);}
     this._durationTimer = null;
+    if (!this.id) {
+      this.id = ''+Math.floor(Math.random()*1000000000000);
+    }
+    this._collection = collection;
 	};
 
   Task.prototype._strip = function() {
     var clone = _.extend({}, this);
     delete clone._durationTimer;
+    delete clone._collection;
+    delete clone._parent;
     return clone;
   };
 
@@ -28797,8 +28923,9 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
     }
     this.planned = true;
     if (this.repeatTask) {
+      var _now = moment().seconds(0).milliseconds(0).valueOf();
       _tasks.tasks = _.reject(_tasks.tasks, function (t) {
-        return t.repeatTask === _this.repeatTask && t.id !== _this.id;
+        return t.repeatTask === _this.repeatTask && t.id !== _this.id && t.startTime >= _now;
       });
       delete this.repeatTask;
     }
@@ -28814,7 +28941,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         complex: this.complex,
         title: this.title,
         timeType: this.timeType,
-        repeatthis: this.id,
+        repeatTask: this.id,
         repeated: this.repeated,
         repeatPeriod: this.repeatPeriod,
         repeatLength: this.repeatLength,
@@ -28973,16 +29100,29 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
   };
 
 	var Tasks = function (tasks) {
+    var _this = this;
     if (tasks) {
-      this.tasks = _.map(tasks, function (task) { return task instanceof Task ? task : new Task(); });
+      this.tasks = _.map(tasks, function (task) {
+        if (task instanceof Task) {
+          task._collection = _this;
+          return task;
+        } else {
+          return new Task(task, _this);
+        }
+      });
     } else {
       this.reload();
     }
 	};
 
+  Tasks.prototype.collection = function(tasks) {
+    return new Tasks(tasks);
+  };
+
   Tasks.prototype.reload = function() {
+      var _this = this;
       try {
-        this.tasks = _.map(JSON.parse(localStorage.getItem('tasks')) || [], function (task) { return new Task(task); });
+        this.tasks = _.map(JSON.parse(localStorage.getItem('tasks')) || [], function (task) { return new Task(task, _this); });
       } catch (e) {
         this.tasks = [];
       }
@@ -29006,8 +29146,8 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
     }
   };
 
-  // Add a task
-  Tasks.prototype.add = function (obj, parent) {
+  // Create a task
+  Tasks.prototype.create = function (obj, parent) {
     var task = new Task(typeof obj === 'string' ? { title: obj } : obj);
     if (parent) {
       parent = _.findWhere(this.tasks, { id: parent });
@@ -29016,13 +29156,18 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       parent.isParent = true;
       parent.showChildren = true;
       task.parent = parent.title;
-      task.pid = parent.id;
       task.title = '';
       task.startTime = parent.startTime;
       task.endTime = parent.endTime;
       task.timeType = parent.timeType;
       task.isChild = true;
     }
+    return task;
+  };
+
+  // Add a task
+  Tasks.prototype.add = function (obj, parent) {
+    var task = this.create(obj, parent);
     this.tasks.push(task);
     $events.add('taskCreated');
     this.save();
@@ -29030,6 +29175,11 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
   };
 
   // Filter tasks based on criteria
+  Tasks.prototype.filter = function(object) {
+    return _.uniq(_.sortBy(_.where(this.tasks, object), function(t){ return t.startTime; }), function(t) { return t.repeatTask || t.id; });
+  };
+
+  // Filter repeated tasks set
   Tasks.prototype.filter = function(object) {
     return _.uniq(_.sortBy(_.where(this.tasks, object), function(t){ return t.startTime; }), function(t) { return t.repeatTask || t.id; });
   };
@@ -29072,15 +29222,15 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
   };
 
   // Delete task
-  Tasks.prototype.delete = function (id) {
+  Tasks.prototype.delete = function (id, repeated) {
     var task = this.get(id);
-    if(task.repeatTask) {
+    if (repeated && task.repeatTask) {
       this.tasks = _.reject(this.tasks, function(t) {
-        if(t.repeatTask === task.repeatTask && t.id !== task.id) { return true; }
+        if (t.repeatTask === task.repeatTask && t.id !== task.id) { return true; }
         return false;
       });
-      delete task.repeatTask;
     }
+    delete task.repeatTask;
     task.deleted = true;
     task.checked = false;
     this.save();

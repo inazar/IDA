@@ -13,7 +13,7 @@
 
     <div>
       <div class="sub-task-ctrls">
-        <button class="make-sub-task" ng-click="$root.setModal('templates/modal.pick_parent_task.html', task.id, $root.reload)"></button>
+        <button class="make-sub-task" ng-click="$root.setModal('templates/modal.pick_parent_task.html', task.id).then($root.reload)"></button>
         <button ng-click="$parent.addTask(task.id)" class="add-sub-task"></button>
         <button ng-click="$root.$tasks.detachChild(task.id);$root.reload()" class="make-free-task"></button>
       </div>
@@ -27,7 +27,7 @@
 
         <div class="right">
           <span class="parent-task" ng-bind="task.parent"></span>
-          <span class="alert" ng-show="task.reminder" ng-if="!task.finished&&!task.deleted" ng-class="{overdue:task.reminder&&task.reminderTime<Date.now()}" ng-click="task.reminderTime<Date.now()?(task.reminder=false):'';task.planned?$root.setModal('templates/modal.plan.html', task.id, $root.reload):$root.setModal('templates/modal.timer.html', task.id, $root.reload)" ng-bind="task.planned?moment(task.reminderTime).format('D/M, HH:mm'):task.timeRemaining"></span>
+          <span class="alert" ng-show="task.reminder" ng-if="!task.finished&&!task.deleted" ng-class="{overdue:task.reminder&&task.reminderTime<Date.now()}" ng-click="task.reminderTime<Date.now()?(task.reminder=false):'';task.planned?$root.setModal('templates/modal.plan.html', task.id).then($root.reload):$root.setModal('templates/modal.timer.html', task.id).then($root.reload)" ng-bind="task.planned?moment(task.reminderTime).format('D/M, HH:mm'):task.timeRemaining"></span>
 
           <span class="task-text"
                 ng-click="task.expanded=!task.expanded"
@@ -40,7 +40,7 @@
 
           <div class="actions">
             <button ng-hide="task.finished||task.deleted"
-                    ng-click="$root.setModal('templates/modal.plan.html', task.id, $root.reload);">
+                    ng-click="$root.editTask(task.id)">
               <i class="fa fa-calendar"></i>
               Planera
             </button>
@@ -55,16 +55,16 @@
               Påminn mm
             </button>
             <button ng-hide="task.planned||task.finished||task.deleted||$root.page.indexOf('/fokusera-pa-aktivitet')===0"
-                    ng-click="$root.setModal('templates/modal.timer.html', task.id, $root.reload)">
+                    ng-click="$root.setModal('templates/modal.timer.html', task.id).then($root.reload)">
               <i class="fa fa-bell-o"></i>
               Påminn
             </button>
             <button ng-hide="task.finished||task.deleted"
-                    ng-click="$root.setModal('templates/modal.delete.html', task.id);">
+                    ng-click="$root.setModal('templates/modal.delete.html', task.id).then($root.getTodoList)">
               <i class="fa fa-trash-o"></i>
               Radera
             </button>
-            <button ng-show="task.finished||task.deleted" ng-click="$root.setModal('templates/modal.plan.html', task.id, $root.reload);">
+            <button ng-show="task.finished||task.deleted" ng-click="$root.setModal('templates/modal.plan.html', task.id);">
               <i class="fa fa-level-up"></i>
               Återställ <!-- Re-plan a task that is in the archive -->
             </button>

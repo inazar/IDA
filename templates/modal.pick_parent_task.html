@@ -1,11 +1,11 @@
 <div class="pick-parent-task-modal">
-  <button class="cancel" ng-click="setModal('')"><i class="fa fa-times"></i></button>
+  <button class="cancel" ng-click="modal.$dismiss()"><i class="fa fa-times"></i></button>
 
   <div class="child-task">
     <h2>Underaktivitet:</h2>
     <p>
-      <b ng-bind="(modalTask.important ? 'A' : 'B') + (modalTask.complex ? (modalTask.important ? 'A' : 'B') : '') + ':'"></b>
-      <span ng-bind="modalTask.title"></span>
+      <b ng-bind="(modal.task.important ? 'A' : 'B') + (modal.task.complex ? (modal.task.important ? 'A' : 'B') : '') + ':'"></b>
+      <span ng-bind="modal.task.title"></span>
     </p>
     <i class="fa fa-long-arrow-down fa-2x"></i>
   </div>
@@ -14,7 +14,7 @@
 
   <ul>
     <li ng-repeat="task in $tasks.where({ deleted: false, finished: false, isChild: false, planned: true }) track by $index"
-        ng-if="task.id != modalTask.id"
+        ng-if="task.id != modal.task.id"
         ng-class="{ active: selected === task }"
         ng-click="$parent.$parent.selected = task">
       <b ng-bind="(task.important ? 'A' : 'B') + (task.complex ? (task.important ? 'A' : 'B') : '') + ':'"></b>
@@ -25,14 +25,14 @@
   <div class="confirmation">
     <button ng-disabled="clicked || !selected" ng-click="
       clicked=true;
-      modalTask.expanded=false;
-      modalTask.expanded = true;
-      modalTask.isChild = true;
-      modalTask.parent = selected.title;
+      modal.task.expanded=false;
+      modal.task.expanded = true;
+      modal.task.isChild = true;
+      modal.task.parent = selected.title;
       selected.isParent = true;
-      selected.children.push(modalTask.id);
+      selected.children.push(modal.task.id);
       $tasks.save();
-      setModal('')">Klar</button>
+      modal.$close(true)">Klar</button>
   </div>
 
 </div>

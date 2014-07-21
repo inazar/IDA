@@ -1,6 +1,6 @@
-<div ng-init="newTaskTitle = modalTask.title" class="edit-task-name-modal">
+<div ng-init="newTaskTitle = modal.task.title" class="edit-task-name-modal">
   <div>
-    <button class="cancel" ng-click="setModal('')"><i class="fa fa-times"></i></button>
+    <button class="cancel" ng-click="modal.$dismiss()"><i class="fa fa-times"></i></button>
 
     <h1>Ändra aktivitetens text:</h1>
 
@@ -8,6 +8,6 @@
 
     <textarea ng-model="newTaskTitle"></textarea>
 
-    <button class="done" ng-click="modalTask.rename(newTaskTitle);setModal('')">Spara</button>
+    <button class="done" ng-click="modal.task.rename(newTaskTitle);$modal.$close(true)">Spara</button>
   </div>
 </div>
