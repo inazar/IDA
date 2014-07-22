@@ -5,7 +5,7 @@
     <h1>När vill du bli påmind?</h1>
 
     <h2 class="modal-sub-heading">
-      <span ng-bind="modal.task.title"></span>
+      <span>{{modal.task.title}}</span>
     </h2>
 
     <div class="divider"></div>
@@ -23,14 +23,15 @@
         <div class="time-picker" ida-timepicker model-hours="$root.$timer.timerHours" model-minutes="$root.$timer.timerMinutes" ng-show="$timer.type!=='other'"></div>
       </div>
       <br>
-      <button class="start" ng-click="($timer.type==='period' ? modal.task.setTimer(Date.now().valueOf() + (($timer.timerMinutes || 0) * 60000) + (($timer.timerHours || 0) * 3600000)) : modal.task.setTimer(moment(Date.now()).hour($timer.timerHours).minute($timer.timerMinutes).seconds(0).millisecond(0)._d.valueOf()));modal.$close('start');">Starta</button>
+      <button class="start" ng-click="($timer.type==='period' ? modal.task.setTimer(Date.now().valueOf() + (($timer.timerMinutes || 0) * 60000) + (($timer.timerHours || 0) * 3600000)) : modal.task.setTimer(moment(Date.now()).hour($timer.timerHours).minute($timer.timerMinutes).seconds(0).millisecond(0).valueOf()));modal.$close('start');">Starta</button>
     </div>
 
     <div ng-init="modal.task.reminderTime && modal.task.trackDuration()" ng-show="modal.task.reminderTime > Date.now()" class="timer">
-      <div ng-bind="modal.task.timeRemaining"></div>
-      <button class="clear" ng-click="modal.task.setTimer();modal.$close('remove');">Ta bort påminnelse</button>
-      <br>
-      <button class="clear" ng-click="modal.task.setTimer();">Ändra tid</button>
+      <div>{{modal.task.timeRemaining}}</div>
+      <div class="buttons">
+        <button class="clear" ng-click="modal.task.setTimer();modal.$close('remove');">Ta bort påminnelse</button>
+        <button class="clear" ng-click="modal.task.setTimer();">Ändra tid</button>
+      </div>
     </div>
 
   </div>

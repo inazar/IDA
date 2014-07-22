@@ -26,17 +26,17 @@
         </div>
 
         <div class="right">
-          <span class="parent-task" ng-bind="task.parent"></span>
-          <span class="alert" ng-show="task.reminder" ng-if="!task.finished&&!task.deleted" ng-class="{overdue:task.reminder&&task.reminderTime<Date.now()}" ng-click="task.reminderTime<Date.now()?(task.reminder=false):'';task.planned?$root.setModal('templates/modal.plan.html', task.id).then($root.reload):$root.setModal('templates/modal.timer.html', task.id).then($root.reload)" ng-bind="task.planned?moment(task.reminderTime).format('D/M, HH:mm'):task.timeRemaining"></span>
+          <span class="parent-task">{{task.parent}}</span>
+          <span class="alert" ng-show="task.reminder" ng-if="!task.finished&&!task.deleted" ng-class="{'overdue':isOverdue()}" ng-click="alertClick()">{{task.planned?moment(task.reminderTime).format('D/M, HH:mm'):task.timeRemaining}}</span>
 
           <span class="task-text"
                 ng-click="task.expanded=!task.expanded"
                 ida-hold="newTaskTitle=task.title;$root.setModal('templates/modal.edit_task_name.html', task.id);">
-            <span ng-show="task.planned" class="prio" ng-bind="durationLabel(task)"></span>
+            <span ng-show="task.planned" class="prio">{{durationLabel(task)}}</span>
             <span ng-bind="(task.timeType==='exact'&&task.planned?'('+priorityLabel(task)+'):':'')+task.title"></span>
           </span>
 
-          <span class="time-label" ng-bind="timeLabel(task)"></span>
+          <span class="time-label">{{timeLabel(task)}}</span>
 
           <div class="actions">
             <button ng-hide="task.finished||task.deleted"
@@ -64,7 +64,7 @@
               <i class="fa fa-trash-o"></i>
               Radera
             </button>
-            <button ng-show="task.finished||task.deleted" ng-click="$root.setModal('templates/modal.plan.html', task.id);">
+            <button ng-show="task.finished||task.deleted" ng-click="$scope.$root.editTask(task.id);">
               <i class="fa fa-level-up"></i>
               Återställ <!-- Re-plan a task that is in the archive -->
             </button>
