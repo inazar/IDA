@@ -27598,7 +27598,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             $popup.show({
               type: 'notification',
               title: 'Påminnelse',
-              template: '<div class="text-center">'+task.title+'</div>',
+              template: '<div class="popup-text">'+task.title+'</div>',
               buttons: [
                 { text: 'Fokusera', type: 'btn-main', onTap: function () { return 'focus'; } },
                 { text: 'Ny påminnelse', type: 'btn-default', onTap: function () { return 'plan'; } },
