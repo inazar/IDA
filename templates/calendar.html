@@ -31,7 +31,7 @@
       </div>
 
       <div class="overall-busyness">
-        <div ng-style="{ width:(100*tp.busyness)+'%', height:(100*tp.busyness)+'%'}"
+        <div style="width:{{100*tp.busyness}}%,height:{{100*tp.busyness}}%}"
              ng-class="{ 'color-0': 0.0 <= tp.busyness && tp.busyness < 0.1,
                          'color-1': 0.1 <= tp.busyness && tp.busyness < 0.2,
                          'color-2': 0.2 <= tp.busyness && tp.busyness < 0.3,

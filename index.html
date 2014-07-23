@@ -17,7 +17,7 @@
 
       <div id="wrapper">
         <nav ng-hide="$root.modal || $root.datepicker">
-          <ul>
+          <ul ng-class="{'help-hidden':!$config.help.nav}">
             <li ida-help="templates/help/todo.html" help-title="Att-göra-listan" ng-class="{ active: (page == '/todo') }"><a ng-click="page == '/todo' ? ($root.showNav = false) : $location.path('/todo')"><span><i class="fa fa-check"></i>Att göra</span></a></li>
             <li ida-help="templates/help/organize.html" help-title="Organisera alla aktiviteter" ng-class="{ active: (page == '/organisera-alla-aktiviteter') }"><a ng-click="page == '/organisera-alla-aktiviteter' ? ($root.showNav = false) : $location.path('/organisera-alla-aktiviteter')"><span><i class="fa fa-folder-open"></i>Organisera alla aktiviteter</span></a></li>
             <li ida-help="templates/help/focus.html" help-title="Fokusera på aktivitet" ng-class="{ active: (page.indexOf('/fokusera-pa-aktivitet') === 0) }"><a ng-click="page == '/fokusera-pa-aktivitet' ? ($root.showNav = false) : $location.path('/fokusera-pa-aktivitet')"><span><i class="fa fa-clock-o"></i>Fokusera på aktivitet</span></a></li>

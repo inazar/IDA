@@ -2001,6 +2001,132 @@ h2 {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
 
+/**
+ * Range
+ * --------------------------------------------------
+ */
+input[type="range"] {
+  display: inline-block;
+  overflow: hidden;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-right: 2px;
+  padding-left: 1px;
+  width: auto;
+  height: 31px;
+  outline: none;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #999), color-stop(100%, #999));
+  background: linear-gradient(to right, #999 0%, #999 100%);
+  background-position: center;
+  background-size: 99% 8px;
+  background-repeat: no-repeat;
+  -webkit-appearance: none; }
+  input[type="range"]::-webkit-slider-thumb {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    background-color: #eee;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5), 1px 3px 5px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    -webkit-appearance: none; }
+  input[type="range"]::-webkit-slider-thumb:before {
+    /* what creates the colorful line on the left side of the slider */
+    position: absolute;
+    top: 8.5px;
+    left: -2001px;
+    width: 2000px;
+    height: 8px;
+    background: #555;
+    content: ' '; }
+  input[type="range"]::-webkit-slider-thumb:after {
+    /* create a larger (but hidden) hit area */
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    padding: 30px;
+    content: ' '; }
+
+.range {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+  padding: 2px 4px; }
+  .range.range-gray input::-webkit-slider-thumb:before {
+    background: #555; }
+  .range.range-purple input::-webkit-slider-thumb:before {
+    background: #a40aaa; }
+
+.range .icon {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0;
+  -moz-box-flex: 0;
+  -moz-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: block;
+  min-width: 24px;
+  text-align: center;
+  font-size: 24px; }
+  .range .icon.icon-large {
+    font-size: 28.8px; }
+  .range .icon.icon-small {
+    font-size: 19.2px; }
+
+.range input {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -moz-box-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: block;
+  margin-right: 10px;
+  margin-left: 10px; }
+
+.range-label {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -moz-box-flex: 0;
+  -moz-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: block;
+  white-space: nowrap;
+  margin-right: 1em; }
+
+.range-label:first-child {
+  padding-left: 5px; }
+
+.range input + .range-label {
+  padding-right: 5px;
+  padding-left: 0; }
+
+body {
+  font-family: 'Helvetica', Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.4; }
+
+h2 {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 0 0 0.25em; }
+
+* {
+  text-rendering: auto !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; }
+
 .purple {
   color: #a40aaa; }
 
@@ -2045,6 +2171,7 @@ body {
     overflow: hidden; }
     body > #wrapper > nav {
       -webkit-transition: all 300ms;
+      -moz-transition: all 300ms;
       transition: all 300ms;
       overflow: hidden;
       background: #333;
@@ -2116,6 +2243,7 @@ body {
       -webkit-box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
       box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
       -webkit-transition: all 300ms;
+      -moz-transition: all 300ms;
       transition: all 300ms;
       background: white;
       min-height: 100%;
@@ -2124,6 +2252,7 @@ body {
       overflow: hidden; }
       body > #wrapper > div#main > div#top {
         -webkit-transition: margin-left 300ms;
+        -moz-transition: margin-left 300ms;
         transition: margin-left 300ms;
         background: #a40aaa;
         border-bottom: 2px solid #5d0662;
@@ -3181,6 +3310,9 @@ div.focus-distraction-list-confirmation-modal {
   margin: 0 5px 0 10px;
   padding: 0; }
 
+.help-hidden .help-button {
+  display: none; }
+
 .timepicker {
   width: 60px; }
 
@@ -3502,9 +3634,15 @@ div.focus-distraction-list-confirmation-modal {
     .plan > div.period .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
-  .plan > div.period > div.datepickers {
-    margin: 10px 40px 0 0; }
-    .plan > div.period > div.datepickers > button {
+  .plan > div.period .help-line > div.datepickers {
+    margin-top: 10px;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1; }
+    .plan > div.period .help-line > div.datepickers > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
       -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
@@ -3527,13 +3665,13 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       font-size: 1.2em;
       padding: 5px 0 5px; }
-      .plan > div.period > div.datepickers > button:active, .plan > div.period > div.datepickers > button.active {
+      .plan > div.period .help-line > div.datepickers > button:active, .plan > div.period .help-line > div.datepickers > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
-      .plan > div.period > div.datepickers > button.selected {
+      .plan > div.period .help-line > div.datepickers > button.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
         -webkit-box-shadow: 0 2px 0 0 #5d0662;
@@ -3556,28 +3694,28 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         font-size: 1.2em;
         padding: 5px 0 5px; }
-        .plan > div.period > div.datepickers > button.selected:active, .plan > div.period > div.datepickers > button.selected.active {
+        .plan > div.period .help-line > div.datepickers > button.selected:active, .plan > div.period .help-line > div.datepickers > button.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8b0992;
           border-top: 2px solid #5d0662;
           top: 0px; }
-        .plan > div.period > div.datepickers > button.selected:first-child {
+        .plan > div.period .help-line > div.datepickers > button.selected:first-child {
           -webkit-border-bottom-left-radius: 0;
           border-bottom-left-radius: 0;
           -webkit-border-bottom-right-radius: 0;
           border-bottom-right-radius: 0; }
-        .plan > div.period > div.datepickers > button.selected:last-child {
+        .plan > div.period .help-line > div.datepickers > button.selected:last-child {
           -webkit-border-top-left-radius: 0;
           border-top-left-radius: 0;
           -webkit-border-top-right-radius: 0;
           border-top-right-radius: 0; }
-      .plan > div.period > div.datepickers > button:first-child {
+      .plan > div.period .help-line > div.datepickers > button:first-child {
         -webkit-border-bottom-left-radius: 0;
         border-bottom-left-radius: 0;
         -webkit-border-bottom-right-radius: 0;
         border-bottom-right-radius: 0; }
-      .plan > div.period > div.datepickers > button:last-child {
+      .plan > div.period .help-line > div.datepickers > button:last-child {
         -webkit-border-top-left-radius: 0;
         border-top-left-radius: 0;
         -webkit-border-top-right-radius: 0;
@@ -5552,6 +5690,224 @@ div.statistics-page > div.stats-table {
       div.statistics-page > div.stats-table > table tr > td.value {
         width: 34%;
         text-align: right; }
+
+.settings-page .separator {
+  padding: 24px 8px 2px;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-bottom: 2px solid #a40aaa;
+  margin-bottom: 16px; }
+.settings-page .range {
+  width: 100%; }
+  .settings-page .range label {
+    width: 10em; }
+
+.select-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+  height: 45px;
+  padding: 2px 4px; }
+  .select-item label {
+    color: white;
+    display: inline-block;
+    position: relative; }
+    .select-item label::before {
+      content: '\f0d7';
+      display: inline-block;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      text-decoration: inherit; }
+    .select-item label::before {
+      position: absolute;
+      right: 10px;
+      top: 3px; }
+    .select-item label > select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 2px 0 0 #5d0662;
+      box-shadow: 0 2px 0 0 #5d0662;
+      background: #a40aaa;
+      border: none;
+      border-top: 2px solid transparent;
+      color: white;
+      display: inline-block;
+      font-weight: bold;
+      outline: 0;
+      padding: 3px 30px 4px 10px; }
+      .select-item label > select:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #8b0992;
+        border-top: 2px solid #5d0662; }
+    .select-item label.disabled > select {
+      -webkit-box-shadow: 0 2px 0 0 #555;
+      box-shadow: 0 2px 0 0 #555;
+      background: #999; }
+      .select-item label.disabled > select:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #999;
+        border-top: 2px solid #555; }
+
+.select-label {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -moz-box-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: block;
+  white-space: nowrap;
+  margin-right: 1em; }
+
+.select-label:first-child {
+  padding-left: 5px; }
+
+body {
+  font-family: 'Helvetica', Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.4; }
+
+h2 {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 0 0 0.25em; }
+
+* {
+  text-rendering: auto !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; }
+
+/**
+ * Toggle
+ * --------------------------------------------------
+ */
+.toggle-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+  padding: 4px 4px; }
+
+.toggle-label {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -moz-box-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: block;
+  white-space: nowrap;
+  margin-right: 1em; }
+
+.toggle-label:first-child {
+  padding-left: 5px; }
+
+.toggle {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -moz-box-flex: 0;
+  -moz-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  position: relative;
+  display: inline-block;
+  pointer-events: auto;
+  margin: -5px;
+  padding: 5px; }
+  .toggle input:checked + .track {
+    border-color: #a40aaa;
+    background-color: #a40aaa; }
+  .toggle.dragging .handle {
+    background-color: #f2f2f2 !important; }
+  .toggle.toggle-purple input:checked + .track {
+    border-color: #a40aaa;
+    background-color: #a40aaa; }
+  .toggle.toggle-gray input:checked + .track {
+    border-color: #555;
+    background-color: #555; }
+
+.toggle input {
+  display: none; }
+
+/* the track appearance when the toggle is "off" */
+.toggle .track {
+  -webkit-transition-timing-function: ease-in-out;
+  -moz-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  -webkit-transition-property: background-color, border;
+  -moz-transition-property: background-color, border;
+  transition-property: background-color, border;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 54px;
+  height: 32px;
+  border: solid 2px #999;
+  border-radius: 20px;
+  background-color: #999;
+  content: ' ';
+  cursor: pointer;
+  pointer-events: none; }
+
+/* Fix to avoid background color bleeding */
+/* (occured on (at least) Android 4.2, Asus MeMO Pad HD7 ME173X) */
+.platform-android4_2 .toggle .track {
+  -webkit-background-clip: padding-box; }
+
+/* the handle (circle) thats inside the toggle's track area */
+/* also the handle's appearance when it is "off" */
+.toggle .handle {
+  -webkit-transition: 0.2s ease-in-out;
+  -moz-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+  position: absolute;
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  background-color: #eee;
+  top: 7px;
+  left: 7px; }
+  .toggle .handle:before {
+    position: absolute;
+    top: -4px;
+    left: -22px;
+    padding: 19px 35px;
+    content: " "; }
+
+.toggle input:checked + .track .handle {
+  -webkit-transform: translate3d(22px, 0, 0);
+  -moz-transform: translate3d(22px, 0, 0);
+  transform: translate3d(22px, 0, 0);
+  background-color: #eee; }
+
+.toggle input:disabled + .track {
+  opacity: 0.6; }
 
 
 /*# sourceMappingURL=app.css.map*/

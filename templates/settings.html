@@ -1,4 +1,108 @@
-<div class="settings-page">
-	<input type="range", min="0.5", max="0.9" step="0.1", ng-model="$level" style="width:100%">
+<div class="settings-page" ng-class="{'help-hidden':!$config.help.setting}">
+  <div ida-help>
+    <div class="range range-purple">
+      <label class="range-label">Adjust ball size</label>
+      <i class="icon fa fa-exclamation-circle gray icon-small"></i>
+      <input type="range", min="0.5" max="0.8" step="0.1" ng-model="$config.percentageUsableTime" ng-change="$config.save()">
+      <i class="icon fa fa-exclamation-circle gray icon-large"></i>
+    </div>
+  </div>
+  <div ida-help>
+    <div class="toggle-item">
+      <span class="toggle-label">Show weeks in calendar</span>
+      <label class="toggle">
+         <input type="checkbox" ng-model="$config.showWeeks" ng-change="$config.save()">
+         <div class="track">
+           <div class="handle"></div>
+         </div>
+      </label>
+    </div>
+  </div>
+  <div ida-help>
+    <div class="select-item">
+      <span class="select-label">Remind to clean tasks</span>
+      <label ng-class="{disabled:!$config.organize}">
+        <select ng-model="$config.organize">
+          <option value='week'>Every week</option>
+          <option value='twoweek'>Every two weeks</option>
+          <option value="month">Every month</option>
+          <option value="">Never</option>
+        </select>
+      </label>
+    </div>
+  </div>
 
+  <div class="separator">Sound setting</div>
+
+  <div ida-help>
+    <div class="range range-purple">
+      <label class="range-label">Task done</label>
+      <i class="icon fa fa-volume-off gray"></i>
+      <input type="range", min="0", max="1" step="0.1" ng-model="$config.sound.task" ng-change="$config.save()">
+      <i class="icon fa fa-volume-up gray"></i>
+    </div>
+  </div>
+
+  <div ida-help>
+    <div class="range range-purple">
+      <label class="range-label">Timer</label>
+      <i class="icon fa fa-volume-off gray"></i>
+      <input type="range", min="0", max="1" step="0.1" ng-model="$config.sound.timer" ng-change="$config.save()">
+      <i class="icon fa fa-volume-up gray"></i>
+    </div>
+  </div>
+
+  <div ida-help>
+    <div class="range range-purple">
+      <label class="range-label">Reminder</label>
+      <i class="icon fa fa-volume-off gray"></i>
+      <input type="range", min="0", max="1" step="0.1" ng-model="$config.sound.reminder" ng-change="$config.save()">
+      <i class="icon fa fa-volume-up gray"></i>
+    </div>
+  </div>
+
+  <div ida-help>
+    <div class="range range-purple">
+      <label class="range-label">Focus</label>
+      <i class="icon fa fa-volume-off gray"></i>
+      <input type="range", min="0", max="1" step="0.1" ng-model="$config.sound.focus" ng-change="$config.save()">
+      <i class="icon fa fa-volume-up gray"></i>
+    </div>
+  </div>
+
+  <div class="separator">Help setting</div>
+
+  <div ida-help>
+    <div class="toggle-item">
+      <span class="toggle-label">Show in navigation</span>
+      <label class="toggle">
+         <input type="checkbox" ng-model="$config.help.nav" ng-change="$config.save()">
+         <div class="track">
+           <div class="handle"></div>
+         </div>
+      </label>
+    </div>
+  </div>
+  <div ida-help>
+    <div class="toggle-item">
+      <span class="toggle-label">Show in planning</span>
+      <label class="toggle">
+         <input type="checkbox" ng-model="$config.help.plan" ng-change="$config.save()">
+         <div class="track">
+           <div class="handle"></div>
+         </div>
+      </label>
+    </div>
+  </div>
+  <div ida-help>
+    <div class="toggle-item">
+      <span class="toggle-label">Show in setting</span>
+      <label class="toggle">
+         <input type="checkbox" ng-model="$config.help.setting" ng-change="$config.save()">
+         <div class="track">
+           <div class="handle"></div>
+         </div>
+      </label>
+    </div>
+  </div>
 </div>

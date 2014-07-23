@@ -27351,6 +27351,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   'idaModal',
   function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popup, $loading, $modal) {
 
+    var _organize = $config.organize;
     angular.extend($rootScope, {
       $config: $config,
       $tasks: $tasks,
@@ -27509,6 +27510,45 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
     $rootScope.getTodoList();
 
+    function _setOrganize () {
+      var notification, reminder = moment(($config.reminder && $config.reminder < Date.now()) ? $config.reminder : Date.now());
+      switch ($config.organize) {
+        case 'week':
+          reminder = reminder.add(1, 'weeks');
+          break;
+        case 'twoweek':
+          reminder = reminder.add(2, 'weeks');
+          break;
+        case 'month':
+          reminder = reminder.add(1, 'months');
+          break;
+        default:
+          reminder = false;
+      }
+      if (reminder) { reminder = reminder.hours(16).minutes(0).seconds(0).milliseconds(0).valueOf(); }
+      $config.reminder = reminder;
+      if ($window.plugin && (notification = $window.plugin.notification) && notification.local) {
+        notification.local.cancel('organize');
+        if (reminder) {
+          notification.local.add({
+            id:         'organize',
+            date:       new Date(reminder),
+            message:    'Det är dags att se över dina aktiviteter. Gå igenom listan och se om det finns någonting du behöver planera om.',
+            title:      'Påminnelse',
+            autoCancel: true
+          });
+        }
+      }
+      $config.save();
+    }
+
+    $rootScope.$watch('$config.organize', function (period) {
+      if (period && period !== _organize) {
+        _organize = null;
+        _setOrganize();
+      }
+    });
+
     function _updateReminder () {
       if ($rootScope.modal && $rootScope.modal.task && $rootScope.modal.task.reminderTimePeriod && $rootScope.modal.task.reminderTimePeriod !== 'exact' && $rootScope.modal.task.startTime && $rootScope.modal.task.endTime) { $rootScope.modal.task.setReminderTime(); }
     }
@@ -27593,47 +27633,39 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       }
       if ((notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
         notification.local.ontrigger = function (id, state) {
-          var task = $tasks.get(id);
-          vibrate(1000);
-          if (state === 'foreground' && task && task.title) {
-            $popup.show({
-              type: 'notification',
-              title: 'Påminnelse',
-              template: '<div class="popup-text">'+task.title+'</div>',
-              buttons: [
-                { text: 'Fokusera', type: 'btn-main', onTap: function () { return 'focus'; } },
-                { text: 'Ny påminnelse', type: 'btn-default', onTap: function () { return 'plan'; } },
-                { text: 'Glömma', type: 'btn-default', onTap: function () { return 'ok'; } }
-              ],
-            }).then(function (res) {
-              switch (res) {
-                case 'focus':
-                  $rootScope.modal.$close();
-                  $location.path('/fokusera-pa-aktivitet/' + id).replace();
-                  break;
-                case 'plan':
-                  $rootScope.setModal('templates/modal.postpone.html', task).then($rootScope.reload, $rootScope.reload);
-                  break;
-              }
-            });
+          if (id === 'organize') {
+            _setOrganize();
+          } else {
+            var task = $tasks.get(id);
+            vibrate(1000);
+            if (state === 'foreground' && task && task.title) {
+              $popup.show({
+                type: 'notification',
+                title: 'Påminnelse',
+                template: '<div class="popup-text">'+task.title+'</div>',
+                buttons: [
+                  { text: 'Fokusera', type: 'btn-main', onTap: function () { return 'focus'; } },
+                  { text: 'Ny påminnelse', type: 'btn-default', onTap: function () { return 'plan'; } },
+                  { text: 'Glömma', type: 'btn-default', onTap: function () { return 'ok'; } }
+                ],
+              }).then(function (res) {
+                switch (res) {
+                  case 'focus':
+                    $rootScope.modal.$close();
+                    $location.path('/fokusera-pa-aktivitet/' + id).replace();
+                    break;
+                  case 'plan':
+                    $rootScope.setModal('templates/modal.postpone.html', task).then($rootScope.reload, $rootScope.reload);
+                    break;
+                }
+              });
+            }
           }
         };
       }
     }, false);
 
-    if (parseInt(localStorage.getItem('organiseReminder') || 0, 10) < Date.now()) {
-      var time = moment(Date.now() + 1209600000).hour(16).minute(0)._d, notification;
-      localStorage.setItem('organiseReminder', '' + time.valueOf());
-      if ($window.plugin && (notification = $window.plugin.notification) && notification.local) {
-        notification.local.add({
-          id:         ''+Math.floor(Math.random()*1000000000000),
-          date:       time,
-          message:    'Det är dags att se över dina aktiviteter. Gå igenom listan och se om det finns någonting du behöver planera om.',
-          title:      'Påminnelse',
-          autoCancel: true
-        });
-      }
-    }
+    if (!$config.reminder || $config.reminder < Date.now()) { _setOrganize(); }
 
     $timeout(function(){ $document[0].getElementById('loading').style.display = 'none'; });
 
@@ -28224,26 +28256,6 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
 // }]);
 
 /* jshint strict: false */
-/* global App, moment */
-App.factory('idaConfig', function () {
-  var defaults = {
-    defaultReminder: +moment(0).hours(10),
-    defaultDuration: 1800000,
-    daysBeforeDoubleVaugnessPunishment: 15,
-    percentageUsableTime: 0.6,
-    pragmaticDayshift: 0,
-    slope: 0.5,
-    readjustmentTime: 60    
-  }, current = {};
-  try {
-    current = JSON.parse(localStorage.getItem('settings'));
-  } catch (e) {
-    return defaults;
-  }
-  return angular.extend(defaults, current);
-});
-
-/* jshint strict: false */
 /* global App, _ */
 
 App.factory('idaPopup', [
@@ -28703,6 +28715,54 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
   return idaPopup;
 }]);
 
+
+/* jshint strict: false */
+/* global App, moment, _ */
+App.service('idaConfig', function () {
+  var defaults = {
+    defaultReminder: +moment(0).hours(10),
+    defaultDuration: 1800000,
+    daysBeforeDoubleVaugnessPunishment: 15,
+    percentageUsableTime: 0.6,
+    pragmaticDayshift: 0,
+    organize: 'twoweek',
+    reminder: false,
+    slope: 0.5,
+    readjustmentTime: 60, 
+    showWeeks: false,
+    help: {
+      nav: true,
+      plan: true,
+      setting: true
+    },
+    sound: {
+      task: 1,
+      timer: 1,
+      reminder: 1,
+      focus: 1
+    }
+  };
+
+  var Config = function (defaults) {
+    var current;
+    try {
+      current = JSON.parse(localStorage.getItem('settings'));
+    } catch (e) {
+      current = {};
+    }
+    _.extend(this, defaults, current);
+    this.help = _.extend({}, defaults.help, current.help);
+    this.sound = _.extend({}, defaults.sound, current.sound);
+
+  };
+
+  // Store settings to permanent storage
+  Config.prototype.save = function () {
+    localStorage.setItem('settings', JSON.stringify(this));
+  };
+
+  return new Config(defaults);
+});
 
 /* jshint strict: false */
 /* global App, _ */
@@ -29526,8 +29586,8 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
           busyness: 0
         });
       }
-// ******
-      if(time.week() !== week) {
+
+      if ($config.showWeeks && time.week() !== week) {
         week = time.week();
         curWeek = periods.push({
           start: time.valueOf(),
@@ -29589,7 +29649,9 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
           return dayOp > 1 ? 1 : dayOp;
         }())
       });
-      //periods[curWeek-1].busyness += periods[curDay-1].busyness;
+      if (false && $config.showWeeks) {
+        periods[curWeek-1].busyness += periods[curDay-1].busyness;
+      }
       periods[curMonth-1].busyness += periods[curDay-1].busyness;
       periods[curYear-1].busyness += periods[curDay-1].busyness;
       time = moment([time.year(),0,1,0,0]).dayOfYear(time.dayOfYear() + 1);

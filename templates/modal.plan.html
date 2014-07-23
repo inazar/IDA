@@ -1,4 +1,4 @@
-<div class="plan">
+<div class="plan" ng-class="{'help-hidden':!$config.help.plan}">
   <h3>Planera aktivitet</h3>
   <button class="cancel" ng-click="modal.task.cancel(page);modal.$dismiss()"><i class="fa fa-times"></i></button>
 
@@ -50,7 +50,7 @@
     Inom <input ng-change="modal.task.updatePeriodInput()" ng-model="modal.task.xDays" type="number" value="1"> dagar
   </div>
 
-  <div class="period" ng-show="modal.task.timeType == 'period'">
+  <div ida-help='hidden' class="period" ng-show="modal.task.timeType == 'period'">
     <div class="datepickers">
       <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html');modal.task.timeInputType='exact'"
               ng-class="{ 'selected': modal.task.startTime }"
