@@ -30,5 +30,6 @@ modal.task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (
     </div>
     <button class="postpone" ng-if="modal.task.timeType==='exact'&&Math.floor(Date.now()/86400000)>Math.floor(modal.task.startTime/86400000)-1" ng-disabled="modal.$lock" ng-click="postpone(modal.task, 1);modal.$close('exact')">Skjut upp till samma tid imorgon</button>
     <button class="postpone" ng-if="modal.task.timeType==='period'&&Math.floor(Date.now()/86400000)<Math.floor(modal.task.endTime/86400000)+1" ng-disabled="modal.$lock" ng-click="postpone(modal.task, 1);modal.$close('period')">Skjut upp start till imorgon</button>
+    <button class="abort" ng-click="modal.task.reminder=false;modal.$close('cancel')">Ta bort påminnelse</button>
   </div>
 </div>

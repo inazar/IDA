@@ -27595,16 +27595,26 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           var task = $tasks.get(id);
           vibrate(1000);
           if (state === 'foreground' && task && task.title) {
-            $popup.confirm({
+            $popup.show({
               type: 'notification',
               title: 'Påminnelse',
               template: '<div class="text-center">'+task.title+'</div>',
+              buttons: [
+                { text: 'Fokusera', type: 'btn-main', onTap: function () { return 'focus'; } },
+                { text: 'Ny påminnelse', type: 'btn-default', onTap: function () { return 'plan'; } },
+                { text: 'Ok', type: 'btn-default', onTap: function () { return 'ok'; } }
+              ],
               okText: 'Fokusera',
               cancelText: 'Ok'
-            }).then(function (check) {
-              if (check) {
-                $rootScope.modal.$close();
-                $location.path('/fokusera-pa-aktivitet/' + id).replace();
+            }).then(function (res) {
+              switch (res) {
+                case 'focus':
+                  $rootScope.modal.$close();
+                  $location.path('/fokusera-pa-aktivitet/' + id).replace();
+                  break;
+                case 'plan':
+                  $rootScope.setModal('templates/modal.postpone.html', task).then($rootScope.reload, $rootScope.reload);
+                  break;
               }
             });
           }
@@ -27987,15 +27997,25 @@ App.directive('idaItem', [function () {
           }
         },
         timeLabel: function (task) {
-          var label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
-          if (task.planned && task.timeType === 'period') {
-            label += ' (' + moment.duration(task.endTime - task.startTime).humanize() + ')';
+          var time, label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
+          if (task.planned && task.timeType === 'period' && task.durationType) {
+            time = moment.duration(task.duration || (task.endTime - task.startTime));
+            label += ' (';
+            if (time.hours() > 0) {
+              label += moment.duration(time).subtract(time.minutes(), 'minutes').humanize();
+            }
+            if (time.minutes() > 0) {
+              if (time.hours() > 0) { label += ' '; }
+              label += moment.duration(time).subtract(time.hours(), 'hours').humanize();
+            }
+            // label += ' (' + moment.duration(task.duration || (task.endTime - task.startTime)).humanize() + ')';
+            label += ')';
           }
           return label;
         },
         alertClick: function () {
-          if ($scope.task.reminderTime < Date.now()) {
-            $scope.task.reminder = false;
+          if (true || $scope.task.reminderTime < Date.now()) {
+            // $scope.task.reminder = false;
             if ($scope.task.planned) {
               $scope.$root.setModal('templates/modal.postpone.html', $scope.task).then($scope.$root.reload, $scope.$root.reload);
             }
@@ -28045,7 +28065,7 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
     replace: true,
     template: '<div class="time-picker">' +
                 '<button ng-click="showPicker()" ng-if="$root.$cordova" class="timepicker-button">{{$date|date:"HH:mm"}}</button>' +
-                '<form ng-if="!$root.$cordova">' +
+                '<form ng-show="!$root.$cordova">' +
                   '<input type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="23" ng-model="$hours">' +
                   ':<input type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes">' +
                 '</form>' +
