@@ -27502,7 +27502,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           default: task.reminder = false; return;
         }
         return moment(task.startTime + (task.endTime - task.startTime) * p).hours(10).minutes(0).seconds(0).milliseconds(0)._d.valueOf();
-      }
+      },
+      isNumber: angular.isNumber
     });
 
     $rootScope.getTodoList();
@@ -28042,9 +28043,13 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
   return {
     restrict: 'A',
     replace: true,
-    template: '<form ng-click="showPicker()" class="time-picker">' +
-              '<input ng-disabled="$root.$cordova" type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="23" ng-model="$hours">' +
-              ':<input ng-disabled="$root.$cordova" type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes"></form>',
+    template: '<div class="time-picker">' +
+                '<button ng-click="showPicker()" ng-if="$root.$cordova" class="timepicker-button">{{$date|date:"HH:mm"}}</button>' +
+                '<form ng-if="!$root.$cordova">' +
+                  '<input type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="23" ng-model="$hours">' +
+                  ':<input type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes">' +
+                '</form>' +
+              '</div>',
     scope: {
       $hours: '=?modelHours',
       $minutes: '=?modelMinutes',
@@ -28054,6 +28059,8 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
       if ($scope.$date !== undefined) {
         $scope.$hours = moment($scope.$date).hours();
         $scope.$minutes = moment($scope.$date).minutes();
+      } else {
+        $scope.$date = moment().hours($scope.$hours || 10).minutes($scope.$minutes || 0).valueOf();
       }
       if ($scope.$root.$cordova && $window.datePicker) {
         $scope.showPicker = function () {

@@ -21,11 +21,11 @@
 
   <br>
 
-  <div ida-help class="exact" ng-show="modal.task.timeType == 'exact'">
+  <div ida-help class="exact" ng-show="modal.task.timeType==='exact'">
     <button class="start-time"
             ng-click="setDatepicker('templates/modal.pick_starttime.html')"
-            ng-class="{ 'selected': modal.task.startTime }"
-            ng-bind="modal.task.startTime ? 'Börjar ' + moment(modal.task.startTime).format('D MMMM YYYY') : 'Välj datum och tid'"></button>
+            ng-class="{'selected': modal.task.startTime}"
+            ng-bind="modal.task.startTime?'Börjar '+moment(modal.task.startTime).format('D MMMM YYYY'):'Välj datum och tid'"></button>
     <span>&nbsp;kl&nbsp;</span>
     <div ida-timepicker model-date="modal.task.startTime"></div>
   </div>
@@ -66,7 +66,7 @@
 
   <div ng-show="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
     <div ida-help class="duration">
-      <div ng-init="$parent.hours = Math.floor(modal.task.duration / 3600000)||undefined;$parent.minutes = Math.floor((modal.task.duration % 3600000) / 60000)||undefined;">
+      <div ng-init="$parent.hours=Math.floor((isNumber(modal.task.duration)?modal.task.duration:$config.defaultDuration)/3600000);$parent.minutes = Math.floor(((isNumber(modal.task.duration)?modal.task.duration:$config.defaultDuration)%3600000)/60000)">
         <div class="estimate-toggle" ng-click="modal.task.timeEstimated=!modal.task.timeEstimated">
           <button ng-class="{ active: !modal.task.timeEstimated }">
             Tar ganska exakt
