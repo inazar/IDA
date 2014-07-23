@@ -28058,7 +28058,7 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
       if ($scope.$root.$cordova && $window.datePicker) {
         $scope.showPicker = function () {
           datePicker.show({
-            date: $scope.$date,
+            date: new Date($scope.$date),
             mode: 'time',
             doneButtonLabel: 'Välj',
             cancelButtonLabel: 'Avbryt'
