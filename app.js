@@ -27602,10 +27602,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
               buttons: [
                 { text: 'Fokusera', type: 'btn-main', onTap: function () { return 'focus'; } },
                 { text: 'Ny påminnelse', type: 'btn-default', onTap: function () { return 'plan'; } },
-                { text: 'Ok', type: 'btn-default', onTap: function () { return 'ok'; } }
+                { text: 'Glömma', type: 'btn-default', onTap: function () { return 'ok'; } }
               ],
-              okText: 'Fokusera',
-              cancelText: 'Ok'
             }).then(function (res) {
               switch (res) {
                 case 'focus':
