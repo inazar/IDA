@@ -28751,8 +28751,8 @@ App.service('idaConfig', function () {
       current = {};
     }
     _.extend(this, defaults, current);
-    this.help = _.extend({}, defaults.help, current.help || {});
-    this.sound = _.extend({}, defaults.sound, current.sound || {});
+    this.help = _.extend({}, defaults.help, (current  || {}).help);
+    this.sound = _.extend({}, defaults.sound, (current  || {}).sound);
 
   };
 
