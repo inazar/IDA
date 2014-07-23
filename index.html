@@ -23,6 +23,7 @@
             <li ida-help="templates/help/focus.html" help-title="Fokusera på aktivitet" ng-class="{ active: (page.indexOf('/fokusera-pa-aktivitet') === 0) }"><a ng-click="page == '/fokusera-pa-aktivitet' ? ($root.showNav = false) : $location.path('/fokusera-pa-aktivitet')"><span><i class="fa fa-clock-o"></i>Fokusera på aktivitet</span></a></li>
             <li ida-help="templates/help/calendar.html" help-title="Kalender" ng-class="{ active: (page == '/kalender') }"><a ng-click="page == '/kalender' ? ($root.showNav = false) : $location.path('/kalender')"><span><i class="fa fa-calendar"></i>Kalender</span></a></li>
             <li ida-help="templates/help/archive.html" help-title="Arkiv" ng-class="{ active: (page == '/arkiv') }"><a ng-click="page == '/arkiv' ? ($root.showNav = false) : $location.path('/arkiv')"><span><i class="fa fa-archive"></i>Arkiv</span></a></li>
+            <li ida-help="templates/help/settings.html" help-title="Inställningar" ng-class="{ active: (page == '/installningar') }"><a ng-click="page == '/installningar' ? ($root.showNav = false) : $location.path('/installningar')"><span><i class="fa fa-gears"></i>Inställningar</span></a></li>
             <li ida-help="templates/help/help.html" help-title="Hjälp och feedback" ng-class="{ active: (page == '/hjalp-och-feedback') }"><a ng-click="page == '/hjalp-och-feedback' ? ($root.showNav = false) : $location.path('/hjalp-och-feedback')"><span><i class="fa fa-question-circle"></i>Hjälp och feedback</span></a></li>
             <li ida-help="templates/help/about.html" help-title="Om IDA-appen" ng-class="{ active: (page == '/om-adhd-app') }"><a ng-click="page == '/om-adhd-app' ? ($root.showNav = false) : $location.path('/om-adhd-app')"><span><i class="fa fa-info-circle"></i>Om IDA-appen</span></a></li>
             <li ida-help="templates/help/statistics.html" help-title="Användningsstatistik" ng-class="{ active: (page == '/anvandningsstatistik') }"><a ng-click="page == '/anvandningsstatistik' ? ($root.showNav = false) : $location.path('/anvandningsstatistik')"><span><i class="fa fa-bar-chart-o"></i>Användningsstatistik</span></a></li>
@@ -34,7 +35,7 @@
           <div id="top" ng-class="{'hide': hideTopNav}">
             <a class="nav" ng-click="showNav = !showNav"><i class="fa fa-bars"></i></a>
             <span ng-bind="title"></span>
-            <a class="clean" ng-show="$tasks.findWhere({ checked: true })" ng-click="moveFinishedTasksToArchive()">
+            <a class="clean ng-hide" ng-show="$tasks.findWhere({ checked: true })" ng-click="moveFinishedTasksToArchive()">
               <i class="fa fa-archive"></i>
             </a>
             <a class="avsluta ng-hide" ng-click="closeApp()" ng-show="page==='/todo'"><i class="fa fa-sign-out"></i></a>

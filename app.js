@@ -27326,6 +27326,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       .when('/fokusera-pa-aktivitet/:task', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}})
       .when('/kalender', { templateUrl: 'templates/kalender.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Kalender'; }}, reloadOnSearch: false})
       .when('/arkiv', { templateUrl: 'templates/archive.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Arkiv'; }}})
+      .when('/installningar', { templateUrl: 'templates/settings.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Inställningar'; }}})
       .when('/hjalp-och-feedback', { templateUrl: 'templates/help.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Hjälp och feedback'; }}})
       .when('/om-adhd-app', { templateUrl: 'templates/about.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Om ADHD App'; }}})
       .when('/anvandningsstatistik', { templateUrl: 'templates/statistics.html', controller: 'StatisticsCtrl', resolve: {$title: function () { return 'Användningsstatistik'; }}})
@@ -29464,7 +29465,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
   };
 
   Tasks.prototype.getTimePeriods = function () {
-    var time, month, curDay, curMonth, curYear, year,
+    var time, month, curDay, curMonth, curYear, year, week, curWeek,
         periods = [], circa = [], exact = [], usedExact = [], usedCirca = [], stop = Date.now().valueOf() + 63113900000,
         _this = this;
 
@@ -29515,7 +29516,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       }
       if(time.month() !== month) {
         month = time.month();
-        //week = -1;
+        week = -1;
         curMonth = periods.push({
           time: time.valueOf(),
           start: time.valueOf(),
@@ -29525,11 +29526,9 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
           busyness: 0
         });
       }
-
-      /*if(time.week() !== week) {
-
+// ******
+      if(time.week() !== week) {
         week = time.week();
-
         curWeek = periods.push({
           start: time.valueOf(),
           time: time.valueOf(),
@@ -29538,8 +29537,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
           subLabel: moment().year(year).week(week-1).day(1).format('D MMM') + '-' + moment().year(year).week(week-1).day(1).day(7).format('D MMM'),
           busyness: 0
         });
-
-      }*/
+      }
 
       curDay = periods.push({
         start: time.valueOf(),
@@ -29564,14 +29562,14 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
                     ))
                   );
                 }),
-                function(memo, task){
+                function(memo, task) {
                   var i = task.important ? 1 : 0.5,
                       p = task.timeEstimated ? 1.25 : 1,
                       h = Math.ceil(task.duration / 60000);
 
                   ut++;
 
-                  if(task.timeType === 'period') {
+                  if (task.timeType === 'period') {
 
                     var x = Math.ceil((time.valueOf() - task.startTime) / 86400000),
                         d = Math.ceil((task.endTime - task.startTime) / 86400000),
