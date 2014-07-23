@@ -5,7 +5,7 @@
         versionCode = "10"
         version     = "1.2.0" >
 
-    <preference name="phonegap-version" value="3.4.0" />
+    <preference name="phonegap-version" value="3.5.0" />
     <preference name="orientation" value="portrait" />
     <preference name="show-splash-screen-spinner" value="true" />
     <preference name="auto-hide-splash-screen" value="true" />
@@ -33,5 +33,6 @@
     <gap:plugin name="org.apache.cordova.media" />
     <gap:plugin name="org.apache.cordova.vibration" />
     <gap:plugin name="de.appplant.cordova.plugin.local-notification" />
+    <gap:plugin name="com.plugin.datepicker" />
 
 </widget>

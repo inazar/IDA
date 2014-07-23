@@ -11,9 +11,9 @@
 
     <div class="divider"></div>
 
-    <button class="yes" ng-click="$tasks.delete(modal.task.id);modal.$close('one')">Ja, radera aktiviteten</button>
-    <button class="yes" ng-show="modal.task.repeatTask" ng-click="$tasks.delete(modal.task.id, true);modal.$close('all')">Radera alla återkommande aktiviteter</button>
-    <button class="no" ng-click="modal.$close()">Avbryt</button>
+    <button class="yes" ng-disabled="modal.$lock" ng-click="$tasks.delete(modal.task.id);modal.$close('one')">Ja, radera aktiviteten</button>
+    <button class="yes" ng-disabled="modal.$lock" ng-show="modal.task.repeatTask" ng-click="$tasks.delete(modal.task.id, true);modal.$close('all')">Radera alla återkommande aktiviteter</button>
+    <button class="no" ng-disabled="modal.$lock" ng-click="modal.$close()">Avbryt</button>
 
     <span>Raderade aktiviteter finns kvar på Arkiv-sidan.</span>
   </div>

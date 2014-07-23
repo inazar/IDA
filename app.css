@@ -2182,7 +2182,7 @@ body {
         bottom: 0;
         width: 100%;
         overflow-x: hidden;
-        overflow-y: scroll; }
+        overflow-y: auto; }
         body > #wrapper > div#main > #context-wrapper > #context {
           padding: 15px 5px 5px 5px;
           width: 100%;
@@ -2205,7 +2205,7 @@ body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #w
   top: 0;
   left: 0;
   overflow-x: hidden;
-  overflow-y: scroll; }
+  overflow-y: auto; }
   .modal-container > div {
     z-index: 999; }
 

@@ -27368,7 +27368,6 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       Date: Date,
       Math: Math,
       $timer: {},
-      $modal: null,
       repaint: function () {
         // redraw the whole view
         $document[0].body.style.display = 'none';
@@ -27582,6 +27581,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
     $document[0].addEventListener('deviceready', function() {
       var notification, vibrate, sound;
+      $rootScope.$cordova = $window.device;
       $document[0].addEventListener('backbutton', function() { return false; }, false);
       if ($window.device && $window.device.platform !== 'Android') { return; }
       $rootScope.sound1 = new Media('file://' + location.pathname.replace('index.html', 'sound1.mp3'));
@@ -27967,12 +27967,18 @@ App.directive('idaItem', [function () {
           return (task.important ? 'A' : 'B') + (task.complex ? (task.important?'A' : 'B') : '');
         },
         durationLabel: function (task) {
-          var label, today = Math.floor(Date.now()/86400000), endTime = task.startTime + task.duration;
+          var label,
+              endTime = task.startTime + task.duration;
           if (task.timeType === 'exact') {
-            label = (today === Math.floor(task.startTime/86400000) ? moment(task.startTime).format('HH:mm') : moment(task.startTime).format('dd HH:mm'));
+            label = (moment().isSame(task.startTime, 'day') ? moment(task.startTime).format('HH:mm') : moment(task.startTime).format('dd HH:mm'));
             if (task.durationType) {
-              label += ' - ' + (task.timeEstimated ? 'ca ' : '');
-              label += (today === Math.floor(endTime/86400000) ? moment(endTime).format('HH:mm') : moment(endTime).format('dd HH:mm'));
+              if (task.timeEstimated) {
+                label += ' - ca ';
+                endTime = moment(endTime).minutes(Math.round(moment(endTime).minutes()/10)*10).valueOf();
+              } else {
+                label += ' - ';
+              }
+              label += (moment().isSame(endTime, 'day') || moment(task.startTime).isSame(endTime, 'day') ? moment(endTime).format('HH:mm') : moment(endTime).format('dd HH:mm'));
             }
             return label;
           } else {
@@ -27999,6 +28005,11 @@ App.directive('idaItem', [function () {
         },
         isOverdue: function () {
           return $scope.task.reminderTime < Date.now();
+        },
+        isWarning: function () {
+          if (!$scope.task.finished && !$scope.task.deleted && $scope.task.startTime) {
+            return Date.now().valueOf() > (($scope.task.endTime||$scope.task.startTime) + ($scope.task.timeType === 'period' ? 14400000 : 0));
+          }
         }
       });
     }
@@ -28025,15 +28036,15 @@ App.directive('idaItemChildren', ['$compile', function ($compile) {
 }]);
 
 /* jshint strict: false */
-/* global App, moment */
+/* global App, moment, datePicker */
 
-App.directive('idaTimepicker', ['$timeout', function ($timeout) {
+App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $window) {
   return {
     restrict: 'A',
     replace: true,
-    template: '<form class="time-picker">' +
-              '<input type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="23" ng-model="$hours">' +
-              ':<input type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes"></form>',
+    template: '<form ng-click="showPicker()" class="time-picker">' +
+              '<input ng-disabled="$root.$cordova" type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="23" ng-model="$hours">' +
+              ':<input ng-disabled="$root.$cordova" type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes"></form>',
     scope: {
       $hours: '=?modelHours',
       $minutes: '=?modelMinutes',
@@ -28044,13 +28055,31 @@ App.directive('idaTimepicker', ['$timeout', function ($timeout) {
         $scope.$hours = moment($scope.$date).hours();
         $scope.$minutes = moment($scope.$date).minutes();
       }
+      if ($scope.$root.$cordova && $window.datePicker) {
+        $scope.showPicker = function () {
+          datePicker.show({
+            date: $scope.$date,
+            mode: 'time',
+            doneButtonLabel: 'Välj',
+            cancelButtonLabel: 'Avbryt'
+          }, function(date) {
+            console.log('date result ' + date);
+            if (date && date.getTime()) {
+              $timeout(function () {
+                var time = moment(date);
+                $scope.$date = moment($scope.$date).hours(time.hours()).minutes(time.minutes()).valueOf();
+              });
+            }
+          });
+        };
+      }
       $timeout(function () {
         $scope.$watch('$hours', function (curr) {
           if (!angular.isNumber(curr)) { return; }
           // if (!$scope.hours) { return ($scope.hours = prev); }
           // $scope.minutes = $scope.minutes || 0;
           if ($scope.$date !== undefined) {
-            $scope.$date = moment($scope.$date).hours(curr).minutes($scope.$minutes).seconds(0).milliseconds(0)._d.valueOf();
+            $scope.$date = moment($scope.$date).hours(curr).minutes($scope.$minutes).seconds(0).milliseconds(0).valueOf();
           }
         });
         $scope.$watch('$minutes', function (curr) {
@@ -28058,7 +28087,7 @@ App.directive('idaTimepicker', ['$timeout', function ($timeout) {
           // if (!$scope.pickerForm.minutes.$valid) { return ($scope.minutes = prev); }
           // $scope.hours = $scope.hours || 0;
           if ($scope.$date !== undefined) {
-            $scope.$date = moment($scope.$date).hours($scope.$hours).minutes(curr).seconds(0).milliseconds(0)._d.valueOf();
+            $scope.$date = moment($scope.$date).hours($scope.$hours).minutes(curr).seconds(0).milliseconds(0).valueOf();
           }
         });
         $scope.$watch('$date', function (curr) {
@@ -28143,7 +28172,7 @@ App.directive('idaTimepicker', ['$timeout', function ($timeout) {
 //       $scope.$watch(function () {
 //         return ($scope.hours || 0) + ':' + ($scope.minutes || 0);
 //       }, function () {
-//         $scope.date = moment($scope.date).hours($scope.hours || 0).minutes($scope.minutes || 0).seconds(0).millisecond(0)._d.valueOf();
+//         $scope.date = moment($scope.date).hours($scope.hours || 0).minutes($scope.minutes || 0).seconds(0).millisecond(0).valueOf();
 //       });
 
 //       $scope.$watch('date', function (curr, prev) {
@@ -28742,21 +28771,28 @@ App.service('idaModal', [
         task: task,
         $promise: d.promise,
         $dismiss: function (err) {
-          _popModal();
+          options.$lock = true;
           d.reject(err);
+          _popModal();
         },
         $close: function (res, delay) {
+          options.$lock = true;
           if (delay) {
             $timeout(function () {
-              _popModal();
               d.resolve(res);
+              _popModal();
             }, delay);
           } else {
-            _popModal();
             d.resolve(res);
+            _popModal();
           }
         }
       }, options);
+
+      d.promise.finally(function (res) {
+        options.$lock = false;
+        return res;
+      });
 
       _modals.unshift(options);
       // $loading.show();

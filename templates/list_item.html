@@ -7,7 +7,7 @@
     'show-children': task.showChildren,
     'expanded': task.expanded,
     'has-child-task-controls': $root.page.indexOf('/organisera-alla-aktiviteter') === 0,
-    'warning': !task.finished&&!task.deleted&&task.startTime&&Date.now().valueOf()>((task.endTime||task.startTime)+(task.timeType==='period'?14400000:0))}">
+    'warning': isWarning()}">
 
     <button class="caret" ng-click="task.showChildren=!task.showChildren"></button>
 

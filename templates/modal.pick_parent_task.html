@@ -23,8 +23,7 @@
   </ul>
 
   <div class="confirmation">
-    <button ng-disabled="clicked || !selected" ng-click="
-      clicked=true;
+    <button ng-disabled="!selected||modal.$lock" ng-click="
       modal.task.expanded=false;
       modal.task.expanded = true;
       modal.task.isChild = true;

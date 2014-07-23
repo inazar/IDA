@@ -21,14 +21,14 @@ modal.task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (
     <div class="divider"></div>
 
     <div class="reminder-in" ng-init="$hoursIn=0;$minutesIn=30;$now=moment(Date.now())">
-      <button class="reminder" ng-click="modal.task.reminderTime=Date.now();replan(modal.task, $now.hours()+$hoursIn, $now.minutes()+$minutesIn)">Påminn om</button>
+      <button class="reminder" ng-disabled="modal.$lock" ng-click="modal.task.reminderTime=Date.now();replan(modal.task, $now.hours()+$hoursIn, $now.minutes()+$minutesIn)">Påminn om</button>
       <span>&nbsp;kl&nbsp;</span>
       <div ida-timepicker model-minutes="$minutesIn" model-hours="$hoursIn"></div>
     </div>
     <div class="reminder-today">
-      <button class="reminder" ng-click="$root.setDatepicker('templates/modal.pick_latertime.html')">Påminn viss tid</button>
+      <button class="reminder" ng-disabled="modal.$lock" ng-click="$root.setDatepicker('templates/modal.pick_latertime.html')">Påminn viss tid</button>
     </div>
-    <button class="postpone" ng-if="modal.task.timeType==='exact'&&Math.floor(Date.now()/86400000)>Math.floor(modal.task.startTime/86400000)-1" ng-click="postpone(modal.task, 1);modal.$close('exact')">Skjut upp till samma tid imorgon</button>
-    <button class="postpone" ng-if="modal.task.timeType==='period'&&Math.floor(Date.now()/86400000)<Math.floor(modal.task.endTime/86400000)+1" ng-click="postpone(modal.task, 1);modal.$close('period')">Skjut upp start till imorgon</button>
+    <button class="postpone" ng-if="modal.task.timeType==='exact'&&Math.floor(Date.now()/86400000)>Math.floor(modal.task.startTime/86400000)-1" ng-disabled="modal.$lock" ng-click="postpone(modal.task, 1);modal.$close('exact')">Skjut upp till samma tid imorgon</button>
+    <button class="postpone" ng-if="modal.task.timeType==='period'&&Math.floor(Date.now()/86400000)<Math.floor(modal.task.endTime/86400000)+1" ng-disabled="modal.$lock" ng-click="postpone(modal.task, 1);modal.$close('period')">Skjut upp start till imorgon</button>
   </div>
 </div>
