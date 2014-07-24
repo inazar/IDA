@@ -27346,16 +27346,18 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   'idaTasks',
   'idaEvents',
   'idaConfig',
+  'idaPopups',
   'idaPopup',
   'idaLoading',
   'idaModal',
-  function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popup, $loading, $modal) {
+  function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popups, $popup, $loading, $modal) {
 
     var _organize = $config.organize;
     angular.extend($rootScope, {
       $config: $config,
       $tasks: $tasks,
       $events: $events,
+      $popups: $popups,
       $location: $location,
       title: 'AHDH App',
       loadFocusTime: null,
@@ -27475,6 +27477,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         }).then(function (agree) {
           if (agree) {
             task.finished = true;
+            task.setTimer();
             $tasks.save();
             $rootScope.sound1.play();
           }
@@ -29335,6 +29338,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         this.tasks = _.where(this.tasks, id);
         break;
       default:
+        _.each(this.tasks, function (task) { if (task.reminder) { task.setTimer(); } });
         this.tasks = [];
     }
     this.save();
@@ -29428,7 +29432,10 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
     var task = this.get(id);
     if (repeated && task.repeatTask) {
       this.tasks = _.reject(this.tasks, function(t) {
-        if (t.repeatTask === task.repeatTask && t.id !== task.id) { return true; }
+        if (t.repeatTask === task.repeatTask && t.id !== task.id) {
+          if (t.reminder) { t.setTimer(); }
+          return true;
+        }
         return false;
       });
     }

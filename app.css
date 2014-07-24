@@ -5793,7 +5793,8 @@ div.statistics-page > div.stats-table {
   outline: 0;
   width: 100%;
   font-size: 1.2em;
-  padding: 13px 0 14px; }
+  padding: 13px 0 14px;
+  font-size: 1em; }
   .settings-page .clear-all-tasks:active, .settings-page .clear-all-tasks.active {
     -webkit-box-shadow: none;
     box-shadow: none;
