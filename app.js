@@ -27471,6 +27471,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return $modal('templates/modal.plan.html', task).$promise.then(function (obj) {
           task.saveTask(obj.hours, obj.minutes);
           $rootScope.getTodoList();
+          $rootScope.reload();
           return obj;
         }, function () {
           $tasks.reload();
@@ -27646,7 +27647,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                 buttons: [
                   { text: 'Fokusera', type: 'btn-main', onTap: function () { return 'focus'; } },
                   { text: 'Ny påminnelse', type: 'btn-default', onTap: function () { return 'plan'; } },
-                  { text: 'Glömma', type: 'btn-default', onTap: function () { return 'ok'; } }
+                  { text: 'Stäng', type: 'btn-default', onTap: function () { return 'ok'; } }
                 ],
               }).then(function (res) {
                 switch (res) {
@@ -27656,6 +27657,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                     break;
                   case 'plan':
                     $rootScope.setModal('templates/modal.postpone.html', task).then($rootScope.reload, $rootScope.reload);
+                    break;
+                  case 'ok':
+                    task.reminder = false;
                     break;
                 }
               });
@@ -27906,8 +27910,11 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
           });
         },
         selectDepth: function(periods, depth, selection) {
-          return _.filter(periods, function(tp){
-            return tp.depth === 0 || tp.depth <= depth && tp.start >= selection[tp.depth-1].start && tp.end <= selection[tp.depth-1].end;
+          return _.filter(periods, function(tp) {
+            if (tp.depth === 0) { return true; }
+            if (tp.depth > depth) { return false; }
+            if (tp.week) { return moment(selection[tp.depth-1].start).month() === moment(tp.start).month() && moment(selection[tp.depth-1].start).year() === moment(tp.start).year(); }
+            return tp.start >= selection[tp.depth-1].start && tp.end <= selection[tp.depth-1].end;
           });
         },
         scrollTo: function (tag) {
@@ -28135,7 +28142,7 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
         $scope.$watch('$hours', function (curr) {
           if (!angular.isNumber(curr)) { return; }
           // if (!$scope.hours) { return ($scope.hours = prev); }
-          // $scope.minutes = $scope.minutes || 0;
+          $scope.minutes = $scope.minutes || 0;
           if ($scope.$date !== undefined) {
             $scope.$date = moment($scope.$date).hours(curr).minutes($scope.$minutes).seconds(0).milliseconds(0).valueOf();
           }
@@ -29525,7 +29532,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
   Tasks.prototype.getTimePeriods = function () {
     var time, month, curDay, curMonth, curYear, year, week, curWeek,
         periods = [], circa = [], exact = [], usedExact = [], usedCirca = [], stop = Date.now().valueOf() + 63113900000,
-        _this = this;
+        _this = this, _week;
 
     (function(){
       var calc, now = moment().startOf('day').valueOf();
@@ -29544,12 +29551,12 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       _.each(calc.blocks, function(block){
         var prevCut;
         _.each(calc.cuts, function(cut){
-          if(cut >= block[0] && cut <= block[1]) {
-            if(prevCut) {
-              if(usedCirca.indexOf(prevCut + '' + cut) === -1) {
+          if (cut >= block[0] && cut <= block[1]) {
+            if (prevCut) {
+              if (usedCirca.indexOf(prevCut + '' + cut) === -1) {
                 circa.push({ start: prevCut, end: cut, duration: cut - prevCut });
                 usedCirca.push(prevCut + '' + cut);
-              } else if(usedExact.indexOf(prevCut + '' + cut) === -1) {
+              } else if (usedExact.indexOf(prevCut + '' + cut) === -1) {
                 exact.push({ start: prevCut, end: cut, duration: cut - prevCut });
                 usedExact.push(prevCut + '' + cut);
               }
@@ -29559,9 +29566,10 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         });
       });
     }());
+
     time = moment().hours(0).minutes(0).seconds(0).milliseconds(0);
-    while(stop > time.valueOf()) {
-      if(time.year() !== year) {
+    while (stop > time.valueOf()) {
+      if (time.year() !== year) {
         year = time.year();
         curYear = periods.push({
           time: time.valueOf(),
@@ -29572,7 +29580,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
           busyness: 0
         });
       }
-      if(time.month() !== month) {
+      if (time.month() !== month) {
         month = time.month();
         week = -1;
         curMonth = periods.push({
@@ -29587,13 +29595,15 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
 
       if ($config.showWeeks && time.week() !== week) {
         week = time.week();
+        _week = moment().year(year).week(week);
         curWeek = periods.push({
           start: time.valueOf(),
           time: time.valueOf(),
           depth: 2,
           label: 'Vecka ' + week,
-          subLabel: moment().year(year).week(week-1).day(1).format('D MMM') + '-' + moment().year(year).week(week-1).day(1).day(7).format('D MMM'),
-          busyness: 0
+          subLabel: _week.day(1).format('D MMM') + '-' + _week.day(7).format('D MMM'),
+          busyness: 0,
+          week: true
         });
       }
 
@@ -29636,7 +29646,7 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
                         pp = 0; // no postpone punishment has been implemented, specs unclear
 
                     return memo + (h * i * p * f * o) + pp;
-                  } else if(task.timeType === 'exact') {
+                  } else if (task.timeType === 'exact') {
                     return memo + (h * i * p);
                   }
                 },
@@ -29647,29 +29657,43 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
           return dayOp > 1 ? 1 : dayOp;
         }())
       });
-      if (false && $config.showWeeks) {
+      if ($config.showWeeks) {
         periods[curWeek-1].busyness += periods[curDay-1].busyness;
       }
       periods[curMonth-1].busyness += periods[curDay-1].busyness;
       periods[curYear-1].busyness += periods[curDay-1].busyness;
       time = moment([time.year(),0,1,0,0]).dayOfYear(time.dayOfYear() + 1);
     }
-    var last = [];
-    for(var n = periods.length - 1; n >= 0; n--) {
-      var end = last[periods[n].depth] || periods[periods.length-1].start,
-          total;
-      periods[n].end = end;
-      total = $config.percentageUsableTime * (end - periods[n].start) / 100;
-      periods[n].exact = _.reduce(exact, function(duration, time){
-        if(periods[n].start <= time.start && end >= time.start) { duration += time.duration; }
-        return duration;
-      }, 0) / total;
-      periods[n].circa = (_.reduce(circa, function(duration, time){
-        if(periods[n].start <= time.start && end >= time.start) { duration += time.duration; }
-        return duration;
-      }, 0) / total) - periods[n].exact;
-      periods[n].busyness /= Math.round((periods[n].end - periods[n].start) / 86400000);
-      last[periods[n].depth] = periods[n].start;
+    var last = [], _end, total, n;
+    for (n = periods.length - 1; n >= 0; n--) {
+      if (periods[n].week) {
+        _end = moment(periods[n].start).add(1, 'weeks').valueOf();
+        periods[n].end = _end;
+        total = $config.percentageUsableTime * 6048000;
+        periods[n].exact = _.reduce(exact, function(duration, time){
+          if (periods[n].start <= time.start && _end >= time.start) { duration += time.duration; }
+          return duration;
+        }, 0) / total;
+        periods[n].circa = (_.reduce(circa, function(duration, time){
+          if (periods[n].start <= time.start && _end >= time.start) { duration += time.duration; }
+          return duration;
+        }, 0) / total) - periods[n].exact;
+        periods[n].busyness /= 7;        
+      } else {
+        _end = last[periods[n].depth] || periods[periods.length-1].start;
+        periods[n].end = _end;
+        total = $config.percentageUsableTime * (_end - periods[n].start) / 100;
+        periods[n].exact = _.reduce(exact, function(duration, time){
+          if (periods[n].start <= time.start && _end >= time.start) { duration += time.duration; }
+          return duration;
+        }, 0) / total;
+        periods[n].circa = (_.reduce(circa, function(duration, time){
+          if (periods[n].start <= time.start && _end >= time.start) { duration += time.duration; }
+          return duration;
+        }, 0) / total) - periods[n].exact;
+        periods[n].busyness /= Math.round((periods[n].end - periods[n].start) / 86400000);
+        last[periods[n].depth] = periods[n].start;
+      }
     }
     return periods;
   };

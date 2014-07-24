@@ -210,10 +210,11 @@
   <div ng-show="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
     <label ida-help class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
-        <option value="until marked as done">Flytta bort när markerats Klar</option>
-        <option ng-if="modal.task.timeType==='exact'" value="until start time">Flytta bort vid starttid</option>
-        <option value="until end of duration">Flytta bort efter tidsperioden</option>
-        <option ng-if="modal.task.timeType==='exact'" value="never">Visas ej på Att-Göra</option>
+        <option value="until marked as done">Bort när Klar</option>
+        <option ng-if="modal.task.timeType==='exact'" value="until start time">Bort vid starttid</option>
+        <option ng-if="modal.task.timeType==='exact'" value="until end of duration">Bort vid sluttid</option>
+        <option ng-if="modal.task.timeType==='period'" value="until end of duration">Bort efter tidsperioden</option>
+        <option ng-if="modal.task.timeType==='exact'" value="never">Syns ej på Att-Göra</option>
       </select>
     </label>
   </div>

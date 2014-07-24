@@ -1761,6 +1761,27 @@ h2 {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
 
+.fa-stack-sm {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
+  vertical-align: middle; }
+  .fa-stack-sm.fa-li {
+    width: 2.14286em;
+    position: absolute; }
+
+.fa-stack-half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center; }
+
+.fa-stack-half {
+  font-size: 0.5em;
+  line-height: inherit; }
+
 @-webkit-keyframes scaleOut {
   from {
     -webkit-transform: scale(1);
@@ -2001,6 +2022,27 @@ h2 {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
 
+.fa-stack-sm {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
+  vertical-align: middle; }
+  .fa-stack-sm.fa-li {
+    width: 2.14286em;
+    position: absolute; }
+
+.fa-stack-half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center; }
+
+.fa-stack-half {
+  font-size: 0.5em;
+  line-height: inherit; }
+
 /**
  * Range
  * --------------------------------------------------
@@ -2015,8 +2057,8 @@ input[type="range"] {
   width: auto;
   height: 31px;
   outline: none;
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #999), color-stop(100%, #999));
-  background: linear-gradient(to right, #999 0%, #999 100%);
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #aaa), color-stop(100%, #aaa));
+  background: linear-gradient(to right, #aaa 0%, #aaa 100%);
   background-position: center;
   background-size: 99% 8px;
   background-repeat: no-repeat;
@@ -2126,6 +2168,27 @@ h2 {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
+
+.fa-stack-sm {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
+  vertical-align: middle; }
+  .fa-stack-sm.fa-li {
+    width: 2.14286em;
+    position: absolute; }
+
+.fa-stack-half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center; }
+
+.fa-stack-half {
+  font-size: 0.5em;
+  line-height: inherit; }
 
 .purple {
   color: #a40aaa; }
@@ -2356,7 +2419,7 @@ div.delete-task-modal {
     div.delete-task-modal > div > button.cancel {
       background: none;
       border: none;
-      color: #999;
+      color: #aaa;
       font-size: 1.4em;
       padding: 10px 20px;
       position: absolute;
@@ -2371,7 +2434,7 @@ div.delete-task-modal {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
-      color: #999; }
+      color: #aaa; }
     div.delete-task-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
@@ -2438,7 +2501,7 @@ div.delete-task-modal {
       border-top: 2px solid #9b9b9b;
       top: 0px; }
   div.delete-task-modal > div > span {
-    color: #999;
+    color: #aaa;
     display: inline-block;
     font-style: italic;
     padding: 10px 40px 0 0; }
@@ -2461,7 +2524,7 @@ div.edit-task-name-modal {
     div.edit-task-name-modal > div > button.cancel {
       background: none;
       border: none;
-      color: #999;
+      color: #aaa;
       font-size: 1.4em;
       padding: 10px 20px;
       position: absolute;
@@ -2476,7 +2539,7 @@ div.edit-task-name-modal {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
-      color: #999; }
+      color: #aaa; }
     div.edit-task-name-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
@@ -2545,7 +2608,7 @@ div.later-modal {
     div.later-modal > div > button.cancel {
       background: none;
       border: none;
-      color: #999;
+      color: #aaa;
       font-size: 1.4em;
       padding: 10px 20px;
       position: absolute;
@@ -2560,7 +2623,7 @@ div.later-modal {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
-      color: #999; }
+      color: #aaa; }
     div.later-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
@@ -2708,7 +2771,7 @@ div.timer-modal {
     div.timer-modal > div > button.cancel {
       background: none;
       border: none;
-      color: #999;
+      color: #aaa;
       font-size: 1.4em;
       padding: 10px 20px;
       position: absolute;
@@ -2723,7 +2786,7 @@ div.timer-modal {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
-      color: #999; }
+      color: #aaa; }
     div.timer-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
@@ -2895,7 +2958,7 @@ div.pick-parent-task-modal {
   div.pick-parent-task-modal > button.cancel {
     background: none;
     border: none;
-    color: #999;
+    color: #aaa;
     font-size: 1.6em;
     padding: 7px 15px;
     position: absolute;
@@ -2903,7 +2966,7 @@ div.pick-parent-task-modal {
     top: 5px;
     outline: 0; }
   div.pick-parent-task-modal > div.child-task {
-    color: #999;
+    color: #aaa;
     margin: 0 0 15px; }
     div.pick-parent-task-modal > div.child-task > p {
       margin: 10px 0 15px; }
@@ -2915,7 +2978,7 @@ div.pick-parent-task-modal {
     list-style: none; }
     div.pick-parent-task-modal > ul > li {
       padding: 0 5px;
-      border-bottom: 1px solid #cccccc;
+      border-bottom: 1px solid #dddddd;
       line-height: 50px; }
       div.pick-parent-task-modal > ul > li.active {
         background: #a40aaa;
@@ -2939,7 +3002,7 @@ div.focus-stop-timer-modal {
     div.focus-stop-timer-modal > div > button.cancel {
       background: none;
       border: none;
-      color: #999;
+      color: #aaa;
       font-size: 1.4em;
       padding: 10px 20px;
       position: absolute;
@@ -2954,7 +3017,7 @@ div.focus-stop-timer-modal {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
-      color: #999; }
+      color: #aaa; }
     div.focus-stop-timer-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
@@ -3046,7 +3109,7 @@ div.focus-distraction-list-confirmation-modal {
     div.focus-distraction-list-confirmation-modal > div > button.cancel {
       background: none;
       border: none;
-      color: #999;
+      color: #aaa;
       font-size: 1.4em;
       padding: 10px 20px;
       position: absolute;
@@ -3061,7 +3124,7 @@ div.focus-distraction-list-confirmation-modal {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
-      color: #999; }
+      color: #aaa; }
     div.focus-distraction-list-confirmation-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
@@ -3321,7 +3384,7 @@ div.focus-distraction-list-confirmation-modal {
   padding: 7px 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  border: 1px solid #999;
+  border: 1px solid #aaa;
   display: inline-block; }
 
 .timepicker-button {
@@ -3361,7 +3424,7 @@ div.focus-distraction-list-confirmation-modal {
   .plan > button.cancel {
     background: none;
     border: none;
-    color: #999;
+    color: #aaa;
     font-size: 1.6em;
     padding: 7px 15px;
     position: absolute;
@@ -3839,7 +3902,7 @@ div.focus-distraction-list-confirmation-modal {
   .plan > div > div.checkbox {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    border: 1px solid #999;
+    border: 1px solid #aaa;
     height: 16px;
     position: relative;
     width: 16px;
@@ -4053,7 +4116,7 @@ div.focus-distraction-list-confirmation-modal {
       .plan > div > div.repeated .help-line .weekly-repeat > div > div.checkbox {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        border: 1px solid #999;
+        border: 1px solid #aaa;
         height: 16px;
         position: relative;
         width: 16px;
@@ -4480,7 +4543,7 @@ span.time-label {
   display: block;
   font-size: 12px;
   line-height: 20px;
-  color: #999; }
+  color: #aaa; }
   span.time-label::after {
     content: '\00a0'; }
 
@@ -4501,7 +4564,7 @@ span.time-label {
         padding: 10px 0 !important; }
   .list-item > div {
     background: #f2f2f2;
-    border-bottom: 1px solid #cccccc; }
+    border-bottom: 1px solid #dddddd; }
     .list-item > div.checked {
       border-bottom: 1px solid #555;
       opacity: 0.3; }
@@ -4575,7 +4638,7 @@ span.time-label {
       .list-item > div.has-child-task-controls.expanded.is-child > div > div.right {
         padding-left: 20px; }
         .list-item > div.has-child-task-controls.expanded.is-child > div > div.right > div.right {
-          border-bottom: 1px solid #cccccc; }
+          border-bottom: 1px solid #dddddd; }
     .list-item > div.warning > div > div.right {
       background: #C73535; }
       .list-item > div.warning > div > div.right > div.right {
@@ -4603,7 +4666,7 @@ span.time-label {
     .list-item > div > button.caret {
       background: #f2f2f2;
       border: none;
-      color: #999;
+      color: #aaa;
       display: block;
       height: 65px;
       width: 50px;
@@ -4633,7 +4696,7 @@ span.time-label {
       .list-item > div > div > div.sub-task-ctrls > button {
         background: #f2f2f2;
         border: none;
-        color: #999;
+        color: #aaa;
         display: block;
         height: 50px;
         width: 30px;
@@ -4681,7 +4744,7 @@ span.time-label {
         .list-item > div > div > div.right > div.checkbox-wrapper > div.checkbox {
           -webkit-border-radius: 4px;
           border-radius: 4px;
-          border: 1px solid #999;
+          border: 1px solid #aaa;
           height: 16px;
           position: relative;
           width: 16px;
@@ -4698,7 +4761,7 @@ span.time-label {
           display: block;
           font-size: 12px;
           line-height: 20px;
-          color: #999; }
+          color: #aaa; }
           .list-item > div > div > div.right > div.right > span.parent-task::after, .list-item > div > div > div.right > div.right > span.time-label::after {
             content: '\00a0'; }
         .list-item > div > div > div.right > div.right > span.parent-task {
@@ -4716,7 +4779,7 @@ span.time-label {
           font-size: 11px;
           line-height: 14px;
           padding: 0 3px 0 4px;
-          border: 1px solid #cccccc; }
+          border: 1px solid #dddddd; }
           .list-item > div > div > div.right > div.right > span.alert::before {
             content: '\f0f3\00a0';
             display: inline-block;
@@ -5209,7 +5272,7 @@ div.calendar-page.date-picker {
   .date-picker > button.cancel {
     background: none;
     border: none;
-    color: #999;
+    color: #aaa;
     font-size: 1.6em;
     padding: 7px 15px;
     position: absolute;
@@ -5238,6 +5301,15 @@ div.calendar-page.date-picker {
         border-left: 10px solid rgba(0, 0, 0, 0.1); }
       .date-picker > ul > li.start-day, .date-picker > ul > li.end-day {
         background: #87D15E; }
+      .date-picker > ul > li.week-line {
+        background: #aaa;
+        line-height: 25px; }
+        .date-picker > ul > li.week-line > span {
+          padding-top: 3px; }
+        .date-picker > ul > li.week-line > div.exact-busyness {
+          top: 16px; }
+        .date-picker > ul > li.week-line > div.overall-busyness {
+          top: 0; }
       .date-picker > ul > li.hide-button {
         padding-left: 0; }
         .date-picker > ul > li.hide-button > button {
@@ -5247,7 +5319,7 @@ div.calendar-page.date-picker {
       .date-picker > ul > li > button {
         background: #f2f2f2;
         border: none;
-        color: #999;
+        color: #aaa;
         display: block;
         height: 50px;
         width: 50px;
@@ -5559,7 +5631,7 @@ span.alert {
   font-size: 11px;
   line-height: 14px;
   padding: 0 3px 0 4px;
-  border: 1px solid #cccccc; }
+  border: 1px solid #dddddd; }
   span.alert::before {
     content: '\f0f3\00a0';
     display: inline-block;
@@ -5755,11 +5827,11 @@ div.statistics-page > div.stats-table {
     .select-item label.disabled > select {
       -webkit-box-shadow: 0 2px 0 0 #555;
       box-shadow: 0 2px 0 0 #555;
-      background: #999; }
+      background: #aaa; }
       .select-item label.disabled > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #999;
+        background: #aaa;
         border-top: 2px solid #555; }
 
 .select-label {
@@ -5792,6 +5864,27 @@ h2 {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
+
+.fa-stack-sm {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
+  vertical-align: middle; }
+  .fa-stack-sm.fa-li {
+    width: 2.14286em;
+    position: absolute; }
+
+.fa-stack-half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center; }
+
+.fa-stack-half {
+  font-size: 0.5em;
+  line-height: inherit; }
 
 /**
  * Toggle
@@ -5867,9 +5960,9 @@ h2 {
   box-sizing: border-box;
   width: 54px;
   height: 32px;
-  border: solid 2px #999;
+  border: solid 2px #aaa;
   border-radius: 20px;
-  background-color: #999;
+  background-color: #aaa;
   content: ' ';
   cursor: pointer;
   pointer-events: none; }

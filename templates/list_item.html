@@ -46,12 +46,15 @@
             </button>
             <button ng-hide="task.finished||task.deleted"
                     ng-click="$parent.$parent.preventConfirmation = true; $root.focus(task.id)">
-              <i class="fa fa-clock-o"></i>
+              <i class="fa fa-crosshairs"></i>
               Fokusera
             </button>
             <button ng-show="task.planned&&!task.finished&&!task.deleted"
                     ng-click="$root.setModal('templates/modal.later.html', task.id)">
-              <i class="fa fa-angle-double-right"></i>
+              <span class="fa-stack-sm">
+                <i class="fa fa-plus fa-stack-half"></i>
+                <i class="fa fa-bell-o fa-stack-1x"></i>
+              </span>
               Påminn mm
             </button>
             <button ng-hide="task.planned||task.finished||task.deleted||$root.page.indexOf('/fokusera-pa-aktivitet')===0"
