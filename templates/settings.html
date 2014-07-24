@@ -10,12 +10,14 @@
   <div ida-help>
     <div class="toggle-item">
       <span class="toggle-label">Show weeks in calendar</span>
+      <span class="toggle-off">av</span>
       <label class="toggle">
-         <input type="checkbox" ng-model="$config.showWeeks" ng-change="$config.save()">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
+        <input type="checkbox" ng-model="$config.showWeeks" ng-change="$config.save()">
+        <div class="track">
+          <div class="handle"></div>
+        </div>
       </label>
+      <span class="toggle-on">på</span>
     </div>
   </div>
   <div ida-help>
@@ -75,34 +77,52 @@
   <div ida-help>
     <div class="toggle-item">
       <span class="toggle-label">Show in navigation</span>
+      <span class="toggle-off">av</span>
       <label class="toggle">
          <input type="checkbox" ng-model="$config.help.nav" ng-change="$config.save()">
          <div class="track">
            <div class="handle"></div>
          </div>
       </label>
+      <span class="toggle-on">på</span>
     </div>
   </div>
   <div ida-help>
     <div class="toggle-item">
       <span class="toggle-label">Show in planning</span>
+      <span class="toggle-off">av</span>
       <label class="toggle">
          <input type="checkbox" ng-model="$config.help.plan" ng-change="$config.save()">
          <div class="track">
            <div class="handle"></div>
          </div>
       </label>
+      <span class="toggle-on">på</span>
     </div>
   </div>
   <div ida-help>
     <div class="toggle-item">
       <span class="toggle-label">Show in setting</span>
+      <span class="toggle-off">av</span>
       <label class="toggle">
          <input type="checkbox" ng-model="$config.help.setting" ng-change="$config.save()">
          <div class="track">
            <div class="handle"></div>
          </div>
       </label>
+      <span class="toggle-on">på</span>
     </div>
   </div>
+
+  <div class="separator">Danger area</div>
+
+  <div ida-help>
+    <button class="clear-all-tasks" ng-click="$events.clear()">Reset popups</button>
+  </div>
+  <br>
+  <div ida-help>
+    <button class="clear-all-tasks" ng-click="clearTasks('alla')">Klar alla aktiviteter</button>
+  </div>
+
+  <br>
 </div>

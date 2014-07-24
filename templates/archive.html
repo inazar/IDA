@@ -20,8 +20,12 @@
       ida-item="task"></li>
   </ul>
 
-  <div class="confirmation reset-all-tasks">
-    <a ng-click="$tasks.clear();$events.clear();getTodoList()">Radera all app uppgifter</a>
+  <div ng-if="!deletedPage" class="confirmation reset-all-tasks">
+    <a ng-click="clearTasks('gjorda')">Klar gjorda aktiviteter</a>
+  </div>
+
+  <div ng-if="deletedPage" class="confirmation reset-all-tasks">
+    <a ng-click="clearTasks('raderade')">Klar raderade aktiviteter</a>
   </div>
 
 </div>

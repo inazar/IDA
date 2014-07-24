@@ -27414,6 +27414,37 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       closeApp: function(){
         return (navigator.app && $rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) ? navigator.app.exitApp() : $location.path('/todo');
       },
+      clearTasks: function (which) {
+        var icon, criteria;
+        switch (which) {
+          case 'gjorda':
+            icon = 'check-square-o';
+            criteria = {finished: false};
+            break;
+          case 'raderade':
+            icon = 'trash-o';
+            criteria = {deleted: false};
+            break;
+          case 'alla':
+            icon = 'exclamation-triangle red';
+            break;
+        }
+        $popup.confirm({
+          type: 'clean'+which,
+          title: 'Klar aktiviteter',
+          template: '<div class="popup-icon"><i class="fa fa-'+icon+'"></i></div>' +
+                    '<div class="popup-text">Klar '+which+' aktiviteter?</div>',
+          cancelText: 'Ångra',
+          cancelType: '',
+          okText: 'Bra',
+          okType: '',
+        }).then(function (agree) {
+          if (agree) {
+            $tasks.clear(criteria);
+            $rootScope.getTodoList();
+          }
+        });
+      },
       getTodoList: function () { return ($rootScope.$list = $tasks.getTodoList($rootScope.todoFilter)); },
       warnOverbook: function (warn) {
         var d = true;
@@ -29296,10 +29327,15 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
 
   // Clear tasks
   Tasks.prototype.clear = function (id) {
-    if (id) {
-      this.tasks = _.reject(this.tasks, function(t) { return t.id === id; });
-    } else {
-      this.tasks = [];
+    switch (typeof id) {
+      case 'string':
+        this.tasks = _.reject(this.tasks, function(t) { return t.id === id; });
+        break;
+      case 'object':
+        this.tasks = _.where(this.tasks, id);
+        break;
+      default:
+        this.tasks = [];
     }
     this.save();
   };  

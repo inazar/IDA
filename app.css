@@ -5773,6 +5773,33 @@ div.statistics-page > div.stats-table {
   width: 100%; }
   .settings-page .range label {
     width: 8em; }
+.settings-page .clear-all-tasks {
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 2px 0 0 #5d0662;
+  box-shadow: 0 2px 0 0 #5d0662;
+  -webkit-user-select: none;
+  background: #a40aaa;
+  border: none;
+  color: white;
+  display: inline-block;
+  font-weight: bold;
+  padding: 3px 10px 4px;
+  position: relative;
+  text-align: center;
+  top: -2px;
+  border-top: 2px solid transparent;
+  text-decoration: none;
+  outline: 0;
+  width: 100%;
+  font-size: 1.2em;
+  padding: 13px 0 14px; }
+  .settings-page .clear-all-tasks:active, .settings-page .clear-all-tasks.active {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: #8b0992;
+    border-top: 2px solid #5d0662;
+    top: 0px; }
 
 .select-item {
   display: -webkit-box;
@@ -5911,9 +5938,25 @@ h2 {
   -moz-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  display: block;
+  display: inline-block;
   white-space: nowrap;
   margin-right: 1em; }
+
+.toggle-on, .toggle-off {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -moz-box-flex: 0;
+  -moz-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: inline-block;
+  white-space: nowrap; }
+
+.toggle-on {
+  margin-left: 0.5em; }
+
+.toggle-off {
+  margin-right: 0.5em; }
 
 .toggle-label:first-child {
   padding-left: 5px; }
