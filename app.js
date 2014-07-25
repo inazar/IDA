@@ -29088,19 +29088,18 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
   };
 
   $document[0].addEventListener('deviceready', function() {
-    var sound, _this;
+    var sound, _this = this;
+    function _register(sound) {
+      console.log('Media register: '+location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'));
+      var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function (status) { console.log('Media success: '+status); }, function (err) { console.log('Media error: '+err); }, function (status) {
+        console.log('Media satus: '+status);
+        if (status === Media.MEDIA_STOPPED) {
+          if (typeof self.onStop === 'function') { self.onStop(); }
+        }
+      });
+    }
     if ($window.device && $window.device.platform === 'Android') {
-      for (sound in this.sounds) {
-        (function (sound) {
-          console.log('Media register: '+location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'));
-          var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function (status) { console.log('Media success: '+status); }, function (err) { console.log('Media error: '+err); }, function (status) {
-            console.log('Media satus: '+status);
-            if (status === Media.MEDIA_STOPPED) {
-              if (typeof self.onStop === 'function') { self.onStop(); }
-            }
-          });
-        })(sound);
-      }
+      for (sound in this.sounds) { _register(sound); }
     }
   });
 
