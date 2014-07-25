@@ -29085,11 +29085,12 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
   };
 
   $document[0].addEventListener('deviceready', function() {
+    console.log('Media convert');
     var sound, _this;
     if ($window.device && $window.device.platform === 'Android') {
       for (sound in this.sounds) {
         (function (sound) {
-          var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function () {}, null, function (status) {
+          var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function (status) { console.log('Media success: '+status) }, function (err) { console.log('Media error: '+err); }, function (status) {
             console.log('Media satus: '+status);
             if (status === Media.MEDIA_STOPPED) {
               if (typeof self.onStop === 'function') { self.onStop(); }
@@ -29133,6 +29134,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     var clone = _.extend({}, this);
     delete clone._durationTimer;
     delete clone._collection;
+    delete clone._complete;
     delete clone._parent;
     return clone;
   };
@@ -29350,6 +29352,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
         min = Math.floor((duration % 3600000) / 60000),
         sec = Math.floor((duration % 60000) / 1000);
     if (this.timeRemaining !== '0s' && duration <= 0) {
+      this._complete = true;
       $rootScope.$sound = $sounds.play(this.planned ? 'reminder' : 'timer');
     }
     this.timeRemaining = duration > 0 ? (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '') : '0s';
@@ -29359,8 +29362,9 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     var _this = this;
     if (start) {
       if (this._durationTimer) { $interval.cancel(_this._durationTimer); }
+      this._complete = false;
       this._durationTimer = $interval(function () {
-        if (_this.deleted || _this.finished) {
+        if (_this.deleted || _this.finished || this._complete) {
           $interval.cancel(_this._durationTimer);
           _this._durationTimer = null;
         } else { _this._updateRemaining(); }
