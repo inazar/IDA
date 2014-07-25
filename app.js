@@ -29058,8 +29058,9 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
     if ((sound = this.sounds[name])) {
       volume = parseInt($config.volume[type], 10) || 1;
       if (sound instanceof Audio) { sound.volume = volume; }
-      // else { sound.setVolume(volume); }
+      else { sound.setVolume(volume); }
       sound.onStop = function () {
+        console.log('Media onStop: '+type+' ('+name+')');
         sound.onStop = null;
         d.resolve();
       };
@@ -29067,7 +29068,10 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
       sound.play();
     } else { d.reject(); }
     res = {
-      $stop: function () { _this.stop(type); },
+      $stop: function () {
+        console.log('Media attempt stop: '+type+' ('+name+')');
+        _this.stop(type);
+      },
       $promise: d.promise
     };
     d.promise.finally(function () { delete res.$stop; });
@@ -29076,8 +29080,8 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
 
   Sounds.prototype.stop = function(type) {
     if (!this.onStop) { return; }
-    console.log('Media stop: '+type);
     var name = $config.sounds[type], sound;
+    console.log('Media stop: '+type+' ('+name+')');
     if ((sound = this.sounds[name])) {
       if (sound instanceof Audio) {
         sound.pause();
@@ -29092,11 +29096,9 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
     var sound, _this = this;
     function _register(sound) {
       console.log('Media register: '+location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'));
-      var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function (status) { console.log('Media success: '+status); }, function (err) { console.log('Media error: '+err); }, function (status) {
-        console.log('Media satus: '+status);
-        if (status === Media.MEDIA_STOPPED) {
-          if (typeof self.onStop === 'function') { self.onStop(); }
-        }
+      var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function () {
+        console.log('Media success: '+sound);
+        if (typeof self.onStop === 'function') { self.onStop(); }
       });
     }
     for (sound in this.sounds) {
