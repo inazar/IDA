@@ -40,7 +40,7 @@
     <div class="select-item">
       <span class="select-label">Complete</span>
       <label ng-class="{disabled:!$config.sounds.task}">
-        <select ng-model="$config.sounds.task" ng-change="$root.$sound=$sounds.play($config.sounds.task)">
+        <select ng-model="$config.sounds.task" ng-change="$root.$sound=$sounds.play('task')">
           <option value=''>None</option>
           <option value='tada'>Tada</option>
         </select>
@@ -48,7 +48,7 @@
     </div>
     <div class="range" ng-class="{'range-purple':$config.sounds.task, 'range-gray':!$config.sounds.task}">
       <i class="icon fa fa-volume-off gray"></i>
-      <input type="range", min="0", max="1" step="0.1" ng-model="$config.sound.task" ng-change="$config.save()">
+      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.task" ng-change="$config.save()">
       <i class="icon fa fa-volume-up gray"></i>
     </div>
   </div>
@@ -57,7 +57,7 @@
     <div class="select-item">
       <span class="select-label">Timer</span>
       <label ng-class="{disabled:!$config.sounds.timer}">
-        <select ng-model="$config.sounds.timer" ng-change="$root.$sound=$sounds.play($config.sounds.timer)">
+        <select ng-model="$config.sounds.timer" ng-change="$root.$sound=$sounds.play('timer')">
           <option value=''>None</option>
           <option value='clockalarm'>Clock alarm</option>
           <option value='clockalarm1'>Alternative alarm</option>
@@ -76,7 +76,7 @@
     <div class="select-item">
       <span class="select-label">Reminder</span>
       <label ng-class="{disabled:!$config.sounds.reminder}">
-        <select ng-model="$config.sounds.reminder" ng-change="$root.$sound=$sounds.play($config.sounds.reminder)">
+        <select ng-model="$config.sounds.reminder" ng-change="$root.$sound=$sounds.play('reminder')">
           <option value=''>None</option>
           <option value='little-bells'>Little bells</option>
           <option value='boxing-fight'>Boxing fight</option>
@@ -95,7 +95,7 @@
     <div class="select-item">
       <span class="select-label">Focus</span>
       <label ng-class="{disabled:!$config.sounds.focus}">
-        <select ng-model="$config.sounds.focus">
+        <select ng-model="$config.sounds.focus"  ng-change="$root.$sound=$sounds.play('focus')">
           <option value=''>None</option>
           <option value='focus'>Focus</option>
         </select>
@@ -112,7 +112,7 @@
     <div class="select-item">
       <span class="select-label">Archive</span>
       <label ng-class="{disabled:!$config.sounds.archive}">
-        <select ng-model="$config.sounds.archive" ng-change="$root.$sound=$sounds.play($config.sounds.archive)">
+        <select ng-model="$config.sounds.archive" ng-change="$root.$sound=$sounds.play('archive')">
           <option value=''>None</option>
           <option value='applaud'>Applaud</option>
         </select>

@@ -29030,13 +29030,11 @@ App.service('idaPopups', function () {
 
 /* jshint strict: false */
 /* global App, Audio, Media */
-App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q, $config) {
+App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
 
   function _stopListener (audio) {
     return function () {
-      if (typeof audio._onStop === 'function') {
-        $timeout(function () { audio._onStop(); });
-      }
+      if (typeof audio._onStop === 'function') { audio._onStop(); }
     };
   }
 
@@ -29062,7 +29060,6 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
       if (sound instanceof Audio) { sound.volume = volume; }
       else { sound.setVolume(volume); }
       sound.onStop(function () {
-        console.log('Media onStop: '+type+' ('+name+')');
         sound.onStop();
         d.resolve();
       });
@@ -29080,7 +29077,6 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
 
   Sounds.prototype.stop = function(type) {
     var name = $config.sounds[type], sound;
-    console.log('Media stop: '+type+' ('+name+')');
     if ((sound = this.sounds[name])) {
       if (sound instanceof Audio) {
         sound.pause();
