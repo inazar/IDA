@@ -29089,7 +29089,8 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
     if ($window.device && $window.device.platform === 'Android') {
       for (sound in this.sounds) {
         (function (sound) {
-          var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), null, null, function (status) {
+          var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function () {}, null, function (status) {
+            console.log('Media satus: '+status);
             if (status === Media.MEDIA_STOPPED) {
               if (typeof self.onStop === 'function') { self.onStop(); }
             }
