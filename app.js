@@ -27664,6 +27664,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       var notification, vibrate;
       $rootScope.$cordova = $window.device;
       $document[0].addEventListener('backbutton', function() { return false; }, false);
+      if ($window.device && $window.device.platform === 'Android') { $sounds.register(); }
       if ((notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
         notification.local.ontrigger = function (id, state) {
           if (id === 'organize') {
@@ -29029,7 +29030,7 @@ App.service('idaPopups', function () {
 
 /* jshint strict: false */
 /* global App, Audio, Media */
-App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig', function ($window, $document, $timeout, $q, $config) {
+App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q, $config) {
 
   function _stopListener (audio) {
     return function () {
@@ -29087,7 +29088,7 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
     }
   };
 
-  $document[0].addEventListener('deviceready', function() {
+  Sounds.prototype.register = function() {
     var sound, _this = this;
     function _register(sound) {
       console.log('Media register: '+location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'));
@@ -29098,14 +29099,11 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
         }
       });
     }
-    console.log($window.device.platform);
-    if ($window.device && $window.device.platform === 'Android') {
-      for (sound in this.sounds) {
-        console.log('Media try: '+sound);
-        _register(sound);
-      }
+    for (sound in this.sounds) {
+      console.log('Media try: '+sound);
+      _register(sound);
     }
-  });
+  };
 
   return new Sounds(['alarm-clock-electric', 'applaud', 'boxing-fight', 'clockalarm', 'clockalarm1', 'focus', 'little-bells', 'monotone-ascending', 'tada']);
 }]);
