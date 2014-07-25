@@ -29098,8 +29098,12 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
         }
       });
     }
+    console.log($window.device.platform);
     if ($window.device && $window.device.platform === 'Android') {
-      for (sound in this.sounds) { _register(sound); }
+      for (sound in this.sounds) {
+        console.log('Media try: '+sound);
+        _register(sound);
+      }
     }
   });
 
