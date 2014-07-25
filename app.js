@@ -29064,12 +29064,10 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
         sound._onStop = null;
         d.resolve();
       };
-      console.log('Media play: '+type+' ('+name+')');
       sound.play();
     } else { d.reject(); }
     res = {
       $stop: function () {
-        console.log('Media attempt stop: '+type+' ('+name+')');
         Sounds.prototype.stop.call(_this, type);
       },
       $promise: d.promise
@@ -29079,8 +29077,6 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
   };
 
   Sounds.prototype.stop = function(type) {
-    console.log('Media stopping: '+type);
-    if (!this._onStop) { return; }
     var name = $config.sounds[type], sound;
     console.log('Media stop: '+type+' ('+name+')');
     if ((sound = this.sounds[name])) {
@@ -29101,7 +29097,6 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
       });
     }
     for (sound in this.sounds) {
-      console.log('Media try: '+sound);
       _register(sound);
     }
   };
