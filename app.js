@@ -29052,17 +29052,17 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
   };
 
   Sounds.prototype.play = function(type) {
-    console.log('Media play: '+type);
     var name = $config.sounds[type], sound, volume, _this = this, d = $q.defer(), res;
     for (sound in this.sounds) { this.stop(sound); }
     if ((sound = this.sounds[name])) {
       volume = parseInt($config.volume[type], 10) || 1;
       if (sound instanceof Audio) { sound.volume = volume; }
-      else { sound.setVolume(volume); }
+      // else { sound.setVolume(volume); }
       sound.onStop = function () {
         sound.onStop = null;
         d.resolve();
       };
+      console.log('Media play: '+type+' ('+name+')');
       sound.play();
     } else { d.reject(); }
     res = {
@@ -29088,12 +29088,12 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
   };
 
   $document[0].addEventListener('deviceready', function() {
-    console.log('Media convert');
     var sound, _this;
     if ($window.device && $window.device.platform === 'Android') {
       for (sound in this.sounds) {
         (function (sound) {
-          var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function (status) { console.log('Media success: '+status) }, function (err) { console.log('Media error: '+err); }, function (status) {
+          console.log('Media register: '+location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'));
+          var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function (status) { console.log('Media success: '+status); }, function (err) { console.log('Media error: '+err); }, function (status) {
             console.log('Media satus: '+status);
             if (status === Media.MEDIA_STOPPED) {
               if (typeof self.onStop === 'function') { self.onStop(); }
