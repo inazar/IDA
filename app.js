@@ -29059,9 +29059,9 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
       volume = parseInt($config.volume[type], 10) || 1;
       if (sound instanceof Audio) { sound.volume = volume; }
       else { sound.setVolume(volume); }
-      sound.onStop = function () {
+      this.sounds[name]._onStop = function () {
         console.log('Media onStop: '+type+' ('+name+')');
-        sound.onStop = null;
+        this.sounds[name]._onStop = null;
         d.resolve();
       };
       console.log('Media play: '+type+' ('+name+')');
@@ -29079,7 +29079,7 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
   };
 
   Sounds.prototype.stop = function(type) {
-    if (!this.onStop) { return; }
+    if (!this._onStop) { return; }
     var name = $config.sounds[type], sound;
     console.log('Media stop: '+type+' ('+name+')');
     if ((sound = this.sounds[name])) {
