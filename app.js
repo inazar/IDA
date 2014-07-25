@@ -27671,7 +27671,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           } else {
             var task = $tasks.get(id);
             vibrate(1000);
-            if (state === 'foreground' && task && task.title) {
+            if (state === 'foreground' && task && task.title && task.planned && !task.finished && task.deleted) {
               $popup.show({
                 type: 'notification',
                 title: 'Påminnelse',
@@ -29029,11 +29029,13 @@ App.service('idaPopups', function () {
 
 /* jshint strict: false */
 /* global App, Audio, Media */
-App.service('idaSounds', ['$window', '$document', '$q', 'idaConfig', function ($window, $document, $q, $config) {
+App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig', function ($window, $document, $timeout, $q, $config) {
 
   function _stopListener (audio) {
     return function () {
-      if (typeof audio.onStop === 'function') { audio.onStop(); }
+      if (typeof audio.onStop === 'function') {
+        $timeout(function () { audio.onStop(); });
+      }
     };
   }
 
