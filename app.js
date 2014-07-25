@@ -29059,9 +29059,9 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
       volume = parseInt($config.volume[type], 10) || 1;
       if (sound instanceof Audio) { sound.volume = volume; }
       else { sound.setVolume(volume); }
-      this.sounds[name]._onStop = function () {
+      sound._onStop = function () {
         console.log('Media onStop: '+type+' ('+name+')');
-        this.sounds[name]._onStop = null;
+        sound._onStop = null;
         d.resolve();
       };
       console.log('Media play: '+type+' ('+name+')');
@@ -29070,7 +29070,7 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
     res = {
       $stop: function () {
         console.log('Media attempt stop: '+type+' ('+name+')');
-        _this.stop(type);
+        Sounds.prototype.stop.call(_this, type);
       },
       $promise: d.promise
     };
@@ -29079,6 +29079,7 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
   };
 
   Sounds.prototype.stop = function(type) {
+    console.log('Media stopping: '+type);
     if (!this._onStop) { return; }
     var name = $config.sounds[type], sound;
     console.log('Media stop: '+type+' ('+name+')');
@@ -29095,9 +29096,7 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
   Sounds.prototype.register = function() {
     var sound, _this = this;
     function _register(sound) {
-      console.log('Media register: '+location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'));
       var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function () {
-        console.log('Media success: '+sound);
         if (typeof self.onStop === 'function') { self.onStop(); }
       });
     }
