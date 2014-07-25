@@ -37,8 +37,16 @@
   <div class="separator">Sound setting</div>
 
   <div ida-help>
-    <div class="range range-purple">
-      <label class="range-label">Task done</label>
+    <div class="select-item">
+      <span class="select-label">Complete</span>
+      <label ng-class="{disabled:!$config.sounds.task}">
+        <select ng-model="$config.sounds.task">
+          <option value=''>None</option>
+          <option value='tada'>Tada</option>
+        </select>
+      </label>
+    </div>
+    <div class="range" ng-class="{'range-purple':$config.sounds.task, 'range-gray':!$config.sounds.task}">
       <i class="icon fa fa-volume-off gray"></i>
       <input type="range", min="0", max="1" step="0.1" ng-model="$config.sound.task" ng-change="$config.save()">
       <i class="icon fa fa-volume-up gray"></i>
@@ -46,28 +54,73 @@
   </div>
 
   <div ida-help>
-    <div class="range range-purple">
-      <label class="range-label">Timer</label>
+    <div class="select-item">
+      <span class="select-label">Timer</span>
+      <label ng-class="{disabled:!$config.sounds.timer}">
+        <select ng-model="$config.sounds.timer">
+          <option value=''>None</option>
+          <option value='clockalarm'>Clock alarm</option>
+          <option value='clockalarm1'>Alternative alarm</option>
+          <option value="alarm-clock-electric">Electric</option>
+        </select>
+      </label>
+    </div>
+    <div class="range" ng-class="{'range-purple':$config.sounds.timer, 'range-gray':!$config.sounds.timer}">
       <i class="icon fa fa-volume-off gray"></i>
-      <input type="range", min="0", max="1" step="0.1" ng-model="$config.sound.timer" ng-change="$config.save()">
+      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.timer" ng-change="$config.save()">
       <i class="icon fa fa-volume-up gray"></i>
     </div>
   </div>
 
   <div ida-help>
-    <div class="range range-purple">
-      <label class="range-label">Reminder</label>
+    <div class="select-item">
+      <span class="select-label">Reminder</span>
+      <label ng-class="{disabled:!$config.sounds.reminder}">
+        <select ng-model="$config.sounds.reminder">
+          <option value=''>None</option>
+          <option value='little-bells'>Little bells</option>
+          <option value='boxing-fight'>Boxing fight</option>
+          <option value="monotone-ascending">Monotone</option>
+        </select>
+      </label>
+    </div>
+    <div class="range" ng-class="{'range-purple':$config.sounds.reminder, 'range-gray':!$config.sounds.reminder}">
       <i class="icon fa fa-volume-off gray"></i>
-      <input type="range", min="0", max="1" step="0.1" ng-model="$config.sound.reminder" ng-change="$config.save()">
+      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.reminder" ng-change="$config.save()">
       <i class="icon fa fa-volume-up gray"></i>
     </div>
   </div>
 
   <div ida-help>
-    <div class="range range-purple">
-      <label class="range-label">Focus</label>
+    <div class="select-item">
+      <span class="select-label">Focus</span>
+      <label ng-class="{disabled:!$config.sounds.focus}">
+        <select ng-model="$config.sounds.focus">
+          <option value=''>None</option>
+          <option value='focus'>Focus</option>
+        </select>
+      </label>
+    </div>
+    <div class="range" ng-class="{'range-purple':$config.sounds.focus, 'range-gray':!$config.sounds.focus}">
       <i class="icon fa fa-volume-off gray"></i>
-      <input type="range", min="0", max="1" step="0.1" ng-model="$config.sound.focus" ng-change="$config.save()">
+      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.focus" ng-change="$config.save()">
+      <i class="icon fa fa-volume-up gray"></i>
+    </div>
+  </div>
+
+  <div ida-help>
+    <div class="select-item">
+      <span class="select-label">Archive</span>
+      <label ng-class="{disabled:!$config.sounds.archive}">
+        <select ng-model="$config.sounds.archive">
+          <option value=''>None</option>
+          <option value='applaud'>Applaud</option>
+        </select>
+      </label>
+    </div>
+    <div class="range" ng-class="{'range-purple':$config.sounds.archive, 'range-gray':!$config.sounds.archive}">
+      <i class="icon fa fa-volume-off gray"></i>
+      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.archive" ng-change="$config.save()">
       <i class="icon fa fa-volume-up gray"></i>
     </div>
   </div>

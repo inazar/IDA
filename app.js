@@ -27349,8 +27349,14 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   'idaPopups',
   'idaPopup',
   'idaLoading',
+  'idaSounds',
   'idaModal',
-  function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popups, $popup, $loading, $modal) {
+  function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popups, $popup, $loading, $sounds, $modal) {
+
+    Audio.prototype.stop = function () {
+      this.pause();
+      this.currentTime = 0;
+    };
 
     var _organize = $config.organize;
     angular.extend($rootScope, {
@@ -27359,15 +27365,12 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       $events: $events,
       $popups: $popups,
       $location: $location,
+      $sounds: $sounds,
+      $sound: {},
       title: 'AHDH App',
       loadFocusTime: null,
       timeLeft: null,
       todoFilter: 'today',
-      sounds: {
-        focus: new Audio('focus.mp3')
-      },
-      sound1: new Audio('sound1.mp3'),
-      sound2: new Audio('sound2.mp3'),
       moment: moment,
       Date: Date,
       Math: Math,
@@ -27388,7 +27391,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       },
       moveFinishedTasksToArchive: function () {
         $tasks.moveFinishedTasksToArchive();
-        $rootScope.sound1.play();
+        $rootScope.$sound = $sounds.play('archive');
       },
       postpone: function(task, days) {
         task.postpone(days);
@@ -27462,11 +27465,11 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         }
         return $q.when(d);
       },
-      completeTask: function (task) {
+      completeTask: function (task, noSound) {
         // task.checked = true;
-        $popup.confirm({
+        return $popup.confirm({
           type: 'taskComplete',
-          sound: $rootScope.sound2,
+          sound: noSound ? '' : 'task',
           title: 'Klar aktiviteter',
           template: '<div class="popup-icon"><i class="fa fa-archive"></i></div>' +
                     '<div class="popup-text">Klar aktiviteter finns <br/> kvar på Arkiv-sidan.</div>',
@@ -27479,13 +27482,14 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             task.finished = true;
             task.setTimer();
             $tasks.save();
-            $rootScope.sound1.play();
+            $sounds.play('archive');
           }
+          return agree;
         }, function () {
             // rejected as user decided not avoid this popup
             task.finished = true;
             $tasks.save();
-            $rootScope.sound1.play();
+            $sounds.play('archive');
         });
       },
       editTask: function (id) {
@@ -27657,15 +27661,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     };
 
     $document[0].addEventListener('deviceready', function() {
-      var notification, vibrate, sound;
+      var notification, vibrate;
       $rootScope.$cordova = $window.device;
       $document[0].addEventListener('backbutton', function() { return false; }, false);
-      if ($window.device && $window.device.platform !== 'Android') { return; }
-      $rootScope.sound1 = new Media('file://' + location.pathname.replace('index.html', 'sound1.mp3'));
-      $rootScope.sound2 = new Media('file://' + location.pathname.replace('index.html', 'sound2.mp3'));
-      for (sound in $rootScope.sounds) {
-        $rootScope.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', sound + '.mp3'));
-      }
       if ((notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
         notification.local.ontrigger = function (id, state) {
           if (id === 'organize') {
@@ -27712,7 +27710,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 /* jshint strict: false */
 /* global App */
-App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$location', '$timeout', 'idaTasks', 'idaPopup', function($scope, $route, $routeParams, $title, $location, $timeout, $tasks, $popup) {
+App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$location', '$timeout', 'idaTasks', 'idaPopup', 'idaConfig', 'idaSounds', function($scope, $route, $routeParams, $title, $location, $timeout, $tasks, $popup, $config, $sounds) {
 
   $scope.$root.title = $title;
 
@@ -27722,46 +27720,56 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
     minutes: 25,
     task: $routeParams.task ? $tasks.get(''+$routeParams.task) : {},
     preventConfirmation: false,
+    cancelled: false,
     setTime: function () {
       if(!$scope.hours && !$scope.minutes) { return; }
       totalTime = ($scope.hours || 0) * 3600000 + ($scope.minutes || 0) * 60000;
       deadline = new Date(new Date().valueOf() + totalTime);
       $scope.$root.timeLeft = 10;
-      function _stop () {
-        var sound = $scope.$root.sounds.focus;
-        $scope.$root.clickWait = null;
-        $scope.$root.timeLeft = 0;
-        if (sound.stop) {
-          sound.stop();
-        } else {
-          sound.pause();
-          sound.currentTime = 0;
-        }
-      }
       $timeout(function repeat(){
-        var timeLeft = $scope.$root.timeLeft;
+        var timeLeft = $scope.timeLeft;
         if (timeLeft !== 0) {
           $scope.$root.timeLeft = (deadline - new Date() <= 0) ? 1 : deadline - new Date();
         }
         $scope.hoursLeft = Math.floor(timeLeft / 3600000) || 0;
         $scope.minutesLeft = Math.floor((timeLeft % 3600000) / 60000) || 0;
         $scope.secondsLeft = Math.floor((timeLeft % 60000) / 1000) || 0;
-        $scope.degrees = 2 + Math.round(358 - ($scope.$root.timeLeft / totalTime * 358));
+        $scope.degrees = 2 + Math.round(358 - ($scope.timeLeft / totalTime * 358));
         if (timeLeft > 1) {
           $timeout(repeat, 1000);
         } else {
-          $scope.$root.sounds.focus.play();
-          $scope.$root.clickWait = _stop;
-          $timeout(function () { if ($scope.$root.clickWait) { _stop(); } }, 60000);
-          if($tasks.distractionListTasks().length > 0) {
-            $scope.$root.showFocusInputs = false;
-            $scope.$root.showNav = false;
-            $scope.title = 'Gå igenom Distraktionslistan';
-          }
+          if (!$scope.cancelled) {
+            ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(function () {
+              $scope.$root.timeLeft = 0;
+              $scope.completeTask($scope.task).then(function (agree) {
+                if (agree && !$tasks.distractionListTasks($scope.loadFocusTime).length) {
+                  $timeout(function () { $location.path('/todo'); });
+                }
+              });
+            });
+            if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
+              $scope.$root.showFocusInputs = false;
+              $scope.$root.showNav = false;
+              $scope.title = 'Gå igenom Distraktionslistan';
+            }
+          } else { $scope.canelled = true; }
         }
       });
     },
+    stopTimer: function () {
+      $scope.cancelled = true;
+      $scope.setModal('templates/modal.focus.stop_timer.html').then(function (res) {
+        switch (res) {
+          case 'todo':
+            $timeout(function () { $location.path('/todo'); });
+            break;
+          case 'dlist':
+            break;
+        }
+      }, function () { $scope.cancelled = false; });
+    },
     cancel: function () {
+      $scope.cancelled = true;
       deadline = new Date();
       $scope.$root.timeLeft = 0;
     },
@@ -27772,8 +27780,7 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
       distractionListTimer = $timeout(function(){
         $scope.distractionList = null;
       }, 10 * 1000);
-    },
-    distractionList: function () { return $tasks.distractionListTasks($scope.$root.loadFocusTime); }
+    }
   });
 
   if ($scope.task.duration) {
@@ -27809,7 +27816,12 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
     if(!$scope.preventConfirmation){
       if($tasks.distractionListTasks().length > 0) {
         e.preventDefault();
-        $scope.setModal('templates/modal.focus.distraction_list_confirmation.html');
+        $scope.cancelled = true;
+        $scope.setModal('templates/modal.focus.distraction_list_confirmation.html').then(function (action) {
+          if (action) {
+            $location.path('/todo');
+          }
+        }, function () { $scope.cancelled = false; });
         return false;
       }
     }
@@ -28072,16 +28084,16 @@ App.directive('idaItem', [function () {
           var time, label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
           if (task.planned && task.timeType === 'period' && task.durationType) {
             time = moment.duration(task.duration || (task.endTime - task.startTime));
-            label += ' (';
-            if (time.hours() > 0) {
-              label += moment.duration(time).subtract(time.minutes(), 'minutes').humanize();
-            }
-            if (time.minutes() > 0) {
-              if (time.hours() > 0) { label += ' '; }
-              label += moment.duration(time).subtract(time.hours(), 'hours').humanize();
-            }
-            // label += ' (' + moment.duration(task.duration || (task.endTime - task.startTime)).humanize() + ')';
-            label += ')';
+            label += ' (' + task.durationLabel() + ')';
+            // if (time.hours() > 0) {
+            //   label += moment.duration(time).subtract(time.minutes(), 'minutes').humanize();
+            // }
+            // if (time.minutes() > 0) {
+            //   if (time.hours() > 0) { label += ' '; }
+            //   label += moment.duration(time).subtract(time.hours(), 'hours').humanize();
+            // }
+            // // label += ' (' + moment.duration(task.duration || (task.endTime - task.startTime)).humanize() + ')';
+            // label += ')';
           }
           return label;
         },
@@ -28308,7 +28320,8 @@ App.factory('idaPopup', [
   '$rootScope',
   '$document',
   'idaPopups',
-function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popups) {
+  'idaSounds',
+function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popups, $sounds) {
   var config = {
     stackPushDelay: 50
   };
@@ -28451,7 +28464,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
         self.isShown = true;
         $rootScope.$$_popupShown = true;
         if (options.sound) {
-          options.sound.play();
+          $sounds.play(options.sound);
         }
         $timeout(function() {
           //if hidden while waiting for raf, don't show
@@ -28776,11 +28789,19 @@ App.service('idaConfig', function () {
       plan: true,
       setting: true
     },
-    sound: {
+    volume: {
       task: 1,
       timer: 1,
       reminder: 1,
-      focus: 1
+      focus: 1,
+      archive: 1
+    },
+    sounds: {
+      task: 'tada',
+      timer: 'clockalarm',
+      reminder: 'little-bells',
+      focus: 'focus',
+      archive: 'applaud'     
     }
   };
 
@@ -28791,7 +28812,8 @@ App.service('idaConfig', function () {
     } catch (e) {}
     _.extend(this, defaults, current);
     this.help = _.extend({}, defaults.help, current.help);
-    this.sound = _.extend({}, defaults.sound, current.sound);
+    this.volume = _.extend({}, defaults.volume, current.volume);
+    this.sounds = _.extend({}, defaults.sounds, current.sounds);
 
   };
 
@@ -29006,8 +29028,81 @@ App.service('idaPopups', function () {
 });
 
 /* jshint strict: false */
+/* global App, Audio, Media */
+App.service('idaSounds', ['$window', '$document', '$q', 'idaConfig', function ($window, $document, $q, $config) {
+
+  function _stopListener (audio) {
+    return function () {
+      if (typeof audio.onStop === 'function') { audio.onStop(); }
+    };
+  }
+
+  var Sounds = function (sounds) {
+    var i, sound;
+    this.sounds = {};
+    sounds = sounds || [];
+    for (i=0; i<sounds.length; i++) {
+      sound = sounds[i];
+      this.sounds[sound] = new Audio('sounds/'+sound+'.mp3');
+      this.sounds[sound].addEventListener('ended', _stopListener(this.sounds[sound]));
+      this.sounds[sound].addEventListener('pause', _stopListener(this.sounds[sound]));
+    }
+  };
+
+  Sounds.prototype.play = function(type) {
+    var name = $config.sounds[type], sound, volume, _this = this, d = $q.defer(), res;
+    for (sound in this.sounds) { this.stop(sound); }
+    if ((sound = this.sounds[name])) {
+      volume = parseInt($config.volume[type], 10) || 1;
+      if (sound instanceof Audio) { sound.volume = volume; }
+      else { sound.setVolume(volume); }
+      sound.onStop = function () {
+        sound.onStop = null;
+        d.resolve();
+      };
+      sound.play();
+    } else { d.reject(); }
+    res = {
+      $stop: function () { _this.stop(type); },
+      $promise: d.promise
+    };
+    d.promise.finally(function () { delete res.$stop; });
+    return res;
+  };
+
+  Sounds.prototype.stop = function(type) {
+    var name = $config.sounds[type], sound;
+    if ((sound = this.sounds[name])) {
+      if (sound instanceof Audio) {
+        sound.pause();
+        sound.currentTime = 0;
+      } else {
+        sound.play();
+      }
+    }
+  };
+
+  $document[0].addEventListener('deviceready', function() {
+    var sound, _this;
+    if ($window.device && $window.device.platform === 'Android') {
+      for (sound in this.sounds) {
+        (function (sound) {
+          var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), null, null, function (status) {
+            if (status === Media.MEDIA_STOPPED) {
+              if (typeof self.onStop === 'function') { self.onStop(); }
+            }
+          });
+        })(sound);
+      }
+    }
+  });
+
+  return new Sounds(['alarm-clock-electric', 'applaud', 'boxing-fight', 'clockalarm', 'clockalarm1', 'focus', 'little-bells', 'monotone-ascending', 'tada']);
+}]);
+
+/* jshint strict: false */
 /* global App, moment, _ */
-App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaConfig', function ($window, $timeout, $interval, $events, $config) {
+App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaEvents', 'idaConfig', 'idaSounds', function ($rootScope, $window, $timeout, $interval, $events, $config, $sounds) {
 
   var _tasks;
 	var Task = function (task, collection) {
@@ -29251,6 +29346,9 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
         hrs = Math.floor(duration / 3600000),
         min = Math.floor((duration % 3600000) / 60000),
         sec = Math.floor((duration % 60000) / 1000);
+    if (this.timeRemaining !== '0s' && duration <= 0) {
+      $rootScope.$sound = $sounds.play(this.planned ? 'reminder' : 'timer');
+    }
     this.timeRemaining = duration > 0 ? (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '') : '0s';
   };
 
@@ -29285,6 +29383,18 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
       this.planned = true;
       _tasks.save();
     }
+  };
+
+  Task.prototype.durationLabel = function () {
+    var time = moment.duration(this.duration), label = '';
+    if (time.hours() > 0) {
+      label += time.hours() + 'h';
+    }
+    if (time.minutes() > 0) {
+      if (time.hours() > 0) { label += ' '; }
+        label += time.format('mm') + 'min';
+    }
+    return label;
   };
 
   Task.prototype.rename = function(title) {
@@ -29465,9 +29575,9 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
     return _.reduce(
       _.sortBy(
         _.filter(_this.tasks, function (task) {
-          return task.deleted === false && task.planned === true && task.finished === false && task.timeType === 'exact' && task.startTime >= start && task.startTime < end;
+          return task.deleted === false && task.planned === true && task.finished === false && (task.timeType === 'exact' || task.timeType === 'period') && task.startTime >= start && task.startTime < end;
       }), 'startTime'),
-      function (memo, task) { return memo + moment(task.startTime).format('HH:mm') + (task.duration ? ' - ' + (task.timeEstimated ? 'ca ' : '') + moment(task.startTime + task.duration).format('HH:mm') : '') + ' ' + task.title + '\n'; },
+      function (memo, task) { return memo + (task.timeType === 'exact' ? moment(task.startTime).format('HH:mm') + (task.duration ? ' - ' + (task.timeEstimated ? 'ca ' : '') + moment(task.startTime + task.duration).format('HH:mm') : '') : '(' + task.durationLabel() + ')') + ' ' + task.title + '\n'; },
       ''
     );
   };
@@ -29744,5 +29854,3 @@ App.service('idaTasks', ['$window', '$timeout', '$interval', 'idaEvents', 'idaCo
   return (_tasks = new Tasks());
 }]);
 
-
-//# sourceMappingURL=app.js.map

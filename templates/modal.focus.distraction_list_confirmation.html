@@ -4,8 +4,8 @@
     <button class="cancel" ng-click="modal.$dismiss()"><i class="fa fa-times"></i></button>
     <div class="divider"></div>
     <!-- Just close the modal: -->
-    <button class="plan-now" ng-disabled="modal.$lock" ng-click="$root.timeLeft=0;$root.showFocusInputs=false;$root.showNav=false;modal.$close(true)">Planera dem nu</button>
+    <button class="plan-now" ng-disabled="modal.$lock" ng-click="$root.timeLeft=0;$root.showFocusInputs=false;$root.showNav=false;modal.$close()">Planera dem nu</button>
     <!-- Leave the focus page and go to the todo page: -->
-    <button class="plan-later" ng-disabled="modal.$lock" ng-click="$root.loadFocusTime=null;$root.timeLeft = 0;$location.path('/todo');modal.$close()">Senare. Flytta dem till listan över oplanerade aktiviteter.</button>
+    <button class="plan-later" ng-disabled="modal.$lock" ng-click="$root.loadFocusTime=null;$root.timeLeft = 0;modal.$close(true)">Senare. Flytta dem till listan över oplanerade aktiviteter.</button>
   </div>
 </div>

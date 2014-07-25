@@ -10,7 +10,7 @@
     <!-- If distraction list is empty, leave the focus page and go to the todo page: -->
     <!-- If distraction list is NOT empty, clear the timer and open up modal.focus.distraction_list_confirmation.html: -->
     <button ng-hide="haveDistractions" ng-disabled="modal.$lock" class="stop-focussing"
-      ng-click="$parent.timeLeft = 0;$location.path('/todo');modal.$close('todo')">
+      ng-click="$parent.timeLeft = 0;modal.$close('todo')">
       Sluta fokusera
     </button>
 
@@ -19,8 +19,7 @@
       Sluta fokusera och gå igenom distraktionslistan
     </button>
 
-
     <!-- Just close the modal: -->
-    <button class="continue-focussing" ng-disabled="modal.$lock" ng-click="modal.$close()">Fortsätt fokusera</button>
+    <button class="continue-focussing" ng-disabled="modal.$lock" ng-click="modal.$dismiss()">Fortsätt fokusera</button>
   </div>
 </div>

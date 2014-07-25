@@ -20,7 +20,7 @@
   </div>
 
   <div id="pie-timer" ng-show="timeLeft > 0">
-    <div ng-click="setModal('templates/modal.focus.stop_timer.html')" id="timer">
+    <div ng-click="stopTimer()" id="timer">
       <div id="slice" ng-class="{ gt50: degrees > 180 }">
         <div class="pie" ng-style="{ transform: 'rotate(' + degrees + 'deg)', '-webkit-transform': 'rotate(' + degrees + 'deg)' }"></div>
         <div class="pie fill" ng-show="degrees > 180"></div>
@@ -38,18 +38,19 @@
     <div><input ng-model="newTask" placeholder="Skriv in, glöm och fortsätt fokusera!"></div>
     <button ng-click="addTask(newTask)&&(newTask=''||showDistractionListForXSeconds())"><i class="fa fa-plus"></i></button>
   </form>
-  <div id="distraction-list" ng-show="distractionList().length > 0">
+  <div id="distraction-list" ng-show="$tasks.distractionListTasks(loadFocusTime).length > 0">
     <span ng-click="showDistractionListForXSeconds()"><i class="fa fa-ban"></i> Distraktionslista</span>
     <ul ng-show="timeLeft == 0 || showDistractionList" ng-class="{'disabled': timeLeft > 0}">
       <li class="list-item"
-          ng-repeat="task in distractionList() | orderBy:['-updated'] track by $index"
+          ng-repeat="task in $tasks.distractionListTasks(loadFocusTime) | orderBy:['-updated'] track by $index"
           ida-item="task"></li>
     </ul>
   </div>
 
-  <p class="distraction-list-empty" ng-hide="timeLeft > 0 || $parent.showFocusInputs || distractionList().length > 0">
+  <p class="distraction-list-empty" ng-hide="timeLeft > 0 || $parent.showFocusInputs || $tasks.distractionListTasks(loadFocusTime).length > 0">
     Du har gått igenom hela Distraktionslistan. Bra jobbat!
     <a ng-href="#/todo">Till Att Göra-listan</a>
   </p>
 
+  <br>
 </div>

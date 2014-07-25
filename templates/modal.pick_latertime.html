@@ -4,7 +4,7 @@
     <div ida-timepicker model-minutes="$minutes" model-hours="$hours"></div>
     <div class="modal-buttons">
 	    <button ng-click="$root.setDatepicker('');$root.setModal('templates/modal.later.html',task.id)">Ångra</button>
-	    <button class="main" ng-click="task.reminderTime = $root.moment(time).hours($hours || 0).minutes($minutes || 0).seconds(0).milliseconds(0).valueOf();$root.replan(task,$hours||0,$minutes||0);$root.setDatepicker('')" ng-disabled="!time||modal.$lock">Klar</button>
+	    <button class="main" ng-click="$event.stopPropagation();task.reminderTime = $root.moment(time).hours($hours || 0).minutes($minutes || 0).seconds(0).milliseconds(0).valueOf();$root.replan(task,$hours||0,$minutes||0);$root.setDatepicker('')" ng-disabled="!time||modal.$lock">Klar</button>
 	</div>
   </div>
 </div>

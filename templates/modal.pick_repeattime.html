@@ -1,6 +1,6 @@
 <div ida-calendar="modal.task.repeatLimit" calendar-task="modal.task" class="calendar-page date-picker">
   <div class="confirmation" ng-init="timeHour = moment(time).hour() + 1;timeMinute = 0;">
     <span ng-bind="(time ? $root.moment(time).format('D MMMM YYYY, HH:mm') : '')"></span>
-    <button ng-click="task.repeatLimit = $root.moment(time).hours(timeHour || 0).minutes(timeMinute || 0).seconds(0).milliseconds(0).valueOf();$root.setDatepicker('')" ng-disabled="!time||modal.$lock">Klar</button>
+    <button ng-click="$event.stopPropagation();task.repeatLimit = $root.moment(time).hours(timeHour || 0).minutes(timeMinute || 0).seconds(0).milliseconds(0).valueOf();$root.setDatepicker('')" ng-disabled="!time||modal.$lock">Klar</button>
   </div>
 </div>
