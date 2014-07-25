@@ -29034,8 +29034,8 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
 
   function _stopListener (audio) {
     return function () {
-      if (typeof audio.onStop === 'function') {
-        $timeout(function () { audio.onStop(); });
+      if (typeof audio._onStop === 'function') {
+        $timeout(function () { audio._onStop(); });
       }
     };
   }
@@ -29052,7 +29052,7 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
     }
   };
 
-  Sounds.prototype.onStop = function(callback) { this._onStop = callback; };
+  Media.prototype.onStop = Audio.prototype.onStop = function(callback) { this._onStop = callback; };
 
   Sounds.prototype.play = function(type) {
     var name = $config.sounds[type], sound, volume, _this = this, d = $q.defer(), res;
@@ -29095,7 +29095,7 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
     var sound, _this = this;
     function _register(sound) {
       var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function () {
-        if (typeof self.onStop === 'function') { self.onStop(); }
+        if (typeof self._onStop === 'function') { self._onStop(); }
       });
     }
     for (sound in this.sounds) {
