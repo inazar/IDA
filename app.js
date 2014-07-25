@@ -29052,6 +29052,7 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
   };
 
   Sounds.prototype.play = function(type) {
+    console.log('Media play: '+type);
     var name = $config.sounds[type], sound, volume, _this = this, d = $q.defer(), res;
     for (sound in this.sounds) { this.stop(sound); }
     if ((sound = this.sounds[name])) {
@@ -29073,13 +29074,15 @@ App.service('idaSounds', ['$window', '$document', '$timeout', '$q', 'idaConfig',
   };
 
   Sounds.prototype.stop = function(type) {
+    if (!this.onStop) { return; }
+    console.log('Media stop: '+type);
     var name = $config.sounds[type], sound;
     if ((sound = this.sounds[name])) {
       if (sound instanceof Audio) {
         sound.pause();
         sound.currentTime = 0;
       } else {
-        sound.play();
+        sound.stop();
       }
     }
   };
