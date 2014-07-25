@@ -29052,6 +29052,8 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
     }
   };
 
+  Sounds.prototype.onStop = function(callback) { this._onStop = callback; };
+
   Sounds.prototype.play = function(type) {
     var name = $config.sounds[type], sound, volume, _this = this, d = $q.defer(), res;
     for (sound in this.sounds) { this.stop(sound); }
@@ -29059,11 +29061,11 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
       volume = parseInt($config.volume[type], 10) || 1;
       if (sound instanceof Audio) { sound.volume = volume; }
       else { sound.setVolume(volume); }
-      sound._onStop = function () {
+      sound.onStop(function () {
         console.log('Media onStop: '+type+' ('+name+')');
-        sound._onStop = null;
+        sound.onStop();
         d.resolve();
-      };
+      });
       sound.play();
     } else { d.reject(); }
     res = {
