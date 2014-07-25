@@ -29052,7 +29052,7 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
     }
   };
 
-  Media.prototype.onStop = Audio.prototype.onStop = function(callback) { this._onStop = callback; };
+  Audio.prototype.onStop = function(callback) { this._onStop = callback; };
 
   Sounds.prototype.play = function(type) {
     var name = $config.sounds[type], sound, volume, _this = this, d = $q.defer(), res;
@@ -29093,6 +29093,7 @@ App.service('idaSounds', ['$timeout', '$q', 'idaConfig', function ($timeout, $q,
 
   Sounds.prototype.register = function() {
     var sound, _this = this;
+    Media.prototype.onStop = Audio.prototype.onStop;
     function _register(sound) {
       var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function () {
         if (typeof self._onStop === 'function') { self._onStop(); }
