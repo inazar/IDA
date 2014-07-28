@@ -1,15 +1,15 @@
 <div class="statistics-page">
 
   <div class="quick-select">
-    <button ng-click="$parent.modal.task = {
+    <button ng-click="period = {
       startTime: moment().hour(0).minute(0)._d.valueOf(),
       endTime: moment().hour(23).minute(59)._d.valueOf()
     };"><span>Idag</span></button><!--
- --><button ng-click="$parent.modal.task = {
+ --><button ng-click="period = {
       startTime: moment().startOf('day').day(moment().day() - 6)._d.valueOf(),
       endTime: moment()._d.valueOf()
     };"><span>Senaste veckan</span></button><!--
- --><button ng-click="$parent.modal.task = {
+ --><button ng-click="period = {
       startTime: moment().startOf('day').day(moment().day() - 29)._d.valueOf(),
       endTime: moment()._d.valueOf()
     };"><span>Senaste månaden</span></button>
@@ -17,14 +17,14 @@
 
   <div class="date-range-select">
       <h2>från</h2>
-      <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html')"
+      <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html', period)"
               ng-class="{ 'selected': modal.task.startTime }"
-              ng-bind="$parent.modal.task.startTime ? moment($parent.modal.task.startTime).format('ddd D MMM YYYY') : 'Välj datum'"></button>
+              ng-bind="period.startTime ? moment(period.startTime).format('ddd D MMM YYYY') : 'Välj datum'"></button>
       <br><br>
       <h2>till</h2>
-      <button ng-click="setDatepicker('templates/modal.pick_endtime.html')"
+      <button ng-click="setDatepicker('templates/modal.pick_endtime.html', period)"
               ng-class="{ 'selected': modal.task.endTime }"
-              ng-bind="$parent.modal.task.endTime ? moment($parent.modal.task.endTime).format('ddd D MMM YYYY') : 'Välj datum'"></button>
+              ng-bind="period.endTime ? moment(period.endTime).format('ddd D MMM YYYY') : 'Välj datum'"></button>
   </div>
 
   <div class="stats-table">

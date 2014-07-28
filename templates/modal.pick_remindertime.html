@@ -1,6 +1,6 @@
 <div ida-calendar="modal.task.reminderTime" calendar-task="modal.task" class="calendar-page date-picker">
   <div class="confirmation">
     <span ng-bind="(time ? $root.moment(time).format('D MMMM YYYY, HH:mm') : '')"></span>
-    <button ng-click="$event.stopPropagation();task.reminderTime = $root.moment(time).hours($hours || 0).minutes($minutes || 0).seconds(0).milliseconds(0).valueOf();$root.setDatepicker('')" ng-disabled="!time||modal.$lock">Klar</button>
+    <button ng-click="task.reminderTime = $root.moment(time).hours($hours || 0).minutes($minutes || 0).seconds(0).milliseconds(0).valueOf();$root.datepicker.$close(time, 100)" ng-disabled="!time||modal.$lock">Klar</button>
   </div>
 </div>

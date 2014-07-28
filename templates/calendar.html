@@ -22,7 +22,7 @@
         <i ng-show="tp.subLabel">{{tp.subLabel}}</i>
       </span>
 
-      <div ng-init="pickerTasks = $root.$tasks.getPickerTasks(tp.start, tp.end)" ng-if="!tp.week&&tp.depth===2&&tp.start<=$parent.time&&tp.end>$parent.time" class="picker-tasks">{{pickerTasks}}</div>
+      <div ng-if="!tp.week&&tp.depth===2&&tp.start<=$parent.time&&tp.end>$parent.time" class="picker-tasks">{{$root.$tasks.getPickerTasks(tp.start, tp.end)}}</div>
 
       <div ng-if="!tp.week&&$create&&tp.depth==2&&tp.start<=$parent.time&&tp.end>$parent.time" class="picker-task-add" ng-click="addPickerTask(tp.time, tp.busyness >= 1)"> Lägg till aktivitet</div>
 

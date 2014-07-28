@@ -20,7 +20,7 @@
           <ul ng-class="{'help-hidden':!$config.help.nav}">
             <li ida-help="templates/help/todo.html" help-title="Att-göra-listan" ng-class="{ active: (page == '/todo') }"><a ng-click="page == '/todo' ? ($root.showNav = false) : $location.path('/todo')"><span><i class="fa fa-check"></i>Att göra</span></a></li>
             <li ida-help="templates/help/organize.html" help-title="Organisera alla aktiviteter" ng-class="{ active: (page == '/organisera-alla-aktiviteter') }"><a ng-click="page == '/organisera-alla-aktiviteter' ? ($root.showNav = false) : $location.path('/organisera-alla-aktiviteter')"><span><i class="fa fa-folder-open"></i>Organisera alla aktiviteter</span></a></li>
-            <li ida-help="templates/help/focus.html" help-title="Fokusera på aktivitet" ng-class="{ active: (page.indexOf('/fokusera-pa-aktivitet') === 0) }"><a ng-click="page == '/fokusera-pa-aktivitet' ? ($root.showNav = false) : $location.path('/fokusera-pa-aktivitet')"><span><i class="fa fa-clock-o"></i>Fokusera på aktivitet</span></a></li>
+            <li ida-help="templates/help/focus.html" help-title="Fokusera på aktivitet" ng-class="{ active: (page.indexOf('/fokusera-pa-aktivitet') === 0) }"><a ng-click="page == '/fokusera-pa-aktivitet' ? ($root.showNav = false) : $location.path('/fokusera-pa-aktivitet')"><span><i class="fa fa-crosshairs"></i>Fokusera på aktivitet</span></a></li>
             <li ida-help="templates/help/calendar.html" help-title="Kalender" ng-class="{ active: (page == '/kalender') }"><a ng-click="page == '/kalender' ? ($root.showNav = false) : $location.path('/kalender')"><span><i class="fa fa-calendar"></i>Kalender</span></a></li>
             <li ida-help="templates/help/archive.html" help-title="Arkiv" ng-class="{ active: (page == '/arkiv') }"><a ng-click="page == '/arkiv' ? ($root.showNav = false) : $location.path('/arkiv')"><span><i class="fa fa-archive"></i>Arkiv</span></a></li>
             <li ida-help="templates/help/settings.html" help-title="Inställningar" ng-class="{ active: (page == '/installningar') }"><a ng-click="page == '/installningar' ? ($root.showNav = false) : $location.path('/installningar')"><span><i class="fa fa-gears"></i>Inställningar</span></a></li>
@@ -42,13 +42,13 @@
             <a class="avsluta ng-hide" ng-click="$location.path('/todo')" ng-show="page!=='/todo'"><i class="fa fa-reply"></i></a>
           </div>
           <div id="context-wrapper">
-            <div id="context" ng-view ng-hide="$root.modal || $root.datepicker"></div>
+            <div id="context" ng-view ng-hide="$root.modal.template || $root.datepicker.template"></div>
           </div>
         </div>
 
         <div class="modal-container" ng-hide="$root.datepicker" ng-include="$root.modal.template"></div>
 
-        <div class="modal-container" ng-include="$root.datepicker"></div>
+        <div class="modal-container" ng-include="$root.datepicker.template"></div>
         
         <div id="loading">Vänta lite...</div>
       </div>

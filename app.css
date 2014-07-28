@@ -1761,27 +1761,6 @@ h2 {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
 
-.fa-stack-sm {
-  position: relative;
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  line-height: 1em;
-  vertical-align: middle; }
-  .fa-stack-sm.fa-li {
-    width: 2.14286em;
-    position: absolute; }
-
-.fa-stack-half {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  text-align: center; }
-
-.fa-stack-half {
-  font-size: 0.5em;
-  line-height: inherit; }
-
 @-webkit-keyframes scaleOut {
   from {
     -webkit-transform: scale(1);
@@ -2022,27 +2001,6 @@ h2 {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
 
-.fa-stack-sm {
-  position: relative;
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  line-height: 1em;
-  vertical-align: middle; }
-  .fa-stack-sm.fa-li {
-    width: 2.14286em;
-    position: absolute; }
-
-.fa-stack-half {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  text-align: center; }
-
-.fa-stack-half {
-  font-size: 0.5em;
-  line-height: inherit; }
-
 /**
  * Range
  * --------------------------------------------------
@@ -2169,27 +2127,6 @@ h2 {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
 
-.fa-stack-sm {
-  position: relative;
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  line-height: 1em;
-  vertical-align: middle; }
-  .fa-stack-sm.fa-li {
-    width: 2.14286em;
-    position: absolute; }
-
-.fa-stack-half {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  text-align: center; }
-
-.fa-stack-half {
-  font-size: 0.5em;
-  line-height: inherit; }
-
 .purple {
   color: #a40aaa; }
 
@@ -2225,7 +2162,7 @@ body {
     width: 100%;
     height: 100%;
     background: transparent;
-    z-index: 12; }
+    z-index: 150; }
     body > #clickWait.ng-click-active {
       background: rgba(0, 255, 0, 0.3); }
   body > #wrapper {
@@ -2255,7 +2192,7 @@ body {
         top: 5%;
         width: 80%; }
         body > #wrapper > nav > ul > li {
-          height: 11%;
+          height: 9.75%;
           width: 100%; }
           body > #wrapper > nav > ul > li.active .help-container {
             background: #a40aaa; }
@@ -2302,7 +2239,7 @@ body {
       line-height: 300px;
       font-weight: bold;
       font-size: 14px;
-      z-index: 9999999; }
+      z-index: 100; }
     body > #wrapper > div#main {
       -webkit-box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
       box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
@@ -2400,7 +2337,7 @@ body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #w
   overflow-x: hidden;
   overflow-y: auto; }
   .modal-container > div {
-    z-index: 999; }
+    z-index: 90; }
 
 div.delete-task-modal {
   background: rgba(0, 0, 0, 0.7);
@@ -5300,8 +5237,10 @@ div.calendar-page.date-picker {
           background: #e5e5e5; }
       .date-picker > ul > li.weekend > span {
         border-left: 10px solid rgba(0, 0, 0, 0.1); }
-      .date-picker > ul > li.start-day, .date-picker > ul > li.end-day {
+      .date-picker > ul > li.start-day {
         background: #87D15E; }
+      .date-picker > ul > li.end-day {
+        background: #FF5F5F; }
       .date-picker > ul > li.week-line {
         background: #aaa;
         line-height: 25px; }
@@ -5877,6 +5816,26 @@ div.statistics-page > div.stats-table {
 .select-label:first-child {
   padding-left: 5px; }
 
+.fa-stack-sm {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
+  vertical-align: middle; }
+  .fa-stack-sm.fa-li {
+    width: 2.14286em;
+    position: absolute; }
+
+.fa-stack-half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 0.4em;
+  line-height: inherit;
+  top: 0.35em; }
+
 body {
   font-family: 'Helvetica', Arial, sans-serif;
   font-size: 100%;
@@ -5893,27 +5852,6 @@ h2 {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
-
-.fa-stack-sm {
-  position: relative;
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  line-height: 1em;
-  vertical-align: middle; }
-  .fa-stack-sm.fa-li {
-    width: 2.14286em;
-    position: absolute; }
-
-.fa-stack-half {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  text-align: center; }
-
-.fa-stack-half {
-  font-size: 0.5em;
-  line-height: inherit; }
 
 /**
  * Toggle

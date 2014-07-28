@@ -26,7 +26,7 @@
       <button class="start" ng-disabled="modal.$lock" ng-click="($timer.type==='period' ? modal.task.setTimer(Date.now().valueOf() + (($timer.timerMinutes || 0) * 60000) + (($timer.timerHours || 0) * 3600000)) : modal.task.setTimer(moment(Date.now()).hour($timer.timerHours).minute($timer.timerMinutes).seconds(0).millisecond(0).valueOf()));modal.$close('start');">Starta</button>
     </div>
 
-    <div ng-init="modal.task.reminderTime && modal.task.trackDuration()" ng-show="modal.task.reminderTime > Date.now()" class="timer">
+    <div ng-show="modal.task.reminderTime > Date.now()" class="timer">
       <div>{{modal.task.timeRemaining}}</div>
       <div class="buttons">
         <button class="clear" ng-disabled="modal.$lock" ng-click="modal.task.setTimer();modal.$close('remove');">Ta bort påminnelse</button>

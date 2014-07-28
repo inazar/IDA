@@ -27351,7 +27351,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   'idaLoading',
   'idaSounds',
   'idaModal',
-  function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popups, $popup, $loading, $sounds, $modal) {
+  'idaDatepicker',
+  'idaNotifications',
+  function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popups, $popup, $loading, $sounds, $modal, $datepicker, $notifications) {
 
     Audio.prototype.stop = function () {
       this.pause();
@@ -27407,7 +27409,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             task.reminderTimePeriod = 'exact';
             break;
         }
-        task.reminderTime=moment(task.reminderTime).hours(hours).minutes(minutes).seconds(0).milliseconds(0)._d.valueOf();
+        task.reminderTime = moment(task.reminderTime).hours(hours).minutes(minutes).seconds(0).milliseconds(0).valueOf();
         task.saveTask(null, null, task.duration);
         $rootScope.getTodoList();
         $rootScope.modal.$close();
@@ -27509,10 +27511,10 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return $modal('templates/modal.plan.html', task).$promise.then(function (obj) {
           task.saveTask(obj.hours, obj.minutes);
           $rootScope.getTodoList();
-          $rootScope.reload();
           return obj;
         }, function () {
           $tasks.reload();
+          $rootScope.getTodoList();
         });
       },
       setModal: function(modal, id, success) {
@@ -27521,15 +27523,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return modal.$promise;
       },
       setDatepicker: function(modal){
-        $loading.show();
-        $timeout(function(){
-          $rootScope.$apply(function(){ $rootScope.datepicker = modal; });
-          $timeout(function(){
-            $loading.hide();
-            $document[0].body.scrollTop = 0;
-            $rootScope.repaint();
-          });
-        });
+        modal = $datepicker(modal);
+        return modal.$promise;
       },
       setReminderTime: function (task, type) {
         var p;
@@ -27659,6 +27654,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         else { wrapper.ontouchmove = undefined; }
       });
     };
+
+    $document[0].addEventListener('pause', function() { $notifications.stop(); });
+    $document[0].addEventListener('resume', function() { $notifications.start(); });
 
     $document[0].addEventListener('deviceready', function() {
       var notification, vibrate;
@@ -27872,17 +27870,19 @@ App.controller('StatisticsCtrl', ['$scope', '$title', 'idaTasks', 'idaEvents', f
 
   $scope.$root.title = $title;
 
-  var modalTask = $scope.$parent.modalTask = {
-    startTime: moment().hour(0).minute(0)._d.valueOf(),
-    endTime: moment().hour(23).minute(59)._d.valueOf()
+  var period = $scope.period = {
+    startTime: moment().hour(0).minute(0).valueOf(),
+    endTime: moment().hour(23).minute(59).valueOf()
   };
 
+  $scope.$root.modal = { task: period };
+
   $scope.refresh = function () {
-    var tasks = $tasks.getWithin(modalTask.startTime, modalTask.endTime),
-        events = $events.getWithin(modalTask.startTime, modalTask.endTime);
+    var tasks = $tasks.getWithin(period.startTime, period.endTime),
+        events = $events.getWithin(period.startTime, period.endTime);
 
     _.each(tasks, function (task) {
-      if(task.reminderTime > Date.now() && (!task.finished || !task.deleted)) { task.overdue = true; }
+      if (task.reminderTime > Date.now() && (!task.finished || !task.deleted)) { task.overdue = true; }
     });
 
     $scope.stats = [
@@ -27916,7 +27916,7 @@ App.controller('StatisticsCtrl', ['$scope', '$title', 'idaTasks', 'idaEvents', f
     });
   };
 
-  $scope.$watch(function(){ return $scope.$parent.modal.task.endTime + $scope.$parent.modal.task.startTime; }, $scope.refresh);
+  $scope.$watch(function () { return $scope.period.endTime + $scope.period.startTime; }, $scope.refresh);
 }]);
 
 /* jshint strict: false */
@@ -27927,22 +27927,26 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
     transclude: true,
     templateUrl: 'templates/calendar.html',
     scope: {
-      task: '=?calendarTask',
+      task: '=calendarTask',
       time: '=?idaCalendar',
       $create: '@calendarCreate',
-      $validate: '@calendarValidate'
+      $validate: '@calendarValidate',
+      $def: '=?calendarDef'      
     },
     link: function ($scope, element, attrs, ctrl, $transclude) {
       angular.extend($scope, {
-        time: $scope.time || moment().seconds(0).milliseconds(0).valueOf(),
-        task: $scope.task || {},
+        time: $scope.time || $scope.$def || moment().seconds(0).milliseconds(0).valueOf(),
+        task: $scope.task || $tasks.create(),
         depth: 2,
         periods: $tasks.getTimePeriods(),
         addPickerTask: function (time, warn) {
           $scope.$root.warnOverbook(warn).then(function (agree) {
             if (agree) {
               var task = $tasks.add({timeType: 'exact', startTime: moment(time).hour(10).valueOf()});
-              $scope.$root.editTask(task.id);
+              $scope.$root.editTask(task.id).finally(function () {
+                console.log($scope.tp);
+                $scope.periods = $tasks.getTimePeriods();
+              });
             }
           });
         },
@@ -28055,7 +28059,7 @@ App.directive('idaItem', [function () {
       task: '=idaItem'
     },
     link: function ($scope) {
-      $scope.task.trackDuration(true);
+      // $scope.task.trackDuration(true);
       $scope.$on('$destroy', function () { $scope.task.trackDuration(); });
       angular.extend($scope, {
         moment: $scope.$root.moment,
@@ -28149,13 +28153,14 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
     restrict: 'A',
     replace: true,
     template: '<div class="time-picker">' +
-                '<button ng-click="showPicker()" ng-if="$root.$cordova" class="timepicker-button">{{$date|date:"HH:mm"}}</button>' +
-                '<form ng-show="!$root.$cordova">' +
-                  '<input type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="23" ng-model="$hours">' +
+                '<button ng-click="showPicker()" ng-if="$root.$cordova&&$type" class="timepicker-button">{{$date|date:"HH:mm"}}</button>' +
+                '<form ng-show="!($root.$cordova&&$type)">' +
+                  '<input type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="{{$type?99:23}}" ng-model="$hours">' +
                   ':<input type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes">' +
                 '</form>' +
               '</div>',
     scope: {
+      $type: '=?idaTimepicker',
       $hours: '=?modelHours',
       $minutes: '=?modelMinutes',
       $date: '=?modelDate'
@@ -28165,7 +28170,7 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
         $scope.$hours = moment($scope.$date).hours();
         $scope.$minutes = moment($scope.$date).minutes();
       } else {
-        $scope.$date = moment().hours($scope.$hours || 10).minutes($scope.$minutes || 0).valueOf();
+        $scope.$date = moment().hours($scope.$hours || moment().add(1, 'hour').hours()).minutes($scope.$minutes || 0).valueOf();
       }
       if ($scope.$root.$cordova && $window.datePicker) {
         $scope.showPicker = function () {
@@ -28772,10 +28777,10 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
 
 
 /* jshint strict: false */
-/* global App, moment, _ */
+/* global App, _ */
 App.service('idaConfig', function () {
   var defaults = {
-    defaultReminder: +moment(0).hours(10),
+    defaultReminder: 36000000,
     defaultDuration: 1800000,
     daysBeforeDoubleVaugnessPunishment: 15,
     percentageUsableTime: 0.6,
@@ -28825,6 +28830,61 @@ App.service('idaConfig', function () {
 
   return new Config(defaults);
 });
+
+/* jshint strict: false */
+/* global App */
+
+App.service('idaDatepicker', [
+  '$rootScope',
+  '$document',
+  '$timeout',
+  '$q',
+  'idaLoading',
+  function($rootScope, $document, $timeout, $q, $loading) {
+
+    function _hideDatepicker () {
+      $timeout(function(){
+        $rootScope.datepicker = null;
+        $loading.hide();
+      });
+    }
+
+    return function (template, options) {
+      var d = $q.defer();
+      options = angular.extend({
+        template: template,
+        $promise: d.promise,
+        $dismiss: function (err) {
+          options.$lock = true;
+          d.reject(err);
+          _hideDatepicker();
+        },
+        $close: function (res, delay) {
+          options.$lock = true;
+          if (delay) {
+            $timeout(function () {
+              d.resolve(res);
+              _hideDatepicker();
+            }, delay);
+          } else {
+            d.resolve(res);
+            _hideDatepicker();
+          }
+        }
+      }, options);
+
+      d.promise.finally(function () { options.$lock = false; });
+
+      // $loading.show();
+      $timeout(function(){
+        $rootScope.datepicker = options;
+        // $loading.hide(true);
+      });
+
+      return options;
+    };
+  }
+]);
 
 /* jshint strict: false */
 /* global App, _ */
@@ -28914,17 +28974,20 @@ App.service('idaModal', [
 
     return function (template, task, options) {
       var d = $q.defer();
+      task._modal = true;
       options = angular.extend({
         template: template,
         task: task,
         $promise: d.promise,
         $dismiss: function (err) {
           options.$lock = true;
+          task._modal = false;
           d.reject(err);
           _popModal();
         },
         $close: function (res, delay) {
           options.$lock = true;
+          task._modal = false;
           if (delay) {
             $timeout(function () {
               d.resolve(res);
@@ -28937,10 +29000,7 @@ App.service('idaModal', [
         }
       }, options);
 
-      d.promise.finally(function (res) {
-        options.$lock = false;
-        return res;
-      });
+      d.promise.finally(function () { options.$lock = false; });
 
       _modals.unshift(options);
       // $loading.show();
@@ -28953,6 +29013,64 @@ App.service('idaModal', [
     };
   }
 ]);
+
+/* jshint strict: false */
+/* global App, moment */
+App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTasks', 'idaSounds', function ($rootScope, $timeout, $interval, $tasks, $sounds) {
+
+  function _fireEvents () {
+    var i, task, now = Math.floor(Date.now()/1000), duration, reminder, hrs, min, sec, update = false;
+    for (i=0; i<$tasks.tasks.length; i++) {
+      task = $tasks.tasks[i];
+      reminder = task.reminder ? Math.floor(task.reminderTime/1000) : 0;
+      if (!task.deleted && !task.finished && reminder >= now) {
+        if (!task.planned) {
+          if ((duration = reminder - now) > 0) {
+            hrs = Math.floor(duration / 3600);
+            min = Math.floor((duration % 3600) / 60);
+            sec = Math.floor((duration % 60));
+            task.timeRemaining = (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '');
+          } else {
+            task.timeRemaining = '0s';
+            task._complete = true;
+          }
+          update = true;
+        }
+        if (reminder === now) {
+          $rootScope.$sound = $sounds.play(this.planned ? 'reminder' : 'timer');
+          if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
+          update = false;
+        }
+      }
+    }
+    if (update && $rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
+  }
+
+  var Notifications = function () { this.start(); };
+
+  var _interval, _timeout;
+
+  Notifications.prototype.start = function() {
+    _timeout = setTimeout(function () {
+      _interval = setInterval(_fireEvents, 1000);
+      _timeout = null;
+    }, moment().milliseconds());
+  };
+
+  Notifications.prototype.stop = function() {
+    if (_timeout) {
+      clearTimeout(_timeout);
+      _timeout = null;
+    }
+    if (_interval) {
+      clearInterval(_interval);
+      _interval = null;
+    }
+  };
+
+  return new Notifications();
+
+}]);
 
 /* jshint strict: false */
 /* global App */
@@ -29123,6 +29241,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     this.timeCreated = new Date().valueOf();
     if (task) {  _.extend(this, task);}
     this._durationTimer = null;
+    this._modal = false;
     if (!this.id) {
       this.id = ''+Math.floor(Math.random()*1000000000000);
     }
@@ -29135,6 +29254,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     delete clone._collection;
     delete clone._complete;
     delete clone._parent;
+    delete clone._modal;
     return clone;
   };
 
@@ -29166,10 +29286,10 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
   };
 
   Task.prototype.setReminderTime = function() {
-    var p, def = moment($config.defaultReminder);
+    var p, def = moment.duration($config.defaultReminder);
     switch (this.reminderTimePeriod) {
-      case 'firstDay': return this.startTime;
-      case 'lastDay': return this.endTime;
+      case 'firstDay': return moment(this.startTime).add(def).valueOf();
+      case 'lastDay': return moment(this.endTime).add(def).add(1, 'minute').valueOf();
       case 'nearFirst': p = 0.15; break;
       case 'nearLast': p = 0.85; break;
       case 'middle': p = 0.5; break;
@@ -29263,13 +29383,13 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
             start = start.days(nextDay);
             break;
           case 'daily':
-            start = start.date(moment(start).date() + 1);
+            start = start.date(moment(start).date() + (_this.repeatLength || 1));
             break;
           case 'monthly':
-            start = start.month(moment(start).month() + 1);
+            start = start.month(moment(start).month() + (_this.repeatLength || 1));
             break;
           case 'yearly':
-            start = start.year(moment(start).year() + 1);
+            start = start.year(moment(start).year() + (_this.repeatLength || 1));
             break;
         }
         _tasks.add(_.extend({
@@ -29296,12 +29416,12 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
 
   Task.prototype.postpone = function(days) {
     var start = this.startTime;
-    this.startTime = moment().day(moment().day() + days).valueOf();
+    this.startTime = moment(this.startTime).day(moment().day() + days).valueOf();
     if (this.endTime && this.endTime < this.startTime) {
       this.endTime = this.startTime;
     }
     if (this.reminder&&this.reminderTime) {
-      this.reminderTime = moment(this.reminderTime).add(this.startTime - start);
+      this.reminderTime = moment(this.reminderTime).add('milliseconds', this.startTime - start);
     }
     _tasks.save();
   };
@@ -29316,7 +29436,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
       case 'x-days':
         this.xDays = this.xDays || 1;
         this.startTime = moment().hour(0).minute(0).seconds(0).milliseconds(0).valueOf();
-        this.endTime = moment().day(moment().day() + this.xDays).seconds(0).milliseconds(0).valueOf();
+        this.endTime = moment().day(moment().day() + this.xDays - 1).seconds(0).milliseconds(0).valueOf();
         break;
       case 'tomorrow':
         this.startTime = moment().hour(24).minute(0).seconds(0).milliseconds(0).valueOf();
@@ -29398,7 +29518,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     }
     if (time.minutes() > 0) {
       if (time.hours() > 0) { label += ' '; }
-        label += time.format('mm') + 'min';
+        label += (time.minutes() < 10 ? '0' : '') + time.minutes() + 'min';
     }
     return label;
   };
@@ -29760,7 +29880,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
           time: time.valueOf(),
           depth: 2,
           label: 'Vecka ' + week,
-          subLabel: _week.day(1).format('D MMM') + '-' + _week.day(7).format('D MMM'),
+          // subLabel: _week.day(1).format('D MMM') + '-' + _week.day(7).format('D MMM'),
           busyness: 0,
           week: true
         });

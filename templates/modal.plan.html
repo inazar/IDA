@@ -6,7 +6,7 @@
 
   <br><br>
 
-  <div ida-help class="priority"><!-- 
+  <div ida-help="templates/help/plan/priority.html" help-title="Aktivitetens prioritet och omfattning" class="priority"><!-- 
      --><button ng-class="{ active: modal.task.complex == false && modal.task.important }" ng-click="modal.task.complex=false;modal.task.important=true;">A</button><!-- 
      --><button ng-class="{ active: modal.task.complex && modal.task.important }" ng-click="modal.task.complex=true;modal.task.important=true;">AA</button><!-- 
      --><button ng-class="{ active: modal.task.complex == false && !modal.task.important }" ng-click="modal.task.complex=false;modal.task.important=false;">B</button><!-- 
@@ -14,14 +14,14 @@
 
   <br>
 
-  <div ida-help class="type"><!-- 
+  <div ida-help="templates/help/plan/type.html" help-title="När ska aktiviteten göras?" class="type"><!-- 
      --><button ng-class="{ active: modal.task.timeType == 'exact' }" ng-click="modal.task.timeType='exact'">Exakt tid</button><!-- 
      --><button ng-class="{ active: modal.task.timeType == 'period' }" ng-click="modal.task.timeType='period';modal.task.updatePeriodInput();">Tidsperiod</button><!-- 
      --><button ng-class="{ active: modal.task.timeType == 'none' }" ng-click="modal.task.timeType='none'">Ingen tid</button></div>
 
   <br>
 
-  <div ida-help class="exact" ng-show="modal.task.timeType==='exact'">
+  <div ida-help="templates/help/plan/exact.html" help-title="Välj datum och klockslag" class="exact" ng-show="modal.task.timeType==='exact'">
     <button class="start-time"
             ng-click="setDatepicker('templates/modal.pick_starttime.html')"
             ng-class="{'selected': modal.task.startTime}"
@@ -30,7 +30,7 @@
     <div ida-timepicker model-date="modal.task.startTime"></div>
   </div>
 
-  <div ida-help class="period" ng-show="modal.task.timeType == 'period'">
+  <div ida-help help-title class="period" ng-show="modal.task.timeType == 'period'">
     <label>
       <select ng-change="modal.task.updatePeriodInput()" ng-init="modal.task.timeInputType = modal.task.startTime ? 'exact' : 'today';modal.task.updatePeriodInput();" ng-model="modal.task.timeInputType">
         <option value="today">Görs idag</option><!-- Today -->
@@ -50,7 +50,7 @@
     Inom <input ng-change="modal.task.updatePeriodInput()" ng-model="modal.task.xDays" type="number" value="1"> dagar
   </div>
 
-  <div ida-help='hidden' class="period" ng-show="modal.task.timeType == 'period'">
+  <div ida-help='hidden' class="period" ng-show="modal.task.timeType==='period'">
     <div class="datepickers">
       <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html');modal.task.timeInputType='exact'"
               ng-class="{ 'selected': modal.task.startTime }"
@@ -65,7 +65,7 @@
   <br>
 
   <div ng-show="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
-    <div ida-help class="duration">
+    <div ida-help="templates/help/plan/duration.html" help-title="Hur lång tid tar aktiviten att göra?" class="duration">
       <div ng-init="$parent.hours=Math.floor((isNumber(modal.task.duration)?modal.task.duration:$config.defaultDuration)/3600000);$parent.minutes = Math.floor(((isNumber(modal.task.duration)?modal.task.duration:$config.defaultDuration)%3600000)/60000)">
         <div class="estimate-toggle" ng-click="modal.task.timeEstimated=!modal.task.timeEstimated">
           <button ng-class="{ active: !modal.task.timeEstimated }">
@@ -76,7 +76,7 @@
           </button>
         </div>
         <span>&nbsp;kl&nbsp;</span>
-        <div ida-timepicker model-hours="$parent.hours" model-minutes="$parent.minutes"></div>
+        <div ida-timepicker="time" model-hours="$parent.hours" model-minutes="$parent.minutes"></div>
       </div>
     </div>
   </div>
@@ -84,7 +84,7 @@
   <br>
 
   <div ng-show="modal.task.timeType=='exact'">
-    <div ida-help class="reminder">
+    <div ida-help="templates/help/plan/ereminder.html" help-title="Påminnelse" class="reminder">
       <label>
         <select ng-model="modal.task.reminderTimeAdvance"
                 ng-init="modal.task.reminderTimeAdvance = modal.task.reminderTimeAdvance||-1">
@@ -113,7 +113,7 @@
       </div>
     </div>
 
-    <div ida-help class="repeated" ng-init="modal.task.repeatPeriod = modal.task.repeatPeriod || 'once'">
+    <div ida-help="templates/help/plan/repeat.html" help-title="Boka in aktivitet många gånger" class="repeated" ng-init="modal.task.repeatPeriod = modal.task.repeatPeriod || 'once'">
       <label>
         <select ng-model="modal.task.repeatPeriod">
           <option value="once">Upprepas inte</option>
@@ -180,7 +180,7 @@
   </div>
 
   <div ng-show="modal.task.timeType=='period'&&modal.task.startTime&&modal.task.endTime">
-    <div ida-help class="period-reminder">
+    <div ida-help="templates/help/plan/preminder.html" help-title="Påminnelse för tidsperioder" class="period-reminder">
       <label class="reminder">
         <select ng-model="modal.task.reminderTimePeriod"
                 ng-change="modal.task.reminderTime = modal.task.setReminderTime()"
@@ -207,14 +207,22 @@
 
   <br>
 
-  <div ng-show="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
-    <label ida-help class="show-in-todo">
+  <div ng-show="modal.task.timeType == 'exact'">
+    <label ida-help="templates/help/plan/eremove.html" help-title="När flyttas aktiviteten från Att-Göra-listan?" class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
-        <option ng-if="modal.task.timeType==='exact'" value="until start time">Bort vid starttid</option>
-        <option ng-if="modal.task.timeType==='exact'" value="until end of duration">Bort vid sluttid</option>
-        <option ng-if="modal.task.timeType==='period'" value="until end of duration">Bort efter tidsperioden</option>
-        <option ng-if="modal.task.timeType==='exact'" value="never">Syns ej på Att-Göra</option>
+        <option value="until start time">Bort vid starttid</option>
+        <option value="until end of duration">Bort vid sluttid</option>
+        <option value="never">Syns ej på Att-Göra</option>
+      </select>
+    </label>
+  </div>
+
+  <div ng-show="modal.task.timeType == 'period'">
+    <label ida-help="templates/help/plan/premove.html" help-title="När flyttas tidsperiod-aktivieten från Att-Göra?" class="show-in-todo">
+      <select ng-model="modal.task.showInTodo">
+        <option value="until marked as done">Bort när Klar</option>
+        <option value="until end of duration">Bort efter tidsperioden</option>
       </select>
     </label>
   </div>
