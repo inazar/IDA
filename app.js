@@ -28202,7 +28202,7 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
                 '</form>' +
               '</div>',
     scope: {
-      $type: '=?idaTimepicker',
+      $type: '@idaTimepicker',
       $hours: '=?modelHours',
       $minutes: '=?modelMinutes',
       $date: '=?modelDate'
