@@ -27547,6 +27547,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     function _setOrganize () {
       var notification, reminder = moment(($config.reminder && $config.reminder < Date.now()) ? $config.reminder : Date.now());
       switch ($config.organize) {
+        case 'day':
+          reminder = reminder.add(1, 'days');
+          break;
         case 'week':
           reminder = reminder.add(1, 'weeks');
           break;

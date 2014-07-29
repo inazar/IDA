@@ -1824,7 +1824,7 @@ h2 {
   top: 50%;
   left: 50%;
   z-index: 1500;
-  border: 1px solid #eee;
+  border: 2px solid #a40aaa;
   visibility: hidden;
   width: 80%;
   max-height: 80%;
@@ -5714,7 +5714,7 @@ div.statistics-page > div.stats-table {
 .settings-page .range {
   width: 100%; }
   .settings-page .range label {
-    width: 8em; }
+    width: 10em; }
 .settings-page .clear-all-tasks {
   -webkit-border-radius: 4px;
   border-radius: 4px;

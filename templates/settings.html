@@ -1,34 +1,35 @@
 <div class="settings-page" ng-class="{'help-hidden':!$config.help.setting}">
-  <div ida-help>
+  <div ida-help="templates/help/settings/ball.html" help-title="Ökning av bollstorlek">
     <div class="range range-purple">
-      <label class="range-label">Adjust ball size</label>
-      <i class="icon fa fa-exclamation-circle gray icon-small"></i>
+      <label class="range-label">Ökning av bollstorlek</label>
+      <i class="icon fa fa-wheelchair gray icon-small"></i>
       <input type="range", min="0.5" max="0.8" step="0.1" ng-model="$config.percentageUsableTime" ng-change="$config.save()">
-      <i class="icon fa fa-exclamation-circle gray icon-large"></i>
+      <i class="icon fa fa-rocket gray icon-small"></i>
     </div>
   </div>
-  <div ida-help>
+  <div ida-help="templates/help/settings/weeks.html" help-title="Visa veckonummer">
     <div class="toggle-item">
-      <span class="toggle-label">Show weeks in calendar</span>
-      <span class="toggle-off">av</span>
+      <span class="toggle-label">Visa veckonummer</span>
+      <span class="toggle-off">Av</span>
       <label class="toggle">
         <input type="checkbox" ng-model="$config.showWeeks" ng-change="$config.save()">
         <div class="track">
           <div class="handle"></div>
         </div>
       </label>
-      <span class="toggle-on">på</span>
+      <span class="toggle-on">På</span>
     </div>
   </div>
-  <div ida-help>
+  <div ida-help="templates/help/settings/clean.html" help-title="Påminnelse om att rensa aktiviteter">
     <div class="select-item">
-      <span class="select-label">Remind to clean tasks</span>
+      <span class="select-label">Påminn om rensa/planera</span>
       <label ng-class="{disabled:!$config.organize}">
         <select ng-model="$config.organize">
-          <option value='week'>Every week</option>
-          <option value='twoweek'>Every two weeks</option>
-          <option value="month">Every month</option>
-          <option value="">Never</option>
+          <option value='day'>Varje dag</option>
+          <option value='week'>Varje vecka</option>
+          <option value='twoweek'>Varannan vecka</option>
+          <option value="month">Varje månad</option>
+          <option value="">Aldrig</option>
         </select>
       </label>
     </div>
@@ -41,45 +42,46 @@
   <div ida-help><div ida-sound="Reminder" sound-type="reminder" sound-set="little-bells,boxing-fight,monotone-ascending"></div></div>
   <div ida-help><div ida-sound="Focus" sound-type="focus" sound-set="clockalarm"></div></div>
   <div ida-help><div ida-sound="Archive" sound-type="archive" sound-set="applaud,bell-victory"></div></div>
-  <div class="separator">Help setting</div>
 
-  <div ida-help>
+  <div class="separator">Visa hjälptexter</div>
+
+  <div ida-help="templates/help/settings/nav.html" help-title="I huvudmenyn">
     <div class="toggle-item">
-      <span class="toggle-label">Show in navigation</span>
-      <span class="toggle-off">av</span>
+      <span class="toggle-label">I huvudmenyn</span>
+      <span class="toggle-off">Av</span>
       <label class="toggle">
          <input type="checkbox" ng-model="$config.help.nav" ng-change="$config.save()">
          <div class="track">
            <div class="handle"></div>
          </div>
       </label>
-      <span class="toggle-on">på</span>
+      <span class="toggle-on">På</span>
     </div>
   </div>
-  <div ida-help>
+  <div ida-help="templates/help/settings/plan.html" help-title="När planerar aktivitet">
     <div class="toggle-item">
-      <span class="toggle-label">Show in planning</span>
-      <span class="toggle-off">av</span>
+      <span class="toggle-label">När planerar aktivitet</span>
+      <span class="toggle-off">Av</span>
       <label class="toggle">
          <input type="checkbox" ng-model="$config.help.plan" ng-change="$config.save()">
          <div class="track">
            <div class="handle"></div>
          </div>
       </label>
-      <span class="toggle-on">på</span>
+      <span class="toggle-on">På</span>
     </div>
   </div>
-  <div ida-help>
+  <div ida-help="templates/help/settings/settings.html" help-title="I inställningar">
     <div class="toggle-item">
-      <span class="toggle-label">Show in setting</span>
-      <span class="toggle-off">av</span>
+      <span class="toggle-label">I inställningar (denna vy)</span>
+      <span class="toggle-off">Av</span>
       <label class="toggle">
          <input type="checkbox" ng-model="$config.help.setting" ng-change="$config.save()">
          <div class="track">
            <div class="handle"></div>
          </div>
       </label>
-      <span class="toggle-on">på</span>
+      <span class="toggle-on">På</span>
     </div>
   </div>
 
