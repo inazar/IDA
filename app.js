@@ -27670,7 +27670,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           } else {
             var task = $tasks.get(id);
             vibrate(1000);
-            if (state === 'foreground' && task && task.title && task.planned && !task.finished && task.deleted) {
+            if (state === 'foreground' && task && task.title && task.planned && !task.finished && !task.deleted) {
               $popup.show({
                 type: 'notification',
                 title: 'Påminnelse',
