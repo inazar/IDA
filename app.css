@@ -1908,6 +1908,17 @@ h2 {
     text-align: center; }
   .popup-body .popup-text {
     text-align: center; }
+    .popup-body .popup-text input {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border: 1px solid #979797;
+      outline: 0;
+      padding: 0.45em 10px; }
 
 .popup-limit, .popup-prevent {
   text-align: center;

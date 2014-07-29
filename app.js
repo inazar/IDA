@@ -27705,7 +27705,37 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
     if (!$config.reminder || $config.reminder < Date.now()) { _setOrganize(); }
 
-    $timeout(function(){ $document[0].getElementById('loading').style.display = 'none'; });
+    function _unlock (wrong) {
+      var scope = $rootScope.$new(true);
+      scope.data = {};
+      $popup.show({
+        type: 'unlock',
+        withPrevent: false,
+        scope: scope,
+        title: 'Activate app',
+        template: '<div class="popup-text">'+(wrong?'<p class="red">Wrong code</p>':'')+'<input ng-model="data.response" type="text" placeholder="Enter code"></div>',
+        buttons: [{
+          text: 'OK',
+          type: 'btn-main',
+          onTap: function() { return scope.data.response || ''; }
+        }]
+      }).then(function (code) {
+        if (code === $config.locked) {
+          $config.locked = false;
+          $config.save();
+          $document[0].getElementById('loading').style.display = 'none';
+        } else {
+          _unlock(true);
+        }
+        return false;
+      }, _unlock);
+
+    }
+
+    $timeout(function (){
+      if ($config.locked) { _unlock(); }
+      else { $document[0].getElementById('loading').style.display = 'none'; }
+    });
 
   }
 ]);
@@ -28853,7 +28883,8 @@ App.service('idaConfig', function () {
       reminder: 'little-bells',
       focus: 'clockalarm',
       archive: 'applaud'     
-    }
+    },
+    locked: '3Rot65!'
   };
 
   var Config = function (defaults) {
