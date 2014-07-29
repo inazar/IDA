@@ -2136,6 +2136,9 @@ h2 {
 .green {
   color: #48B82C; }
 
+.yellow {
+  color: #CCA528; }
+
 .red {
   color: #DD2330; }
 
@@ -2335,9 +2338,8 @@ body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #w
   top: 0;
   left: 0;
   overflow-x: hidden;
-  overflow-y: auto; }
-  .modal-container > div {
-    z-index: 90; }
+  overflow-y: auto;
+  z-index: 90; }
 
 div.delete-task-modal {
   background: rgba(0, 0, 0, 0.7);

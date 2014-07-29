@@ -28146,6 +28146,48 @@ App.directive('idaItemChildren', ['$compile', function ($compile) {
 }]);
 
 /* jshint strict: false */
+/* global App */
+App.directive('idaSound', ['idaSounds', 'idaConfig', function ($sounds, $config) {
+  return {
+    restrict: 'A',
+    template: '<div>' +
+        '<div class="select-item">' +
+          '<span class="select-label">{{label}}</span>' +
+          '<label ng-class="{disabled:!$config.sounds[type]}">' +
+            '<select ng-model="$config.sounds[type]" ng-change="$root.$sound=$sounds.play(type)"' +
+              'ng-options="s as l for (s, l) in options">' +
+            '</select>' +
+          '</label>' +
+        '</div>' +
+        '<div class="range" ng-class="{\'range-purple\':$config.sounds[type], \'range-gray\':!$config.sounds[type]}">' +
+          '<span class="icon icon-large fa-stack-sm">' +
+            '<i class="fa fa-volume-off gray fa-stack-1x"></i>' +
+            '<i class="fa fa-ban red fa-stack-1x"></i>' +
+          '</span>' +
+          // '<i class="icon fa fa-volume-off gray"></i>' +
+          '<input type="range", min="0", max="1" step="0.1" ng-model="$config.volume[type]" ng-change="$config.save();$root.$sound=$sounds.play(type)">' +
+          '<i class="icon fa fa-volume-up gray"></i>' +
+        '</div>' +
+      '</div>',
+    scope: {
+      label: '@idaSound',
+      type: '@soundType',
+      set: '@soundSet'
+    },
+    link: function ($scope) {
+      $scope.$sounds = $sounds;
+      $scope.$config = $config;
+      var list = $scope.set.split(','), options = {'': 'None'}, i, sound;
+      for (i=0;i<list.length;i++) {
+        sound = list[i];
+        options[sound] = $sounds.labels[sound];
+      }
+      $scope.options = options;
+    }
+  };
+}]);
+
+/* jshint strict: false */
 /* global App, moment, datePicker */
 
 App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $window) {
@@ -28153,8 +28195,8 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
     restrict: 'A',
     replace: true,
     template: '<div class="time-picker">' +
-                '<button ng-click="showPicker()" ng-if="$root.$cordova&&$type" class="timepicker-button">{{$date|date:"HH:mm"}}</button>' +
-                '<form ng-show="!($root.$cordova&&$type)">' +
+                '<button ng-click="showPicker()" ng-if="$root.$cordova&&!$type" class="timepicker-button">{{$date|date:"HH:mm"}}</button>' +
+                '<form ng-show="!($root.$cordova&&!$type)">' +
                   '<input type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="{{$type?99:23}}" ng-model="$hours">' +
                   ':<input type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes">' +
                 '</form>' +
@@ -28806,7 +28848,7 @@ App.service('idaConfig', function () {
       task: 'tada',
       timer: 'clockalarm',
       reminder: 'little-bells',
-      focus: 'focus',
+      focus: 'clockalarm',
       archive: 'applaud'     
     }
   };
@@ -29023,23 +29065,29 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
     for (i=0; i<$tasks.tasks.length; i++) {
       task = $tasks.tasks[i];
       reminder = task.reminder ? Math.floor(task.reminderTime/1000) : 0;
-      if (!task.deleted && !task.finished && reminder >= now) {
-        if (!task.planned) {
-          if ((duration = reminder - now) > 0) {
-            hrs = Math.floor(duration / 3600);
-            min = Math.floor((duration % 3600) / 60);
-            sec = Math.floor((duration % 60));
-            task.timeRemaining = (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '');
-          } else {
-            task.timeRemaining = '0s';
-            task._complete = true;
-          }
+      if (!task.deleted && !task.finished) {
+        if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && Math.floor(task.showInTodoUntil/1000) <= now) {
+          $rootScope.getTodoList();
           update = true;
         }
-        if (reminder === now) {
-          $rootScope.$sound = $sounds.play(this.planned ? 'reminder' : 'timer');
-          if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
-          update = false;
+        if (reminder >= now) {
+          if (!task.planned) {
+            if ((duration = reminder - now) > 0) {
+              hrs = Math.floor(duration / 3600);
+              min = Math.floor((duration % 3600) / 60);
+              sec = Math.floor((duration % 60));
+              task.timeRemaining = (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '');
+            } else {
+              task.timeRemaining = '0s';
+              task._complete = true;
+            }
+            update = true;
+          }
+          if (reminder === now) {
+            $rootScope.$sound = $sounds.play(this.planned ? 'reminder' : 'timer');
+            if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
+            update = false;
+          }
         }
       }
     }
@@ -29157,14 +29205,15 @@ App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
   }
 
   var Sounds = function (sounds) {
-    var i, sound;
+    var sound;
     this.sounds = {};
-    sounds = sounds || [];
-    for (i=0; i<sounds.length; i++) {
-      sound = sounds[i];
+    this.labels = {};
+    sounds = sounds || {};
+    for (sound in sounds) {
       this.sounds[sound] = new Audio('sounds/'+sound+'.mp3');
       this.sounds[sound].addEventListener('ended', _stopListener(this.sounds[sound]));
       this.sounds[sound].addEventListener('pause', _stopListener(this.sounds[sound]));
+      this.labels[sound] = sounds[sound];
     }
   };
 
@@ -29174,14 +29223,17 @@ App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
     var name = $config.sounds[type], sound, volume, _this = this, d = $q.defer(), res;
     for (sound in this.sounds) { this.stop(sound); }
     if ((sound = this.sounds[name])) {
-      volume = parseInt($config.volume[type], 10) || 1;
-      if (sound instanceof Audio) { sound.volume = volume; }
-      else { sound.setVolume(volume); }
-      sound.onStop(function () {
-        sound.onStop();
-        d.resolve();
-      });
-      sound.play();
+      volume = parseFloat($config.volume[type]);
+      if (volume !== 0) {
+        if (isNaN(volume)) { volume = 1; }
+        if (sound instanceof Audio) { sound.volume = volume; }
+        else { sound.setVolume(volume); }
+        sound.onStop(function () {
+          sound.onStop();
+          d.resolve();
+        });
+        sound.play();
+      } else { d.reject(); }
     } else { d.reject(); }
     res = {
       $stop: function () {
@@ -29218,7 +29270,17 @@ App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
     }
   };
 
-  return new Sounds(['alarm-clock-electric', 'applaud', 'boxing-fight', 'clockalarm', 'clockalarm1', 'focus', 'little-bells', 'monotone-ascending', 'tada']);
+  return new Sounds({
+    'alarm-clock-electric': 'Electric',
+    'applaud': 'Applaud',
+    'bell-victory': 'Victory bell',
+    'boxing-fight': 'Boxing fight',
+    'clockalarm': 'Clock alarm',
+    'clockalarm1': 'Alternative alarm',
+    'little-bells': 'Little bells',
+    'monotone-ascending': 'Monotone',
+    'tada': 'Tada'
+  });
 }]);
 
 /* jshint strict: false */
@@ -29330,8 +29392,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     this.deleted = false;
     this.finished = false;
     switch (this.showInTodo) {
-      case 'until start time': this.showInTodoUntil = this.startTime + 36000000; break;
-      case 'until end of duration': this.showInTodoUntil = this.startTime + this.duration + 36000000; break;
+      case 'until start time': this.showInTodoUntil = this.startTime; break;
+      case 'until end of duration': this.showInTodoUntil = this.startTime + this.duration; break;
       case 'never': this.showInTodoUntil = 0; break;
       default: this.showInTodoUntil = null; break;
     }

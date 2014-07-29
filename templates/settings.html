@@ -36,95 +36,11 @@
 
   <div class="separator">Sound setting</div>
 
-  <div ida-help>
-    <div class="select-item">
-      <span class="select-label">Complete</span>
-      <label ng-class="{disabled:!$config.sounds.task}">
-        <select ng-model="$config.sounds.task" ng-change="$root.$sound=$sounds.play('task')">
-          <option value=''>None</option>
-          <option value='tada'>Tada</option>
-        </select>
-      </label>
-    </div>
-    <div class="range" ng-class="{'range-purple':$config.sounds.task, 'range-gray':!$config.sounds.task}">
-      <i class="icon fa fa-volume-off gray"></i>
-      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.task" ng-change="$config.save()">
-      <i class="icon fa fa-volume-up gray"></i>
-    </div>
-  </div>
-
-  <div ida-help>
-    <div class="select-item">
-      <span class="select-label">Timer</span>
-      <label ng-class="{disabled:!$config.sounds.timer}">
-        <select ng-model="$config.sounds.timer" ng-change="$root.$sound=$sounds.play('timer')">
-          <option value=''>None</option>
-          <option value='clockalarm'>Clock alarm</option>
-          <option value='clockalarm1'>Alternative alarm</option>
-          <option value="alarm-clock-electric">Electric</option>
-        </select>
-      </label>
-    </div>
-    <div class="range" ng-class="{'range-purple':$config.sounds.timer, 'range-gray':!$config.sounds.timer}">
-      <i class="icon fa fa-volume-off gray"></i>
-      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.timer" ng-change="$config.save()">
-      <i class="icon fa fa-volume-up gray"></i>
-    </div>
-  </div>
-
-  <div ida-help>
-    <div class="select-item">
-      <span class="select-label">Reminder</span>
-      <label ng-class="{disabled:!$config.sounds.reminder}">
-        <select ng-model="$config.sounds.reminder" ng-change="$root.$sound=$sounds.play('reminder')">
-          <option value=''>None</option>
-          <option value='little-bells'>Little bells</option>
-          <option value='boxing-fight'>Boxing fight</option>
-          <option value="monotone-ascending">Monotone</option>
-        </select>
-      </label>
-    </div>
-    <div class="range" ng-class="{'range-purple':$config.sounds.reminder, 'range-gray':!$config.sounds.reminder}">
-      <i class="icon fa fa-volume-off gray"></i>
-      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.reminder" ng-change="$config.save()">
-      <i class="icon fa fa-volume-up gray"></i>
-    </div>
-  </div>
-
-  <div ida-help>
-    <div class="select-item">
-      <span class="select-label">Focus</span>
-      <label ng-class="{disabled:!$config.sounds.focus}">
-        <select ng-model="$config.sounds.focus"  ng-change="$root.$sound=$sounds.play('focus')">
-          <option value=''>None</option>
-          <option value='focus'>Focus</option>
-        </select>
-      </label>
-    </div>
-    <div class="range" ng-class="{'range-purple':$config.sounds.focus, 'range-gray':!$config.sounds.focus}">
-      <i class="icon fa fa-volume-off gray"></i>
-      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.focus" ng-change="$config.save()">
-      <i class="icon fa fa-volume-up gray"></i>
-    </div>
-  </div>
-
-  <div ida-help>
-    <div class="select-item">
-      <span class="select-label">Archive</span>
-      <label ng-class="{disabled:!$config.sounds.archive}">
-        <select ng-model="$config.sounds.archive" ng-change="$root.$sound=$sounds.play('archive')">
-          <option value=''>None</option>
-          <option value='applaud'>Applaud</option>
-        </select>
-      </label>
-    </div>
-    <div class="range" ng-class="{'range-purple':$config.sounds.archive, 'range-gray':!$config.sounds.archive}">
-      <i class="icon fa fa-volume-off gray"></i>
-      <input type="range", min="0", max="1" step="0.1" ng-model="$config.volume.archive" ng-change="$config.save()">
-      <i class="icon fa fa-volume-up gray"></i>
-    </div>
-  </div>
-
+  <div ida-help><div ida-sound="Complete" sound-type="task" sound-set="tada"></div></div>
+  <div ida-help><div ida-sound="Timer" sound-type="timer" sound-set="clockalarm,clockalarm1,alarm-clock-electric"></div></div>
+  <div ida-help><div ida-sound="Reminder" sound-type="reminder" sound-set="little-bells,boxing-fight,monotone-ascending"></div></div>
+  <div ida-help><div ida-sound="Focus" sound-type="focus" sound-set="clockalarm"></div></div>
+  <div ida-help><div ida-sound="Archive" sound-type="archive" sound-set="applaud,bell-victory"></div></div>
   <div class="separator">Help setting</div>
 
   <div ida-help>
