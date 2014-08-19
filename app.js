@@ -27380,7 +27380,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       repaint: function () {
         // redraw the whole view
         $document[0].body.style.display = 'none';
-        $timeout(function(){ $document[0].body.style.display = 'block'; });
+        $timeout(function(){ $document[0].body.style.display = 'block'; }, 10);
       },
       reload: function () {
         $rootScope.$tasks.save();
@@ -27458,11 +27458,12 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         if (warn) {
           d = $popup.confirm({
             type: 'overbook',
-            title: 'Overbook warning',
+            withPrevent: false,
+            title: 'Varning - dagen är fullbokad!',
             template: '<div class="popup-icon"><i class="fa fa-exclamation-circle red"></i></div>' +
-                      '<div class="popup-text">This day is overbooked</div>',
-            cancelText: 'Ångra',
-            okText: 'Bra',
+                      '<div class="popup-text"><p>Du har bokat in så mycket den här dagen att du kanske inte ska boka in mer? Eller rensa bland andra aktiviteter som påverkar den här dagen? Kanske flytta/ta bort en B-aktivitet?</p><small>(Du kan ställa in hur snabbt en dag anses fullbokad i Inställningar)</small></div>',
+            cancelText: 'Boka annan dag',
+            okText: 'Boka ändå',
           });
         }
         return $q.when(d);
@@ -27511,7 +27512,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return $modal('templates/modal.plan.html', task).$promise.then(function (obj) {
           task.saveTask(obj.hours, obj.minutes);
           $rootScope.getTodoList();
-          return obj;
+          return task;
         }, function () {
           $tasks.reload();
           $rootScope.getTodoList();
@@ -27870,7 +27871,7 @@ App.controller('PageCtrl', ['$scope', '$title', function ($scope, $title) { $sco
 
 /* jshint strict: false */
 /* global App */
-App.controller('OrganiseCtrl', ['$scope', '$routeParams', '$title', 'idaTasks', function ($scope, $routeParams, $title, $tasks) {
+App.controller('OrganiseCtrl', ['$scope', '$timeout', '$routeParams', '$title', 'idaTasks', function ($scope, $timeout, $routeParams, $title, $tasks) {
 
   $scope.$root.title = $title;
 
@@ -27882,7 +27883,10 @@ App.controller('OrganiseCtrl', ['$scope', '$routeParams', '$title', 'idaTasks', 
       if(!$scope.newTask && !parent) { return; }
       var task = $tasks.add($scope.newTask, parent);
       $scope.newTask = '';
-      $scope.editTask(task.id).then(null, function () { $tasks.delete(task.id); });
+      $scope.editTask(task.id).then(function (task) {
+        $scope.reload();
+        $timeout(function () { $tasks.get(parent).showChildren = true; });
+      }, function () { $tasks.delete(task.id); });
     }
   });
 
@@ -27990,7 +27994,7 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
           if (tp.start === moment($scope.time).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf()) { return; }
           $scope.tp = tp;
           $q.when($scope.$validate ? $scope.$eval($scope.$validate) : true).then(function (agree) {
-            if (agree) { $scope.time = tp.start; }
+            if (agree && !tp.week) { $scope.time = tp.start; }
           });
         },
         selectDepth: function(periods, depth, selection) {
@@ -28083,7 +28087,7 @@ App.directive('idaHold', function () {
 
 /* jshint strict: false */
 /* global App, moment */
-App.directive('idaItem', [function () {
+App.directive('idaItem', ['idaConfig', function ($config) {
   return {
     restrict: 'A',
     replace: true,
@@ -28121,17 +28125,9 @@ App.directive('idaItem', [function () {
         timeLabel: function (task) {
           var time, label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
           if (task.planned && task.timeType === 'period' && task.durationType) {
-            time = moment.duration(task.duration || (task.endTime - task.startTime));
-            label += ' (' + task.durationLabel() + ')';
-            // if (time.hours() > 0) {
-            //   label += moment.duration(time).subtract(time.minutes(), 'minutes').humanize();
-            // }
-            // if (time.minutes() > 0) {
-            //   if (time.hours() > 0) { label += ' '; }
-            //   label += moment.duration(time).subtract(time.hours(), 'hours').humanize();
-            // }
-            // // label += ' (' + moment.duration(task.duration || (task.endTime - task.startTime)).humanize() + ')';
-            // label += ')';
+            label += ' (';
+            if (task.timeType !== 'exact') { label += 'ca '; }
+            label += task.durationLabel() + ')';
           }
           return label;
         },
@@ -28149,9 +28145,12 @@ App.directive('idaItem', [function () {
         isOverdue: function () {
           return $scope.task.reminderTime < Date.now();
         },
+        isStarted: function () {
+          return !this.isWarning() && (Date.now().valueOf() > $scope.task.startTime);
+        },
         isWarning: function () {
           if (!$scope.task.finished && !$scope.task.deleted && $scope.task.startTime) {
-            return Date.now().valueOf() > (($scope.task.endTime||$scope.task.startTime) + ($scope.task.timeType === 'period' ? 14400000 : 0));
+            return Date.now().valueOf() > ($scope.task.timeType === 'period' ? $scope.task.endTime + $config.delayToRemove : $scope.task.startTime + $scope.task.duration)
           }
         }
       });
@@ -28857,6 +28856,7 @@ App.service('idaConfig', function () {
   var defaults = {
     defaultReminder: 36000000,
     defaultDuration: 1800000,
+    delayToRemove: 14400000,
     daysBeforeDoubleVaugnessPunishment: 15,
     percentageUsableTime: 0.6,
     pragmaticDayshift: 0,
@@ -28951,10 +28951,10 @@ App.service('idaDatepicker', [
 
       d.promise.finally(function () { options.$lock = false; });
 
-      // $loading.show();
+      $loading.show();
       $timeout(function(){
         $rootScope.datepicker = options;
-        // $loading.hide(true);
+        $loading.hide(true);
       });
 
       return options;
@@ -29079,10 +29079,10 @@ App.service('idaModal', [
       d.promise.finally(function () { options.$lock = false; });
 
       _modals.unshift(options);
-      // $loading.show();
+      $loading.show();
       $timeout(function(){
         $rootScope.modal = options;
-        // $loading.hide(true);
+        $loading.hide(true);
       });
 
       return options;
@@ -29092,7 +29092,7 @@ App.service('idaModal', [
 
 /* jshint strict: false */
 /* global App, moment */
-App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTasks', 'idaSounds', function ($rootScope, $timeout, $interval, $tasks, $sounds) {
+App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTasks', 'idaSounds', 'idaConfig', function ($rootScope, $timeout, $interval, $tasks, $sounds, $config) {
 
   function _fireEvents () {
     var i, task, now = Math.floor(Date.now()/1000), duration, reminder, hrs, min, sec, update = false;
@@ -29100,6 +29100,7 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
       task = $tasks.tasks[i];
       reminder = task.reminder ? Math.floor(task.reminderTime/1000) : 0;
       if (!task.deleted && !task.finished) {
+        if (now === Math.floor(task.timeType === 'period' ? task.endTime + $config.delayToRemove : task.startTime + task.duration)/1000) { update = true; }
         if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && Math.floor(task.showInTodoUntil/1000) <= now) {
           $rootScope.getTodoList();
           update = true;
@@ -29384,12 +29385,16 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
   Task.prototype.setReminderTime = function() {
     var p, def = moment.duration($config.defaultReminder);
     switch (this.reminderTimePeriod) {
-      case 'firstDay': return moment(this.startTime).add(def).valueOf();
-      case 'lastDay': return moment(this.endTime).add(def).add(1, 'minute').valueOf();
+      case 'firstDay': p = 0; break;
+       // return moment(this.startTime).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0).valueOf();
+      case 'lastDay': p = 1; break;
+       // return moment(this.endTime).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0).valueOf();
       case 'nearFirst': p = 0.15; break;
       case 'nearLast': p = 0.85; break;
       case 'middle': p = 0.5; break;
-      case 'exact': return this.reminderTime || (this.reminderTimeAdvance ? this.startTime - this.reminderTimeAdvance : this.reminderTime);
+      case 'exact':
+        p = moment(this.startTime).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0).valueOf()
+        return this.reminderTime = (this.reminderTimeAdvance ? p - this.reminderTimeAdvance : p);
       default: this.reminder = false; return;
     }
     return (this.reminderTime = moment(this.startTime + (this.endTime - this.startTime) * p).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0).valueOf());
@@ -29428,6 +29433,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     switch (this.showInTodo) {
       case 'until start time': this.showInTodoUntil = this.startTime; break;
       case 'until end of duration': this.showInTodoUntil = this.startTime + this.duration; break;
+      case 'until end of period': this.showInTodoUntil = this.endTime + 1 + $config.delayToRemove; break;
       case 'never': this.showInTodoUntil = 0; break;
       default: this.showInTodoUntil = null; break;
     }
@@ -29835,7 +29841,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
             'tomorrow': 48 + shift,
             'week': 168 + shift
           };
-      if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && task.showInTodoUntil <= now) { task.finished = true; }
+      if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && task.showInTodoUntil <= now) { task.showInTodoUntil = 0; }
       return (!task.deleted && task.planned && !task.finished && task.timeType !== 'none' &&
         task.showInTodoUntil !== 0 && (!task.showInFromUntil || task.showInFromUntil > now) && (!task.showInTodoFrom || task.showInTodoFrom < now) &&
         (task.startTime < moment().startOf('day').hour(hrs[todoFilter]).minute(0).valueOf()));
@@ -29872,7 +29878,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
         value += 3000000 - (task.startTime % 2630000000) / 10000;
       } else if (
         task.important && (
-          task.endTime < moment().hour(1 * 24 + shift).valueOf() || (
+          task.endTime < moment().hour(24 + shift).valueOf() || (
             task.complex && (
               (
                 !task.isParent && $scope.$parent.todoFilter === 'week' && (

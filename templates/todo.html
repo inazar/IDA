@@ -17,8 +17,8 @@
   <div class="todo">
     <h2>
       <i class="fa fa-check"></i> Att göra
-      <label>
-        <select ng-change="getTodoList()" ng-model="$root.todoFilter">
+      <label for="period">
+        <select id="period" ng-change="getTodoList()" ng-model="$root.todoFilter">
           <option value="today">idag</option>
           <option value="tomorrow">idag och imorgon</option>
           <option value="week">en vecka framöver</option>

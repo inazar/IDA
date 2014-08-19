@@ -1,5 +1,6 @@
 <div class="plan" ng-class="{'help-hidden':!$config.help.plan}">
-  <h3>Planera aktivitet</h3>
+  <h3 ng-if="!modal.task.parent">Planera aktivitet</h3>
+  <h3 ng-if="modal.task.parent">Planera underaktivitet till {{modal.task.parent}}</h3>
   <button class="cancel" ng-click="modal.task.cancel(page);modal.$dismiss()"><i class="fa fa-times"></i></button>
 
   <input placeholder="Aktivitetens namn" class="task-title" type="text" ng-model="modal.task.title">
@@ -222,7 +223,7 @@
     <label ida-help="templates/help/plan/premove.html" help-title="När flyttas tidsperiod-aktivieten från Att-Göra?" class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
-        <option value="until end of duration">Bort efter tidsperioden</option>
+        <option value="'until end of period'">Bort efter tidsperioden</option>
       </select>
     </label>
   </div>
