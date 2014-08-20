@@ -31,7 +31,7 @@
     <div ida-timepicker model-date="modal.task.startTime"></div>
   </div>
 
-  <div ida-help help-title class="period" ng-show="modal.task.timeType == 'period'">
+  <div ida-help="templates/help/plan/period.html" help-title="Välj tidsperiod" class="period" ng-show="modal.task.timeType == 'period'">
     <label>
       <select ng-change="modal.task.updatePeriodInput()" ng-init="modal.task.timeInputType = modal.task.startTime ? 'exact' : 'today';modal.task.updatePeriodInput();" ng-model="modal.task.timeInputType">
         <option value="today">Görs idag</option><!-- Today -->
@@ -99,7 +99,7 @@
           <option value="86400000">Påminn 1 dag innan</option>
           <option value="172800000">Påminn 2 dagar innan</option>
           <option value="604800000">Påminn 1 vecka innan</option>
-          <option value="0">Påminn exakt tid</option>
+          <option ng-if="modal.task.repeatPeriod==='once'" value="0">Påminn exakt tid</option>
         </select>
       </label>
     </div>

@@ -1,6 +1,6 @@
-<div ida-calendar="modal.task.endTime" calendar-validate="(!$root.modal.task.startTime || ($root.modal.task.startTime < tp.end))" calendar-task="modal.task" calendar-def="modal.task.startTime" class="calendar-page date-picker">
+<div ida-calendar="modal.task.endTime" calendar-validate="(!$root.modal.task.startTime || ($root.modal.task.startTime < tp.end))" calendar-task="modal.task" calendar-def="modal.task.startTime" class="calendar-page date-picker" calendar-title="Vald Slutdag">
   <div class="confirmation">
-    <span ng-bind="'Vald Slutdag: ' + (time ? $root.moment(time).format('ddd D MMMM YYYY') : '')"></span>
+    <span ng-bind="(time ? $root.moment(time).format('ddd D MMMM YYYY') : '')"></span>
     <button ng-click="task.endTime=$root.moment(time).hours(23).minutes(59).seconds(59).milliseconds(999).valueOf();$root.datepicker.$close(time, 100)" ng-disabled="!time||modal.$lock">Klar</button>
   </div>
 </div>

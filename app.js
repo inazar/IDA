@@ -27416,7 +27416,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       },
       addTask: function (name, parent) {
         if (!name) { return; }
-        return $tasks.add(name, parent);
+        var task = $tasks.add(name, parent);
+        $tasks.save();
+        return task;
       },
       closeApp: function(){
         return (navigator.app && $rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) ? navigator.app.exitApp() : $location.path('/todo');
@@ -27886,7 +27888,7 @@ App.controller('OrganiseCtrl', ['$scope', '$timeout', '$routeParams', '$title', 
       $scope.editTask(task.id).then(function (task) {
         $scope.reload();
         $timeout(function () { $tasks.get(parent).showChildren = true; });
-      }, function () { $tasks.delete(task.id); });
+      });
     }
   });
 
@@ -27965,6 +27967,7 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
     templateUrl: 'templates/calendar.html',
     scope: {
       task: '=calendarTask',
+      title: '@calendarTitle',
       time: '=?idaCalendar',
       $create: '@calendarCreate',
       $validate: '@calendarValidate',
@@ -27981,7 +27984,6 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
             if (agree) {
               var task = $tasks.add({timeType: 'exact', startTime: moment(time).hour(10).valueOf()});
               $scope.$root.editTask(task.id).finally(function () {
-                console.log($scope.tp);
                 $scope.periods = $tasks.getTimePeriods();
               });
             }
@@ -28884,7 +28886,7 @@ App.service('idaConfig', function () {
       focus: 'clockalarm',
       archive: 'applaud'     
     },
-    locked: '3Rot65!'
+    locked: '3Rot65'
   };
 
   var Config = function (defaults) {
@@ -29408,7 +29410,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     if (this.reminderTimeAdvance >= 0) {
       this.reminder = true;
       if (this.timeType === 'exact') {
-        this.reminderTime = this.reminderTimeAdvance > 0 ? this.startTime - (this.reminderTimeAdvance === '1' ? 0 : this.reminderTimeAdvance) : this.reminderTime;
+        this.reminderTime = Number(this.reminderTimeAdvance) > 0 ? this.startTime - (this.reminderTimeAdvance === '1' ? 0 : this.reminderTimeAdvance) : this.reminderTime;
       } else if(this.timeType === 'period' && !this.reminderTime) {
         this.reminderTime = this.setReminderTime();
       }
@@ -29431,17 +29433,35 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     this.deleted = false;
     this.finished = false;
     switch (this.showInTodo) {
-      case 'until start time': this.showInTodoUntil = this.startTime; break;
-      case 'until end of duration': this.showInTodoUntil = this.startTime + this.duration; break;
+      case 'until start time':
+        this.showInTodoUntil = moment(this.startTime).add(1, 'days').hours(0).minutes(0).seconds(0).milliseconds(0).valueOf() + $config.delayToRemove;
+        // this.showInTodoUntil = this.startTime;
+        break;
+      case 'until end of duration':
+        this.showInTodoUntil = moment(this.startTime + this.duration).add(1, 'days').hours(0).minutes(0).seconds(0).milliseconds(0).valueOf() + $config.delayToRemove;
+        // this.showInTodoUntil = this.startTime + this.duration;
+        break;
       case 'until end of period': this.showInTodoUntil = this.endTime + 1 + $config.delayToRemove; break;
       case 'never': this.showInTodoUntil = 0; break;
       default: this.showInTodoUntil = null; break;
     }
     this.planned = true;
     if (this.repeatTask) {
-      var _now = moment().seconds(0).milliseconds(0).valueOf();
+      var _now = moment().hours(0).minutes(0).seconds(0).milliseconds(0).valueOf();
       _tasks.tasks = _.reject(_tasks.tasks, function (t) {
-        return t.repeatTask === _this.repeatTask && t.id !== _this.id && t.startTime >= _now;
+        if (t.repeatTask === _this.repeatTask && t.id !== _this.id && t.startTime >= _now) {
+          if (t.reminder) { t.setTimer(); }
+          return true;
+        }
+      });
+      _tasks.tasks = _.each(_tasks.tasks, function (t) {
+        if (t.repeatTask === _this.repeatTask && t.id !== _this.id && t.startTime < _now) {
+          delete t.repeatTask;
+          delete t.repeatType;
+          t.repeated = false;
+          t.repeatPeriod = 'once';
+          t.repeatDays = [];
+        }
       });
       delete this.repeatTask;
     }
@@ -29463,7 +29483,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
         repeatLength: this.repeatLength,
         isChild: this.isChild
       };
-      var stop;
+      var stop, advance = Number(this.reminderTimeAdvance) > 0 ? (this.reminderTimeAdvance === '1' ? 0 : this.reminderTimeAdvance) : false;
       switch (this.repeatType) {
         case 'week':
         case 'month':
@@ -29475,6 +29495,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
           break;
       }
       (function again(start) {
+        var r = {}, t;
         switch(_this.repeatPeriod){
           case 'weekly':
             var nextDay = _.min(_this.repeatDays, function (day) {
@@ -29482,7 +29503,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
               return left < 1 ? left + 7 : left;
             });
             nextDay = nextDay < start.day() ? nextDay + 7 : nextDay;
-            start = start.days(nextDay);
+            start = start.day(nextDay);
             break;
           case 'daily':
             start = start.date(moment(start).date() + (_this.repeatLength || 1));
@@ -29494,20 +29515,33 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
             start = start.year(moment(start).year() + (_this.repeatLength || 1));
             break;
         }
-        _tasks.add(_.extend({
+        if (start.valueOf() > stop) { return; }
+        if (advance !== false) {
+          r = {
+            reminder: true,
+            reminderTime: start.valueOf() - advance
+          }
+        }
+        t = _tasks.add(_.extend({
           startTime: start.valueOf(),
           showInTodoUntil: (function () {
             var r;
             switch (_this.showInTodo) {
-              case 'until start time': r = _this.startTime; break;
-              case 'until end of duration': r = _this.startTime + _this.duration; break;
+              case 'until start time':
+                r = moment(start.valueOf()).add(1, 'days').hours(0).minutes(0).seconds(0).milliseconds(0).valueOf() + $config.delayToRemove;
+                break;
+              case 'until end of duration':
+                r = moment(start.valueOf() + _this.duration).add(1, 'days').hours(0).minutes(0).seconds(0).milliseconds(0).valueOf() + $config.delayToRemove;
+                break;
               case 'never': r = 0; break;
               default: r = null; break;
             }
             return r;
           }())
-        }, repeatBase));
-        if (start < stop) { again(start); }
+        }, r, repeatBase));
+        if (r.reminder) { t.setTimer(t.reminderTime); }
+        if (_this.repeatPeriod === 'weekly') { start = start.add(1, 'days'); }
+        if (start.valueOf() <= stop) { again(start); }
       }(moment(this.startTime)));
     } else {
       delete this.repeatType;
@@ -29714,7 +29748,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     var task = this.create(obj, parent);
     this.tasks.push(task);
     $events.add('taskCreated');
-    this.save();
+    // this.save();
     return task;
   };
 
@@ -29769,8 +29803,9 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
   Tasks.prototype.delete = function (id, repeated) {
     var task = this.get(id);
     if (repeated && task.repeatTask) {
+      if (typeof repeated !== 'number') { repeated = 0; }
       this.tasks = _.reject(this.tasks, function(t) {
-        if (t.repeatTask === task.repeatTask && t.id !== task.id) {
+        if (t.repeatTask === task.repeatTask && t.id !== task.id && t.startTime > repeated) {
           if (t.reminder) { t.setTimer(); }
           return true;
         }

@@ -1,5 +1,6 @@
 <!-- <div class="calendar-page date-picker"> -->
   <ul>
+    <li ng-if="title"><b>{{title}}</b></li>
     <li id="tag{{tp.time+(tp.week?'week':'')}}"
       ng-class="{ weekend: tp.isWeekend, 'hide-button': tp.depth === 2,
         'start-day': isMarked(task.startTime, tp),
