@@ -2412,6 +2412,12 @@ body {
     z-index: 150; }
     body > #clickWait.ng-click-active {
       background: rgba(0, 255, 0, 0.3); }
+  body.ios7 > #wrapper {
+    margin-top: 20px; }
+    body.ios7 > #wrapper > nav {
+      top: 20px; }
+    body.ios7 > #wrapper > div#main > div#top {
+      top: 20px; }
   body > #wrapper {
     height: 100%;
     font-size: 0.95em;
@@ -4232,6 +4238,37 @@ div.focus-distraction-list-confirmation-modal {
           background: #8b0992;
           border-top: 2px solid #5d0662;
           top: 0px; }
+  .plan > div > .reminder .help-line > div.alarm-toggle {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    width: 100%;
+    display: block;
+    height: 50px;
+    margin: 10px 0 20px; }
+    .plan > div > .reminder .help-line > div.alarm-toggle > button {
+      -webkit-user-select: none;
+      background: #d4d4d4;
+      border: none;
+      color: #4a4a4a;
+      display: block;
+      font-weight: bold;
+      height: 50%;
+      opacity: 0.4;
+      outline: 0;
+      padding: 0 10px;
+      text-align: center;
+      width: 100%; }
+      .plan > div > .reminder .help-line > div.alarm-toggle > button.active {
+        opacity: 1;
+        background: #a40aaa;
+        color: white; }
   .plan > div > div.repeated .help-line > label {
     color: white;
     display: inline-block;
@@ -4786,7 +4823,8 @@ span.time-label {
     .list-item > div.expanded > div > div.right > div.right > span.task-text {
       white-space: normal; }
     .list-item > div.expanded > div > div.right > div.right > div.actions {
-      display: block; }
+      display: block;
+      padding-bottom: 10px; }
     .list-item > div.has-child-task-controls.expanded > div > div.sub-task-ctrls > button.make-sub-task {
       display: block; }
     .list-item > div.has-child-task-controls.expanded > div > div.sub-task-ctrls > button.add-sub-task {
@@ -4823,28 +4861,29 @@ span.time-label {
         padding-left: 20px; }
         .list-item > div.has-child-task-controls.expanded.is-child > div > div.right > div.right {
           border-bottom: 1px solid #dddddd; }
+    .list-item > div.last-day > div > div.right {
+      background: #F4F7A0; }
+      .list-item > div.last-day > div > div.right > div.right {
+        background: #F4F7A0; }
+        .list-item > div.last-day > div > div.right > div.right::before {
+          content: '\f12a\00a0 Sista dagen';
+          display: inline-block;
+          font-family: FontAwesome;
+          font-style: normal;
+          font-weight: normal;
+          text-decoration: inherit; }
+        .list-item > div.last-day > div > div.right > div.right::before {
+          bottom: 0px;
+          font-size: 0.8em;
+          position: absolute;
+          right: 5px; }
     .list-item > div.started > div > div.right {
       background: #62D160; }
       .list-item > div.started > div > div.right > div.right {
+        color: #fff;
         background: #62D160; }
-        .list-item > div.started > div > div.right > div.right > span.icon {
-          bottom: 1px;
-          font-size: 0.8em;
-          position: absolute;
-          right: 58px; }
-          .list-item > div.started > div > div.right > div.right > span.icon::before {
-            -webkit-animation: spin 2s infinite linear;
-            -moz-animation: spin 2s infinite linear;
-            -o-animation: spin 2s infinite linear;
-            animation: spin 2s infinite linear;
-            content: '\f021';
-            display: inline-block;
-            font-family: FontAwesome;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: inherit; }
         .list-item > div.started > div > div.right > div.right::before {
-          content: '\00a0 P\00E5 b\00f6 rjad';
+          content: '\f12a\00a0 P\00E5 b\00f6 rjad';
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
@@ -4852,9 +4891,12 @@ span.time-label {
           text-decoration: inherit; }
         .list-item > div.started > div > div.right > div.right::before {
           bottom: 0px;
+          color: #eee;
           font-size: 0.8em;
           position: absolute;
           right: 5px; }
+        .list-item > div.started > div > div.right > div.right span.time-label, .list-item > div.started > div > div.right > div.right div.actions > button {
+          color: #eee; }
     .list-item > div.warning > div > div.right {
       background: #C73535; }
       .list-item > div.warning > div > div.right > div.right {
@@ -6088,8 +6130,9 @@ div.statistics-page > div.stats-table {
   -ms-flex: 1;
   flex: 1;
   display: block;
-  white-space: nowrap;
-  margin-right: 1em; }
+  white-space: wrap;
+  margin-right: 1em;
+  line-height: 1em; }
 
 .select-label:first-child {
   padding-left: 5px; }
@@ -6107,12 +6150,10 @@ div.statistics-page > div.stats-table {
 
 .fa-stack-half {
   position: absolute;
-  left: 0;
-  width: 100%;
   text-align: center;
   font-size: 0.4em;
-  line-height: inherit;
-  top: 0.36em; }
+  right: -1px;
+  top: 0; }
 
 body {
   font-family: 'Helvetica', Arial, sans-serif;
@@ -6174,9 +6215,10 @@ h2 {
   -moz-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  display: inline-block;
-  white-space: nowrap;
-  margin-right: 1em; }
+  display: block;
+  white-space: wrap;
+  margin-right: 1em;
+  line-height: 1em; }
 
 .toggle-on, .toggle-off {
   -webkit-box-flex: 0;

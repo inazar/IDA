@@ -7,6 +7,7 @@
     'show-children': task.showChildren,
     'expanded': task.expanded,
     'has-child-task-controls': $root.page.indexOf('/organisera-alla-aktiviteter') === 0,
+    'last-day': isLastDay(),
     'started': isStarted(),
     'warning': isWarning()}">
 
@@ -27,7 +28,7 @@
         </div>
 
         <div class="right">
-          <span class="icon"></span>
+          <!-- <span class="icon"></span> -->
           <span class="parent-task">{{task.parent}}</span>
           <span class="alert" ng-show="task.reminder" ng-if="!task.finished&&!task.deleted" ng-class="{'overdue':isOverdue()}" ng-click="alertClick()">{{task.planned?moment(task.reminderTime).format('D/M, HH:mm'):task.timeRemaining}}</span>
 

@@ -1,8 +1,8 @@
 <div class="settings-page" ng-class="{'help-hidden':!$config.help.setting}">
   <div ida-help="templates/help/settings/ball.html" help-title="Ökning av bollarnas och staplarnas storlek">
+    <label class="range-label">Hur snabbt blir en dag överbokad?</label>
     <div class="range range-purple">
-      <label class="range-label">Ökning av bollstorlek</label>
-      <i class="icon fa fa-car gray icon-small"></i>
+      <i class="icon fa fa-paper-plane-o gray icon-small"></i>
       <input type="range", min="0.5" max="0.8" step="0.1" ng-model="$config.percentageUsableTime" ng-change="$config.save()">
       <i class="icon fa fa-rocket gray icon-small"></i>
     </div>
@@ -37,14 +37,17 @@
     </div>
   </div>
 
-  <div class="separator">Sound setting</div>
+  <div class="separator">Ljudinställningar</div>
 
-  <div ida-help><div ida-sound="Complete" sound-type="task" sound-set="tada"></div></div>
-  <div ida-help><div ida-sound="Timer" sound-type="timer" sound-set="clockalarm,clockalarm1,alarm-clock-electric"></div></div>
+  <div ida-help="templates/help/settings/slong.html" help-title="Vad är Långt alarm?"><div ida-sound="Långt alarm" sound-type="long" sound-set="clockalarm,clockalarm1,alarm-clock-electric"></div></div>
+  <div ida-help="templates/help/settings/sshort.html" help-title="Vad är Kort signal?"><div ida-sound="Kort signal" sound-type="short" sound-set="tada"></div></div>
+  <div ida-help="templates/help/settings/sfocus.html" help-title="Alarm för Fokuserings-timern"><div ida-sound="Timer i Fokusera på" sound-type="focus" sound-set="clockalarm"></div></div>
+  <div ida-help="templates/help/settings/sdone.html" help-title="Ljud för klar aktivtet"><div ida-sound="Aktivitet klar" sound-type="task" sound-set="tada"></div></div>
+
+<!--   <div ida-help><div ida-sound="Timer" sound-type="timer" sound-set="clockalarm,clockalarm1,alarm-clock-electric"></div></div>
   <div ida-help><div ida-sound="Reminder" sound-type="reminder" sound-set="little-bells,boxing-fight,monotone-ascending"></div></div>
-  <div ida-help><div ida-sound="Focus" sound-type="focus" sound-set="clockalarm"></div></div>
   <div ida-help><div ida-sound="Archive" sound-type="archive" sound-set="applaud,bell-victory"></div></div>
-
+ -->
   <div class="separator">Visa hjälptexter</div>
 
   <div ida-help="templates/help/settings/nav.html" help-title="Hjälptexter i huvudmenyn">
@@ -79,7 +82,7 @@
   </div>
   <div ida-help="templates/help/settings/settings.html" help-title="Hjälptexter i denna vy för inställningar">
     <div class="toggle-item">
-      <span class="toggle-label">I inställningar (denna vy)</span>
+      <span class="toggle-label">I inställningar</span>
       <span class="toggle-group">
         <span class="toggle-off">Av</span>
         <label class="toggle">

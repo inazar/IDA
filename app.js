@@ -27393,14 +27393,14 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       },
       moveFinishedTasksToArchive: function () {
         $tasks.moveFinishedTasksToArchive();
-        $rootScope.$sound = $sounds.play('archive');
+        // $rootScope.$sound = $sounds.play('archive');
       },
       postpone: function(task, days) {
         task.postpone(days);
         $rootScope.getTodoList();
       },
       replan: function (task, hours, minutes) {
-        if (!hours&&!minutes) { return; }
+        // if (!hours&&!minutes) { return; }
         switch (task.timeType) {
           case 'exact':
             task.reminderTimeAdvance = '0';
@@ -27487,14 +27487,14 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             task.finished = true;
             task.setTimer();
             $tasks.save();
-            $sounds.play('archive');
+            // $sounds.play('archive');
           }
           return agree;
         }, function () {
             // rejected as user decided not avoid this popup
             task.finished = true;
             $tasks.save();
-            $sounds.play('archive');
+            // $sounds.play('archive');
         });
       },
       editTask: function (id) {
@@ -27601,8 +27601,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           type: 'notimeTask',
           template: '<div class="popup-text"><p>OBS! Saknas tidsinställning syns bara aktiviteten i Att-Göra-listan om det är en underaktivitet. Annars riskerar den glömmas.</p><p>Är du säker på att du vill låta bli att sätta en tid?</p></div>',
           cancelText: 'Nej',
-          okText: 'Ja',
-          okType: 'active'
+          okText: 'Ja'
         }).then(function (agree) { if (!agree) { $rootScope.modal.task.timeType = ''; } });
       }
     });
@@ -27665,6 +27664,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     $document[0].addEventListener('resume', function() { $notifications.start(); });
 
     $document[0].addEventListener('deviceready', function() {
+      if (device.platform === 'iOS' && parseFloat(device.version) >= 7.0) {
+        angular.element($document[0].body).addClass('ios7');
+      }
       var notification, vibrate;
       $rootScope.$cordova = $window.device;
       $document[0].addEventListener('backbutton', function() { return false; }, false);
@@ -27673,6 +27675,14 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         notification.local.ontrigger = function (id, state) {
           if (id === 'organize') {
             _setOrganize();
+            $popup.alert({
+              type: 'organize',
+              title: 'Rensa aktiviteter',
+              template: '<div class="popup-text"><p>Kom ihåg att rensa inaktuella aktiviteter (kryssa i färdiga, radera eller planera om dem) och planera för de närmsta dagarna<p><p><small>Ändra denna påminnelse i Inställningar.</small></p></div>',
+              okText: 'Ok'
+            }).then(function () {
+              $location.path('/organisera-alla-aktiviteter').replace();
+            });
           } else {
             var task = $tasks.get(id);
             vibrate(1000);
@@ -28148,7 +28158,10 @@ App.directive('idaItem', ['idaConfig', function ($config) {
           return $scope.task.reminderTime < Date.now();
         },
         isStarted: function () {
-          return !this.isWarning() && (Date.now().valueOf() > $scope.task.startTime);
+          return $scope.task.timeType !== 'period' && !this.isWarning() && (Date.now().valueOf() > $scope.task.startTime);
+        },
+        isLastDay: function () {
+          return $scope.task.timeType === 'period' && !this.isWarning() && (Date.now().valueOf() > Math.floor($scope.task.endTime/86400000)*86400000);
         },
         isWarning: function () {
           if (!$scope.task.finished && !$scope.task.deleted && $scope.task.startTime) {
@@ -28873,18 +28886,20 @@ App.service('idaConfig', function () {
       setting: true
     },
     volume: {
+      short: 1,
+      long: 1,
       task: 1,
       timer: 1,
       reminder: 1,
-      focus: 1,
-      archive: 1
+      focus: 1
     },
     sounds: {
+      short: 'tada',
+      long: 'clockalarm',
       task: 'tada',
       timer: 'clockalarm',
       reminder: 'little-bells',
-      focus: 'clockalarm',
-      archive: 'applaud'     
+      focus: 'clockalarm'    
     },
     locked: '3Rot65'
   };
@@ -29102,6 +29117,7 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
       task = $tasks.tasks[i];
       reminder = task.reminder ? Math.floor(task.reminderTime/1000) : 0;
       if (!task.deleted && !task.finished) {
+        if (now === Math.floor(task.startTime/1000) || now === Math.floor((task.startTime + task.duration)/1000) || task.endTime && now === Math.floor(task.endTime/3600000)*3600) { update = true; }
         if (now === Math.floor(task.timeType === 'period' ? task.endTime + $config.delayToRemove : task.startTime + task.duration)/1000) { update = true; }
         if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && Math.floor(task.showInTodoUntil/1000) <= now) {
           $rootScope.getTodoList();
@@ -29121,7 +29137,7 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
             update = true;
           }
           if (reminder === now) {
-            $rootScope.$sound = $sounds.play(this.planned ? 'reminder' : 'timer');
+            $rootScope.$sound = $sounds.play(this.planned ? (this.shortSignal ? 'short' : 'long') : 'long');
             if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
             update = false;
           }
@@ -29308,14 +29324,14 @@ App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
   };
 
   return new Sounds({
-    'alarm-clock-electric': 'Electric',
-    'applaud': 'Applaud',
-    'bell-victory': 'Victory bell',
-    'boxing-fight': 'Boxing fight',
-    'clockalarm': 'Clock alarm',
-    'clockalarm1': 'Alternative alarm',
-    'little-bells': 'Little bells',
-    'monotone-ascending': 'Monotone',
+    'alarm-clock-electric': 'Gammeldags',
+    'applaud': 'Applåder',
+    'bell-victory': 'Klockspel',
+    'boxing-fight': 'Klocka',
+    'clockalarm': 'Stegrande',
+    'clockalarm1': 'Digitalt',
+    'little-bells': 'Pling',
+    'monotone-ascending': 'Ljust pling',
     'tada': 'Tada'
   });
 }]);
@@ -29330,6 +29346,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     this.isChild = false;
     this.finished = false;
     this.repeatDays = [];
+    this.shortSignal = true;
     this.deleted = false;
     this.updated = new Date().valueOf();
     this.focussed = false;
@@ -29481,7 +29498,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
         repeated: this.repeated,
         repeatPeriod: this.repeatPeriod,
         repeatLength: this.repeatLength,
-        isChild: this.isChild
+        isChild: this.isChild,
+        shortSignal: this.shortSignal
       };
       var stop, advance = Number(this.reminderTimeAdvance) > 0 ? (this.reminderTimeAdvance === '1' ? 0 : this.reminderTimeAdvance) : false;
       switch (this.repeatType) {

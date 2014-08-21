@@ -70,7 +70,7 @@
       <div ng-init="$parent.hours=Math.floor((isNumber(modal.task.duration)?modal.task.duration:$config.defaultDuration)/3600000);$parent.minutes = Math.floor(((isNumber(modal.task.duration)?modal.task.duration:$config.defaultDuration)%3600000)/60000)">
         <div class="estimate-toggle" ng-click="modal.task.timeEstimated=!modal.task.timeEstimated">
           <button ng-class="{ active: !modal.task.timeEstimated }">
-            Tar ganska exakt
+            Tar exakt
           </button>
           <button ng-class="{ active: modal.task.timeEstimated }">
             Tar cirka
@@ -88,7 +88,7 @@
     <div ida-help="templates/help/plan/ereminder.html" help-title="Påminnelse" class="reminder">
       <label>
         <select ng-model="modal.task.reminderTimeAdvance"
-                ng-init="modal.task.reminderTimeAdvance = modal.task.reminderTimeAdvance||-1">
+                ng-init="modal.task.reminderTimeAdvance=modal.task.reminderTimeAdvance||-1">
           <option value="-1">Ingen påminnelse</option>
           <option value="1">Påminn vid start</option>
           <option value="300000">Påminn 5 minuter innan</option>
@@ -112,11 +112,15 @@
         <span>&nbsp;kl&nbsp;</span>
         <div ida-timepicker model-date="modal.task.reminderTime"></div>
       </div>
+      <div ng-if="modal.task.reminderTimeAdvance!=-1" class="alarm-toggle" ng-click="modal.task.shortSignal=!modal.task.shortSignal">
+        <button ng-class="{ active: modal.task.shortSignal }">Kort signal</button>
+        <button ng-class="{ active: !modal.task.shortSignal }">Långt alarm</button>
+      </div>
     </div>
 
     <div ida-help="templates/help/plan/repeat.html" help-title="Boka in aktivitet många gånger" class="repeated" ng-init="modal.task.repeatPeriod = modal.task.repeatPeriod || 'once'">
       <label>
-        <select ng-model="modal.task.repeatPeriod">
+        <select ng-model="modal.task.repeatPeriod" ng-change="(modal.task.repeatPeriod!=='once'&&modal.task.reminderTimeAdvance==0)?(modal.task.reminderTimeAdvance='-1'):0">
           <option value="once">Upprepas inte</option>
           <option value="daily">Återkommer dagligen</option>
           <option value="weekly">Återkommer veckovis</option>
@@ -238,7 +242,7 @@
     (
       (modal.task.timeType == 'exact'&& modal.task.startTime) ||
       (modal.task.timeType == 'period'&& modal.task.startTime && modal.task.endTime) ||
-      (modal.task.timeType == 'none' && confirmNoTime)
+      (modal.task.timeType == 'none')
     )">
     <button class="save" ng-disabled="modal.$lock" ng-click="modal.$close({hours: hours, minutes: minutes}, 100)">Spara</button>
   </div>

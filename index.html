@@ -27,7 +27,7 @@
             <li ida-help="templates/help/help.html" help-title="Hjälp och feedback" ng-class="{ active: (page == '/hjalp-och-feedback') }"><a ng-click="page == '/hjalp-och-feedback' ? ($root.showNav = false) : $location.path('/hjalp-och-feedback')"><span><i class="fa fa-question-circle"></i>Hjälp och feedback</span></a></li>
             <li ida-help="templates/help/about.html" help-title="Om IDA-appen" ng-class="{ active: (page == '/om-adhd-app') }"><a ng-click="page == '/om-adhd-app' ? ($root.showNav = false) : $location.path('/om-adhd-app')"><span><i class="fa fa-info-circle"></i>Om IDA-appen</span></a></li>
             <li ida-help="templates/help/statistics.html" help-title="Användningsstatistik" ng-class="{ active: (page == '/anvandningsstatistik') }"><a ng-click="page == '/anvandningsstatistik' ? ($root.showNav = false) : $location.path('/anvandningsstatistik')"><span><i class="fa fa-bar-chart-o"></i>Användningsstatistik</span></a></li>
-            <li ida-help="templates/help/exit.html" help-title="Avsluta"><a ng-click="closeApp()"><span><i class="fa fa-sign-out"></i>Avsluta</span></a></li>
+            <li ng-if="$cordova.platform!=='iOS'" ida-help="templates/help/exit.html" help-title="Avsluta"><a ng-click="closeApp()"><span><i class="fa fa-sign-out"></i>Avsluta</span></a></li>
           </ul>
         </nav>
 
@@ -38,7 +38,7 @@
             <a class="clean ng-hide" ng-show="$tasks.findWhere({ checked: true })" ng-click="moveFinishedTasksToArchive()">
               <i class="fa fa-archive"></i>
             </a>
-            <a class="avsluta ng-hide" ng-click="closeApp()" ng-show="page==='/todo'"><i class="fa fa-sign-out"></i></a>
+            <a class="avsluta ng-hide" ng-click="closeApp()" ng-show="$cordova.platform!=='iOS'&&page==='/todo'"><i class="fa fa-sign-out"></i></a>
             <a class="avsluta ng-hide" ng-click="$location.path('/todo')" ng-show="page!=='/todo'"><i class="fa fa-home"></i></a>
           </div>
           <div id="context-wrapper">
