@@ -1,10 +1,18 @@
 <div class="settings-page" ng-class="{'help-hidden':!$config.help.setting}">
   <div ida-help="templates/help/settings/ball.html" help-title="Ökning av bollarnas och staplarnas storlek">
     <label class="range-label">Hur snabbt blir en dag överbokad?</label>
-    <div class="range range-purple">
+    <div class="range range-purple" ng-init="percentageUsableTime=1-$config.percentageUsableTime">
       <i class="icon fa fa-paper-plane-o gray icon-small"></i>
-      <input type="range", min="0.5" max="0.8" step="0.1" ng-model="$config.percentageUsableTime" ng-change="$config.save()">
+      <input type="range", min="0.4" max="0.9" step="0.1" ng-model="percentageUsableTime" ng-change="$config.percentageUsableTime=1-percentageUsableTime;$config.save()">
       <i class="icon fa fa-rocket gray icon-small"></i>
+    </div>
+  </div>
+  <div ida-help="templates/help/settings/slope.html" help-title="Större boll mot slutet av period">
+    <label class="range-label">Större boll mot slutet av period</label>
+    <div class="range range-purple">
+      <i class="icon fa fa-circle gray icon-tiny"></i>
+      <input type="range", min="0" max="1" step="0.1" ng-model="$config.slope" ng-change="$config.save()">
+      <i class="icon fa fa-circle gray"></i>
     </div>
   </div>
   <div ida-help="templates/help/settings/weeks.html" help-title="Visa veckonummer">
@@ -96,15 +104,15 @@
     </div>
   </div>
 
-  <div class="separator">Danger area</div>
+  <div class="separator">Återställ</div>
 
   <div ida-help>
-    <button class="clear-all-tasks" ng-click="$events.clear();$popups.clear()">Reset popups and events</button>
+    <button class="clear-all-tasks" ng-click="$popups.clear()">Återställ frågor</button>
   </div>
   <br>
-  <div ida-help>
+<!--   <div ida-help>
     <button class="clear-all-tasks" ng-click="clearTasks('alla')">Klar alla aktiviteter</button>
-  </div>
+  </div> -->
 
   <br>
 </div>

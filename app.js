@@ -27322,8 +27322,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       .when('/todo', { templateUrl: 'templates/todo.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Att Göra'; }}})
       .when('/organisera-alla-aktiviteter', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: function () { return 'Organisera alla aktiviteter'; }}})
       .when('/organisera-alla-aktiviteter/:breakdown', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: ['$rootScope', '$route', function ($rootScope, $route) { return 'Dela upp ' + $rootScope.$tasks.get($route.current.params.breakdown).title; }]}})
-      .when('/fokusera-pa-aktivitet', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}})
-      .when('/fokusera-pa-aktivitet/:task', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}})
+      .when('/fokusera-pa-aktivitet', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}, reloadOnSearch: false})
+      .when('/fokusera-pa-aktivitet/:task', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}, reloadOnSearch: false})
       .when('/kalender', { templateUrl: 'templates/kalender.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Kalender'; }}, reloadOnSearch: false})
       .when('/arkiv', { templateUrl: 'templates/archive.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Arkiv'; }}})
       .when('/installningar', { templateUrl: 'templates/settings.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Inställningar'; }}})
@@ -27424,29 +27424,31 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return (navigator.app && $rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) ? navigator.app.exitApp() : $location.path('/todo');
       },
       clearTasks: function (which) {
-        var icon, criteria;
+        var icon, criteria, title;
         switch (which) {
           case 'gjorda':
             icon = 'check-square-o';
             criteria = {finished: false};
+            title = 'Vill du rensa bort ALLA gjorda aktiviteter?'
             break;
           case 'raderade':
             icon = 'trash-o';
             criteria = {deleted: false};
+            title = 'Vill du rensa bort ALLA tidigare raderade aktiviteter?'
             break;
           case 'alla':
             icon = 'exclamation-triangle red';
+            title = 'Vill du rensa bort ALLA aktiviteter'
             break;
         }
         $popup.confirm({
           type: 'clean'+which,
           title: 'Klar aktiviteter',
           template: '<div class="popup-icon"><i class="fa fa-'+icon+'"></i></div>' +
-                    '<div class="popup-text">Klar '+which+' aktiviteter?</div>',
-          cancelText: 'Ångra',
-          cancelType: '',
-          okText: 'Bra',
-          okType: '',
+                    '<div class="popup-text">Detta kommer att ta bort dem permanent utan att du kommer kunna återställa dem.</div>',
+          cancelText: 'Ta bort',
+          okText: 'Ångra',
+          withPrevent: false,
         }).then(function (agree) {
           if (agree) {
             $tasks.clear(criteria);
@@ -27541,6 +27543,15 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           default: task.reminder = false; return;
         }
         return moment(task.startTime + (task.endTime - task.startTime) * p).hours(10).minutes(0).seconds(0).milliseconds(0)._d.valueOf();
+      },
+      parentTimeLabel: function (task) {
+        var time, label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
+        if (task.planned && task.timeType === 'period' && task.durationType) {
+          label += ' (';
+          if (task.timeType !== 'exact') { label += 'ca '; }
+          label += task.durationLabel() + ')';
+        }
+        return label;
       },
       isNumber: angular.isNumber
     });
@@ -27755,19 +27766,27 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 /* jshint strict: false */
 /* global App */
-App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$location', '$timeout', 'idaTasks', 'idaPopup', 'idaConfig', 'idaSounds', function($scope, $route, $routeParams, $title, $location, $timeout, $tasks, $popup, $config, $sounds) {
+App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$location', '$timeout', '$anchorScroll', 'idaTasks', 'idaPopup', 'idaConfig', 'idaSounds', function($scope, $route, $routeParams, $title, $location, $timeout, $anchorScroll, $tasks, $popup, $config, $sounds) {
 
   $scope.$root.title = $title;
 
-  var totalTime, deadline, distractionListTimer;
+  var totalTime, deadline, distractionListTimer, task, created = false;
+
+  if ($routeParams.task) {
+    task = $tasks.get(''+$routeParams.task);
+  } else {
+    task = $tasks.add();
+    created = true;
+  }
 
   angular.extend($scope, {
     minutes: 25,
-    task: $routeParams.task ? $tasks.get(''+$routeParams.task) : {},
+    task: task,
     preventConfirmation: false,
     cancelled: false,
     setTime: function () {
-      if(!$scope.hours && !$scope.minutes) { return; }
+      if (!$scope.hours && !$scope.minutes) { return; }
+      if (created) { created = 1; }
       totalTime = ($scope.hours || 0) * 3600000 + ($scope.minutes || 0) * 60000;
       deadline = new Date(new Date().valueOf() + totalTime);
       $scope.$root.timeLeft = 10;
@@ -27786,18 +27805,24 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
           if (!$scope.cancelled) {
             ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(function () {
               $scope.$root.timeLeft = 0;
-              $scope.completeTask($scope.task).then(function (agree) {
-                if (agree && !$tasks.distractionListTasks($scope.loadFocusTime).length) {
-                  $timeout(function () { $location.path('/todo'); });
-                }
-              });
+              if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
+                $scope.$root.showFocusInputs = false;
+                $scope.$root.showNav = false;
+                $scope.title = 'Gå igenom Distraktionslistan';
+              }
+              // $scope.completeTask($scope.task).then(function (agree) {
+              //   if (agree && !$tasks.distractionListTasks($scope.loadFocusTime).length) {
+              //     $timeout(function () { $location.path('/todo'); });
+              //   } else {
+              //       if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
+              //       $scope.$root.showFocusInputs = false;
+              //       $scope.$root.showNav = false;
+              //       $scope.title = 'Gå igenom Distraktionslistan';
+              //     }
+              //   }
+              // });
             });
-            if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
-              $scope.$root.showFocusInputs = false;
-              $scope.$root.showNav = false;
-              $scope.title = 'Gå igenom Distraktionslistan';
-            }
-          } else { $scope.canelled = true; }
+          } else { $scope.cancelled = true; }
         }
       });
     },
@@ -27809,6 +27834,9 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
             $timeout(function () { $location.path('/todo'); });
             break;
           case 'dlist':
+            $scope.$root.showFocusInputs = false;
+            $scope.$root.showNav = false;
+            $scope.title = 'Gå igenom Distraktionslistan';
             break;
         }
       }, function () { $scope.cancelled = false; });
@@ -27820,10 +27848,19 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
     },
     showDistractionListForXSeconds: function () {
       $scope.showDistractionList = true;
-      $timeout(function(){ document.body.scrollTop = document.body.scrollHeight; });
+      $timeout(function(){
+        $location.hash('focusBottom');
+        $anchorScroll();
+        $timeout(function () { $location.hash(''); });
+      }, 10);
       $timeout.cancel(distractionListTimer);
       distractionListTimer = $timeout(function(){
-        $scope.distractionList = null;
+        $scope.showDistractionList = null;
+        $timeout(function(){
+          $location.hash('focusTop');
+          $anchorScroll();
+          $timeout(function () { $location.hash(''); });
+        }, 10);
       }, 10 * 1000);
     }
   });
@@ -27853,13 +27890,13 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
 
   // Hide top nav while timer is counting down:
   $scope.$watch('timeLeft', function (tl) {
-    if(tl > 0) { $scope.$root.hideTopNav = true; }
+    if (tl > 0) { $scope.$root.hideTopNav = true; }
     else { $scope.$root.hideTopNav = false; }
   });
 
   $scope.$on('$locationChangeStart', function(e) {
-    if(!$scope.preventConfirmation){
-      if($tasks.distractionListTasks().length > 0) {
+    if (!$scope.preventConfirmation){
+      if ($tasks.distractionListTasks().length > 0) {
         e.preventDefault();
         $scope.cancelled = true;
         $scope.setModal('templates/modal.focus.distraction_list_confirmation.html').then(function (action) {
@@ -27873,7 +27910,10 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
   });
 
   // Show top nav if user moves to another page, even if timer is not done:
-  $scope.$on('$destroy', function() { $scope.$root.hideTopNav = false; });
+  $scope.$on('$destroy', function() {
+    $scope.$root.hideTopNav = false;
+    if (created === 1&&$scope.task.title) { $tasks.save(); } else { $tasks.reload(); }
+  });
 
 }]);
 
@@ -28105,11 +28145,14 @@ App.directive('idaItem', ['idaConfig', function ($config) {
     replace: true,
     templateUrl: 'templates/list_item.html',
     scope: {
-      task: '=idaItem'
+      task: '=idaItem',
+      repeated: '@itemRepeated'
     },
     link: function ($scope) {
       // $scope.task.trackDuration(true);
-      $scope.$on('$destroy', function () { $scope.task.trackDuration(); });
+      if ($scope.task) {
+        $scope.$on('$destroy', function () { $scope.task.trackDuration(); });
+      }
       angular.extend($scope, {
         moment: $scope.$root.moment,
         priorityLabel: function (task) {
@@ -29459,6 +29502,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
         // this.showInTodoUntil = this.startTime + this.duration;
         break;
       case 'until end of period': this.showInTodoUntil = this.endTime + 1 + $config.delayToRemove; break;
+      case 'auto complete': this.showInTodoUntil = this.endTime + 1 + $config.delayToRemove; break;
       case 'never': this.showInTodoUntil = 0; break;
       default: this.showInTodoUntil = null; break;
     }
@@ -29549,6 +29593,9 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
                 r = moment(start.valueOf()).add(1, 'days').hours(0).minutes(0).seconds(0).milliseconds(0).valueOf() + $config.delayToRemove;
                 break;
               case 'until end of duration':
+                r = moment(start.valueOf() + _this.duration).add(1, 'days').hours(0).minutes(0).seconds(0).milliseconds(0).valueOf() + $config.delayToRemove;
+                break;
+              case 'auto complete':
                 r = moment(start.valueOf() + _this.duration).add(1, 'days').hours(0).minutes(0).seconds(0).milliseconds(0).valueOf() + $config.delayToRemove;
                 break;
               case 'never': r = 0; break;
@@ -29894,7 +29941,10 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
             'tomorrow': 48 + shift,
             'week': 168 + shift
           };
-      if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && task.showInTodoUntil <= now) { task.showInTodoUntil = 0; }
+      if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && task.showInTodoUntil <= now) {
+        task.showInTodoUntil = 0;
+        if (task.showInTodo = 'auto complete') { task.finished = true; }
+      }
       return (!task.deleted && task.planned && !task.finished && task.timeType !== 'none' &&
         task.showInTodoUntil !== 0 && (!task.showInFromUntil || task.showInFromUntil > now) && (!task.showInTodoFrom || task.showInTodoFrom < now) &&
         (task.startTime < moment().startOf('day').hour(hrs[todoFilter]).minute(0).valueOf()));

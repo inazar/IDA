@@ -27,7 +27,7 @@
   <ul class="todo-list">
     <li ng-if="!breakdown" class="list-item"
         ng-repeat="task in filter({ deleted: false, finished: false, isChild: false, planned: true }) | orderBy:[sorting == '+endTime' ? sortEndtime : sorting, '-complex'] | limitTo:20 track by $index"
-        ida-item="task"></li>
+        ida-item="task" item-repeated="true"></li>
     <li ng-if="breakdown" class="list-item" ng-repeat="task in breakdown" ida-item="task"></li>
   </ul>
 

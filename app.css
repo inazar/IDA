@@ -2319,6 +2319,8 @@ input[type="range"] {
     font-size: 28.8px; }
   .range .icon.icon-small {
     font-size: 19.2px; }
+  .range .icon.icon-tiny {
+    font-size: 12px; }
 
 .range input {
   -webkit-box-flex: 1;
@@ -2408,10 +2410,35 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background: transparent;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
     z-index: 150; }
     body > #clickWait.ng-click-active {
       background: rgba(0, 255, 0, 0.3); }
+      body > #clickWait.ng-click-active > div {
+        display: none; }
+    body > #clickWait > div {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2em;
+      border-radius: 1em;
+      color: #eee;
+      font-weight: bold;
+      max-width: 50%; }
   body.ios7 > #wrapper {
     margin-top: 20px; }
     body.ios7 > #wrapper > nav {
@@ -4783,6 +4810,8 @@ span.time-label {
         padding: 14px 10px 10px; }
       .list-item.unplanned > div > div > div.right .task-text {
         padding: 10px 0 !important; }
+  .list-item.current-task > div > div > div.right > div.right {
+    background: #A9D4EE; }
   .list-item > div {
     background: #f2f2f2;
     border-bottom: 1px solid #dddddd; }

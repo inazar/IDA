@@ -26,7 +26,7 @@
     <button class="start-time"
             ng-click="setDatepicker('templates/modal.pick_starttime.html')"
             ng-class="{'selected': modal.task.startTime}"
-            ng-bind="modal.task.startTime?'Börjar '+moment(modal.task.startTime).format('D MMMM YYYY'):'Välj datum och tid'"></button>
+            ng-bind="modal.task.startTime?'Börjar '+moment(modal.task.startTime).format('ddd D MMM YYYY'):'Välj datum och tid'"></button>
     <span>&nbsp;kl&nbsp;</span>
     <div ida-timepicker model-date="modal.task.startTime"></div>
   </div>
@@ -218,6 +218,7 @@
         <option value="until marked as done">Bort när Klar</option>
         <option value="until start time">Bort vid starttid</option>
         <option value="until end of duration">Bort vid sluttid</option>
+        <option value="auto complete">Auto-klar vid sluttid</option>
         <option value="never">Syns ej på Att-Göra</option>
       </select>
     </label>
@@ -227,7 +228,8 @@
     <label ida-help="templates/help/plan/premove.html" help-title="När flyttas tidsperiod-aktivieten från Att-Göra?" class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
-        <option value="'until end of period'">Bort efter tidsperioden</option>
+        <option value="until end of period">Bort efter tidsperioden</option>
+        <option value="auto complete">Autoklar efter tidsperioden</option>
       </select>
     </label>
   </div>

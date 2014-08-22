@@ -36,7 +36,7 @@
                 ng-click="task.expanded=!task.expanded"
                 ida-hold="newTaskTitle=task.title;$root.setModal('templates/modal.edit_task_name.html', task.id);">
             <span ng-show="task.planned" class="prio">{{durationLabel(task)}}</span>
-            <span ng-bind="(task.timeType==='exact'&&task.planned?'('+priorityLabel(task)+'):':'')+task.title"></span>
+            <span ng-bind="(task.timeType==='exact'&&task.planned?'('+priorityLabel(task)+')'+(repeated&&task.repeated?' [upprepad]':'')+':':'')+task.title"></span>
           </span>
 
           <span class="time-label">{{timeLabel(task)}}</span>
@@ -60,7 +60,7 @@
               </span>
               Påminn mm
             </button>
-            <button ng-hide="task.planned||task.finished||task.deleted||$root.page.indexOf('/fokusera-pa-aktivitet')===0"
+            <button ng-hide="task.planned||task.finished||task.deleted"
                     ng-click="$root.setModal('templates/modal.timer.html', task.id).then($root.reload)">
               <i class="fa fa-bell-o"></i>
               Påminn
