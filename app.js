@@ -27630,7 +27630,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           template: '<div class="popup-text"><p>OBS! Saknas tidsinställning syns bara aktiviteten i Att-Göra-listan om det är en underaktivitet. Annars riskerar den glömmas.</p><p>Är du säker på att du vill låta bli att sätta en tid?</p></div>',
           cancelText: 'Nej',
           okText: 'Ja'
-        }).then(function (agree) { if (!agree) { $rootScope.modal.task.timeType = ''; } });
+        }).then(function (agree) { if (!agree) { $rootScope.modal.task.timeType = 'none'; } });
       }
     });
 
@@ -27945,7 +27945,7 @@ App.controller('OrganiseCtrl', ['$scope', '$timeout', '$routeParams', '$title', 
   $scope.$root.title = $title;
 
   angular.extend($scope, {
-    filter: function(object) { return $tasks.filter(object); },
+    filter: function (object) { return $tasks.filter(object); },
     sortEndtime: function (task) { return task.endTime || task.startTime; },
     showChildren: function (shown) { $tasks.showChildren(shown); },
     addTask: function (parent) {
@@ -27981,7 +27981,7 @@ App.controller('StatisticsCtrl', ['$scope', '$title', 'idaTasks', 'idaEvents', f
     endTime: moment().hour(23).minute(59).valueOf()
   };
 
-  $scope.$root.modal = { task: period };
+  // $scope.$root.modal = { task: period };
 
   $scope.refresh = function () {
     var tasks = $tasks.getWithin(period.startTime, period.endTime),
@@ -28033,7 +28033,7 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
     transclude: true,
     templateUrl: 'templates/calendar.html',
     scope: {
-      task: '=calendarTask',
+      task: '=?calendarTask',
       title: '@calendarTitle',
       time: '=?idaCalendar',
       $create: '@calendarCreate',
@@ -28084,9 +28084,15 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
       });
       $scope.$hours = moment($scope.time).hours();
       $scope.$minutes = moment($scope.time).minutes();
+      var i = 1;
+      for (i=1;i<$scope.periods.length;i++) {
+        if ($scope.periods[i].depth === 1 && $scope.periods[i].start <= $scope.time && $scope.periods[i].end >= $scope.time) {
+          break;
+        }
+      }
       $scope.selection = [
-        {start: $scope.periods[0].start, end: $scope.periods[0].end},
-        {start: $scope.periods[1].start, end: $scope.periods[1].end}
+        {start: $scope.periods[i-1].start, end: $scope.periods[i-1].end},
+        {start: $scope.periods[i].start, end: $scope.periods[i].end}
       ];
       $transclude($scope, function (clone) { element.append(clone); });
     }
@@ -28295,18 +28301,6 @@ App.directive('idaSound', ['idaSounds', 'idaConfig', function ($sounds, $config)
 }]);
 
 /* jshint strict: false */
-/* global App */
-App.directive('idaSwipe', ['$swipe', function ($swipe) {
-  return {
-    link: function ($scope, element, attrs) {
-      $swipe.bind(element, function (e) {
-        console.log(e);
-      })
-    }
-  };
-}]);
-
-/* jshint strict: false */
 /* global App, moment, datePicker */
 
 App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $window) {
@@ -28331,7 +28325,7 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
         $scope.$hours = moment($scope.$date).hours();
         $scope.$minutes = moment($scope.$date).minutes();
       } else {
-        $scope.$date = moment().hours($scope.$hours || moment().add(1, 'hour').hours()).minutes($scope.$minutes || 0).valueOf();
+        $scope.$date = moment().hours($scope.$hours || moment().add(1, 'hour').hours()).minutes($scope.$minutes || 0).seconds(0).milliseconds(0).valueOf();
       }
       if ($scope.$root.$cordova && $window.datePicker) {
         $scope.showPicker = function () {
@@ -28345,35 +28339,39 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
             if (date && date.getTime()) {
               $timeout(function () {
                 var time = moment(date);
-                $scope.$date = moment($scope.$date).hours(time.hours()).minutes(time.minutes()).valueOf();
+                $scope.$date = moment($scope.$date).hours(time.hours()).minutes(time.minutes()).seconds(0).milliseconds(0).valueOf();
               });
             }
           });
         };
       }
       $timeout(function () {
-        $scope.$watch('$hours', function (curr) {
-          if (!angular.isNumber(curr)) { return; }
+        $scope.$watch('$hours', function (curr, prev) {
+          if (curr === null) { $scope.$hours = 0; return; }
+          if (!angular.isNumber(curr)) { $scope.$hours = prev; return; }
           // if (!$scope.hours) { return ($scope.hours = prev); }
           $scope.minutes = $scope.minutes || 0;
           if ($scope.$date !== undefined) {
             $scope.$date = moment($scope.$date).hours(curr).minutes($scope.$minutes).seconds(0).milliseconds(0).valueOf();
           }
         });
-        $scope.$watch('$minutes', function (curr) {
-          if (!angular.isNumber(curr)) { return; }
+        $scope.$watch('$minutes', function (curr, prev) {
+          if (curr === null) { $scope.$minutes = 0; return; }
+          if (!angular.isNumber(curr)) { $scope.$hours = prev; return; }
           // if (!$scope.pickerForm.minutes.$valid) { return ($scope.minutes = prev); }
           // $scope.hours = $scope.hours || 0;
           if ($scope.$date !== undefined) {
             $scope.$date = moment($scope.$date).hours($scope.$hours).minutes(curr).seconds(0).milliseconds(0).valueOf();
           }
         });
-        $scope.$watch('$date', function (curr) {
-          if (!angular.isNumber(curr)) { return; }
-          var date = moment($scope.$date);
-          $scope.$hours = date.hours();
-          $scope.$minutes = date.minutes();
-        });
+        if (!$scope.$type) {
+          $scope.$watch('$date', function (curr) {
+            if (!angular.isNumber(curr)) { return; }
+            var date = moment($scope.$date);
+            $scope.$hours = date.hours();
+            $scope.$minutes = date.minutes();
+          });
+        }
       });
     }
   };
@@ -29023,12 +29021,21 @@ App.service('idaDatepicker', [
       options = angular.extend({
         template: template,
         $promise: d.promise,
-        $dismiss: function (err) {
+        $dismiss: function (err, delay) {
+          delay = 100;
           options.$lock = true;
-          d.reject(err);
-          _hideDatepicker();
+          if (delay) {
+            $timeout(function () {
+              d.reject(err);
+              _hideDatepicker();
+            }, delay);
+          } else {
+            d.reject(err);
+            _hideDatepicker();
+          }
         },
         $close: function (res, delay) {
+          delay = 100;
           options.$lock = true;
           if (delay) {
             $timeout(function () {
@@ -29148,13 +29155,22 @@ App.service('idaModal', [
         template: template,
         task: task,
         $promise: d.promise,
-        $dismiss: function (err) {
+        $dismiss: function (err, delay) {
+          delay = 100;
           options.$lock = true;
           task._modal = false;
-          d.reject(err);
-          _popModal();
+          if (delay) {
+            $timeout(function () {
+              d.reject(err);
+              _popModal();
+            }, delay);
+          } else {
+            d.reject(err);
+            _popModal();
+          }
         },
         $close: function (res, delay) {
+          delay = 100;
           options.$lock = true;
           task._modal = false;
           if (delay) {
@@ -29661,8 +29677,11 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
   };
 
   Task.prototype.updatePeriodInput = function () {
-    if(this.timeType !== 'period' || this.xDays === '') { return; }
-    switch(this.timeInputType) {
+    if (this.timeType === 'exact' && !this.planned) {
+      return this.startTime = moment(this.startTime).hours(moment().add(1, 'hour').hours()).minutes(0).seconds(0).milliseconds(0).valueOf();;
+    }
+    if (this.timeType !== 'period' || this.xDays === '') { return; }
+    switch (this.timeInputType) {
       case 'today':
         this.startTime = moment().hour(0).minute(0).seconds(0).milliseconds(0).valueOf();
         this.endTime = moment().hour(23).minute(59).seconds(0).milliseconds(0).valueOf();
