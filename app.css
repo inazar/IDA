@@ -2940,12 +2940,12 @@ div.later-modal {
   div.later-modal > div > button.abort {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
-    box-shadow: 0 2px 0 0 #9b9b9b;
+    -webkit-box-shadow: 0 2px 0 0 #5d0662;
+    box-shadow: 0 2px 0 0 #5d0662;
     -webkit-user-select: none;
-    background: #d4d4d4;
+    background: #a40aaa;
     border: none;
-    color: #4a4a4a;
+    color: white;
     display: inline-block;
     font-weight: bold;
     padding: 3px 10px 4px;
@@ -2966,8 +2966,8 @@ div.later-modal {
     div.later-modal > div > button.abort:active, div.later-modal > div > button.abort.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #bbb;
-      border-top: 2px solid #9b9b9b;
+      background: #8b0992;
+      border-top: 2px solid #5d0662;
       top: 0px; }
 
 div.timer-modal {

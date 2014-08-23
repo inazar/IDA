@@ -27412,7 +27412,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         task.reminderTime = moment(task.reminderTime).hours(hours).minutes(minutes).seconds(0).milliseconds(0).valueOf();
         task.saveTask(null, null, task.duration);
         $rootScope.getTodoList();
-        $rootScope.modal.$close();
+        if ($rootScope.modal) { $rootScope.modal.$close(); }
       },
       addTask: function (name, parent) {
         if (!name) { return; }
@@ -27473,23 +27473,39 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return $q.when(d);
       },
       completeTask: function (task, noSound) {
-        // task.checked = true;
+        var enforcements = [
+          'Bra jobbat!',
+          'Vackert!',
+          'En sak mindre att ta hand om!',
+          'Toppen att du tog tag i det här!',
+          'Bra att du betade av detta!',
+          'Strålande insats!',
+          'Guldstjärna!',
+          'Du är bäst!',
+          'Färdigt!'
+        ]
+        task.checked = true;
         return $popup.confirm({
           type: 'taskComplete',
           sound: noSound ? '' : 'task',
-          title: 'Klar aktiviteter',
-          template: '<div class="popup-icon"><i class="fa fa-archive"></i></div>' +
-                    '<div class="popup-text">Klar aktiviteter finns <br/> kvar på Arkiv-sidan.</div>',
+          title: 'Klar med '+task.title,
+          template: '<div class="popup-text">'+enforcements[Math.floor(Math.random()*enforcements.length)]+'</div>' +
+                    // '<div class="popup-icon"><i class="fa fa-archive"></i></div>' +
+                    '<div class="popup-text">Avklarade aktiviteter hittar du i Arkivet (<i class="fa fa-archive"></i>)</div>',
           cancelText: 'Ångra',
           cancelType: '',
-          okText: 'Bra',
+          okText: 'Ok',
           okType: '',
+          reverse: true,
+          withPrevent: false
         }).then(function (agree) {
           if (agree) {
             task.finished = true;
             task.setTimer();
             $tasks.save();
             // $sounds.play('archive');
+          } else {
+            task.checked = false;
           }
           return agree;
         }, function () {
@@ -27527,8 +27543,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         if (success) { modal.$promise.then(success); }
         return modal.$promise;
       },
-      setDatepicker: function(modal){
+      setDatepicker: function(modal, success){
         modal = $datepicker(modal);
+        if (success) { modal.$promise.then(success); }
         return modal.$promise;
       },
       setReminderTime: function (task, type) {
@@ -27704,8 +27721,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                 template: '<div class="popup-text">'+task.title+'</div>',
                 buttons: [
                   { text: 'Fokusera', type: 'btn-main', onTap: function () { return 'focus'; } },
-                  { text: 'Ny påminnelse', type: 'btn-default', onTap: function () { return 'plan'; } },
-                  { text: 'Stäng', type: 'btn-default', onTap: function () { return 'ok'; } }
+                  { text: 'Ny påminnelse', type: 'btn-main', onTap: function () { return 'plan'; } },
+                  { text: 'Ta bort påminnelse', type: 'btn-main', onTap: function () { return 'ok'; } }
                 ],
               }).then(function (res) {
                 switch (res) {
@@ -28278,6 +28295,18 @@ App.directive('idaSound', ['idaSounds', 'idaConfig', function ($sounds, $config)
 }]);
 
 /* jshint strict: false */
+/* global App */
+App.directive('idaSwipe', ['$swipe', function ($swipe) {
+  return {
+    link: function ($scope, element, attrs) {
+      $swipe.bind(element, function (e) {
+        console.log(e);
+      })
+    }
+  };
+}]);
+
+/* jshint strict: false */
 /* global App, moment, datePicker */
 
 App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $window) {
@@ -28728,9 +28757,13 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
     }, opts || {}) );
   }
 
+  function _reverse (arr, yes) {
+    return yes ? arr.reverse() : arr;
+  }
+
   function showConfirm(opts) {
     return showPopup( angular.extend({
-      buttons: [{
+      buttons: _reverse([{
         text: opts.cancelText || 'Cancel' ,
         type: opts.cancelType || 'btn-default',
         onTap: function() { return false; }
@@ -28738,7 +28771,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
         text: opts.okText || 'OK',
         type: opts.okType || 'btn-main',
         onTap: function() { return true; }
-      }]
+      }], opts.reverse)
     }, opts || {}) );
   }
 

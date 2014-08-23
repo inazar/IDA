@@ -26,7 +26,7 @@ modal.task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (
       <div ida-timepicker model-minutes="$minutesIn" model-hours="$hoursIn"></div>
     </div>
     <div class="reminder-today">
-      <button class="reminder" ng-disabled="modal.$lock" ng-click="$root.setDatepicker('templates/modal.pick_latertime.html')">Påminn viss tid</button>
+      <button class="reminder" ng-disabled="modal.$lock" ng-click="modal.$dismiss();$root.setDatepicker('templates/modal.pick_latertime.html')">Påminn viss tid</button>
     </div>
     <button class="breakdown"
             ng-show="!modal.task.isChild"

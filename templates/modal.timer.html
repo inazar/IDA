@@ -11,10 +11,9 @@
     <div class="divider"></div>
 
     <div ng-hide="modal.task.reminderTime > Date.now()">
-      <div class="time-inputs" ng-init="$timer.timerHours=0;$timer.timerMinutes=30;">
+      <div class="time-inputs" ng-init="$timer.timerHours=0;$timer.timerMinutes=30;$timer.type='period'">
         <label class="time-options">
-          <select ng-model="$timer.type"
-                  ng-init="$timer.type='period'">
+          <select ng-model="$timer.type">
             <option value="period">Påminn om</option>
             <option value="today">Idag klockan</option>
             <option value="other">Påminn imorgon eller senare</option>

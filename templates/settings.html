@@ -3,7 +3,7 @@
     <label class="range-label">Hur snabbt blir en dag överbokad?</label>
     <div class="range range-purple" ng-init="percentageUsableTime=1-$config.percentageUsableTime">
       <i class="icon fa fa-paper-plane-o gray icon-small"></i>
-      <input type="range", min="0.4" max="0.9" step="0.1" ng-model="percentageUsableTime" ng-change="$config.percentageUsableTime=1-percentageUsableTime;$config.save()">
+      <input ida-swipe type="range", min="0.4" max="0.9" step="0.1" ng-model="percentageUsableTime" ng-change="$config.percentageUsableTime=1-percentageUsableTime;$config.save()">
       <i class="icon fa fa-rocket gray icon-small"></i>
     </div>
   </div>
