@@ -16,7 +16,7 @@
         <option value="-duration">storlek</option>
       </select></label>
     </div>
-    <div class="expand-collapse">
+    <div class="expand-collapse" ng-show="children">
       <div>fäll ut/ihop</div>
       <button ng-click="showChildren(true)"><i class="fa fa-caret-square-o-down"></i></button>
       <button ng-click="showChildren(false)"><i class="fa fa-caret-square-o-up"></i></button>
@@ -26,7 +26,7 @@
 
   <ul class="todo-list">
     <li ng-if="!breakdown" class="list-item"
-        ng-repeat="task in filter({ deleted: false, finished: false, isChild: false, planned: true }) | orderBy:[sorting == '+endTime' ? sortEndtime : sorting, '-complex'] | limitTo:20 track by $index"
+        ng-repeat="task in filter() | orderBy:[sorting == '+endTime' ? sortEndtime : sorting, '-complex'] | limitTo:20 track by $index"
         ida-item="task" item-repeated="true"></li>
     <li ng-if="breakdown" class="list-item" ng-repeat="task in breakdown" ida-item="task"></li>
   </ul>

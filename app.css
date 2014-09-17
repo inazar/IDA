@@ -2428,10 +2428,8 @@ body {
     align-items: center;
     background: rgba(255, 255, 255, 0.5);
     z-index: 150; }
-    body > #clickWait.ng-click-active {
-      background: rgba(0, 255, 0, 0.3); }
-      body > #clickWait.ng-click-active > div {
-        display: none; }
+    body > #clickWait.ng-click-active > div {
+      display: none; }
     body > #clickWait > div {
       background: rgba(0, 0, 0, 0.3);
       padding: 2em;
@@ -2440,7 +2438,7 @@ body {
       font-weight: bold;
       max-width: 50%; }
   body.ios7 > #wrapper {
-    margin-top: 20px; }
+    padding-top: 20px; }
     body.ios7 > #wrapper > nav {
       top: 20px; }
     body.ios7 > #wrapper > div#main > div#top {
@@ -2609,14 +2607,17 @@ body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #w
   margin-left: 80%; }
 
 .modal-container {
-  height: 100%;
-  width: 100%;
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
+  right: 0;
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 90; }
+
+.ios7 .modal-container {
+  top: 20px; }
 
 div.delete-task-modal {
   background: rgba(0, 0, 0, 0.7);

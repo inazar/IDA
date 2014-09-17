@@ -27309,7 +27309,7 @@ makeSwipeDirective('ngSwipeRight', 1, 'swiperight');
 })(window, window.angular);
 
 /* jshint strict: false */
-/* global moment, Media */
+/* global moment */
 
 moment.lang('sv');
 
@@ -27688,15 +27688,15 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       });
     };
 
-    $document[0].addEventListener('pause', function() { $notifications.stop(); });
-    $document[0].addEventListener('resume', function() { $notifications.start(); });
+    $document[0].addEventListener('pause', function() { $timeout(function () { $notifications.stop(); $sounds.stop(); }); });
+    $document[0].addEventListener('resume', function() { $timeout(function () { $notifications.start(); }); });
 
     $document[0].addEventListener('deviceready', function() {
+      var notification, vibrate;
+      var device = $rootScope.$cordova = $window.device;
       if (device.platform === 'iOS' && parseFloat(device.version) >= 7.0) {
         angular.element($document[0].body).addClass('ios7');
       }
-      var notification, vibrate;
-      $rootScope.$cordova = $window.device;
       $document[0].addEventListener('backbutton', function() { return false; }, false);
       if ($window.device && $window.device.platform === 'Android') { $sounds.register(); }
       if ((notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
@@ -27945,14 +27945,24 @@ App.controller('OrganiseCtrl', ['$scope', '$timeout', '$routeParams', '$title', 
   $scope.$root.title = $title;
 
   angular.extend($scope, {
-    filter: function (object) { return $tasks.filter(object); },
+    filter: function () {
+      var tasks = $tasks.filter({ deleted: false, finished: false, isChild: false, planned: true }), i;
+      $scope.children = false;
+      for (i=0;i<tasks.length;i++) {
+        if (tasks[i].children.length) {
+          $scope.children = true;
+          break;
+        }
+      }
+      return tasks;
+    },
     sortEndtime: function (task) { return task.endTime || task.startTime; },
     showChildren: function (shown) { $tasks.showChildren(shown); },
     addTask: function (parent) {
       if(!$scope.newTask && !parent) { return; }
       var task = $tasks.add($scope.newTask, parent);
       $scope.newTask = '';
-      $scope.editTask(task.id).then(function (task) {
+      $scope.editTask(task.id).then(function () {
         $scope.reload();
         $timeout(function () { $tasks.get(parent).showChildren = true; });
       });
@@ -28084,17 +28094,18 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
       });
       $scope.$hours = moment($scope.time).hours();
       $scope.$minutes = moment($scope.time).minutes();
-      var i = 1;
-      for (i=1;i<$scope.periods.length;i++) {
+      var i;
+      for (i=0;i<$scope.periods.length;i++) {
         if ($scope.periods[i].depth === 1 && $scope.periods[i].start <= $scope.time && $scope.periods[i].end >= $scope.time) {
           break;
         }
       }
       $scope.selection = [
-        {start: $scope.periods[i-1].start, end: $scope.periods[i-1].end},
+        {start: $scope.periods[0].start, end: $scope.periods[0].end},
         {start: $scope.periods[i].start, end: $scope.periods[i].end}
       ];
       $transclude($scope, function (clone) { element.append(clone); });
+      $scope.scrollTo('tag'+moment($scope.time).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf());
     }
   };
 }]);
@@ -28947,7 +28958,7 @@ App.service('idaConfig', function () {
     defaultDuration: 1800000,
     delayToRemove: 14400000,
     daysBeforeDoubleVaugnessPunishment: 15,
-    percentageUsableTime: 0.6,
+    percentageUsableTime: 0.4,
     pragmaticDayshift: 0,
     organize: 'twoweek',
     reminder: false,
@@ -29366,7 +29377,7 @@ App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
 
   Sounds.prototype.play = function(type) {
     var name = $config.sounds[type], sound, volume, _this = this, d = $q.defer(), res;
-    for (sound in this.sounds) { this.stop(sound); }
+    this.stop();
     if ((sound = this.sounds[name])) {
       volume = parseFloat($config.volume[type]);
       if (volume !== 0) {
@@ -29398,6 +29409,10 @@ App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
         sound.currentTime = 0;
       } else {
         sound.stop();
+      }
+    } else {
+      for (sound in this.sounds) {
+        this.stop(sound);
       }
     }
   };
@@ -29870,11 +29885,6 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
   };
 
   // Filter tasks based on criteria
-  Tasks.prototype.filter = function(object) {
-    return _.uniq(_.sortBy(_.where(this.tasks, object), function(t){ return t.startTime; }), function(t) { return t.repeatTask || t.id; });
-  };
-
-  // Filter repeated tasks set
   Tasks.prototype.filter = function(object) {
     return _.uniq(_.sortBy(_.where(this.tasks, object), function(t){ return t.startTime; }), function(t) { return t.repeatTask || t.id; });
   };
