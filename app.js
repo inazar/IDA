@@ -29412,7 +29412,7 @@ App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
       }
     } else {
       for (sound in this.sounds) {
-        this.stop(sound);
+        this.sounds[sound].stop();
       }
     }
   };
