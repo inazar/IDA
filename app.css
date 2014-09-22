@@ -3033,7 +3033,6 @@ div.timer-modal {
     -moz-align-items: center;
     align-items: center; }
     div.timer-modal > div > div > div.time-inputs > label.time-options {
-      color: white;
       display: inline-block;
       position: relative;
       width: 100%;
@@ -3045,17 +3044,17 @@ div.timer-modal {
       -ms-flex: 1;
       flex: 1;
       display: block; }
-      div.timer-modal > div > div > div.time-inputs > label.time-options::before {
-        content: '\f0d7';
-        display: inline-block;
-        font-family: FontAwesome;
-        font-style: normal;
-        font-weight: normal;
-        text-decoration: inherit; }
-      div.timer-modal > div > div > div.time-inputs > label.time-options::before {
+      div.timer-modal > div > div > div.time-inputs > label.time-options::after {
         position: absolute;
-        right: 10px;
-        top: 3px; }
+        top: 50%;
+        right: 15px;
+        width: 0;
+        height: 0;
+        border-top: 5px solid white;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        content: "";
+        pointer-events: none; }
       div.timer-modal > div > div > div.time-inputs > label.time-options > select {
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -3871,22 +3870,21 @@ div.focus-distraction-list-confirmation-modal {
           border-top: 2px solid #5d0662;
           top: 0px; }
   .plan > div.period .help-line > label {
-    color: white;
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em; }
-    .plan > div.period .help-line > label::before {
-      content: '\f0d7';
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      text-decoration: inherit; }
-    .plan > div.period .help-line > label::before {
+    .plan > div.period .help-line > label::after {
       position: absolute;
-      right: 10px;
-      top: 3px; }
+      top: 50%;
+      right: 15px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid white;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      content: "";
+      pointer-events: none; }
     .plan > div.period .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4072,23 +4070,22 @@ div.focus-distraction-list-confirmation-modal {
           background: #a40aaa;
           color: white; }
   .plan > div > label.show-in-todo .help-line {
-    color: white;
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     display: block; }
-    .plan > div > label.show-in-todo .help-line::before {
-      content: '\f0d7';
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      text-decoration: inherit; }
-    .plan > div > label.show-in-todo .help-line::before {
+    .plan > div > label.show-in-todo .help-line::after {
       position: absolute;
-      right: 10px;
-      top: 3px; }
+      top: 50%;
+      right: 15px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid white;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      content: "";
+      pointer-events: none; }
     .plan > div > label.show-in-todo .help-line > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4133,23 +4130,22 @@ div.focus-distraction-list-confirmation-modal {
       position: absolute;
       top: 0; }
   .plan > div > .reminder .help-line > label {
-    color: white;
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin-top: 10px; }
-    .plan > div > .reminder .help-line > label::before {
-      content: '\f0d7';
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      text-decoration: inherit; }
-    .plan > div > .reminder .help-line > label::before {
+    .plan > div > .reminder .help-line > label::after {
       position: absolute;
-      right: 10px;
-      top: 3px; }
+      top: 50%;
+      right: 15px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid white;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      content: "";
+      pointer-events: none; }
     .plan > div > .reminder .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4298,23 +4294,22 @@ div.focus-distraction-list-confirmation-modal {
         background: #a40aaa;
         color: white; }
   .plan > div > div.repeated .help-line > label {
-    color: white;
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin: 10px 0; }
-    .plan > div > div.repeated .help-line > label::before {
-      content: '\f0d7';
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      text-decoration: inherit; }
-    .plan > div > div.repeated .help-line > label::before {
+    .plan > div > div.repeated .help-line > label::after {
       position: absolute;
-      right: 10px;
-      top: 3px; }
+      top: 50%;
+      right: 15px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid white;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      content: "";
+      pointer-events: none; }
     .plan > div > div.repeated .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4379,23 +4374,22 @@ div.focus-distraction-list-confirmation-modal {
           position: absolute;
           top: 0; }
   .plan > div > div.repeated .help-line .repeat-end {
-    color: white;
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin: 10px 0 0; }
-    .plan > div > div.repeated .help-line .repeat-end::before {
-      content: '\f0d7';
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      text-decoration: inherit; }
-    .plan > div > div.repeated .help-line .repeat-end::before {
+    .plan > div > div.repeated .help-line .repeat-end::after {
       position: absolute;
-      right: 10px;
-      top: 3px; }
+      top: 50%;
+      right: 15px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid white;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      content: "";
+      pointer-events: none; }
     .plan > div > div.repeated .help-line .repeat-end > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4540,22 +4534,21 @@ div.focus-distraction-list-confirmation-modal {
         border-top: 2px solid #5d0662;
         top: 0px; }
   .plan div.period-reminder .help-line > label {
-    color: white;
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em; }
-    .plan div.period-reminder .help-line > label::before {
-      content: '\f0d7';
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      text-decoration: inherit; }
-    .plan div.period-reminder .help-line > label::before {
+    .plan div.period-reminder .help-line > label::after {
       position: absolute;
-      right: 10px;
-      top: 3px; }
+      top: 50%;
+      right: 15px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid white;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      content: "";
+      pointer-events: none; }
     .plan div.period-reminder .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -5177,20 +5170,19 @@ div.todo-page > div.unplanned {
 div.todo-page > div.todo > h2 {
   padding-top: 5px; }
   div.todo-page > div.todo > h2 > label {
-    color: white;
     display: inline-block;
     position: relative; }
-    div.todo-page > div.todo > h2 > label::before {
-      content: '\f0d7';
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      text-decoration: inherit; }
-    div.todo-page > div.todo > h2 > label::before {
+    div.todo-page > div.todo > h2 > label::after {
       position: absolute;
-      right: 10px;
-      top: 3px; }
+      top: 50%;
+      right: 15px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid white;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      content: "";
+      pointer-events: none; }
     div.todo-page > div.todo > h2 > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -5213,22 +5205,21 @@ div.todo-page > div.todo > h2 {
         background: #8b0992;
         border-top: 2px solid #5d0662; }
 div.todo-page > label.temp {
-  color: white;
   display: inline-block;
   position: relative;
   width: 100%;
   font-size: 1.2em; }
-  div.todo-page > label.temp::before {
-    content: '\f0d7';
-    display: inline-block;
-    font-family: FontAwesome;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit; }
-  div.todo-page > label.temp::before {
+  div.todo-page > label.temp::after {
     position: absolute;
-    right: 10px;
-    top: 3px; }
+    top: 50%;
+    right: 15px;
+    width: 0;
+    height: 0;
+    border-top: 5px solid white;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    content: "";
+    pointer-events: none; }
   div.todo-page > label.temp > select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -5276,21 +5267,20 @@ div.organize-page > div.controls {
       margin-right: 5%;
       width: 62%; }
       div.organize-page > div.controls > div.sort > label {
-        color: white;
         display: inline-block;
         position: relative;
         width: 100%; }
-        div.organize-page > div.controls > div.sort > label::before {
-          content: '\f0d7';
-          display: inline-block;
-          font-family: FontAwesome;
-          font-style: normal;
-          font-weight: normal;
-          text-decoration: inherit; }
-        div.organize-page > div.controls > div.sort > label::before {
+        div.organize-page > div.controls > div.sort > label::after {
           position: absolute;
-          right: 10px;
-          top: 3px; }
+          top: 50%;
+          right: 15px;
+          width: 0;
+          height: 0;
+          border-top: 5px solid white;
+          border-right: 5px solid transparent;
+          border-left: 5px solid transparent;
+          content: "";
+          pointer-events: none; }
         div.organize-page > div.controls > div.sort > label > select {
           -webkit-appearance: none;
           -moz-appearance: none;
@@ -6107,20 +6097,19 @@ div.statistics-page > div.stats-table {
   height: 45px;
   padding: 2px 4px; }
   .select-item label {
-    color: white;
     display: inline-block;
     position: relative; }
-    .select-item label::before {
-      content: '\f0d7';
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      text-decoration: inherit; }
-    .select-item label::before {
+    .select-item label::after {
       position: absolute;
-      right: 10px;
-      top: 3px; }
+      top: 50%;
+      right: 15px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid white;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      content: "";
+      pointer-events: none; }
     .select-item label > select {
       -webkit-appearance: none;
       -moz-appearance: none;

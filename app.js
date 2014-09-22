@@ -27689,8 +27689,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           title: 'Klar aktiviteter',
           template: '<div class="popup-icon"><i class="fa fa-'+icon+'"></i></div>' +
                     '<div class="popup-text">Detta kommer att ta bort dem permanent utan att du kommer kunna återställa dem.</div>',
-          cancelText: 'Ta bort',
-          okText: 'Ångra',
+          cancelText: 'Ångra',
+          okText: 'Ta bort',
           withPrevent: false,
         }).then(function (agree) {
           if (agree) {
@@ -28531,7 +28531,6 @@ App.directive('idaSound', ['idaSounds', 'idaConfig', function ($sounds, $config)
             '<i class="fa fa-volume-off gray fa-stack-1x"></i>' +
             '<i class="fa fa-ban red fa-stack-1x"></i>' +
           '</span>' +
-          // '<i class="icon fa fa-volume-off gray"></i>' +
           '<input type="range", min="0", max="1" step="0.1" ng-model="$config.volume[type]" ng-change="$config.save();$root.$sound=$sounds.play(type)">' +
           '<i class="icon fa fa-volume-up gray"></i>' +
         '</div>' +
