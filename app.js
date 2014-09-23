@@ -27672,16 +27672,16 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           case 'gjorda':
             icon = 'check-square-o';
             criteria = {finished: false};
-            title = 'Vill du rensa bort ALLA gjorda aktiviteter?'
+            title = 'Vill du rensa bort ALLA gjorda aktiviteter?';
             break;
           case 'raderade':
             icon = 'trash-o';
             criteria = {deleted: false};
-            title = 'Vill du rensa bort ALLA tidigare raderade aktiviteter?'
+            title = 'Vill du rensa bort ALLA tidigare raderade aktiviteter?';
             break;
           case 'alla':
             icon = 'exclamation-triangle red';
-            title = 'Vill du rensa bort ALLA aktiviteter'
+            title = 'Vill du rensa bort ALLA aktiviteter';
             break;
         }
         $popup.confirm({
@@ -27726,7 +27726,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           'Guldstjärna!',
           'Du är bäst!',
           'Färdigt!'
-        ]
+        ];
         task.checked = true;
         return $popup.confirm({
           type: 'taskComplete',
@@ -27805,7 +27805,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return moment(task.startTime + (task.endTime - task.startTime) * p).hours(10).minutes(0).seconds(0).milliseconds(0)._d.valueOf();
       },
       parentTimeLabel: function (task) {
-        var time, label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
+        var label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
         if (task.planned && task.timeType === 'period' && task.durationType) {
           label += ' (';
           if (task.timeType !== 'exact') { label += 'ca '; }
@@ -27939,6 +27939,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       var device = $rootScope.$cordova = $window.device;
       if (device.platform === 'iOS' && parseFloat(device.version) >= 7.0) {
         angular.element($document[0].body).addClass('ios7');
+      }
+      if ($window.cordova && $window.cordova.getAppVersion) {
+        $window.cordova.getAppVersion(function (ver) { $rootScope.$version = ver; });
       }
       $document[0].addEventListener('backbutton', function() { return false; }, false);
       if ($window.device && $window.device.platform === 'Android') { $sounds.register(); }
@@ -28364,7 +28367,7 @@ App.directive('idaHelp', ['$rootScope', 'idaPopup', function ($rootScope, $popup
       title: '@helpTitle',
       template: '@idaHelp'
     },
-    link: function ($scope, element, attrs) {
+    link: function ($scope) {
       if ($scope.template === 'hidden') { $scope.invisible = true; }
       $scope.show = function () {
         $rootScope.help = $scope.template;
@@ -28455,7 +28458,7 @@ App.directive('idaItem', ['idaConfig', function ($config) {
           }
         },
         timeLabel: function (task) {
-          var time, label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
+          var label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
           if (task.planned && task.timeType === 'period' && task.durationType) {
             label += ' (';
             if (task.timeType !== 'exact') { label += 'ca '; }
@@ -28485,7 +28488,7 @@ App.directive('idaItem', ['idaConfig', function ($config) {
         },
         isWarning: function () {
           if (!$scope.task.finished && !$scope.task.deleted && $scope.task.startTime) {
-            return Date.now().valueOf() > ($scope.task.timeType === 'period' ? $scope.task.endTime + $config.delayToRemove : $scope.task.startTime + $scope.task.duration)
+            return Date.now().valueOf() > ($scope.task.timeType === 'period' ? $scope.task.endTime + $config.delayToRemove : $scope.task.startTime + $scope.task.duration);
           }
         }
       });
@@ -29761,8 +29764,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
       case 'nearLast': p = 0.85; break;
       case 'middle': p = 0.5; break;
       case 'exact':
-        p = moment(this.startTime).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0).valueOf()
-        return this.reminderTime = (this.reminderTimeAdvance ? p - this.reminderTimeAdvance : p);
+        p = moment(this.startTime).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0).valueOf();
+        return (this.reminderTime = (this.reminderTimeAdvance ? p - this.reminderTimeAdvance : p));
       default: this.reminder = false; return;
     }
     return (this.reminderTime = moment(this.startTime + (this.endTime - this.startTime) * p).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0).valueOf());
@@ -29888,7 +29891,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
           r = {
             reminder: true,
             reminderTime: start.valueOf() - advance
-          }
+          };
         }
         t = _tasks.add(_.extend({
           startTime: start.valueOf(),
@@ -29934,8 +29937,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
   };
 
   Task.prototype.updatePeriodInput = function () {
-    if (this.timeType === 'exact' && !this.planned) {
-      return this.startTime = moment(this.startTime).hours(moment().add(1, 'hour').hours()).minutes(0).seconds(0).milliseconds(0).valueOf();;
+    if (this.timeType === 'exact' && (!this.planned || this.startTime % 3600000 === 0)) {
+      return (this.startTime = moment(this.startTime).hours(moment().add(1, 'hour').hours()).minutes(0).seconds(0).milliseconds(0).valueOf());
     }
     if (this.timeType !== 'period' || this.xDays === '') { return; }
     switch (this.timeInputType) {
@@ -30247,7 +30250,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
           };
       if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && task.showInTodoUntil <= now) {
         task.showInTodoUntil = 0;
-        if (task.showInTodo = 'auto complete') { task.finished = true; }
+        if (task.showInTodo === 'auto complete') { task.finished = true; }
       }
       return (!task.deleted && task.planned && !task.finished && task.timeType !== 'none' &&
         task.showInTodoUntil !== 0 && (!task.showInFromUntil || task.showInFromUntil > now) && (!task.showInTodoFrom || task.showInTodoFrom < now) &&
@@ -30288,7 +30291,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
           task.endTime < moment().hour(24 + shift).valueOf() || (
             task.complex && (
               (
-                !task.isParent && $scope.$parent.todoFilter === 'week' && (
+                !task.isParent && todoFilter === 'week' && (
                   task.endTime < moment().hour(2 * 24 + shift).valueOf() ||
                   (task.endTime < moment().hour(3 * 24 + shift).valueOf() && task.endTime - task.startTime > 7 * 86400000) ||
                   (task.endTime < moment().hour(5 * 24 + shift).valueOf() && task.endTime - task.startTime > 15 * 86400000) ||
@@ -30312,7 +30315,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
       else { value += 1000000; }
       value += task.important ? 6000 : 3000;
       value += task.complex ? 2000 : 1000;
-      if(task.timeType === 'period') { value += 100 + (task.endTime % 2630000000) / 100000000; }
+      if (task.timeType === 'period') { value += 100 + (task.endTime % 2630000000) / 100000000; }
       return -1 * value;
     });
   };
