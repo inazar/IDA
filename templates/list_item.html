@@ -39,7 +39,7 @@
             <span ng-bind="(task.timeType==='exact'&&task.planned?'('+priorityLabel(task)+')'+(repeated&&task.repeated?' [upprepad]':'')+':':'')+task.title"></span>
           </span>
 
-          <span class="time-label">{{timeLabel(task)}}</span>
+          <span class="time-label">{{$root.timeLabel(task)}}</span>
 
           <div class="actions">
             <button ng-hide="task.finished||task.deleted"

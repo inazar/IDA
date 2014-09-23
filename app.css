@@ -4664,6 +4664,37 @@ div.focus-distraction-list-confirmation-modal {
           background: #8b0992;
           border-top: 2px solid #5d0662;
           top: 0px; }
+  .plan div.period-reminder .help-line > div.alarm-toggle {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    width: 100%;
+    display: block;
+    height: 50px;
+    margin: 10px 0 20px; }
+    .plan div.period-reminder .help-line > div.alarm-toggle > button {
+      -webkit-user-select: none;
+      background: #d4d4d4;
+      border: none;
+      color: #4a4a4a;
+      display: block;
+      font-weight: bold;
+      height: 50%;
+      opacity: 0.4;
+      outline: 0;
+      padding: 0 10px;
+      text-align: center;
+      width: 100%; }
+      .plan div.period-reminder .help-line > div.alarm-toggle > button.active {
+        opacity: 1;
+        background: #a40aaa;
+        color: white; }
   .plan > div.no-time > div.confirm-no-time {
     overflow: auto;
     padding: 15px 0 4px; }

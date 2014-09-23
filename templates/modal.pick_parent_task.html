@@ -10,7 +10,7 @@
     <i class="fa fa-long-arrow-down fa-2x"></i>
   </div>
 
-  <h2>Välj huvudaktivitet</h2>
+  <h2>Välj huvudaktivitet till ovanstående underaktivitet</h2>
 
   <ul>
     <li ng-repeat="task in $tasks.where({ deleted: false, finished: false, isChild: false, planned: true }) track by $index"
@@ -18,7 +18,7 @@
         ng-class="{ active: selected === task }"
         ng-click="$parent.$parent.selected = task">
       <b ng-bind="(task.important ? 'A' : 'B') + (task.complex ? (task.important ? 'A' : 'B') : '') + ':'"></b>
-      <span ng-bind="task.title"></span> - <span class="gray">{{parentTimeLabel(task)}}</span>
+      <span ng-bind="task.title"></span> - <span class="gray">{{timeLabel(task)}}</span>
     </li>
   </ul>
 

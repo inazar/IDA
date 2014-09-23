@@ -27804,11 +27804,11 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         }
         return moment(task.startTime + (task.endTime - task.startTime) * p).hours(10).minutes(0).seconds(0).milliseconds(0)._d.valueOf();
       },
-      parentTimeLabel: function (task) {
+      timeLabel: function (task) {
         var label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
         if (task.planned && task.timeType === 'period' && task.durationType) {
           label += ' (';
-          if (task.timeType !== 'exact') { label += 'ca '; }
+          if (task.timeEstimated) { label += 'ca '; }
           label += task.durationLabel() + ')';
         }
         return label;
@@ -28457,15 +28457,6 @@ App.directive('idaItem', ['idaConfig', function ($config) {
             return $scope.priorityLabel(task);
           }
         },
-        timeLabel: function (task) {
-          var label = task.timeType === 'none' ? 'Ingen tid (syns ej i Att-Göra)' : (task.startTime && task.planned ? (task.timeType === 'period' ? moment(task.startTime).format('D MMM') + ' - ' + moment(task.endTime).format('D MMM') : moment(task.startTime).format('D MMM')) : ' ');
-          if (task.planned && task.timeType === 'period' && task.durationType) {
-            label += ' (';
-            if (task.timeType !== 'exact') { label += 'ca '; }
-            label += task.durationLabel() + ')';
-          }
-          return label;
-        },
         alertClick: function () {
           if (true || $scope.task.reminderTime < Date.now()) {
             // $scope.task.reminder = false;
@@ -28603,21 +28594,25 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
       }
       $timeout(function () {
         $scope.$watch('$hours', function (curr, prev) {
+          var date;
           if (curr === null) { $scope.$hours = 0; return; }
           if (!angular.isNumber(curr)) { $scope.$hours = prev; return; }
           // if (!$scope.hours) { return ($scope.hours = prev); }
           $scope.minutes = $scope.minutes || 0;
           if ($scope.$date !== undefined) {
-            $scope.$date = moment($scope.$date).hours(curr).minutes($scope.$minutes).seconds(0).milliseconds(0).valueOf();
+            date = moment($scope.$date).hours(curr).minutes($scope.$minutes).seconds(0).milliseconds(0).valueOf();
+            if (date !== $scope.$date) { $scope.$date = date; }
           }
         });
         $scope.$watch('$minutes', function (curr, prev) {
+          var date;
           if (curr === null) { $scope.$minutes = 0; return; }
           if (!angular.isNumber(curr)) { $scope.$hours = prev; return; }
           // if (!$scope.pickerForm.minutes.$valid) { return ($scope.minutes = prev); }
           // $scope.hours = $scope.hours || 0;
           if ($scope.$date !== undefined) {
-            $scope.$date = moment($scope.$date).hours($scope.$hours).minutes(curr).seconds(0).milliseconds(0).valueOf();
+            date = moment($scope.$date).hours($scope.$hours).minutes(curr).seconds(0).milliseconds(0).valueOf();
+            if (date !== $scope.$date) { $scope.$date = date; }
           }
         });
         if (!$scope.$type) {
@@ -29754,7 +29749,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
   };
 
   Task.prototype.setReminderTime = function() {
-    var p, def = moment.duration($config.defaultReminder);
+    var p, def = (this.reminderTime === undefined ? moment.duration($config.defaultReminder) : moment(this.reminderTime));
     switch (this.reminderTimePeriod) {
       case 'firstDay': p = 0; break;
        // return moment(this.startTime).hours(def.hours()).minutes(def.minutes()).seconds(0).milliseconds(0).valueOf();
@@ -29776,18 +29771,24 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     if (this.timeType !== 'exact') { this.repeated = false; }
     else { this.repeated = this.repeatPeriod !== 'once'; }
     this.startTime = Math.floor(this.startTime / 1000) * 1000;
-    if (this.reminderTimeAdvance >= 0) {
-      this.reminder = true;
-      if (this.timeType === 'exact') {
+    if (this.timeType === 'exact') {
+      if (this.reminderTimeAdvance >= 0) {
+        this.reminder = true;
         this.reminderTime = Number(this.reminderTimeAdvance) > 0 ? this.startTime - (this.reminderTimeAdvance === '1' ? 0 : this.reminderTimeAdvance) : this.reminderTime;
-      } else if(this.timeType === 'period' && !this.reminderTime) {
-        this.reminderTime = this.setReminderTime();
+      } else {
+        this.reminder = false;
       }
-      this.setTimer(this.reminderTime);
     } else {
-      this.reminder = false;
-      this.setTimer();
+      if (this.reminderTimePeriod === 'none') {
+        this.reminder = false;
+      } else {
+        this.reminder = true;
+        if (this.reminderTime === undefined) {
+          this.reminderTime = this.setReminderTime();
+        }
+      }
     }
+    this.setTimer(this.reminder ? this.reminderTime : null);
     if (this.timeType === 'exact') { delete this.endTime; }
     if (duration || hours || minutes) {
       this.duration = duration || (((hours || 0) * 3600000) + ((minutes || 0) * 60000));
@@ -29817,13 +29818,25 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     }
     this.planned = true;
     if (this.repeatTask) {
-      var _now = moment().hours(0).minutes(0).seconds(0).milliseconds(0).valueOf();
+      var _now = moment().hours(0).minutes(0).seconds(0).milliseconds(0).valueOf(), orphans = [], i, _t;
       _tasks.tasks = _.reject(_tasks.tasks, function (t) {
-        if (t.repeatTask === _this.repeatTask && t.id !== _this.id && t.startTime >= _now) {
-          if (t.reminder) { t.setTimer(); }
-          return true;
+        if (t.repeatTask === _this.repeatTask && t.id !== _this.id) {
+          if (t.startTime >= _now) {
+            if (t.reminder) { t.setTimer(); }
+            return true;
+          } else {
+            orphans.push(t.id);
+          }
         }
       });
+      console.log(orphans);
+      for (i=0; i<orphans.length; i++) {
+        _t = _tasks.get(orphans[i]);
+        delete _t.repeatTask;
+        delete _t.repeated;
+        delete _t.repeatPeriod;
+        delete _t.repeatLength;
+      }
       _tasks.tasks = _.each(_tasks.tasks, function (t) {
         if (t.repeatTask === _this.repeatTask && t.id !== _this.id && t.startTime < _now) {
           delete t.repeatTask;
@@ -29839,6 +29852,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
       this.repeatTask = this.id;
       var repeatBase = {
         duration: this.duration,
+        durationType: this.durationType,
         updated: this.updated,
         deleted: this.deleted,
         finished: this.finished,
@@ -30036,6 +30050,21 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     return label;
   };
 
+  Task.prototype.calendarLabel = function(start) {
+    start = moment(start).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf();
+    if (start === moment(this.startTime).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf()) {
+      if (start === moment(this.endTime).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf()) {
+        return 'Under dagen: ';
+      } else {
+        return 'Start för: ';
+      }
+    } else if (start === moment(this.endTime).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf()) {
+      return 'Sista dag för: ';
+    } else {
+      return '';
+    }
+  };
+
   Task.prototype.rename = function(title) {
     var i, child;
     this.title = title;
@@ -30210,10 +30239,22 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     return _.reduce(
       _.sortBy(
         _.filter(_this.tasks, function (task) {
-          return task.deleted === false && task.planned === true && task.finished === false && (task.timeType === 'exact' || task.timeType === 'period') && task.startTime >= start && task.startTime < end;
+          var valid = task.deleted === false && task.planned === true && task.finished === false;
+          if (task.timeType === 'exact') {
+            return valid && task.startTime >= start && task.startTime < end;
+          } else if (task.timeType === 'period') {
+            return valid && ((start === moment(task.startTime).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf()) || (end === Math.round(task.endTime/1000)*1000));
+          } else {
+            return false;
+          }
       }), 'startTime'),
-      function (memo, task) { return memo + (task.timeType === 'exact' ? moment(task.startTime).format('HH:mm') + (task.duration ? ' - ' + (task.timeEstimated ? 'ca ' : '') + moment(task.startTime + task.duration).format('HH:mm') : '') : '(' + task.durationLabel() + ')') + ' ' + task.title + '\n'; },
-      ''
+      function (memo, task) {
+        var format = 'HH:mm';
+        if (moment(task.startTime).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf() < moment(task.startTime + task.duration).hours(0).minutes(0).seconds(0).milliseconds(0).valueOf()) {
+          format = 'D MMM HH:mm';
+        }
+        return memo + (task.timeType === 'exact' ? moment(task.startTime).format('HH:mm') + (task.duration ? ' - ' + (task.timeEstimated ? 'ca ' : '') + moment(task.startTime + task.duration).format(format) + ' ' : '') : task.calendarLabel(start)) + task.title + '\n';
+      }, ''
     );
   };
 

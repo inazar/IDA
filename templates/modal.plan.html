@@ -189,7 +189,7 @@
       <label class="reminder">
         <select ng-model="modal.task.reminderTimePeriod"
                 ng-change="modal.task.reminderTime = modal.task.setReminderTime()"
-                ng-init="modal.task.reminderTimePeriod = modal.task.reminderTimePeriod || (modal.task.reminderTime ? 'none' : 'firstDay')">
+                ng-init="modal.task.reminderTimePeriod = modal.task.reminderTimePeriod || (modal.task.reminderTime ? 'firstDay' : 'none')">
           <option value="none">Ingen påminnelse</option>
           <option value="firstDay">Påminn första dagen</option>
           <option value="nearFirst">Påminn nära början</option>
@@ -206,6 +206,10 @@
               ng-bind="modal.task.reminderTime ? moment(modal.task.reminderTime).format('D MMMM YYYY') : 'Välj datum och tid'"></button>
         <span>&nbsp;kl&nbsp;</span>
         <div ida-timepicker model-date="modal.task.reminderTime"></div>
+      </div>
+      <div ng-if="modal.task.reminderTimePeriod!='none'" class="alarm-toggle" ng-click="modal.task.shortSignal=!modal.task.shortSignal">
+        <button ng-class="{ active: modal.task.shortSignal }">Kort signal</button>
+        <button ng-class="{ active: !modal.task.shortSignal }">Långt alarm</button>
       </div>
     </div>
   </div>
