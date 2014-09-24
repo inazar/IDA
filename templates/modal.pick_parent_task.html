@@ -13,7 +13,7 @@
   <h2>Välj huvudaktivitet till ovanstående underaktivitet</h2>
 
   <ul>
-    <li ng-repeat="task in $tasks.where({ deleted: false, finished: false, isChild: false, planned: true }) track by $index"
+    <li ng-repeat="task in $tasks.where({ deleted: false, finished: false, isChild: false, planned: true, repeated: false }) track by $index"
         ng-if="task.id != modal.task.id"
         ng-class="{ active: selected === task }"
         ng-click="$parent.$parent.selected = task">

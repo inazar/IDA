@@ -103,7 +103,7 @@
         </select>
       </label>
     </div>
-    <div ida-help="hidden" class="reminder">
+    <div ida-help="hidden" class="reminder" ng-show="modal.task.reminderTimeAdvance==0">
       <div class="reminder-time" ng-show="modal.task.reminderTimeAdvance==0" ng-init="modal.task.reminderTime=modal.task.reminderTime||Date.now()">
         <button class="exact-reminder" ng-if="modal.task.reminderTimeAdvance==0"
               ng-click="setDatepicker('templates/modal.pick_remindertime.html')"
@@ -118,7 +118,9 @@
       </div>
     </div>
 
-    <div ida-help="templates/help/plan/repeat.html" help-title="Återkommande aktiviteter" class="repeated" ng-init="modal.task.repeatPeriod = modal.task.repeatPeriod || 'once'">
+    <br ng-hide="modal.task.isParent||modal.task.isChild">
+
+    <div ng-hide="modal.task.isParent||modal.task.isChild" ida-help="templates/help/plan/repeat.html" help-title="Återkommande aktiviteter" class="repeated" ng-init="modal.task.repeatPeriod = modal.task.repeatPeriod || 'once'">
       <label>
         <select ng-model="modal.task.repeatPeriod" ng-change="(modal.task.repeatPeriod!=='once'&&modal.task.reminderTimeAdvance==0)?(modal.task.reminderTimeAdvance='-1'):0">
           <option value="once">Upprepas inte</option>
@@ -129,7 +131,7 @@
         </select>
       </label>
     </div>
-    <div ida-help="hidden" class="repeated"  ng-if="modal.task.repeatPeriod!='once'">
+    <div ida-help="hidden" class="repeated" ng-if="modal.task.repeatPeriod!='once'">
       <div ng-if="modal.task.repeatPeriod!='weekly'">
         <span>Upprepa var</span>
         <input class="period-input" ng-init="modal.task.repeatLength = modal.task.repeatLength || 1"
@@ -189,7 +191,7 @@
       <label class="reminder">
         <select ng-model="modal.task.reminderTimePeriod"
                 ng-change="modal.task.reminderTime = modal.task.setReminderTime()"
-                ng-init="modal.task.reminderTimePeriod = modal.task.reminderTimePeriod || (modal.task.reminderTime ? 'firstDay' : 'none')">
+                ng-init="modal.task.reminderTimePeriod = modal.task.reminderTimePeriod || (modal.task.reminderTime ? 'none' : 'firstDay')">
           <option value="none">Ingen påminnelse</option>
           <option value="firstDay">Påminn första dagen</option>
           <option value="nearFirst">Påminn nära början</option>
@@ -221,7 +223,7 @@
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
         <option value="until start time">Bort vid starttid</option>
-        <option value="until end of duration">Bort vid sluttid</option>
+        <option value="until end time">Bort vid sluttid</option>
         <option value="auto complete">Auto-klar vid sluttid</option>
         <option value="never">Syns ej på Att-Göra</option>
       </select>
@@ -232,7 +234,7 @@
     <label ida-help="templates/help/plan/premove.html" help-title="När flyttas tidsperiod-aktivieten från Att-Göra?" class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
-        <option value="until end of period">Bort efter tidsperioden</option>
+        <option value="until end time">Bort efter tidsperioden</option>
         <option value="auto complete">Autoklar efter tidsperioden</option>
       </select>
     </label>

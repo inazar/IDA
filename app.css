@@ -2136,6 +2136,9 @@ h2 {
     text-align: center; }
   .popup-body .popup-text {
     text-align: center; }
+    .popup-body .popup-text.enforcement {
+      margin: 1em 0;
+      font-size: 1.2em; }
     .popup-body .popup-text input {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -6201,7 +6204,7 @@ div.statistics-page > div.stats-table {
 .fa-stack-half {
   position: absolute;
   text-align: center;
-  font-size: 0.4em;
+  font-size: 5px;
   right: -1px;
   top: 0; }
 

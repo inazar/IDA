@@ -6,7 +6,7 @@
     'deleted': task.deleted,
     'show-children': task.showChildren,
     'expanded': task.expanded,
-    'has-child-task-controls': $root.page.indexOf('/organisera-alla-aktiviteter') === 0,
+    'has-child-task-controls': !task.repeated && $root.page.indexOf('/organisera-alla-aktiviteter') === 0,
     'last-day': isLastDay(),
     'started': isStarted(),
     'warning': isWarning()}">
@@ -15,8 +15,8 @@
 
     <div>
       <div class="sub-task-ctrls">
-        <button class="make-sub-task" ng-click="$root.setModal('templates/modal.pick_parent_task.html', task.id).then($root.reload)"></button>
-        <button ng-click="$parent.addTask(task.id)" class="add-sub-task"></button>
+        <button ng-show="!task.repeated" class="make-sub-task" ng-click="$root.setModal('templates/modal.pick_parent_task.html', task.id).then($root.reload)"></button>
+        <button ng-show="!task.repeated" ng-click="$parent.addTask(task.id)" class="add-sub-task"></button>
         <button ng-click="$root.$tasks.detachChild(task.id);$root.reload()" class="make-free-task"></button>
       </div>
 
