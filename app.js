@@ -27563,10 +27563,10 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     // define app routes
     $routeProvider
       .when('/todo', { templateUrl: 'templates/todo.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Att Göra'; }}})
-      .when('/organisera-alla-aktiviteter', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: function () { return 'Organisera alla aktiviteter'; }}})
       .when('/organisera-alla-aktiviteter/:breakdown', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: ['$rootScope', '$route', function ($rootScope, $route) { return 'Dela upp ' + $rootScope.$tasks.get($route.current.params.breakdown).title; }]}})
-      .when('/fokusera-pa-aktivitet', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}, reloadOnSearch: false})
+      .when('/organisera-alla-aktiviteter', { templateUrl: 'templates/organize.html', controller: 'OrganiseCtrl', resolve: {$title: function () { return 'Organisera alla aktiviteter'; }}})
       .when('/fokusera-pa-aktivitet/:task', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}, reloadOnSearch: false})
+      .when('/fokusera-pa-aktivitet', { templateUrl: 'templates/focus.html', controller: 'FocusCtrl', resolve: {$title: function () { return 'Fokusera på...'; }}, reloadOnSearch: false})
       .when('/kalender', { templateUrl: 'templates/kalender.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Kalender'; }}, reloadOnSearch: false})
       .when('/arkiv', { templateUrl: 'templates/archive.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Arkiv'; }}})
       .when('/installningar', { templateUrl: 'templates/settings.html', controller: 'PageCtrl', resolve: {$title: function () { return 'Inställningar'; }}})
@@ -27715,6 +27715,12 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         }
         return $q.when(d);
       },
+      organizeTask: function (id, modal) {
+        modal.$promise.then(function () {
+          $location.path('/organisera-alla-aktiviteter/' + id);
+        });
+        modal.$close('breakdown');
+      },
       completeTask: function (task, noSound) {
         var enforcements = [
           'Bra jobbat!',
@@ -27812,6 +27818,31 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           label += task.durationLabel() + ')';
         }
         return label;
+      },
+      askForSubs: function (task, modal) {
+        var d = $q.defer();
+        d.promise.then(function (res) {
+          if (typeof res === 'boolean') {
+            $tasks.delete(task.id, res);
+          }
+          $timeout(function () { modal.$close('one'); }, 250);
+        });
+
+        if (task.isParent) {
+          $popup.show({
+            type: 'subtasks',
+            withPrevent: false,
+            title: 'Radera även underaktiviteter?',
+            template: '<div class="popup-text">Vill du att alla underaktiviteter som här till den här aktiviteten också raderas?</div>',
+            buttons: [
+              { text: 'Nej, behåll dem', type: 'btn-main', onTap: function () { return false; } },
+              { text: 'Ja', type: 'btn-default', onTap: function () { return true; } },
+              { text: 'Ångra', type: 'btn-default', onTap: function () { return; } }
+            ],
+          }).then(d.resolve);
+        } else {
+          d.resolve(true);
+        }
       },
       isNumber: angular.isNumber
     });
@@ -28215,13 +28246,12 @@ App.controller('OrganiseCtrl', ['$scope', '$timeout', '$routeParams', '$title', 
     }
   });
 
-  $tasks.collapse();
+  // $tasks.collapse();
 
   if ($routeParams.breakdown) {
-    $scope.breakdown = [$tasks.get($routeParams.breakdown)];
-    if ($scope.breakdown[0]) {
-      $scope.breakdown[0].showChildren = true;
-      $scope.breakdown[0].expanded = true;
+    if (($scope.breakdown = $tasks.get($routeParams.breakdown))) {
+      $scope.breakdown.showChildren = true;
+      $scope.breakdown.expanded = true;
     }
   }
 }]);
@@ -28346,6 +28376,7 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
           break;
         }
       }
+      if (i === $scope.periods.length) { i = 1; }
       $scope.selection = [
         {start: $scope.periods[0].start, end: $scope.periods[0].end},
         {start: $scope.periods[i].start, end: $scope.periods[i].end}
@@ -28425,8 +28456,7 @@ App.directive('idaItem', ['idaConfig', function ($config) {
     replace: true,
     templateUrl: 'templates/list_item.html',
     scope: {
-      task: '=idaItem',
-      repeated: '@itemRepeated'
+      task: '=idaItem'
     },
     link: function ($scope) {
       // $scope.task.trackDuration(true);
@@ -28557,23 +28587,18 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
     template: '<div class="time-picker">' +
                 '<button ng-click="showPicker()" ng-if="$root.$cordova&&!$type" class="timepicker-button">{{$date|date:"HH:mm"}}</button>' +
                 '<form ng-show="!($root.$cordova&&!$type)">' +
-                  '<input type="number" name="hours" class="timepicker-field" placeholder="hh" min="0" max="{{$type?99:23}}" ng-model="$hours">' +
-                  ':<input type="number" name="minutes" class="timepicker-field" placeholder="mm" min="0" max="59" ng-model="$minutes">' +
+                  '<input type="number" name="hours" class="timepicker-field" placeholder="0" min="0" max="{{$type?99:23}}" ng-model="$hours">' +
+                  ':<input type="number" name="minutes" class="timepicker-field" placeholder="{{placeholder}}" min="0" max="59" ng-model="$minutes">' +
                 '</form>' +
               '</div>',
     scope: {
       $type: '@idaTimepicker',
       $hours: '=?modelHours',
       $minutes: '=?modelMinutes',
-      $date: '=?modelDate'
+      $date: '=?modelDate',
+      placeholder: '@minutesDefault'
     },
     link: function ($scope) {
-      if ($scope.$date !== undefined) {
-        $scope.$hours = moment($scope.$date).hours();
-        $scope.$minutes = moment($scope.$date).minutes();
-      } else {
-        $scope.$date = moment().hours($scope.$hours || moment().add(1, 'hour').hours()).minutes($scope.$minutes || 0).startOf('minute').valueOf();
-      }
       if ($scope.$root.$cordova && $window.datePicker) {
         $scope.showPicker = function () {
           datePicker.show({
@@ -28582,7 +28607,6 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
             doneButtonLabel: 'Välj',
             cancelButtonLabel: 'Avbryt'
           }, function(date) {
-            console.log('date result ' + date);
             if (date && date.getTime()) {
               $timeout(function () {
                 var time = moment(date);
@@ -28593,25 +28617,35 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
         };
       }
       $timeout(function () {
+        $scope.placeholder = $scope.placeholder || '00';
+        var mins = parseInt($scope.placeholder) || 0;
+        if ($scope.$date !== undefined) {
+          $scope.$hours = moment($scope.$date).hours();
+          $scope.$minutes = moment($scope.$date).minutes();
+        } else {
+          $scope.$date = moment().hours($scope.$hours || moment().add(1, 'hour').hours()).minutes($scope.$minutes || mins).startOf('minute').valueOf();
+        }
         $scope.$watch('$hours', function (curr, prev) {
           var date;
-          if (curr === null) { $scope.$hours = 0; return; }
+          if (curr === null) { curr = 0; }
+          // if (curr === null) { $scope.$hours = 0; return; }
           if (!angular.isNumber(curr)) { $scope.$hours = prev; return; }
           // if (!$scope.hours) { return ($scope.hours = prev); }
-          $scope.minutes = $scope.minutes || 0;
+          // $scope.minutes = $scope.minutes || 0;
           if ($scope.$date !== undefined) {
-            date = moment($scope.$date).hours(curr).minutes($scope.$minutes).startOf('minute').valueOf();
+            date = moment($scope.$date).hours(curr).minutes($scope.$minutes || mins).startOf('minute').valueOf();
             if (date !== $scope.$date) { $scope.$date = date; }
           }
         });
         $scope.$watch('$minutes', function (curr, prev) {
           var date;
-          if (curr === null) { $scope.$minutes = 0; return; }
-          if (!angular.isNumber(curr)) { $scope.$hours = prev; return; }
+          if (curr === null) { curr = 0; }
+          // if (curr === null) { $scope.$minutes = 0; return; }
+          if (!angular.isNumber(curr)) { $scope.$minutes = prev; return; }
           // if (!$scope.pickerForm.minutes.$valid) { return ($scope.minutes = prev); }
           // $scope.hours = $scope.hours || 0;
           if ($scope.$date !== undefined) {
-            date = moment($scope.$date).hours($scope.$hours).minutes(curr).startOf('minute').valueOf();
+            date = moment($scope.$date).hours($scope.$hours || 0).minutes(curr).startOf('minute').valueOf();
             if (date !== $scope.$date) { $scope.$date = date; }
           }
         });
@@ -29685,7 +29719,7 @@ App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
 
 /* jshint strict: false */
 /* global App, moment, _ */
-App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaEvents', 'idaConfig', 'idaSounds', function ($rootScope, $window, $timeout, $interval, $events, $config, $sounds) {
+App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q', 'idaEvents', 'idaConfig', 'idaSounds', function ($rootScope, $window, $timeout, $interval, $q, $events, $config, $sounds) {
 
   var _tasks;
 	var Task = function (task, collection) {
@@ -29695,13 +29729,13 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
     this.repeatDays = [];
     this.shortSignal = true;
     this.deleted = false;
-    this.updated = new Date().valueOf();
+    this.updated = Date.now();
     this.focussed = false;
     this.showInTodo = 'until marked as done';
     this.showInTodoUntil = Infinity;
     this.showInTodoFrom = 0;
     this.children = [];
-    this.timeCreated = new Date().valueOf();
+    this.timeCreated = Date.now();
     if (task) {  _.extend(this, task);}
     this._durationTimer = null;
     this._modal = false;
@@ -29831,7 +29865,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
       this.duration = $config.defaultDuration;
       this.durationType = false;
     }
-    this.updated = new Date().valueOf();
+    this.updated = Date.now();
     this.deleted = false;
     this.finished = false;
     this.showInTodoUntil = _showInTodo(this.showInTodo, this.timeType, this.startTime, this.duration, this.endTime);
@@ -29848,7 +29882,6 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
           }
         }
       });
-      console.log(orphans);
       for (i=0; i<orphans.length; i++) {
         _t = _tasks.get(orphans[i]);
         delete _t.repeatTask;
@@ -29997,7 +30030,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
   };
 
   Task.prototype._updateRemaining = function() {
-    var duration = this.reminderTime - new Date().valueOf(),
+    var duration = this.reminderTime - Date.now(),
         hrs = Math.floor(duration / 3600000),
         min = Math.floor((duration % 3600000) / 60000),
         sec = Math.floor((duration % 60000) / 1000);
@@ -30043,12 +30076,12 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
   };
 
   Task.prototype.durationLabel = function () {
-    var time = moment.duration(this.duration), label = '';
-    if (time.hours() > 0) {
-      label += time.hours() + 'h';
+    var time = moment.duration(this.duration), label = '', hours = Math.floor(time.asHours());
+    if (hours > 0) {
+      label += hours + 'h';
     }
     if (time.minutes() > 0) {
-      if (time.hours() > 0) { label += ' '; }
+      if (hours > 0) { label += ' '; }
         label += (time.minutes() < 10 ? '0' : '') + time.minutes() + 'min';
     }
     return label;
@@ -30206,16 +30239,32 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
 
   // Delete task
   Tasks.prototype.delete = function (id, repeated) {
-    var task = this.get(id);
-    if (repeated && task.repeatTask) {
-      if (typeof repeated !== 'number') { repeated = 0; }
-      this.tasks = _.reject(this.tasks, function(t) {
-        if (t.repeatTask === task.repeatTask && t.id !== task.id && t.startTime > repeated) {
-          if (t.reminder) { t.setTimer(); }
-          return true;
+    var task = this.get(id), i, children = task.children;
+    if (repeated) {
+      if (task.repeatTask) {
+        if (typeof repeated !== 'number') { repeated = 0; }
+        this.tasks = _.reject(this.tasks, function(t) {
+          if (t.repeatTask === task.repeatTask && t.id !== task.id && t.startTime > repeated) {
+            if (t.reminder) { t.setTimer(); }
+            return true;
+          }
+          return false;
+        });
+      }
+      if (task.isParent) {
+        for (i=0;i<children.length;i++) {
+          this.delete(children[i]);
         }
-        return false;
-      });
+      }
+    } else {
+      if (task.isParent) {
+        for (i=0;i<children.length;i++) {
+          this.detachChild(children[i]);
+        }
+      }
+    }
+    if (task.isChild) {
+       this.detachChild(id);
     }
     delete task.repeatTask;
     task.setTimer();
@@ -30255,7 +30304,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
       function (memo, task) {
         var format = 'HH:mm';
         if (moment(task.startTime).startOf('day').valueOf() < moment(task.startTime + task.duration).startOf('day').valueOf()) {
-          format = 'D MMM HH:mm';
+          format = 'dd HH:mm';
         }
         return memo + (task.timeType === 'exact' ? moment(task.startTime).format('HH:mm') + (task.duration ? ' - ' + (task.timeEstimated ? 'ca ' : '') + moment(task.startTime + task.duration).format(format) + ' ' : '') : task.calendarLabel(start)) + task.title + '\n';
       }, ''
@@ -30366,7 +30415,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', 'idaE
 
   Tasks.prototype.getTimePeriods = function () {
     var time, month, curDay, curMonth, curYear, year, week, curWeek,
-        periods = [], circa = [], exact = [], usedExact = [], usedCirca = [], stop = Date.now().valueOf() + 63113900000,
+        periods = [], circa = [], exact = [], usedExact = [], usedCirca = [], stop = Date.now() + 63113900000,
         _this = this, _week;
 
     (function(){

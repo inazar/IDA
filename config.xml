@@ -12,6 +12,8 @@
     <preference name="android-minSdkVersion" value="5" />
     <preference name="android-targetSdkVersion" value="11" />
 
+    <preference name="DisallowOverscroll" value="true" />
+
     <preference name="permissions" value="none"/>
 
     <name>IDA App</name>

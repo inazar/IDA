@@ -4352,7 +4352,6 @@ div.focus-distraction-list-confirmation-modal {
     border: 1px solid #979797;
     outline: 0;
     padding: 0.45em 10px;
-    text-align: right;
     width: 60px; }
   .plan > div > div.repeated .help-line .weekly-repeat {
     margin: 10px 0; }
@@ -6206,7 +6205,8 @@ div.statistics-page > div.stats-table {
   text-align: center;
   font-size: 5px;
   right: -1px;
-  top: 0; }
+  top: 0;
+  float: left; }
 
 body {
   font-family: 'Helvetica', Arial, sans-serif;
