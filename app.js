@@ -27922,41 +27922,29 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       }
     });
 
-    $rootScope.$watch('$timer.type', function (curr) {
-      var time;
-      switch (curr) {
-        case 'period':
-          $rootScope.$timer.timerHours = 0;
-          $rootScope.$timer.timerMinutes = 30;
-          break;
-        case 'today':
-          time = moment(Date.now()+30 * 60 * 1000);
-          $rootScope.$timer.timerHours = time.hour();
-          $rootScope.$timer.timerMinutes = time.minute();
-          break;
-        case 'other':
-          angular.extend($rootScope.modal.task, {
-            timeType: 'exact',
-            duration: 1800000,
-            complex: false,
-            important: true
+    $rootScope.$watch('$timerType', function (curr) {
+      if (curr === 'other') {
+        angular.extend($rootScope.modal.task, {
+          timeType: 'exact',
+          duration: 1800000,
+          complex: false,
+          important: true
+        });
+        $rootScope.editTask($rootScope.modal.task.id).finally($rootScope.modal.$dismiss);
+        $timeout(function () {
+          $popup.confirm({
+            type: 'planningReminder',
+            withPrevent: false,
+            withLimit: 3,
+            template: 'Om du vill sätta en påminnelse på en annan dag än idag måste du planera aktivietet. Här har IDA hjälpt tid med en standardplanering, så om du bara vill göra en enkel påminnelser tryck på knappen under "Påminn exakt tid".',
+            okText: 'Ok',
+            cancelText: 'Ångra'
+          }).then(function (agree) {
+            if (!agree) {
+              $rootScope.modal.$dismiss();
+            }
           });
-          $rootScope.editTask($rootScope.modal.task.id).finally($rootScope.modal.$dismiss);
-          $timeout(function () {
-            $popup.confirm({
-              type: 'planningReminder',
-              withPrevent: false,
-              withLimit: 3,
-              template: 'Om du vill sätta en påminnelse på en annan dag än idag måste du planera aktivietet. Här har IDA hjälpt tid med en standardplanering, så om du bara vill göra en enkel påminnelser tryck på knappen under "Påminn exakt tid".',
-              okText: 'Ok',
-              cancelText: 'Ångra'
-            }).then(function (agree) {
-              if (!agree) {
-                $rootScope.modal.$dismiss();
-              }
-            });
-          });
-          break;
+        });
       }
     });
 
@@ -28613,12 +28601,6 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
       placeholder: '@minutesDefault'
     },
     link: function ($scope) {
-      if ($scope.date !== undefined) {
-        $scope.hours = moment($scope.date).hours();
-        $scope.minutes = moment($scope.date).minutes();
-      } else {
-        $scope.$date = moment().hours($scope.$hours || moment().add(1, 'hour').hours()).minutes($scope.$minutes || 0).startOf('minute').valueOf();
-      }
       if ($scope.$root.$cordova && $window.datePicker) {
         $scope.showPicker = function () {
           datePicker.show({
@@ -28637,6 +28619,12 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
         };
       }
       $timeout(function () {
+        if ($scope.date !== undefined) {
+          $scope.hours = moment($scope.date).hours();
+          $scope.minutes = moment($scope.date).minutes();
+        } else {
+          $scope.date = moment().hours($scope.$hours || moment().add(1, 'hour').hours()).minutes($scope.$minutes || 0).startOf('minute').valueOf();
+        }
         $scope.placeholder = $scope.placeholder || '00';
         var mins = parseInt($scope.placeholder) || 0;
         if (!$scope.$root.$cordova || $scope.type) {
