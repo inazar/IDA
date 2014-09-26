@@ -1,4 +1,4 @@
-<div ng-class="{breakdown:breakdown}" class="todo-page organize-page">
+<div ng-class="{breakdown:!!breakdown}" class="todo-page organize-page">
   <form ng-if="!breakdown" class="add-task">
     <div><input ng-model="newTask" placeholder="Skapa ny aktivitet..."></div>
     <button ng-click="addTask()"><i class="fa fa-plus"></i></button>
@@ -22,16 +22,16 @@
       <button ng-click="showChildren(false)"><i class="fa fa-caret-square-o-up"></i></button>
     </div>
   </div>
-  <div class="controls" ng-if="breakdown">Skapa en underaktivitet genom att trycka på <i class="fa fa-plus-square-o gray"></i></div>
+  <div class="controls" ng-if="!!breakdown">Skapa en underaktivitet genom att trycka på <i class="fa fa-plus-square-o gray"></i></div>
 
   <ul class="todo-list">
     <li ng-if="!breakdown" class="list-item"
         ng-repeat="task in filter() | orderBy:[sorting == '+endTime' ? sortEndtime : sorting, '-complex'] | limitTo:20 track by $index"
         ida-item="task"></li>
-    <li ng-if="breakdown" class="list-item" ida-item="breakdown"></li>
+    <li ng-if="!!breakdown" class="list-item" ida-item="breakdown"></li>
   </ul>
 
-  <div ng-if="breakdown" class="confirmation">
+  <div ng-if="!!breakdown" class="confirmation">
     <button ng-click="$location.path('/todo')">Klar</button>
   </div>
 </div>

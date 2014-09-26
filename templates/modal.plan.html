@@ -48,7 +48,7 @@
   </div>
 
   <div class="within-x-days" ng-show="modal.task.timeType == 'period' && modal.task.timeInputType == 'x-days'">
-    Inom <input ng-change="modal.task.updatePeriodInput()" ng-model="modal.task.xDays" type="number" value="1"> dagar
+    Inom <input ng-change="modal.task.xDays=xDays||1;modal.task.updatePeriodInput()" ng-model="xDays" type="number" value="1" placeholder="1"> dagar
   </div>
 
   <div ida-help='hidden' class="period" ng-show="modal.task.timeType==='period'">
@@ -77,7 +77,7 @@
           </button>
         </div>
         <span>&nbsp;kl&nbsp;</span>
-        <div ida-timepicker="time" model-hours="$parent.hours" model-minutes="$parent.minutes" minutes-default="30"></div>
+        <div ida-timepicker="duration" model-hours="$parent.hours" model-minutes="$parent.minutes" minutes-default="30"></div>
       </div>
     </div>
   </div>
@@ -134,9 +134,10 @@
     <div ida-help="hidden" class="repeated" ng-if="modal.task.repeatPeriod!='once'">
       <div ng-if="modal.task.repeatPeriod!='weekly'">
         <span>Upprepa var</span>
-        <input class="period-input" ng-init="modal.task.repeatLength = modal.task.repeatLength || 1"
-               ng-model="modal.task.repeatLength"
-               type="number">
+        <input class="period-input" ng-init="repeatLength=modal.task.repeatLength;modal.task.repeatLength=modal.task.repeatLength||1"
+              ng-change="modal.task.repeatLength=repeatLength||1"
+              ng-model="repeatLength"
+              type="number" placeholder="1">
         <span ng-show="modal.task.repeatPeriod=='daily'">Dag</span>
         <span ng-show="modal.task.repeatPeriod=='weekly'">Veck</span>
         <span ng-show="modal.task.repeatPeriod=='monthly'">Månad</span>
@@ -222,7 +223,7 @@
     <label ida-help="templates/help/plan/eremove.html" help-title="När flyttas aktiviteten från Att-Göra-listan?" class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
-        <option value="until start time">Bort vid starttid</option>
+        <!-- <option value="until start time">Bort vid starttid</option> -->
         <option value="until end time">Bort vid sluttid</option>
         <option value="auto complete">Auto-klar vid sluttid</option>
         <option value="never">Syns ej på Att-Göra</option>

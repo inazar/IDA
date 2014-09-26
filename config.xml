@@ -3,34 +3,39 @@
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.adhdapp.v002"
         versionCode = "10"
-        version     = "1.2.0" >
+        version     = "1.2.1" >
+
+    <name>IDA App</name>
+
+    <description>IDA App</description>
+
+    <author email="l.vanegeraat@gmail.com" href="http://luukvanegeraat.com">Luuk van Egeraat</author>
 
     <preference name="phonegap-version" value="3.5.0" />
     <preference name="orientation" value="portrait" />
     <preference name="show-splash-screen-spinner" value="true" />
     <preference name="auto-hide-splash-screen" value="true" />
+
+    <!-- android -->
+
+    <gap:platform name="android" />
+
     <preference name="android-minSdkVersion" value="5" />
     <preference name="android-targetSdkVersion" value="11" />
-
-    <preference name="DisallowOverscroll" value="true" />
-
     <preference name="permissions" value="none"/>
-
-    <name>IDA App</name>
-
-    <description>
-        IDA App
-    </description>
-
-    <author email="l.vanegeraat@gmail.com" href="http://luukvanegeraat.com">Luuk van Egeraat</author>
 
     <icon src="icon.png" />
 
-    <gap:splash src="splash.png" />
-    <gap:splash src="Default-568h@2x.png" gap:platform="ios" width="640" height="1136" />
+    <!-- ios -->
 
     <gap:platform name="ios" />
-    <gap:platform name="android" />
+
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="EnableViewportScale" value="false" />
+
+    <gap:splash src="Default-568h@2x.png" gap:platform="ios" width="640" height="1136" />
+
+    <!-- plugins -->
 
     <gap:plugin name="org.apache.cordova.device" />
     <gap:plugin name="org.apache.cordova.media" />

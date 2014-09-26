@@ -19,16 +19,17 @@
             <option value="other">Påminn imorgon eller senare</option>
           </select>
         </label>
-        <div class="time-picker" ida-timepicker model-hours="$root.$timer.timerHours" model-minutes="$root.$timer.timerMinutes" ng-show="$timer.type!=='other'"></div>
+        <div class="time-picker" ida-timepicker="duration" model-hours="$timer.timerHours" model-minutes="$timer.timerMinutes" ng-if="$timer.type==='period'"></div>
+        <div class="time-picker" ida-timepicker model-hours="$timer.timerHours" model-minutes="$timer.timerMinutes" ng-if="$timer.type==='today'"></div>
       </div>
       <br>
-      <button class="start" ng-disabled="modal.$lock" ng-click="($timer.type==='period' ? modal.task.setTimer(Date.now().valueOf() + (($timer.timerMinutes || 0) * 60000) + (($timer.timerHours || 0) * 3600000)) : modal.task.setTimer(moment(Date.now()).hour($timer.timerHours).minute($timer.timerMinutes).seconds(0).millisecond(0).valueOf()));modal.$close('start');">Starta</button>
+      <button class="start" ng-disabled="modal.$lock" ng-click="($timer.type==='period'?modal.task.setTimer(moment().add($timer.timerMinutes||0,'minutes').add($timer.timerHours||0,'hours').startOf('second').valueOf()):modal.task.setTimer(moment().hour($timer.timerHours||0).minute($timer.timerMinutes||30).startOf('minute').valueOf()));modal.$close('start');">Starta</button>
     </div>
 
-    <div ng-show="modal.task.reminderTime > Date.now()" class="timer">
+    <div ng-show="!modal.$lock&&modal.task.reminderTime>Date.now()" class="timer">
       <div>{{modal.task.timeRemaining}}</div>
       <div class="buttons">
-        <button class="clear" ng-disabled="modal.$lock" ng-click="modal.task.setTimer();modal.$close('remove');">Ta bort påminnelse</button>
+        <button class="clear" ng-disabled="modal.$lock" ng-click="modal.task.setTimer();modal.$close('remove');">Ta bort</button>
         <button class="clear" ng-click="modal.task.setTimer();">Ändra tid</button>
       </div>
     </div>

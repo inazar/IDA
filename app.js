@@ -1,3 +1,17 @@
+(function(previousOnError) {
+
+window.onerror = function(errorMsg, url, lineNumber) {
+  var formattedMsg = url+":"+lineNumber+" "+errorMsg;
+  console.log(formattedMsg);
+  alert(formattedMsg);
+
+  if (previousOnError) {
+    previousOnError(errorMsg, url, lineNumber);
+  };
+};
+
+})(window.onerror);
+
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -27551,6 +27565,55 @@ makeSwipeDirective('ngSwipeRight', 1, 'swiperight');
 
 })(window, window.angular);
 
+(function() {
+  var WebSocket = window.WebSocket || window.MozWebSocket;
+  var br = window.brunch = (window.brunch || {});
+  var ar = br['auto-reload'] = (br['auto-reload'] || {});
+  if (!WebSocket || ar.disabled) return;
+
+  var cacheBuster = function(url){
+    var date = Math.round(Date.now() / 1000).toString();
+    url = url.replace(/(\&|\\?)cacheBuster=\d*/, '');
+    return url + (url.indexOf('?') >= 0 ? '&' : '?') +'cacheBuster=' + date;
+  };
+
+  var reloaders = {
+    page: function(){
+      window.location.reload(true);
+    },
+
+    stylesheet: function(){
+      [].slice
+        .call(document.querySelectorAll('link[rel="stylesheet"]'))
+        .filter(function(link){
+          return (link != null && link.href != null);
+        })
+        .forEach(function(link) {
+          link.href = cacheBuster(link.href);
+        });
+    }
+  };
+  var port = ar.port || 9485;
+  var host = br.server || window.location.hostname;
+
+  var connect = function(){
+    var connection = new WebSocket('ws://' + host + ':' + port);
+    connection.onmessage = function(event){
+      if (ar.disabled) return;
+      var message = event.data;
+      var reloader = reloaders[message] || reloaders.page;
+      reloader();
+    };
+    connection.onerror = function(){
+      if (connection.readyState) connection.close();
+    };
+    connection.onclose = function(){
+      window.setTimeout(connect, 1000);
+    };
+  };
+  connect();
+})();
+
 /* jshint strict: false */
 /* global moment */
 
@@ -28585,24 +28648,30 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
     restrict: 'A',
     replace: true,
     template: '<div class="time-picker">' +
-                '<button ng-click="showPicker()" ng-if="$root.$cordova&&!$type" class="timepicker-button">{{$date|date:"HH:mm"}}</button>' +
-                '<form ng-show="!($root.$cordova&&!$type)">' +
-                  '<input type="number" name="hours" class="timepicker-field" placeholder="0" min="0" max="{{$type?99:23}}" ng-model="$hours">' +
-                  ':<input type="number" name="minutes" class="timepicker-field" placeholder="{{placeholder}}" min="0" max="59" ng-model="$minutes">' +
+                '<button ng-click="showPicker()" ng-if="$root.$cordova&&!type" class="timepicker-button">{{date|date:"HH:mm"}}</button>' +
+                '<form ng-if="!$root.$cordova||type">' +
+                  '<input type="number" class="timepicker-field" placeholder="0" min="0" max="{{type?99:23}}" ng-model="$parent.hours">' +
+                  ':<input type="number" class="timepicker-field" placeholder="{{placeholder}}" min="0" max="59" ng-model="$parent.minutes">' +
                 '</form>' +
               '</div>',
     scope: {
-      $type: '@idaTimepicker',
-      $hours: '=?modelHours',
-      $minutes: '=?modelMinutes',
-      $date: '=?modelDate',
+      type: '@idaTimepicker',
+      hours: '=?modelHours',
+      minutes: '=?modelMinutes',
+      date: '=?modelDate',
       placeholder: '@minutesDefault'
     },
     link: function ($scope) {
+      if ($scope.date !== undefined) {
+        $scope.hours = moment($scope.date).hours();
+        $scope.minutes = moment($scope.date).minutes();
+      } else {
+        $scope.$date = moment().hours($scope.$hours || moment().add(1, 'hour').hours()).minutes($scope.$minutes || 0).startOf('minute').valueOf();
+      }
       if ($scope.$root.$cordova && $window.datePicker) {
         $scope.showPicker = function () {
           datePicker.show({
-            date: new Date($scope.$date),
+            date: new Date($scope.date),
             mode: 'time',
             doneButtonLabel: 'Välj',
             cancelButtonLabel: 'Avbryt'
@@ -28610,7 +28679,7 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
             if (date && date.getTime()) {
               $timeout(function () {
                 var time = moment(date);
-                $scope.$date = moment($scope.$date).hours(time.hours()).minutes(time.minutes()).startOf('minute').valueOf();
+                $scope.date = moment($scope.date).hours(time.hours()).minutes(time.minutes()).startOf('minute').valueOf();
               });
             }
           });
@@ -28619,144 +28688,46 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
       $timeout(function () {
         $scope.placeholder = $scope.placeholder || '00';
         var mins = parseInt($scope.placeholder) || 0;
-        if ($scope.$date !== undefined) {
-          $scope.$hours = moment($scope.$date).hours();
-          $scope.$minutes = moment($scope.$date).minutes();
-        } else {
-          $scope.$date = moment().hours($scope.$hours || moment().add(1, 'hour').hours()).minutes($scope.$minutes || mins).startOf('minute').valueOf();
+        if (!$scope.$root.$cordova || $scope.type) {
+          $scope.$watch('hours', function (curr, prev) {
+            console.log(curr);
+            var date;
+            if (curr === null) { curr = 0; }
+            // if (curr === null) { $scope.hours = 0; return; }
+            if (!angular.isNumber(curr)) { $scope.hours = prev; return; }
+            // if (!$scope.hours) { return ($scope.hours = prev); }
+            // $scope.minutes = $scope.minutes || 0;
+            if ($scope.date !== undefined) {
+              date = moment($scope.date).hours(curr).minutes($scope.minutes || mins).startOf('minute').valueOf();
+              if (date !== $scope.date) { $scope.date = date; }
+            }
+          });
+          $scope.$watch('minutes', function (curr, prev) {
+            console.log(curr);
+            var date;
+            if (curr === null) { curr = 0; }
+            // if (curr === null) { $scope.minutes = 0; return; }
+            if (!angular.isNumber(curr)) { $scope.minutes = prev; return; }
+            // if (!$scope.pickerForm.minutes.$valid) { return ($scope.minutes = prev); }
+            // $scope.hours = $scope.hours || 0;
+            if ($scope.date !== undefined) {
+              date = moment($scope.date).hours($scope.hours || 0).minutes(curr).startOf('minute').valueOf();
+              if (date !== $scope.date) { $scope.date = date; }
+            }
+          });
         }
-        $scope.$watch('$hours', function (curr, prev) {
-          var date;
-          if (curr === null) { curr = 0; }
-          // if (curr === null) { $scope.$hours = 0; return; }
-          if (!angular.isNumber(curr)) { $scope.$hours = prev; return; }
-          // if (!$scope.hours) { return ($scope.hours = prev); }
-          // $scope.minutes = $scope.minutes || 0;
-          if ($scope.$date !== undefined) {
-            date = moment($scope.$date).hours(curr).minutes($scope.$minutes || mins).startOf('minute').valueOf();
-            if (date !== $scope.$date) { $scope.$date = date; }
-          }
-        });
-        $scope.$watch('$minutes', function (curr, prev) {
-          var date;
-          if (curr === null) { curr = 0; }
-          // if (curr === null) { $scope.$minutes = 0; return; }
-          if (!angular.isNumber(curr)) { $scope.$minutes = prev; return; }
-          // if (!$scope.pickerForm.minutes.$valid) { return ($scope.minutes = prev); }
-          // $scope.hours = $scope.hours || 0;
-          if ($scope.$date !== undefined) {
-            date = moment($scope.$date).hours($scope.$hours || 0).minutes(curr).startOf('minute').valueOf();
-            if (date !== $scope.$date) { $scope.$date = date; }
-          }
-        });
-        if (!$scope.$type) {
-          $scope.$watch('$date', function (curr) {
+        if (!$scope.type) {
+          $scope.$watch('date', function (curr) {
             if (!angular.isNumber(curr)) { return; }
-            var date = moment($scope.$date);
-            $scope.$hours = date.hours();
-            $scope.$minutes = date.minutes();
+            var date = moment($scope.date);
+            $scope.hours = date.hours();
+            $scope.minutes = date.minutes();
           });
         }
       });
     }
   };
 }]);
-
-// App.directive('idaTimepicker', ['$timeout', function ($timeout) {
-//   return {
-//     restrict: 'A',
-//     replace: true,
-//     template: '<input type="text" class="timepicker" placeholder="hh:mm" ng-model="$viewValue">',
-//     scope: {
-//       hours: '=?modelHours',
-//       minutes: '=?modelMinutes',
-//       date: '=?modelDate'
-//     },
-//     link: function ($scope, element) {
-//       angular.extend($scope, {
-//         $viewValue: '',
-//         _focus: false
-//       });
-
-//       if (angular.isNumber($scope.minutes)) {
-//         if (!angular.isNumber($scope.hours)) { $scope.hours = 0; }
-//         $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
-//       } else if (angular.isNumber($scope.hours)) {
-//         $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':';
-//       }
-
-//       var date;
-//       if (angular.isNumber($scope.date)) {
-//         date = moment($scope.date);
-//         $scope.hours = date.hour();
-//         $scope.minutes = date.minute();
-//         $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
-//       }
-
-//       $scope.$watch('$viewValue', function (val, prev) {
-//         if (!$scope._focus) { return; }
-//         var time = (val || '').replace(/[^0-9:]/, '').split(':'), hour = parseInt(time[0], 10), minute = parseInt(time[1], 10), h, m;
-//         if (isNaN(hour)) {
-//           if (isNaN(minute)) {
-//             $scope.$viewValue = '';
-//             $scope.hours = $scope.minutes = undefined;
-//           } else {
-//             $scope.$viewValue = '00:' + (minute < 10 && time[1].charAt(0) === '0' ? '0' : '') + minute;
-//             $scope.hours = 0;
-//           }
-//         } else {
-//           // normalize hours by throwing away last digits
-//           while (hour && hour > 23) { hour = Math.floor(hour/10); }
-//           if (prev.split(':')[1] === '' && time[1] === undefined) {
-//             hour = Math.floor(hour/10);
-//             if (time[0].charAt(0) === '0') { time[0] = '0'; }
-//           }
-//           $scope.hours = hour;
-//           h = time[0].slice(0, 2) === '00' ? '00' : (hour > 0 && hour < 10 && time[0].charAt(0) === '0' ? '0' : '') + hour;
-//           // if hour has two digits - add ':' to separate minutes
-//           if ((hour > 9 || (time[0].length > 1 && time[0].charAt(0) === '0')) && isNaN(minute)) { return ($scope.$viewValue = h + ':'); }
-//           if (isNaN(minute)) {
-//             // minutes not entered yet - show hours keeping leading zero
-//             if (time[1] === '' && h.length === 1) { h = '0' + h; }
-//             $scope.$viewValue = h + (time[1] === '' ? ':' : '');
-//             $scope.minutes = undefined;
-//           } else {
-//             // normalize minutes by throwing away last digits
-//             while (!isNaN(minute) && minute > 59) { minute = Math.floor(minute/10); }
-//             $scope.minutes = minute;
-//             m = time[1].slice(0, 2) === '00' ? '00' : (minute > 0 && minute < 10 && time[1].charAt(0) === '0' ? '0' : '') + minute;
-//             $scope.$viewValue = h + ':' + m;
-//           }
-//         }
-//       });
-
-//       $scope.$watch(function () {
-//         return ($scope.hours || 0) + ':' + ($scope.minutes || 0);
-//       }, function () {
-//         $scope.date = moment($scope.date).hours($scope.hours || 0).minutes($scope.minutes || 0).seconds(0).millisecond(0).valueOf();
-//       });
-
-//       $scope.$watch('date', function (curr, prev) {
-//         if (!angular.isNumber(curr) || curr === prev) { return; }
-//         var time = moment(curr);
-//         $scope.$viewValue = (time.hours() < 10 ? '0' : '') + time.hours() + ':' + (time.minutes() < 10 ? '0' : '') + time.minutes();
-//       });
-
-//       element.on('focus', function () { $scope._focus = true; });
-
-//       element.on('blur', function () {
-//         $scope._focus = false;
-//         $timeout(function () {
-//           if (angular.isNumber($scope.hours)) { $scope.minutes = $scope.minutes || 0; }
-//           else { return ($scope.$viewValue = ''); }
-//           $scope.$viewValue = ($scope.hours < 10 ? '0' : '') + $scope.hours + ':' + ($scope.minutes < 10 ? '0' : '') + $scope.minutes;
-//         });
-//       });
-
-//       $scope.$on('$destroy', function () { element.off('focus'); element.off('blur'); });
-//     }
-//   };
-// }]);
 
 /* jshint strict: false */
 /* global App, _ */

@@ -12,6 +12,9 @@
       <meta name="description" content="">
       <meta name="author" content="">
       <link rel="stylesheet" href="app.css">
+      <script src="http://localhost/cordova.js"></script>
+      <script src="/components/steroids-js/steroids.js"></script>
+      <script src="app.js"></script>
     </head>
     <body class="loading" ng-class="{ 'show-nav': $root.showNav }">
 
@@ -55,7 +58,5 @@
       <div id="clickWait" class="ng-hide" ng-show="$sound.$stop" ng-click="$event.stopPropagation();$event.preventDefault();$sound.$stop()">
         <div>Tryck för att stoppa ljudet...</div>
       </div>
-      <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
-      <script src="app.js"></script>
     </body>
 </html>
