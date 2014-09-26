@@ -28641,7 +28641,6 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
         var mins = parseInt($scope.placeholder) || 0;
         if (!$scope.$root.$cordova || $scope.type) {
           $scope.$watch('hours', function (curr, prev) {
-            console.log(curr);
             var date;
             if (curr === null) { curr = 0; }
             // if (curr === null) { $scope.hours = 0; return; }
@@ -28654,7 +28653,6 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
             }
           });
           $scope.$watch('minutes', function (curr, prev) {
-            console.log(curr);
             var date;
             if (curr === null) { curr = 0; }
             // if (curr === null) { $scope.minutes = 0; return; }
