@@ -19,11 +19,11 @@
             <option value="other">Påminn imorgon eller senare</option>
           </select>
         </label>
-        <div class="time-picker" ida-timepicker="duration" model-hours="$timerHours" model-minutes="$timerMinutes" ng-if="$root.$timerType==='period'" ng-init="$timerHours=0;$timerMinutes=30;"></div>
-        <div class="time-picker" ida-timepicker model-hours="$timerHours" model-minutes="$timerMinutes" ng-if="$root.$timerType==='today'" ng-init="$timerHours=moment().add(1, 'hour').hours();$timerMinutes=0;"></div>
+        <div class="time-picker" ida-timepicker="duration" model-hours="$root.$timerHours" model-minutes="$root.$timerMinutes" ng-if="$root.$timerType==='period'" ng-init="$root.$timerHours=0;$root.$timerMinutes=30;"></div>
+        <div class="time-picker" ida-timepicker model-hours="$root.$timerHours" model-minutes="$root.$timerMinutes" ng-if="$root.$timerType==='today'" ng-init="$root.$timerHours=moment().add(1, 'hour').hours();$root.$timerMinutes=0;"></div>
       </div>
       <br>
-      <button class="start" ng-disabled="modal.$lock" ng-click="($root.$timerType==='period'?modal.task.setTimer(moment().add($timerMinutes||30,'minutes').add($timerHours||0,'hours').startOf('second').valueOf()):modal.task.setTimer(moment().startOf('day').valueOf()+$config.defaultReminder));modal.$close('start');">Starta</button>
+      <button class="start" ng-disabled="modal.$lock" ng-click="($root.$timerType==='period'?modal.task.setTimer(moment().add($root.$timerMinutes||30,'minutes').add($root.$timerHours||0,'hours').startOf('second').valueOf()):modal.task.setTimer(moment().hour($root.$timerHours).minute($root.$timerMinutes).startOf('minute').valueOf()));modal.$close('start');">Starta</button>
     </div>
 
     <div ng-show="!modal.$lock&&modal.task.reminderTime>Date.now()" class="timer">
