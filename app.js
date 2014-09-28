@@ -27862,7 +27862,6 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         e.stopPropagation();
         e.preventDefault();
         if ($rootScope.$sound.$stop) {
-          console.log('stop sound');
           $timeout(function () {
             $rootScope.$sound.$stop();
           });
@@ -28549,25 +28548,43 @@ App.directive('idaItemChildren', ['$compile', function ($compile) {
 }]);
 
 /* jshint strict: false */
-/* global App */
-App.directive('idaRange', [function () {
+/* global App, _ */
+App.directive('idaRange', ['idaConfig', '$timeout', function ($config, $timeout) {
   return {
     restrict: 'A',
     scope: {
+      '$value': '=ngModel',
       'onChange': '=rangeChange'
     },
     link: function ($scope, element) {
-      var start, end, changing = false, value = element.val();
-
-      start = function () { changing = true; };
+      var start, move, end, changing = false, y1, y2, prev;
+      start = function (e) {
+        y1 = e.clientY - 30;
+        y2 = e.clientY + 30;
+        changing = true;
+        prev = $scope.$value;
+      };
       end = function () {
-        if (changing && (value !== element.val())) { $scope.onChange(value = element.val()); }
+        if (changing) {
+          if (prev !== $scope.$value) {
+            $timeout(function () {
+              $scope.onChange($scope.$value);
+            });
+          }
+        } else {
+          $scope.$value = prev;
+          $scope.$apply();
+        }
         changing = false;
       };
+      move = _.throttle(function (e) { changing = (e.clientY >= y1 && e.clientY <= y2); }, 30);
+
       element.on('touchstart', start);
       element.on('mousedown', start);
       element.on('touchend', end);
       element.on('mouseup', end);
+      element.on('touchmove', move);
+      element.on('mousemove', move);
     }
   };
 }]);
@@ -28591,7 +28608,7 @@ App.directive('idaSound', ['idaSounds', 'idaConfig', function ($sounds, $config)
             '<i class="fa fa-volume-off gray fa-stack-1x"></i>' +
             '<i class="fa fa-ban red fa-stack-1x"></i>' +
           '</span>' +
-          '<input type="range", min="0", max="1" step="0.1" ida-range ng-model="$config.volume[type]" range-change="changed">' +
+          '<input type="range" min="0", max="1" step="0.1" ida-range ng-model="$parent.$config.volume[type]" range-change="changed">' +
           '<i class="icon fa fa-volume-up gray"></i>' +
         '</div>' +
       '</div>',
@@ -28609,8 +28626,7 @@ App.directive('idaSound', ['idaSounds', 'idaConfig', function ($sounds, $config)
         options[sound] = $sounds.labels[sound];
       }
       $scope.options = options;
-      $scope.changed = function (val) {
-        console.log('changed', val);
+      $scope.changed = function () {
         $config.save();
         $scope.$root.$sound = $sounds.play($scope.type);
       };
