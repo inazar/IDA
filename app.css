@@ -6204,10 +6204,9 @@ div.statistics-page > div.stats-table {
 .fa-stack-half {
   position: absolute;
   text-align: center;
-  font-size: 5px;
+  font-size: 0.4em;
   right: -1px;
-  top: 0;
-  float: left; }
+  top: 0; }
 
 body {
   font-family: 'Helvetica', Arial, sans-serif;

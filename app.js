@@ -27847,7 +27847,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             type: 'subtasks',
             withPrevent: false,
             title: 'Radera även underaktiviteter?',
-            template: '<div class="popup-text">Vill du att alla underaktiviteter som här till den här aktiviteten också raderas?</div>',
+            template: '<div class="popup-text">Vill du att alla underaktiviteter som hör till den här aktiviteten också raderas?</div>',
             buttons: [
               { text: 'Nej, behåll dem', type: 'btn-main', onTap: function () { return false; } },
               { text: 'Ja', type: 'btn-default', onTap: function () { return true; } },
@@ -27856,6 +27856,16 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           }).then(d.resolve);
         } else {
           d.resolve(true);
+        }
+      },
+      stopSound: function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        if ($rootScope.$sound.$stop) {
+          console.log('stop sound');
+          $timeout(function () {
+            $rootScope.$sound.$stop();
+          });
         }
       },
       isNumber: angular.isNumber
@@ -27978,7 +27988,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       }
       $document[0].addEventListener('backbutton', function() { return false; }, false);
       if ($window.device && $window.device.platform === 'Android') { $sounds.register(); }
-      if ((notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
+      if ($window.plugin && (notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
         notification.local.ontrigger = function (id, state) {
           if (id === 'organize') {
             _setOrganize();
@@ -28540,6 +28550,30 @@ App.directive('idaItemChildren', ['$compile', function ($compile) {
 
 /* jshint strict: false */
 /* global App */
+App.directive('idaRange', [function () {
+  return {
+    restrict: 'A',
+    scope: {
+      'onChange': '=rangeChange'
+    },
+    link: function ($scope, element) {
+      var start, end, changing = false, value = element.val();
+
+      start = function () { changing = true; };
+      end = function () {
+        if (changing && (value !== element.val())) { $scope.onChange(value = element.val()); }
+        changing = false;
+      };
+      element.on('touchstart', start);
+      element.on('mousedown', start);
+      element.on('touchend', end);
+      element.on('mouseup', end);
+    }
+  };
+}]);
+
+/* jshint strict: false */
+/* global App */
 App.directive('idaSound', ['idaSounds', 'idaConfig', function ($sounds, $config) {
   return {
     restrict: 'A',
@@ -28557,7 +28591,7 @@ App.directive('idaSound', ['idaSounds', 'idaConfig', function ($sounds, $config)
             '<i class="fa fa-volume-off gray fa-stack-1x"></i>' +
             '<i class="fa fa-ban red fa-stack-1x"></i>' +
           '</span>' +
-          '<input type="range", min="0", max="1" step="0.1" ng-model="$config.volume[type]" ng-change="$config.save();$root.$sound=$sounds.play(type)">' +
+          '<input type="range", min="0", max="1" step="0.1" ida-range ng-model="$config.volume[type]" range-change="changed">' +
           '<i class="icon fa fa-volume-up gray"></i>' +
         '</div>' +
       '</div>',
@@ -28575,6 +28609,11 @@ App.directive('idaSound', ['idaSounds', 'idaConfig', function ($sounds, $config)
         options[sound] = $sounds.labels[sound];
       }
       $scope.options = options;
+      $scope.changed = function (val) {
+        console.log('changed', val);
+        $config.save();
+        $scope.$root.$sound = $sounds.play($scope.type);
+      };
     }
   };
 }]);
@@ -29534,7 +29573,7 @@ App.service('idaPopups', function () {
 
 /* jshint strict: false */
 /* global App, Audio, Media */
-App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
+App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout, $config) {
 
   function _stopListener (audio) {
     return function () {
@@ -29570,7 +29609,7 @@ App.service('idaSounds', ['$q', 'idaConfig', function ($q, $config) {
           sound.onStop();
           d.resolve();
         });
-        sound.play();
+        $timeout(function () { sound.play(); });
       } else { d.reject(); }
     } else { d.reject(); }
     res = {
