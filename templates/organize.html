@@ -1,6 +1,6 @@
 <div ng-class="{breakdown:!!breakdown}" class="todo-page organize-page">
   <form ng-if="!breakdown" class="add-task">
-    <div><input ng-model="newTask" placeholder="Skapa ny aktivitet..."></div>
+    <div><input ng-model="$parent.newTask" placeholder="Skapa ny aktivitet..."></div>
     <button ng-click="addTask()"><i class="fa fa-plus"></i></button>
   </form>
 

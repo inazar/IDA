@@ -27855,7 +27855,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             ],
           }).then(d.resolve);
         } else {
-          d.resolve(true);
+          d.resolve(false);
         }
       },
       stopSound: function (e) {
@@ -28247,12 +28247,14 @@ App.controller('OrganiseCtrl', ['$scope', '$timeout', '$routeParams', '$title', 
     sortEndtime: function (task) { return task.endTime || task.startTime; },
     showChildren: function (shown) { $tasks.showChildren(shown); },
     addTask: function (parent) {
-      if(!$scope.newTask && !parent) { return; }
+      if (!$scope.newTask && !parent) { return; }
       var task = $tasks.add($scope.newTask, parent);
       $scope.newTask = '';
       $scope.editTask(task.id).then(function () {
         $scope.reload();
         $timeout(function () { $tasks.get(parent).showChildren = true; });
+      }, function() {
+
       });
     }
   });
@@ -29828,6 +29830,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
       this.duration = $config.defaultDuration;
       this.durationType = false;
     }
+    if (this.xDays) { this.xDays = Math.floor(this.xDays); }
+    if (this.repeatLength) { this.repeatLength = Math.floor(this.repeatLength); }
     this.updated = Date.now();
     this.deleted = false;
     this.finished = false;
@@ -30034,7 +30038,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     if (page === '/organisera-alla-aktiviteter' && !this.planned) {
       this.deleted = true;
       this.planned = true;
-      _tasks.save();
+      // _tasks.save();
     }
   };
 
@@ -30202,7 +30206,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
 
   // Delete task
   Tasks.prototype.delete = function (id, repeated) {
-    var task = this.get(id), i, children = task.children;
+    var task = this.get(id), i, children = task.children.slice();
     if (repeated) {
       if (task.repeatTask) {
         if (typeof repeated !== 'number') { repeated = 0; }
@@ -30222,13 +30226,11 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     } else {
       if (task.isParent) {
         for (i=0;i<children.length;i++) {
-          this.detachChild(children[i]);
+          this.detachChild(children[i], true);
         }
       }
     }
-    if (task.isChild) {
-       this.detachChild(id);
-    }
+    if (task.isChild) { this.detachChild(id, true); }
     delete task.repeatTask;
     task.setTimer();
     task.deleted = true;
@@ -30274,10 +30276,11 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     );
   };
 
-  Tasks.prototype.detachChild = function (id) {
-    var i;
-    _.each(this.tasks, function(task) {
-      if ((i = task.children.indexOf(id)) >= -1) {
+  Tasks.prototype.detachChild = function (id, skipSave) {
+    var i, j, task;
+    for (j=0;j<this.tasks.length;j++) {
+      task = this.tasks[j];
+      if ((i = task.children.indexOf(id)) >= 0) {
         task.children.splice(i, 1);
         task.isParent = !!task.children.length;
       }
@@ -30285,8 +30288,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         task.isChild = false;
         delete task.parent;
       }
-    });
-    this.save();
+    }
+    if (!skipSave) { this.save(); }
   };
 
   Tasks.prototype.getWithin = function (start, end) {

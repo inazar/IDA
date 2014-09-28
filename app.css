@@ -4004,7 +4004,7 @@ div.focus-distraction-list-confirmation-modal {
         -webkit-border-top-right-radius: 0;
         border-top-right-radius: 0; }
   .plan > div.within-x-days {
-    margin-top: 20px; }
+    margin-top: 10px; }
     .plan > div.within-x-days > input {
       -webkit-appearance: none;
       -moz-appearance: none;
