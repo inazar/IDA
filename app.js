@@ -28562,8 +28562,8 @@ App.directive('idaRange', ['idaConfig', '$timeout', function ($config, $timeout)
       var start, move, end, changing = false, y1, y2, prev;
       start = function (e) {
         var touch = e.touches[0];
-        y1 = touch.clientY - 100;
-        y2 = touch.clientY + 100;
+        y1 = touch.clientY - 30;
+        y2 = touch.clientY + 30;
         changing = true;
         prev = $scope.$value;
       };
