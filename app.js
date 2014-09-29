@@ -28561,8 +28561,9 @@ App.directive('idaRange', ['idaConfig', '$timeout', function ($config, $timeout)
     link: function ($scope, element) {
       var start, move, end, changing = false, y1, y2, prev;
       start = function (e) {
-        y1 = e.clientY - 100;
-        y2 = e.clientY + 100;
+        var touch = e.touches[0];
+        y1 = touch.clientY - 100;
+        y2 = touch.clientY + 100;
         changing = true;
         prev = $scope.$value;
       };
@@ -28579,7 +28580,12 @@ App.directive('idaRange', ['idaConfig', '$timeout', function ($config, $timeout)
         }
         changing = false;
       };
-      move = _.throttle(function (e) { changing = (e.clientY >= y1 && e.clientY <= y2); }, 30);
+      move = _.throttle(function (e) {
+        var touch = e.touches[0];
+        console.log(JSON.stringify(Object.keys(touch)));
+        console.log('cY: '+touch.clientY+', y1: '+y1+', y2: '+ y2);
+        changing = (touch.clientY > y1 && touch.clientY < y2);
+      }, 30);
 
       element.on('touchstart', start);
       element.on('mousedown', start);
