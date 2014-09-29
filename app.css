@@ -2400,6 +2400,9 @@ h2 {
 .invisible {
   visibility: hidden; }
 
+.inset {
+  text-shadow: #fff 0px 1px 0, #000 0 -1px 0; }
+
 html {
   height: 100%; }
 
@@ -2409,6 +2412,7 @@ body {
   height: 100%;
   width: 100%; }
   body > #clickWait {
+    pointer-events: auto;
     position: fixed;
     left: 0;
     top: 0;
@@ -2431,7 +2435,7 @@ body {
     -moz-align-items: center;
     align-items: center;
     background: rgba(255, 255, 255, 0.5);
-    z-index: 150; }
+    z-index: 2000; }
     body > #clickWait.ng-click-active > div {
       display: none; }
     body > #clickWait > div {

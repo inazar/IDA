@@ -27747,13 +27747,20 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           'Du är bäst!',
           'Färdigt!'
         ];
+        var icons = [
+          // 'giving-thumbs.gif',
+          'fireworks.gif',
+          'star.png',
+          'thumb.png',
+          'thumbs-up.png'
+        ];
         task.checked = true;
         return $popup.confirm({
           type: 'taskComplete',
           sound: noSound ? '' : 'task',
           title: 'Klar med '+task.title,
-          template: '<div class="popup-text enforcement purple"><b>'+enforcements[Math.floor(Math.random()*enforcements.length)]+'</b></div>' +
-                    // '<div class="popup-icon"><i class="fa fa-archive"></i></div>' +
+          template: '<div class="popup-text enforcement purple inset"><b>'+enforcements[Math.floor(Math.random()*enforcements.length)]+'</b></div>' +
+                    '<div class="popup-icon"><img src="/img/' + icons[Math.floor(Math.random()*icons.length)] + '"></div>' +
                     '<div class="popup-text"><em>Avklarade aktiviteter hittar du i Arkivet</em> (<i class="fa fa-archive"></i>)</div>',
           cancelText: 'Ångra',
           cancelType: '',
@@ -27763,6 +27770,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           withPrevent: false
         }).then(function (agree) {
           if (agree) {
+            $tasks.detachChild(task.id, true);
             task.finished = true;
             task.setTimer();
             $tasks.save();
@@ -27795,6 +27803,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return $modal('templates/modal.plan.html', task).$promise.then(function (obj) {
           task.saveTask(obj.hours, obj.minutes);
           $rootScope.getTodoList();
+          $route.reload();
           return task;
         }, function () {
           $tasks.reload();
@@ -28561,7 +28570,7 @@ App.directive('idaRange', ['idaConfig', '$timeout', function ($config, $timeout)
     link: function ($scope, element) {
       var start, move, end, changing = false, y1, y2, prev;
       start = function (e) {
-        var touch = e.touches[0];
+        var touch = e.touches ? e.touches[0] : e;
         y1 = touch.clientY - 30;
         y2 = touch.clientY + 30;
         changing = true;
@@ -28581,9 +28590,7 @@ App.directive('idaRange', ['idaConfig', '$timeout', function ($config, $timeout)
         changing = false;
       };
       move = _.throttle(function (e) {
-        var touch = e.touches[0];
-        console.log(JSON.stringify(Object.keys(touch)));
-        console.log('cY: '+touch.clientY+', y1: '+y1+', y2: '+ y2);
+        var touch = e.touches ? e.touches[0] : e;
         changing = (touch.clientY > y1 && touch.clientY < y2);
       }, 30);
 
@@ -28810,7 +28817,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
       );
       element.children().data('$ngControllerController', controller);
     }
-    angular.element($document[0].body).append(element);
+    angular.element($document[0].body).prepend(element);
     $compile(element)(scope);
 
     return $q.when({ scope: scope, element: element }).then(function (self) {
@@ -29676,12 +29683,12 @@ App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout,
   };
 
   return new Sounds({
-    'alarm-clock-electric': 'Gammeldags',
+    'alarm-clock-electric': 'Digitalt',
     'applaud': 'Applåder',
     'bell-victory': 'Klockspel',
     'boxing-fight': 'Klocka',
     'clockalarm': 'Stegrande',
-    'clockalarm1': 'Digitalt',
+    'clockalarm1': 'Gammeldags',
     'little-bells': 'Pling',
     'monotone-ascending': 'Ljust pling',
     'tada': 'Tada'
