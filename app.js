@@ -28561,8 +28561,8 @@ App.directive('idaRange', ['idaConfig', '$timeout', function ($config, $timeout)
     link: function ($scope, element) {
       var start, move, end, changing = false, y1, y2, prev;
       start = function (e) {
-        y1 = e.clientY - 30;
-        y2 = e.clientY + 30;
+        y1 = e.clientY - 100;
+        y2 = e.clientY + 100;
         changing = true;
         prev = $scope.$value;
       };
