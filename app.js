@@ -27809,6 +27809,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         }, function () {
           $tasks.reload();
           $rootScope.getTodoList();
+          return $q.reject();
         });
       },
       setModal: function(modal, id, success) {
@@ -27947,15 +27948,18 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           timeType: 'exact',
           duration: 1800000,
           complex: false,
-          important: true
+          important: true,
+          reminderTimeAdvance: 1
         });
-        $rootScope.editTask($rootScope.modal.task.id).finally($rootScope.modal.$dismiss);
+        $rootScope.editTask($rootScope.modal.task.id).then(function () {
+          $rootScope.modal.$dismiss();
+        });
         $timeout(function () {
           $popup.confirm({
             type: 'planningReminder',
             withPrevent: false,
             withLimit: 3,
-            template: 'Om du vill sätta en påminnelse på en annan dag än idag måste du planera aktivietet. Här har IDA hjälpt tid med en standardplanering, så om du bara vill göra en enkel påminnelser tryck på knappen under "Påminn exakt tid".',
+            template: 'Om du vill skapa en påminnelse för en annan dag än idag måste du planera aktiviteten. Här har IDA hjälpt dig med en standardplanering, så allt du behöver göra är att sätta aktivitetens starttid (datum och klockslag) till den tid du vill ha påminnelsen.',
             okText: 'Ok',
             cancelText: 'Ångra'
           }).then(function (agree) {

@@ -24,6 +24,7 @@
       </div>
       <br>
       <button class="start" ng-disabled="modal.$lock" ng-click="($root.$timerType==='period'?modal.task.setTimer(moment().add($root.$timerMinutes||30,'minutes').add($root.$timerHours||0,'hours').startOf('second').valueOf()):modal.task.setTimer(moment().hour($root.$timerHours).minute($root.$timerMinutes).startOf('minute').valueOf()));modal.$close('start');">Starta</button>
+      <button ng-if="modal.task.reminder" class="clear" ng-disabled="modal.$lock" ng-click="modal.task.setTimer();$tasks.save();modal.$close('remove');">Stäng av påminnelse</button>
     </div>
 
     <div ng-show="!modal.$lock&&modal.task.reminderTime>Date.now()" class="timer">

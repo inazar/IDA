@@ -3126,6 +3126,38 @@ div.timer-modal {
       background: #8b0992;
       border-top: 2px solid #5d0662;
       top: 0px; }
+  div.timer-modal > div > div > button.clear {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 0 0 #9b9b9b;
+    box-shadow: 0 2px 0 0 #9b9b9b;
+    -webkit-user-select: none;
+    background: #d4d4d4;
+    border: none;
+    color: #4a4a4a;
+    display: inline-block;
+    font-weight: bold;
+    padding: 3px 10px 4px;
+    position: relative;
+    text-align: center;
+    top: -2px;
+    border-top: 2px solid transparent;
+    text-decoration: none;
+    outline: 0;
+    width: 100%;
+    font-size: 1.2em;
+    padding: 13px 0 14px;
+    display: block;
+    padding: 6px 20px 7px;
+    width: auto;
+    float: right;
+    margin-right: 10px; }
+    div.timer-modal > div > div > button.clear:active, div.timer-modal > div > div > button.clear.active {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      background: #bbb;
+      border-top: 2px solid #9b9b9b;
+      top: 0px; }
   div.timer-modal > div > div.timer {
     overflow: auto; }
     div.timer-modal > div > div.timer > div {
