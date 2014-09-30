@@ -28037,10 +28037,13 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                 }
               });
             } else {
-              notification.local.cancel(id);
-              task._background = true;
+              // notification.local.cancel(id);
+              $rootScope._background = true;
             }
           }
+        };
+        notification.local.onclick = function (id, state) {
+          $rootScope._background = (state !== 'background');
         };
       }
     }, false);
@@ -29498,7 +29501,7 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
             }
             update = true;
           }
-          if (!task._background && (reminder === now)) {
+          if (!$rootScope._background && (reminder === now)) {
             $rootScope.$sound = $sounds.play(this.planned ? (this.shortSignal ? 'short' : 'long') : 'long');
             if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
             update = false;
@@ -29506,7 +29509,10 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
         }
       }
     }
-    if (update && $rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
+
+    if (update && $rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+      $rootScope.$apply();
+    } else if ($rootScope._background) { $rootScope._background = false; }
   }
 
   var Notifications = function () { this.start(); };
