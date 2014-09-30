@@ -29,8 +29,8 @@
     <div ng-show="!modal.$lock&&modal.task.reminderTime>Date.now()" class="timer">
       <div>{{modal.task.timeRemaining}}</div>
       <div class="buttons">
-        <button class="clear" ng-disabled="modal.$lock" ng-click="modal.task.setTimer();modal.$close('remove');">Ta bort</button>
-        <button class="clear" ng-click="modal.task.setTimer();">Ändra tid</button>
+        <button class="clear" ng-disabled="modal.$lock" ng-click="modal.task.setTimer();$tasks.save();modal.$close('remove');">Ta bort</button>
+        <button class="clear" ng-click="modal.task.setTimer();$tasks.save();">Ändra tid</button>
       </div>
     </div>
 

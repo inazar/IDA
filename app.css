@@ -4270,7 +4270,7 @@ div.focus-distraction-list-confirmation-modal {
           background: #8b0992;
           border-top: 2px solid #5d0662;
           top: 0px; }
-  .plan > div > .reminder .help-line > div.alarm-toggle {
+  .plan > div .alarm-toggle .help-line {
     -webkit-border-radius: 4px;
     border-radius: 4px;
     overflow: hidden;
@@ -4283,8 +4283,8 @@ div.focus-distraction-list-confirmation-modal {
     width: 100%;
     display: block;
     height: 50px;
-    margin: 10px 0 20px; }
-    .plan > div > .reminder .help-line > div.alarm-toggle > button {
+    margin: 10px 0 0; }
+    .plan > div .alarm-toggle .help-line button {
       -webkit-user-select: none;
       background: #d4d4d4;
       border: none;
@@ -4297,7 +4297,7 @@ div.focus-distraction-list-confirmation-modal {
       padding: 0 10px;
       text-align: center;
       width: 100%; }
-      .plan > div > .reminder .help-line > div.alarm-toggle > button.active {
+      .plan > div .alarm-toggle .help-line button.active {
         opacity: 1;
         background: #a40aaa;
         color: white; }

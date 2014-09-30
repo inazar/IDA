@@ -48,7 +48,7 @@
   </div>
 
   <div class="within-x-days" ng-show="modal.task.timeType == 'period' && modal.task.timeInputType == 'x-days'">
-    Inom <input ng-change="modal.task.xDays=xDays||1;modal.task.updatePeriodInput()" ng-model="xDays" type="number" value="1" placeholder="1" min="1"> dagar
+    Inom <input ng-model="xDays" type="number" value="1" placeholder="1" min="1" ng-change="modal.task.xDays=((!isNumber(xDays)||xDays<1)?(xDays=null):xDays);modal.task.updatePeriodInput();"> dagar
   </div>
 
   <div ida-help='hidden' class="period" ng-show="modal.task.timeType==='period'">
@@ -88,7 +88,7 @@
     <div ida-help="templates/help/plan/ereminder.html" help-title="Påminnelse" class="reminder">
       <label>
         <select ng-model="modal.task.reminderTimeAdvance"
-                ng-init="modal.task.reminderTimeAdvance=modal.task.reminderTimeAdvance||-1">
+                ng-init="modal.task.reminderTimeAdvance=modal.task.reminderTimeAdvance||'-1'">
           <option value="-1">Ingen påminnelse</option>
           <option value="1">Påminn vid start</option>
           <option value="300000">Påminn 5 minuter innan</option>
@@ -112,10 +112,10 @@
         <span>&nbsp;kl&nbsp;</span>
         <div ida-timepicker model-date="modal.task.reminderTime"></div>
       </div>
-      <div ng-if="modal.task.reminderTimeAdvance!=-1" class="alarm-toggle" ng-click="modal.task.shortSignal=!modal.task.shortSignal">
-        <button ng-class="{ active: modal.task.shortSignal }">Kort signal</button>
-        <button ng-class="{ active: !modal.task.shortSignal }">Långt alarm</button>
-      </div>
+    </div>
+    <div ida-help="hidden" ng-if="modal.task.reminderTimeAdvance!=='-1'" class="alarm-toggle" ng-click="modal.task.shortSignal=!modal.task.shortSignal">
+      <button ng-class="{ active: modal.task.shortSignal }">Kort signal</button>
+      <button ng-class="{ active: !modal.task.shortSignal }">Långt alarm</button>
     </div>
 
     <br ng-hide="modal.task.isParent||modal.task.isChild">

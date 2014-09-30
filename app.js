@@ -27631,6 +27631,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       timeLeft: null,
       todoFilter: 'today',
       moment: moment,
+      console: console,
       Date: Date,
       Math: Math,
       $timer: {},
@@ -28035,6 +28036,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                     break;
                 }
               });
+            } else {
+              notification.local.cancel(id);
+              task._background = true;
             }
           }
         };
@@ -29478,6 +29482,11 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
           $rootScope.getTodoList();
           update = true;
         }
+        if (reminder && !task.planned && task.timeRemaining !== '0s') {
+          task.timeRemaining = '0s';
+          task._complete = true;
+          update = true;
+        }
         if (reminder >= now) {
           if (!task.planned) {
             if ((duration = reminder - now) > 0) {
@@ -29485,13 +29494,11 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
               min = Math.floor((duration % 3600) / 60);
               sec = Math.floor((duration % 60));
               task.timeRemaining = (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '');
-            } else {
-              task.timeRemaining = '0s';
-              task._complete = true;
+              task._complete = false;
             }
             update = true;
           }
-          if (reminder === now) {
+          if (!task._background && (reminder === now)) {
             $rootScope.$sound = $sounds.play(this.planned ? (this.shortSignal ? 'short' : 'long') : 'long');
             if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
             update = false;
@@ -29730,6 +29737,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     delete clone._complete;
     delete clone._parent;
     delete clone._modal;
+    delete clone._background;
     return clone;
   };
 
