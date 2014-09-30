@@ -28011,31 +28011,33 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             });
           } else {
             var task = $tasks.get(id);
-            vibrate(1000);
-            if (state === 'foreground' && task && task.title && task.planned && !task.finished && !task.deleted) {
-              $popup.show({
-                type: 'notification',
-                title: 'Påminnelse',
-                template: '<div class="popup-text">'+task.title+'</div>',
-                buttons: [
-                  { text: 'Fokusera', type: 'btn-main', onTap: function () { return 'focus'; } },
-                  { text: 'Ny påminnelse', type: 'btn-main', onTap: function () { return 'plan'; } },
-                  { text: 'Ta bort påminnelse', type: 'btn-main', onTap: function () { return 'ok'; } }
-                ],
-              }).then(function (res) {
-                switch (res) {
-                  case 'focus':
-                    $rootScope.modal.$close();
-                    $location.path('/fokusera-pa-aktivitet/' + id).replace();
-                    break;
-                  case 'plan':
-                    $rootScope.setModal('templates/modal.postpone.html', task).then($rootScope.reload, $rootScope.reload);
-                    break;
-                  case 'ok':
-                    task.reminder = false;
-                    break;
-                }
-              });
+            if (state === 'foreground') {
+              vibrate(1000);
+              if (task && task.title && task.planned && !task.finished && !task.deleted) {
+                $popup.show({
+                  type: 'notification',
+                  title: 'Påminnelse',
+                  template: '<div class="popup-text">'+task.title+'</div>',
+                  buttons: [
+                    { text: 'Fokusera', type: 'btn-main', onTap: function () { return 'focus'; } },
+                    { text: 'Ny påminnelse', type: 'btn-main', onTap: function () { return 'plan'; } },
+                    { text: 'Ta bort påminnelse', type: 'btn-main', onTap: function () { return 'ok'; } }
+                  ],
+                }).then(function (res) {
+                  switch (res) {
+                    case 'focus':
+                      $rootScope.modal.$close();
+                      $location.path('/fokusera-pa-aktivitet/' + id).replace();
+                      break;
+                    case 'plan':
+                      $rootScope.setModal('templates/modal.postpone.html', task).then($rootScope.reload, $rootScope.reload);
+                      break;
+                    case 'ok':
+                      task.reminder = false;
+                      break;
+                  }
+                });
+              }
             } else {
               // notification.local.cancel(id);
               $rootScope._background = true;
