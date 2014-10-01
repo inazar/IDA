@@ -28093,7 +28093,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 /* jshint strict: false */
 /* global App */
-App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$location', '$timeout', '$anchorScroll', 'idaTasks', 'idaPopup', 'idaConfig', 'idaSounds', function($scope, $route, $routeParams, $title, $location, $timeout, $anchorScroll, $tasks, $popup, $config, $sounds) {
+App.controller('FocusCtrl', ['$scope', '$window', '$route', '$routeParams', '$title', '$location', '$timeout', '$anchorScroll', 'idaTasks', 'idaPopup', 'idaConfig', 'idaSounds', function($scope, $window, $route, $routeParams, $title, $location, $timeout, $anchorScroll, $tasks, $popup, $config, $sounds) {
 
   $scope.$root.title = $title;
 
