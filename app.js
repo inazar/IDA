@@ -28052,6 +28052,12 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           $rootScope._background = (state !== 'background');
         };
       }
+      if ($window.plugins && $window.plugins.powerManagement) {
+        console.log('window.plugins.powerManagement');
+      }
+      if ($window.plugin && $window.plugin.powerManagement) {
+        console.log('window.plugin.powerManagement');
+      }
     }, false);
 
     if (!$config.reminder || $config.reminder < Date.now()) { _setOrganize(); }
