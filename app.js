@@ -28052,12 +28052,6 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           $rootScope._background = (state !== 'background');
         };
       }
-      if ($window.plugins && $window.plugins.powerManagement) {
-        console.log('window.plugins.powerManagement');
-      }
-      if ($window.plugin && $window.plugin.powerManagement) {
-        console.log('window.plugin.powerManagement');
-      }
     }, false);
 
     if (!$config.reminder || $config.reminder < Date.now()) { _setOrganize(); }
@@ -28103,7 +28097,7 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
 
   $scope.$root.title = $title;
 
-  var totalTime, deadline, distractionListTimer, task, created = false;
+  var totalTime, deadline, distractionListTimer, task, created = false, powerManagement;
 
   if ($routeParams.task) {
     task = $tasks.get(''+$routeParams.task);
@@ -28111,6 +28105,8 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
     task = $tasks.add();
     created = true;
   }
+
+  powerManagement = $window.plugins && $window.plugins.powerManagement;
 
   angular.extend($scope, {
     minutes: 25,
@@ -28123,6 +28119,7 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
       totalTime = ($scope.hours || 0) * 3600000 + ($scope.minutes || 0) * 60000;
       deadline = new Date(new Date().valueOf() + totalTime);
       $scope.$root.timeLeft = 10;
+      if (powerManagement) { powerManagement.acquire(); }
       $timeout(function repeat(){
         var timeLeft = $scope.timeLeft;
         if (timeLeft !== 0) {
@@ -28135,6 +28132,7 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
         if (timeLeft > 1) {
           $timeout(repeat, 1000);
         } else {
+          if (powerManagement) { powerManagement.release(); }
           if (!$scope.cancelled) {
             ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(function () {
               $scope.$root.timeLeft = 0;
@@ -28162,6 +28160,7 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
     stopTimer: function () {
       $scope.cancelled = true;
       $scope.setModal('templates/modal.focus.stop_timer.html').then(function (res) {
+        if (powerManagement) { powerManagement.release(); }
         switch (res) {
           case 'todo':
             $timeout(function () { $location.path('/todo'); });
@@ -28244,6 +28243,7 @@ App.controller('FocusCtrl', ['$scope', '$route', '$routeParams', '$title', '$loc
 
   // Show top nav if user moves to another page, even if timer is not done:
   $scope.$on('$destroy', function() {
+    if (powerManagement) { powerManagement.release(); }
     $scope.$root.hideTopNav = false;
     if (created === 1&&$scope.task.title) { $tasks.save(); } else { $tasks.reload(); }
   });
