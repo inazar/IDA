@@ -27987,8 +27987,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       });
     };
 
-    $document[0].addEventListener('pause', function() { $timeout(function () { $notifications.stop(); $sounds.stop(); }); });
-    $document[0].addEventListener('resume', function() { $timeout(function () { $notifications.start(); }); });
+    $document[0].addEventListener('pause', function() { $timeout(function () { $notifications.stop(); $sounds.stop(); }); $rootScope.$active = false; });
+    $document[0].addEventListener('resume', function() { $timeout(function () { $notifications.start(); }); $rootScope.$active = true; });
 
     $document[0].addEventListener('deviceready', function() {
       var notification, vibrate;
@@ -28001,7 +28001,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       }
       $document[0].addEventListener('backbutton', function() { return false; }, false);
       if ($window.device && $window.device.platform === 'Android') { $sounds.register(); }
-      if ($window.plugin && (notification = $window.plugin.notification) && $window.navigator.notification && (vibrate = $window.navigator.notification.vibrate)) {
+      if ($window.plugin && (notification = $window.plugin.notification) && (vibrate = notification.vibrate)) {
         notification.local.ontrigger = function (id, state) {
           if (id === 'organize') {
             _setOrganize();
@@ -28093,11 +28093,11 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 /* jshint strict: false */
 /* global App */
-App.controller('FocusCtrl', ['$scope', '$window', '$route', '$routeParams', '$title', '$location', '$timeout', '$anchorScroll', 'idaTasks', 'idaPopup', 'idaConfig', 'idaSounds', function($scope, $window, $route, $routeParams, $title, $location, $timeout, $anchorScroll, $tasks, $popup, $config, $sounds) {
+App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$routeParams', '$title', '$location', '$timeout', '$anchorScroll', 'idaTasks', 'idaPopup', 'idaConfig', 'idaSounds', function($scope, $window, $document, $route, $routeParams, $title, $location, $timeout, $anchorScroll, $tasks, $popup, $config, $sounds) {
 
   $scope.$root.title = $title;
 
-  var totalTime, deadline, distractionListTimer, task, created = false, powerManagement;
+  var totalTime, deadline, distractionListTimer, task, created = false;
 
   if ($routeParams.task) {
     task = $tasks.get(''+$routeParams.task);
@@ -28106,7 +28106,8 @@ App.controller('FocusCtrl', ['$scope', '$window', '$route', '$routeParams', '$ti
     created = true;
   }
 
-  powerManagement = $window.plugins && $window.plugins.powerManagement;
+  var powerManagement = $window.plugins && $window.plugins.powerManagement;
+  var notification = $window.plugins && $window.plugins.notification;
 
   angular.extend($scope, {
     minutes: 25,
@@ -28117,13 +28118,26 @@ App.controller('FocusCtrl', ['$scope', '$window', '$route', '$routeParams', '$ti
       if (!$scope.hours && !$scope.minutes) { return; }
       if (created) { created = 1; }
       totalTime = ($scope.hours || 0) * 3600000 + ($scope.minutes || 0) * 60000;
-      deadline = new Date(new Date().valueOf() + totalTime);
+      deadline = Date.now() + totalTime;
       $scope.$root.timeLeft = 10;
       if (powerManagement) { powerManagement.acquire(); }
+      if (notification) {
+        $document[0].addEventListener('pause', function() {
+          notification.local.add({
+            id:         'focus',
+            date:       new Date(deadline),
+            message:    'Fokusera timern har slutat...',
+            title:      'Fokusera',
+            autoCancel: true,
+          });
+        });
+        $document[0].addEventListener('resume', function() { notification.local.cancel('focus'); });
+      }
       $timeout(function repeat(){
-        var timeLeft = $scope.timeLeft;
-        if (timeLeft !== 0) {
-          $scope.$root.timeLeft = (deadline - new Date() <= 0) ? 1 : deadline - new Date();
+        var timeLeft = $scope.timeLeft, _currTimeLeft;
+        if (timeLeft > 0) {
+          _currTimeLeft = deadline - Date.now();
+          $scope.$root.timeLeft = (_currTimeLeft <= 0) ? 1 : _currTimeLeft;
         }
         $scope.hoursLeft = Math.floor(timeLeft / 3600000) || 0;
         $scope.minutesLeft = Math.floor((timeLeft % 3600000) / 60000) || 0;
@@ -28133,6 +28147,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$route', '$routeParams', '$ti
           $timeout(repeat, 1000);
         } else {
           if (powerManagement) { powerManagement.release(); }
+          if (notification) { notification.local.cancel('focus'); }
           if (!$scope.cancelled) {
             ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(function () {
               $scope.$root.timeLeft = 0;
@@ -28161,6 +28176,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$route', '$routeParams', '$ti
       $scope.cancelled = true;
       $scope.setModal('templates/modal.focus.stop_timer.html').then(function (res) {
         if (powerManagement) { powerManagement.release(); }
+        if (notification) { notification.local.cancel('focus'); }
         switch (res) {
           case 'todo':
             $timeout(function () { $location.path('/todo'); });
@@ -28175,8 +28191,9 @@ App.controller('FocusCtrl', ['$scope', '$window', '$route', '$routeParams', '$ti
     },
     cancel: function () {
       $scope.cancelled = true;
-      deadline = new Date();
+      deadline = Date.now();
       $scope.$root.timeLeft = 0;
+      if (notification) { notification.local.cancel('focus'); }
     },
     showDistractionListForXSeconds: function () {
       $scope.showDistractionList = true;
@@ -28215,11 +28232,6 @@ App.controller('FocusCtrl', ['$scope', '$window', '$route', '$routeParams', '$ti
   $scope.$root.loadFocusTime = $routeParams.loadFocusTime || $scope.$root.loadFocusTime || new Date().valueOf();
   $scope.$root.showFocusInputs = true;
   
-  $scope.$on('$destroy', function() {
-    $scope.$root.timeLeft = 0;
-    $scope.$root.loadFocusTime = null;
-  });
-
   // Hide top nav while timer is counting down:
   $scope.$watch('timeLeft', function (tl) {
     if (tl > 0) { $scope.$root.hideTopNav = true; }
@@ -28243,6 +28255,9 @@ App.controller('FocusCtrl', ['$scope', '$window', '$route', '$routeParams', '$ti
 
   // Show top nav if user moves to another page, even if timer is not done:
   $scope.$on('$destroy', function() {
+    $scope.$root.timeLeft = 0;
+    $scope.$root.loadFocusTime = null;
+    if (notification) { notification.local.cancel('focus'); }
     if (powerManagement) { powerManagement.release(); }
     $scope.$root.hideTopNav = false;
     if (created === 1&&$scope.task.title) { $tasks.save(); } else { $tasks.reload(); }
@@ -29505,15 +29520,15 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
         if (reminder >= now) {
           if (!task.planned) {
             if ((duration = reminder - now) > 0) {
-              hrs = Math.floor(duration / 3600);
-              min = Math.floor((duration % 3600) / 60);
-              sec = Math.floor((duration % 60));
-              task.timeRemaining = (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '');
+              // hrs = Math.floor(duration / 3600);
+              // min = Math.floor((duration % 3600) / 60);
+              // sec = Math.floor((duration % 60));
+              // task.timeRemaining = (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '');
               task._complete = false;
             }
             update = true;
           }
-          if (!$rootScope._background && (reminder === now)) {
+          if (!$rootScope._background && $rootScope.$active && (reminder === now)) {
             $rootScope.$sound = $sounds.play(this.planned ? (this.shortSignal ? 'short' : 'long') : 'long');
             if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
             update = false;
