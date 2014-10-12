@@ -1,6 +1,6 @@
 <div ida-calendar="modal.task.startTime" calendar-task="modal.task" calendar-validate="$root.warnOverbook(tp.busyness >= 1)" class="calendar-page date-picker">
   <div class="confirmation">
   	<b>Vald Startdag</b>
-    <button ng-click="task.startTime=$root.moment(time).hours($hours || moment().add(1, 'hour').hours()).minutes($minutes || 0).seconds(0).millisecond(0).valueOf();$root.datepicker.$close(time, 100)" ng-disabled="!time||modal.$lock">Klar</button>
+    <button ng-click="task.startTime=$root.moment(time).hours($hours || moment().add(1, 'hour').hours()).minutes($minutes || 0).seconds(0).millisecond(0).valueOf();$event.stopPropagation();$root.datepicker.$close(time, 100)" ng-disabled="!time||modal.$lock">Klar</button>
   </div>
 </div>

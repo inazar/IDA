@@ -2,6 +2,6 @@
   <div class="confirmation">
   	<b>Vald Startdag</b>
     <span ng-bind="(time ? $root.moment(time).format('ddd D MMM YYYY') : '')"></span>
-    <button ng-click="task.startTime=$root.moment(time).startOf('day').valueOf();$root.datepicker.$close(time, 100)" ng-disabled="!time||modal.$lock">Klar</button>
+    <button ng-click="task.startTime=$root.moment(time).startOf('day').valueOf();$event.stopPropagation();$root.datepicker.$close(time, 100)" ng-disabled="!time||modal.$lock">Klar</button>
   </div>
 </div>

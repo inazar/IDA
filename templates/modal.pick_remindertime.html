@@ -2,6 +2,6 @@
   <div class="confirmation">
   	<b>Tidpunkt för påminnelse</b>
     <span ng-bind="(time ? $root.moment(time).format('D MMMM YYYY, HH:mm') : '')"></span>
-    <button ng-click="task.reminderTime = $root.moment(time).hours($hours || 0).minutes($minutes || 0).startOf('minute').valueOf();$root.datepicker.$close(time, 100)" ng-disabled="!time||modal.$lock">Klar</button>
+    <button ng-click="task.reminderTime = $root.moment(time).hours($hours || 0).minutes($minutes || 0).startOf('minute').valueOf();$event.stopPropagation();$root.datepicker.$close(time, 100)" ng-disabled="!time||modal.$lock">Klar</button>
   </div>
 </div>
