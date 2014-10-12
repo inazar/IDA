@@ -28107,7 +28107,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
   }
 
   var powerManagement = $window.plugins && $window.plugins.powerManagement;
-  var notification = $window.plugins && $window.plugins.notification;
+  var notification = $window.plugins && $window.plugin.notification;
 
   function _stopNotifying() {
     console.log('Stop notifying');
@@ -28148,6 +28148,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
       deadline = Date.now() + totalTime;
       $scope.$root.timeLeft = 10;
       if (powerManagement) { powerManagement.acquire(); }
+      console.log();
       if (notification) {
         console.log('Start notifying');
         $document[0].addEventListener('pause', _onPause, false);
