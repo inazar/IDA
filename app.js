@@ -28112,8 +28112,8 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
   function _stopNotifying() {
     console.log('Stop notifying');
     notification.local.cancel('focus');
-    $document.off('pause', _onPause);
-    $document.off('resume', _onResume);    
+    $window.removeEventListener('pause', _onPause);
+    $window.removeEventListener('resume', _onResume);    
   }
 
   function _onPause() {
@@ -28146,8 +28146,8 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
       if (powerManagement) { powerManagement.acquire(); }
       if (notification) {
         console.log('Start notifying');
-        $document.on('pause', _onPause);
-        $document.on('resume', _onResume);
+        $window.addEventListener('pause', _onPause, false);
+        $window.addEventListener('resume', _onResume, false);
       }
       $timeout(function repeat(){
         var timeLeft = $scope.timeLeft, _currTimeLeft;
