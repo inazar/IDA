@@ -28003,7 +28003,9 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       if ($window.device && $window.device.platform === 'Android') { $sounds.register(); }
       if ($window.plugin && (notification = $window.plugin.notification) && (vibrate = notification.vibrate)) {
         notification.local.ontrigger = function (id, state) {
-          if (id === 'organize') {
+          if (id === 'focus') {
+            $rootScope.$broadcast('ida:focus');
+          } else if (id === 'organize') {
             _setOrganize();
             $popup.alert({
               type: 'organize',
@@ -28136,6 +28138,28 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
     });
   }
 
+  function _onOver() {
+    $scope.$root.timeLeft = 0;
+    if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
+      $scope.$root.showFocusInputs = false;
+      $scope.$root.showNav = false;
+      $scope.title = 'Gå igenom Distraktionslistan';
+    }
+    // $scope.completeTask($scope.task).then(function (agree) {
+    //   if (agree && !$tasks.distractionListTasks($scope.loadFocusTime).length) {
+    //     $timeout(function () { $location.path('/todo'); });
+    //   } else {
+    //       if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
+    //       $scope.$root.showFocusInputs = false;
+    //       $scope.$root.showNav = false;
+    //       $scope.title = 'Gå igenom Distraktionslistan';
+    //     }
+    //   }
+    // });
+  }
+
+  $scope.$on('ida:focus', _onOver);
+
   angular.extend($scope, {
     minutes: 25,
     task: task,
@@ -28170,25 +28194,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
           if (powerManagement) { powerManagement.release(); }
           if (notification) { _stopNotifying(); }
           if (!$scope.cancelled) {
-            ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(function () {
-              $scope.$root.timeLeft = 0;
-              if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
-                $scope.$root.showFocusInputs = false;
-                $scope.$root.showNav = false;
-                $scope.title = 'Gå igenom Distraktionslistan';
-              }
-              // $scope.completeTask($scope.task).then(function (agree) {
-              //   if (agree && !$tasks.distractionListTasks($scope.loadFocusTime).length) {
-              //     $timeout(function () { $location.path('/todo'); });
-              //   } else {
-              //       if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
-              //       $scope.$root.showFocusInputs = false;
-              //       $scope.$root.showNav = false;
-              //       $scope.title = 'Gå igenom Distraktionslistan';
-              //     }
-              //   }
-              // });
-            });
+            ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(_onOver);
           } else { $scope.cancelled = true; }
         }
       });
