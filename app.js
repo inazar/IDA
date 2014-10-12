@@ -27987,8 +27987,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       });
     };
 
-    $document[0].addEventListener('pause', function() { $timeout(function () { $notifications.stop(); $sounds.stop(); }); $rootScope.$active = false; });
-    $document[0].addEventListener('resume', function() { $timeout(function () { $notifications.start(); }); $rootScope.$active = true; });
+    $document[0].addEventListener('pause', function() { $timeout(function () { $notifications.stop(); $sounds.stop(); }); $rootScope.$active = false; }, false);
+    $document[0].addEventListener('resume', function() { $timeout(function () { $notifications.start(); }); $rootScope.$active = true; }, false);
 
     $document[0].addEventListener('deviceready', function() {
       var notification, vibrate;
@@ -28112,8 +28112,8 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
   function _stopNotifying() {
     console.log('Stop notifying');
     notification.local.cancel('focus');
-    $document[0].removeEventListener('pause', _onPause);
-    $document[0].removeEventListener('resume', _onResume);    
+    $document.off('pause', _onPause);
+    $document.off('resume', _onResume);    
   }
 
   function _onPause() {
@@ -28146,8 +28146,8 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
       if (powerManagement) { powerManagement.acquire(); }
       if (notification) {
         console.log('Start notifying');
-        $document[0].addEventListener('pause', _onPause);
-        $document[0].addEventListener('resume', _onResume);
+        $document.on('pause', _onPause);
+        $document.on('resume', _onResume);
       }
       $timeout(function repeat(){
         var timeLeft = $scope.timeLeft, _currTimeLeft;
@@ -28271,6 +28271,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
 
   // Show top nav if user moves to another page, even if timer is not done:
   $scope.$on('$destroy', function() {
+    console.log('Destroy focus scope');
     $scope.$root.timeLeft = 0;
     $scope.$root.loadFocusTime = null;
     if (notification) { _stopNotifying(); }

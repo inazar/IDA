@@ -11,7 +11,7 @@
 
     <author email="l.vanegeraat@gmail.com" href="http://luukvanegeraat.com">Luuk van Egeraat</author>
 
-    <preference name="phonegap-version" value="3.5.0" />
+    <preference name="phonegap-version" value="3.6.0" />
     <preference name="orientation" value="portrait" />
     <preference name="show-splash-screen-spinner" value="true" />
     <preference name="auto-hide-splash-screen" value="true" />
