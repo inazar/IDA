@@ -28111,25 +28111,29 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
 
   function _stopNotifying() {
     console.log('Stop notifying');
-    notification.local.cancel('focus');
     $window.removeEventListener('pause', _onPause);
     $window.removeEventListener('resume', _onResume);    
+    notification.local.cancel('focus');
   }
 
   function _onPause() {
-    console.log('Handle pause');
-    notification.local.add({
-      id:         'focus',
-      date:       new Date(deadline),
-      message:    'Fokusera timern har slutat...',
-      title:      'Fokusera',
-      autoCancel: true,
+    setTimeout(function () {
+      console.log('Handle pause');
+      notification.local.add({
+        id:         'focus',
+        date:       new Date(deadline),
+        message:    'Fokusera timern har slutat...',
+        title:      'Fokusera',
+        autoCancel: true,
+      });
     });
   }
 
   function _onResume() {
-    console.log('Handle resume');
-    notification.local.cancel('focus');
+    setTimeout(function () {
+      console.log('Handle resume');
+      notification.local.cancel('focus');
+    });
   }
 
   angular.extend($scope, {
