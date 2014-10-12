@@ -28109,6 +28109,29 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
   var powerManagement = $window.plugins && $window.plugins.powerManagement;
   var notification = $window.plugins && $window.plugins.notification;
 
+  function _stopNotifying() {
+    console.log('Stop notifying');
+    notification.local.cancel('focus');
+    $document[0].removeEventListener('pause', _onPause);
+    $document[0].removeEventListener('resume', _onResume);    
+  }
+
+  function _onPause() {
+    console.log('Handle pause');
+    notification.local.add({
+      id:         'focus',
+      date:       new Date(deadline),
+      message:    'Fokusera timern har slutat...',
+      title:      'Fokusera',
+      autoCancel: true,
+    });
+  }
+
+  function _onResume() {
+    console.log('Handle resume');
+    notification.local.cancel('focus');
+  }
+
   angular.extend($scope, {
     minutes: 25,
     task: task,
@@ -28122,16 +28145,9 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
       $scope.$root.timeLeft = 10;
       if (powerManagement) { powerManagement.acquire(); }
       if (notification) {
-        $document[0].addEventListener('pause', function() {
-          notification.local.add({
-            id:         'focus',
-            date:       new Date(deadline),
-            message:    'Fokusera timern har slutat...',
-            title:      'Fokusera',
-            autoCancel: true,
-          });
-        });
-        $document[0].addEventListener('resume', function() { notification.local.cancel('focus'); });
+        console.log('Start notifying');
+        $document[0].addEventListener('pause', _onPause);
+        $document[0].addEventListener('resume', _onResume);
       }
       $timeout(function repeat(){
         var timeLeft = $scope.timeLeft, _currTimeLeft;
@@ -28147,7 +28163,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
           $timeout(repeat, 1000);
         } else {
           if (powerManagement) { powerManagement.release(); }
-          if (notification) { notification.local.cancel('focus'); }
+          if (notification) { _stopNotifying(); }
           if (!$scope.cancelled) {
             ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(function () {
               $scope.$root.timeLeft = 0;
@@ -28176,7 +28192,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
       $scope.cancelled = true;
       $scope.setModal('templates/modal.focus.stop_timer.html').then(function (res) {
         if (powerManagement) { powerManagement.release(); }
-        if (notification) { notification.local.cancel('focus'); }
+        if (notification) { _stopNotifying(); }
         switch (res) {
           case 'todo':
             $timeout(function () { $location.path('/todo'); });
@@ -28193,7 +28209,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
       $scope.cancelled = true;
       deadline = Date.now();
       $scope.$root.timeLeft = 0;
-      if (notification) { notification.local.cancel('focus'); }
+      if (notification) { _stopNotifying(); }
     },
     showDistractionListForXSeconds: function () {
       $scope.showDistractionList = true;
@@ -28257,7 +28273,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
   $scope.$on('$destroy', function() {
     $scope.$root.timeLeft = 0;
     $scope.$root.loadFocusTime = null;
-    if (notification) { notification.local.cancel('focus'); }
+    if (notification) { _stopNotifying(); }
     if (powerManagement) { powerManagement.release(); }
     $scope.$root.hideTopNav = false;
     if (created === 1&&$scope.task.title) { $tasks.save(); } else { $tasks.reload(); }
