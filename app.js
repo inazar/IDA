@@ -28122,6 +28122,8 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
       notification.local.add({
         id:         'focus',
         date:       new Date(deadline),
+        message:    'Fokusera timern har slutat...',
+        title:      'Fokusera',
         autoCancel: true,
       });
     });
