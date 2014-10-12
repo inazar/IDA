@@ -28188,7 +28188,11 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
           if (powerManagement) { powerManagement.release(); }
           if (notification) { _stopNotifying(); }
           if (!$scope.cancelled) {
-            ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(_onOver);
+            if ($scope.$root.$active) {
+              ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(_onOver);
+            } else {
+              _onOver();
+            }
           } else { $scope.cancelled = true; }
         }
       });
