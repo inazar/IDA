@@ -28592,7 +28592,7 @@ App.directive('idaItem', ['idaConfig', function ($config) {
         },
         isWarning: function () {
           if (!$scope.task.finished && !$scope.task.deleted && $scope.task.startTime) {
-            return Date.now().valueOf() > ($scope.task.timeType === 'period' ? $scope.task.endTime + $config.delayToRemove : $scope.task.startTime + $scope.task.duration);
+            return Date.now().valueOf() > ($scope.task.timeType === 'period' ? $scope.task.endTime + $config.pragmaticDayshift : $scope.task.startTime + $scope.task.duration);
           }
         }
       });
@@ -29269,10 +29269,9 @@ App.service('idaConfig', function () {
   var defaults = {
     defaultReminder: 36000000,
     defaultDuration: 1800000,
-    delayToRemove: 14400000,
+    pragmaticDayshift: 14400000,
     daysBeforeDoubleVaugnessPunishment: 15,
     percentageUsableTime: 0.4,
-    pragmaticDayshift: 0,
     organize: 'twoweek',
     reminder: false,
     slope: 0.5,
@@ -29534,7 +29533,7 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
       reminder = task.reminder ? Math.floor(task.reminderTime/1000) : 0;
       if (!task.deleted && !task.finished) {
         if (now === Math.floor(task.startTime/1000) || now === Math.floor((task.startTime + task.duration)/1000) || task.endTime && now === Math.floor(task.endTime/3600000)*3600) { update = true; }
-        if (now === Math.floor(task.timeType === 'period' ? task.endTime + $config.delayToRemove : task.startTime + task.duration)/1000) { update = true; }
+        if (now === Math.floor(task.timeType === 'period' ? task.endTime + $config.pragmaticDayshift : task.startTime + task.duration)/1000) { update = true; }
         if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && Math.floor(task.showInTodoUntil/1000) <= now) {
           $rootScope.getTodoList();
           update = true;
@@ -29781,6 +29780,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     this.showInTodoFrom = 0;
     this.children = [];
     this.timeCreated = Date.now();
+    this.timeUpdated = Date.now();
     if (task) {  _.extend(this, task);}
     this._durationTimer = null;
     this._modal = false;
@@ -29855,7 +29855,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
             case 'exact':
               showInTodoUntil = startTime;
               // next day at 4am
-              // showInTodoUntil = moment(startTime).add(1, 'days').startOf('day').valueOf() + $config.delayToRemove;
+              // showInTodoUntil = moment(startTime).add(1, 'days').startOf('day').valueOf() + $config.pragmaticDayshift;
               break;
             case 'period':
               showInTodoUntil = startTime;
@@ -29868,7 +29868,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
             case 'exact':
               showInTodoUntil = startTime + duration;
               // next day at 4am
-              // showInTodoUntil = moment(startTime + duration).add(1, 'days').startOf('day').valueOf() + $config.delayToRemove;
+              // showInTodoUntil = moment(startTime + duration).add(1, 'days').startOf('day').valueOf() + $config.pragmaticDayshift;
               break;
             case 'period':
               showInTodoUntil = endTime + 1;
@@ -29880,6 +29880,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
       return showInTodoUntil;
     }
     var _this = this;
+    this.timeUpdated = Date.now();
     if (this.timeType !== 'exact') { this.repeated = false; }
     else { this.repeated = this.repeatPeriod !== 'once'; }
     this.startTime = Math.floor(this.startTime / 1000) * 1000;
@@ -29966,7 +29967,9 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         repeatPeriod: this.repeatPeriod,
         repeatLength: this.repeatLength,
         isChild: this.isChild,
-        shortSignal: this.shortSignal
+        shortSignal: this.shortSignal,
+        timeCreated: Date.now(),
+        timeUpdated: Date.now()
       };
       var stop, advance = Number(this.reminderTimeAdvance) > 0 ? (this.reminderTimeAdvance === '1' ? 0 : this.reminderTimeAdvance) : false;
       switch (this.repeatType) {
@@ -30379,84 +30382,82 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     });
   };
 
+  var _bil = Math.pow(10, 9), _K = Math.pow(10, 3);
+
   Tasks.prototype.getTodoList = function (todoFilter) {
-    var now = Date.now(), _this = this,
-        shift = $config.pragmaticDayshift,
-        hrs = {
-          'today': 24 + shift,
-          'tomorrow': 48 + shift,
-          'week': 168 + shift
-        };
-    return _.sortBy(_.filter(_this.tasks, function (task) {
-      if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && task.showInTodoUntil <= now) {
+    var shift = $config.pragmaticDayshift, _now = Date.now();
+    return _.sortBy(_.filter(this.tasks, function (task) {
+      if (typeof task.showInTodoUntil === 'number' && task.showInTodoUntil !== 0 && task.showInTodoUntil <= _now) {
         task.showInTodoUntil = 0;
         if (task.showInTodo === 'auto complete') { task.finished = true; }
       }
-      return (!task.deleted && task.planned && !task.finished && task.timeType !== 'none' &&
-        task.showInTodoUntil !== 0 && (!task.showInFromUntil || task.showInFromUntil > now) && (!task.showInTodoFrom || task.showInTodoFrom < now) &&
-        (task.startTime < moment().startOf('day').hour(hrs[todoFilter]).minute(0).valueOf()));
+
+      var _filter = false, _adjust = { today : 0, tomorrow: 1, week: 6 };
+
+      if (!task.deleted && task.planned && !task.finished && task.timeType !== 'none' &&
+        task.showInTodoUntil !== 0 && (!task.showInFromUntil || task.showInFromUntil > _now) &&
+        (!task.showInTodoFrom || task.showInTodoFrom < _now)) {
+        if (task.timeType === 'period') { // 1)
+          var _duration = moment.duration(task.endTime + 1 - task.startTime).days(),
+              _end = task.endTime + 1 + shift;
+          if (task.important) {
+            if (task.complex) {
+              _filter =
+                  (_duration <= 3 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 1) ||
+                  (_duration <= 8 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 2) ||
+                  (_duration <= 25 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 3) ||
+                  (moment.duration(_end - _now).days() <= 4);
+            } else {
+              _filter =
+                  (_duration <= 2 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 1) ||
+                  (_duration <= 6 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 2) ||
+                  (_duration <= 13 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 3) ||
+                  (_duration <= 20 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 4) ||
+                  (moment.duration(_end - _now).days() <= 5);
+            }
+            if (todoFilter === 'week' && !_filter && !task.parent) {
+              _filter =
+                  (_duration <= 6 && moment.duration(_end - _now).days() <= 2) ||
+                  (_duration <= 14 && moment.duration(_end - _now).days() <= 3) ||
+                  (_duration <= 21 && moment.duration(_end - _now).days() <= 4) ||
+                  (_duration <= 28 && moment.duration(_end - _now).days() <= 6) ||
+                  (moment.duration(_end - _now).days() <= 8);
+            }
+          }
+          if (_filter) {
+            task._section = 1;
+          } else { // 3)
+            _filter = task.startTime + shift <= _now + (_adjust[todoFilter] + 1) * 86400000 && _now <= task.endTime + 1 + shift;
+            task._section = 3;
+          }
+        } else if (task.timeType === 'exact') { // 2)
+          _filter = moment.duration(task.startTime + shift - _now).days() <= _adjust[todoFilter];
+          task._section = 2;
+        }
+      }
+      return _filter;
     }), function (task) {
-      // exact time or periods with reminder within filter values     + 20000
-      // else if time period and important                            + 30000
-      //   if endTime < 1 day
-      //   if complex
-      //     if !isParent && filter == week
-      //       endTime < 7 days
-      //       endTime < 9 && (end - start > 15 days)
-      //       endTime < 13 && (end - start > 22 days)
-      //       endTime < 16 && (end - start > 28 days)
-      //     endTime < 2 && (end - start > 3 days)
-      //     endTime < 3 days && (end - start > 7 days)
-      //     endTime < 4 days && (end - start > 14 days)
-      //     endTime < 5 days && (end - start > 20 days)
-      //   else
-      //     endTime < 2 && (end - start > 4 days)
-      //     endTime < 3 days && (end - start > 9 days)
-      //     endTime < 4 days && (end - start > 25 days)
-      // else                                                         + 10000
+      // sorting (decimal places):
+      //    period: [section (1)][important (1)][till end (2)][duration (2)][creation(9)] (15)
+      //    exact: [section (1)][starttime (9)][important (1)][complex 1][3] (15)
+      // dates are encoded with 9 last digits which is 11 days max - perfectly fits to 1 week
+      var value = 10 - task._section,
+          _duration = moment.duration(task.endTime + 1 - task.startTime).days(),
+          _tillEnd = moment.duration(task.endTime - Date.now()).days();
 
-      // if important                                                 + 6000
-      // else                                                         + 3000
-
-      // if complex                                                   + 2000
-      // else                                                         + 1000
-
-      // if timeType === 'period'                                     + 100 + (endTime % 94670000000) / 100000000
-      // else                                                         + 1000 - (startTime % 94670000000) / 100000000
-      var value = 0;
-      if (task.timeType === 'exact') {
-        value += 3000000 - (task.startTime % 2630000000) / 10000;
-      } else if (
-        task.important && (
-          task.endTime < moment().hour(24 + shift).valueOf() || (
-            task.complex && (
-              (
-                !task.isParent && todoFilter === 'week' && (
-                  task.endTime < moment().hour(2 * 24 + shift).valueOf() ||
-                  (task.endTime < moment().hour(3 * 24 + shift).valueOf() && task.endTime - task.startTime > 7 * 86400000) ||
-                  (task.endTime < moment().hour(5 * 24 + shift).valueOf() && task.endTime - task.startTime > 15 * 86400000) ||
-                  (task.endTime < moment().hour(7 * 24 + shift).valueOf() && task.endTime - task.startTime > 22 * 86400000) ||
-                  (task.endTime < moment().hour(9 * 24 + shift).valueOf() && task.endTime - task.startTime > 28 * 86400000)
-                )
-              ) || (
-                (task.endTime < moment().hour(2 * 24 + shift).valueOf() && task.endTime - task.startTime > 3 * 86400000) ||
-                (task.endTime < moment().hour(3 * 24 + shift).valueOf() && task.endTime - task.startTime > 7 * 86400000) ||
-                (task.endTime < moment().hour(4 * 24 + shift).valueOf() && task.endTime - task.startTime > 14 * 86400000) ||
-                (task.endTime < moment().hour(5 * 24 + shift).valueOf() && task.endTime - task.startTime > 20 * 86400000)
-              )
-            )
-          ) || (
-            (task.endTime < moment().hour(2 * 24 + shift).valueOf() && task.endTime - task.startTime > 4 * 86400000) ||
-            (task.endTime < moment().hour(3 * 24 + shift).valueOf() && task.endTime - task.startTime > 9 * 86400000) ||
-            (task.endTime < moment().hour(4 * 24 + shift).valueOf() && task.endTime - task.startTime > 25 * 86400000)
-          )
-        )
-      ) { value += 3000000; }
-      else { value += 1000000; }
-      value += task.important ? 6000 : 3000;
-      value += task.complex ? 2000 : 1000;
-      if (task.timeType === 'period') { value += 100 + (task.endTime % 2630000000) / 100000000; }
-      return -1 * value;
+      if (task.timeType === 'period') {
+        value = value * 10 + (task.important ? 1 : 0);
+        value = value * 100 + (_tillEnd < 100 ? _tillEnd : 99);
+        value = value * 100 + (_duration < 100 ? _duration : 99);
+        value = value * _bil + (task.timeUpdated % _bil);
+      } else {
+        value = value * (_bil + 1) - (task.startTime % _bil);
+        value = value * 10 + (task.important ? 1 : 0);
+        value = value * 10 + (task.complex ? 1 : 0);
+        value = value * _K + (task.timeUpdated % _bil);
+      }
+      delete task._section;
+      return -value;
     });
   };
 
