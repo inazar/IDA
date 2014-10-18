@@ -67,7 +67,7 @@
 
   <div ng-show="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
     <div ida-help="templates/help/plan/duration.html" help-title="Hur lång tid tar aktiviten att göra?" class="duration">
-      <div ng-init="$parent.hours=Math.floor((isNumber(modal.task.duration)?modal.task.duration:$config.defaultDuration)/3600000);$parent.minutes = Math.floor(((isNumber(modal.task.duration)?modal.task.duration:$config.defaultDuration)%3600000)/60000)">
+      <div ng-init="$parent.hours=isNumber(modal.task.duration)?Math.floor(modal.task.duration/3600000):null;$parent.minutes=isNumber(modal.task.duration)?Math.floor((modal.task.duration%3600000)/60000):null;">
         <div class="estimate-toggle" ng-click="modal.task.timeEstimated=!modal.task.timeEstimated">
           <button ng-class="{ active: !modal.task.timeEstimated }">
             Tar exakt
@@ -77,7 +77,7 @@
           </button>
         </div>
         <span>&nbsp;kl&nbsp;</span>
-        <div ida-timepicker="duration" model-hours="$parent.hours" model-minutes="$parent.minutes" minutes-default="30"></div>
+        <div ida-timepicker="duration" model-hours="$parent.hours" model-minutes="$parent.minutes" minutes-default="30" focus-field='$parent.focused'></div>
       </div>
     </div>
   </div>
@@ -134,8 +134,8 @@
     <div ida-help="hidden" class="repeated" ng-if="modal.task.repeatPeriod!='once'">
       <div ng-if="modal.task.repeatPeriod!='weekly'">
         <span>Upprepa var</span>
-        <input class="period-input" ng-init="repeatLength=modal.task.repeatLength;modal.task.repeatLength=modal.task.repeatLength||1"
-              ng-change="modal.task.repeatLength=repeatLength||1"
+        <input class="period-input" ng-init="repeatLength=modal.task.repeatLength||null;modal.task.repeatLength=modal.task.repeatLength||1"
+              ng-change="console.log(repeatLength);repeatLength=(isNumber(repeatLength)&&repeatLength<1?null:repeatLength||null);modal.task.repeatLength=repeatLength||1"
               ng-model="repeatLength"
               type="number" placeholder="1" min="1">
         <span ng-show="modal.task.repeatPeriod=='daily'">Dag</span>
@@ -220,7 +220,7 @@
   <br>
 
   <div ng-show="modal.task.timeType == 'exact'">
-    <label ida-help="templates/help/plan/eremove.html" help-title="När flyttas aktiviteten från Att-Göra-listan?" class="show-in-todo">
+    <label ida-help="templates/help/plan/eremove.html" help-title="Flytta aktivitet från Att-Göra-listan" class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
         <!-- <option value="until start time">Bort vid starttid</option> -->
@@ -232,7 +232,7 @@
   </div>
 
   <div ng-show="modal.task.timeType == 'period'">
-    <label ida-help="templates/help/plan/premove.html" help-title="När flyttas tidsperiod-aktivieten från Att-Göra?" class="show-in-todo">
+    <label ida-help="templates/help/plan/premove.html" help-title="Flytta aktivitet från Att-Göra-listan" class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
         <option value="until end time">Bort efter tidsperioden</option>
@@ -253,7 +253,7 @@
       (modal.task.timeType == 'period'&& modal.task.startTime && modal.task.endTime) ||
       (modal.task.timeType == 'none')
     )">
-    <button class="save" ng-disabled="modal.$lock" ng-click="modal.$close({hours: hours, minutes: minutes}, 100)">Spara</button>
+    <button class="save" ng-disabled="modal.$lock" ng-click="modal.$close({hours: hours, minutes: minutes, focused: focused}, 100)">Spara</button>
   </div>
 
 </div>

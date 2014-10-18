@@ -30,13 +30,13 @@
         <div class="right">
           <!-- <span class="icon"></span> -->
           <span class="parent-task">{{task.parent}}</span>
-          <span class="alert" ng-show="task.reminder" ng-if="!task.finished&&!task.deleted" ng-class="{'overdue':isOverdue()}" ng-click="alertClick()">{{moment(task.reminderTime).format('D/M, HH:mm')}}</span>
+          <span class="alert" ng-show="task.reminder" ng-if="!task.finished&&!task.deleted" ng-class="{'overdue':isOverdue()}" ng-click="alertClick()">{{task.planned||!task.timer?moment(task.reminderTime).format(task.timer?'D/M, ':''+'HH:mm'):task.timeRemaining}}</span>
 
           <span class="task-text"
                 ng-click="task.expanded=!task.expanded"
                 ida-hold="newTaskTitle=task.title;$root.setModal('templates/modal.edit_task_name.html', task.id);">
             <span ng-show="task.planned" class="prio">{{durationLabel(task)}}</span>
-            <span ng-bind="(task.timeType==='exact'&&task.planned?'('+priorityLabel(task)+')'+(repeated&&task.repeated?' [upprepad]':'')+':':'')+task.title"></span>
+            <span ng-bind="(task.timeType==='exact'&&task.planned?'('+priorityLabel(task)+')'+(task.repeated?' [upprepad]':'')+':':'')+task.title"></span>
           </span>
 
           <span class="time-label">{{$root.timeLabel(task)}}</span>

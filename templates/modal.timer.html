@@ -23,12 +23,12 @@
         <div class="time-picker" ida-timepicker model-hours="$root.$timerHours" model-minutes="$root.$timerMinutes" ng-if="$root.$timerType==='today'" ng-init="$root.$timerHours=moment().add(1, 'hour').hours();$root.$timerMinutes=0;"></div>
       </div>
       <br>
-      <button class="start" ng-disabled="modal.$lock" ng-click="($root.$timerType==='period'?modal.task.setTimer(moment().add($root.$timerMinutes||30,'minutes').add($root.$timerHours||0,'hours').startOf('second').valueOf()):modal.task.setTimer(moment().hour($root.$timerHours).minute($root.$timerMinutes).startOf('minute').valueOf()));modal.$close('start');">Starta</button>
+      <button class="start" ng-disabled="modal.$lock" ng-click="($root.$timerType==='period'?modal.task.setTimer(moment().add($root.$timerMinutes||30,'minutes').add($root.$timerHours||0,'hours').startOf('second').valueOf(), true):modal.task.setTimer(moment().hour($root.$timerHours).minute($root.$timerMinutes).startOf('minute').valueOf()));modal.$close('start');">Starta</button>
       <button ng-if="modal.task.reminder" class="clear" ng-disabled="modal.$lock" ng-click="modal.task.setTimer();$tasks.save();modal.$close('remove');">Stäng av påminnelse</button>
     </div>
 
     <div ng-show="!modal.$lock&&modal.task.reminderTime>Date.now()" class="timer">
-      <div>{{modal.task.timeRemaining}}</div>
+      <div>{{modal.task.timer?modal.task.timeRemaining:moment(task.reminderTime).format('HH:mm')}}</div>
       <div class="buttons">
         <button class="clear" ng-disabled="modal.$lock" ng-click="modal.task.setTimer();$tasks.save();modal.$close('remove');">Ta bort</button>
         <button class="clear" ng-click="modal.task.setTimer();$tasks.save();">Ändra tid</button>

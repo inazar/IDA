@@ -27626,6 +27626,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       $location: $location,
       $sounds: $sounds,
       $sound: {},
+      $active: true,
       title: 'AHDH App',
       loadFocusTime: null,
       timeLeft: null,
@@ -27761,7 +27762,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           sound: noSound ? '' : 'task',
           title: 'Klar med '+task.title,
           template: '<div class="popup-text enforcement purple inset"><b>'+enforcements[Math.floor(Math.random()*enforcements.length)]+'</b></div>' +
-                    '<div class="popup-icon"><img src="/img/' + icons[Math.floor(Math.random()*icons.length)] + '"></div>' +
+                    '<div class="popup-icon"><img src="img/' + icons[Math.floor(Math.random()*icons.length)] + '"></div>' +
                     '<div class="popup-text"><em>Avklarade aktiviteter hittar du i Arkivet</em> (<i class="fa fa-archive"></i>)</div>',
           cancelText: 'Ångra',
           cancelType: '',
@@ -27802,6 +27803,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           task = $tasks.add(task);
         }
         return $modal('templates/modal.plan.html', task).$promise.then(function (obj) {
+          if (obj.focused) { task.durationType = true; }
           task.saveTask(obj.hours, obj.minutes);
           $rootScope.getTodoList();
           $route.reload();
@@ -28122,8 +28124,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
       notification.local.add({
         id:         'focus',
         date:       new Date(deadline),
-        title:      'Fokusera',
-        message:    'Fokusera timern har slutat...',
+        title:      'Sluta fokusera på ' + task.title,
         autoCancel: true,
       });
     });
@@ -28429,10 +28430,14 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
           return tp.depth === 2 && time && Math.floor(tp.start/1000)*1000 <= time && tp.end > time;
         },
         isValid: function (tp) {
+          var _time;
           if (tp.start === moment($scope.time).startOf('day').valueOf()) { return; }
           $scope.tp = tp;
           $q.when($scope.$validate ? $scope.$eval($scope.$validate) : true).then(function (agree) {
-            if (agree && !tp.week) { $scope.time = tp.start; }
+            if (agree && !tp.week) {
+              _time = moment($scope.time);
+              $scope.time = moment(tp.start).hours(_time.hour()).minutes(_time.minute());
+            }
           });
         },
         selectDepth: function(periods, depth, selection) {
@@ -28720,8 +28725,8 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
     template: '<div class="time-picker">' +
                 '<button ng-click="showPicker()" ng-if="$root.$cordova&&!type" class="timepicker-button">{{date|date:"HH:mm"}}</button>' +
                 '<form ng-if="!$root.$cordova||type">' +
-                  '<input type="number" class="timepicker-field" placeholder="0" min="0" max="{{type?99:23}}" ng-model="$parent.hours">' +
-                  ':<input type="number" class="timepicker-field" placeholder="{{placeholder}}" min="0" max="59" ng-model="$parent.minutes">' +
+                  '<input type="number" ng-focus="$parent.focus=true" class="timepicker-field" placeholder="0" min="0" max="{{type?99:23}}" ng-model="$parent.hours">' +
+                  ':<input type="number" ng-focus="$parent.focus=true" class="timepicker-field" placeholder="{{placeholder}}" min="0" max="59" ng-model="$parent.minutes">' +
                 '</form>' +
               '</div>',
     scope: {
@@ -28729,7 +28734,8 @@ App.directive('idaTimepicker', ['$timeout', '$window', function ($timeout, $wind
       hours: '=?modelHours',
       minutes: '=?modelMinutes',
       date: '=?modelDate',
-      placeholder: '@minutesDefault'
+      placeholder: '@minutesDefault',
+      focus: '=?focusField'
     },
     link: function ($scope) {
       if ($scope.$root.$cordova && $window.datePicker) {
@@ -29291,7 +29297,7 @@ App.service('idaConfig', function () {
       focus: 1
     },
     sounds: {
-      short: 'tada',
+      short: 'little-bells',
       long: 'clockalarm',
       task: 'tada',
       timer: 'clockalarm',
@@ -29544,17 +29550,19 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
           update = true;
         }
         if (reminder >= now) {
-          if (!task.planned) {
+          if (!task.planned && task.timer) {
             if ((duration = reminder - now) > 0) {
-              // hrs = Math.floor(duration / 3600);
-              // min = Math.floor((duration % 3600) / 60);
-              // sec = Math.floor((duration % 60));
-              // task.timeRemaining = (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '');
-              task._complete = false;
+              hrs = Math.floor(duration / 3600);
+              min = Math.floor((duration % 3600) / 60);
+              sec = Math.floor((duration % 60));
+              task.timeRemaining = (hrs ? hrs + 'h ' : '') + (hrs || min ? min + 'm ' : '') + (hrs || min || sec ? sec + 's ' : '');
+            } else {
+              task.timeRemaining = '0s';
+              task._complete = true;
             }
             update = true;
           }
-          if (!$rootScope._background && $rootScope.$active && (reminder === now)) {
+          if (reminder === now) {
             $rootScope.$sound = $sounds.play(this.planned ? (this.shortSignal ? 'short' : 'long') : 'long');
             if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
             update = false;
@@ -29805,10 +29813,11 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     this.repeatDays = this.repeatDays.indexOf(i) === -1 ? this.repeatDays.concat([i]) : _.without(this.repeatDays, i);
   };
 
-  Task.prototype.setTimer = function(time) {
+  Task.prototype.setTimer = function(time, timer) {
     $events.add('reminderSet');
     this.reminderTime = time || 0;
-    this.reminder = time ? true : false;
+    this.reminder = !!time;
+    this.timer = timer;
     if (!$window.plugin || !$window.plugin.notification || !$window.plugin.notification.local) { return; }
     var notification = $window.plugin.notification;
     notification.local.cancel(''+this.id);
@@ -29881,6 +29890,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     }
     var _this = this;
     this.timeUpdated = Date.now();
+    delete this.timer;
     if (this.timeType !== 'exact') { this.repeated = false; }
     else { this.repeated = this.repeatPeriod !== 'once'; }
     this.startTime = Math.floor(this.startTime / 1000) * 1000;
@@ -29905,12 +29915,12 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     if (this.timeType === 'exact') { delete this.endTime; }
     if (duration || hours || minutes) {
       this.duration = duration || (((hours || 0) * 3600000) + ((minutes || 0) * 60000));
-      if (this.duration !== $config.defaultDuration) {
+      if (!this.durationType && this.duration !== $config.defaultDuration) {
         this.durationType = true;
       }
     } else {
       this.duration = $config.defaultDuration;
-      this.durationType = false;
+      // this.durationType = false;
     }
     if (this.xDays) { this.xDays = Math.floor(this.xDays); }
     if (this.repeatLength) { this.repeatLength = Math.floor(this.repeatLength); }
@@ -30398,30 +30408,30 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         task.showInTodoUntil !== 0 && (!task.showInFromUntil || task.showInFromUntil > _now) &&
         (!task.showInTodoFrom || task.showInTodoFrom < _now)) {
         if (task.timeType === 'period') { // 1)
-          var _duration = moment.duration(task.endTime + 1 - task.startTime).days(),
+          var _duration = Math.ceil((task.endTime + 1 - task.startTime)/86400000),
               _end = task.endTime + 1 + shift;
           if (task.important) {
             if (task.complex) {
               _filter =
-                  (_duration <= 3 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 1) ||
-                  (_duration <= 8 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 2) ||
-                  (_duration <= 25 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 3) ||
-                  (moment.duration(_end - _now).days() <= 4);
+                  (_duration <= 3 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 1) ||
+                  (_duration <= 8 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 2) ||
+                  (_duration <= 25 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 3) ||
+                  (Math.ceil((_end - _now)/86400000) <= 4);
             } else {
               _filter =
-                  (_duration <= 2 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 1) ||
-                  (_duration <= 6 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 2) ||
-                  (_duration <= 13 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 3) ||
-                  (_duration <= 20 + _adjust[todoFilter] && moment.duration(_end - _now).days() <= 4) ||
-                  (moment.duration(_end - _now).days() <= 5);
+                  (_duration <= 2 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 1) ||
+                  (_duration <= 6 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 2) ||
+                  (_duration <= 13 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 3) ||
+                  (_duration <= 20 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 4) ||
+                  (Math.ceil((_end - _now)/86400000) <= 5);
             }
             if (todoFilter === 'week' && !_filter && !task.parent) {
               _filter =
-                  (_duration <= 6 && moment.duration(_end - _now).days() <= 2) ||
-                  (_duration <= 14 && moment.duration(_end - _now).days() <= 3) ||
-                  (_duration <= 21 && moment.duration(_end - _now).days() <= 4) ||
-                  (_duration <= 28 && moment.duration(_end - _now).days() <= 6) ||
-                  (moment.duration(_end - _now).days() <= 8);
+                  (_duration <= 6 && Math.ceil((_end - _now)/86400000) <= 2) ||
+                  (_duration <= 14 && Math.ceil((_end - _now)/86400000) <= 3) ||
+                  (_duration <= 21 && Math.ceil((_end - _now)/86400000) <= 4) ||
+                  (_duration <= 28 && Math.ceil((_end - _now)/86400000) <= 6) ||
+                  (Math.ceil((_end - _now)/86400000) <= 8);
             }
           }
           if (_filter) {
@@ -30431,7 +30441,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
             task._section = 3;
           }
         } else if (task.timeType === 'exact') { // 2)
-          _filter = moment.duration(task.startTime + shift - _now).days() <= _adjust[todoFilter];
+          _filter = Math.ceil((task.startTime + shift - _now)/86400000) <= _adjust[todoFilter];
           task._section = 2;
         }
       }
@@ -30442,8 +30452,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
       //    exact: [section (1)][starttime (9)][important (1)][complex 1][3] (15)
       // dates are encoded with 9 last digits which is 11 days max - perfectly fits to 1 week
       var value = 10 - task._section,
-          _duration = moment.duration(task.endTime + 1 - task.startTime).days(),
-          _tillEnd = moment.duration(task.endTime - Date.now()).days();
+          _duration = Math.ceil((task.endTime + 1 - task.startTime)/86400000),
+          _tillEnd = Math.ceil((task.endTime - Date.now())/86400000);
 
       if (task.timeType === 'period') {
         value = value * 10 + (task.important ? 1 : 0);
@@ -30571,7 +30581,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
 
                   if (task.timeType === 'period') {
 
-                    var x = Math.ceil((time.valueOf() - task.startTime) / 86400000),
+                    var x = Math.ceil((time.valueOf() - task.startTime) / 86400000) + 1,
                         d = Math.ceil((task.endTime - task.startTime) / 86400000),
                         f = 1 / d + ( x - ( d + 1 ) / 2 ) * 2 * s / ( d * d ),
                         o = 1+((d-1)/vp),

@@ -38,9 +38,6 @@
           <div id="top" ng-class="{'hide': hideTopNav}">
             <a class="nav" ng-click="showNav = !showNav"><i class="fa fa-bars"></i></a>
             <span ng-bind="title"></span>
-            <a class="clean ng-hide" ng-show="$tasks.findWhere({ checked: true })" ng-click="moveFinishedTasksToArchive()">
-              <i class="fa fa-archive"></i>
-            </a>
             <a class="avsluta ng-hide" ng-click="closeApp()" ng-show="$cordova.platform!=='iOS'&&page==='/todo'"><i class="fa fa-sign-out"></i></a>
             <a class="avsluta ng-hide" ng-click="$location.path('/todo')" ng-show="page!=='/todo'"><i class="fa fa-home"></i></a>
           </div>

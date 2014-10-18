@@ -1,6 +1,6 @@
 <div ida-calendar="modal.task.reminderTime" calendar-task="modal.task" class="calendar-page date-picker">
   <div class="confirmation">
-  	<div><b>"Påminn om {{task.title}}"</b></div>
+  	<div><b>Påminn om {{task.title}}</b></div>
     <span ng-bind="(time ? $root.moment(time).format('D MMMM YYYY') : '')"></span>
     <div ida-timepicker model-minutes="$minutes" model-hours="$hours"></div>
     <div class="modal-buttons">
