@@ -29562,13 +29562,19 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
             }
             update = true;
           }
-          if (reminder === now) {
+          if ($rootScope.$active && !$rootScope._background && reminder === now) {
             $rootScope.$sound = $sounds.play(this.planned ? (this.shortSignal ? 'short' : 'long') : 'long');
             if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') { $rootScope.$apply(); }
             update = false;
           }
         }
       }
+    }
+
+    if ($rootScope.$active && !$rootScope._background) {
+      setTimeout(function () {
+        $rootScope._background = false;
+      }, 1000);
     }
 
     if (update && $rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
@@ -30413,25 +30419,25 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
           if (task.important) {
             if (task.complex) {
               _filter =
-                  (_duration <= 3 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 1) ||
-                  (_duration <= 8 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 2) ||
-                  (_duration <= 25 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 3) ||
-                  (Math.ceil((_end - _now)/86400000) <= 4);
+                  (_duration <= 3 + _adjust[todoFilter] && Math.floor((_end - _now)/86400000) < 1) ||
+                  (_duration <= 8 + _adjust[todoFilter] && _duration > 3 + _adjust[todoFilter] && Math.floor((_end - _now)/86400000) < 2) ||
+                  (_duration <= 25 + _adjust[todoFilter] && _duration > 8 + _adjust[todoFilter] && Math.floor((_end - _now)/86400000) < 3) ||
+                  (_duration > 25 + _adjust[todoFilter] && Math.floor((_end - _now)/86400000) < 4);
             } else {
               _filter =
-                  (_duration <= 2 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 1) ||
-                  (_duration <= 6 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 2) ||
-                  (_duration <= 13 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 3) ||
-                  (_duration <= 20 + _adjust[todoFilter] && Math.ceil((_end - _now)/86400000) <= 4) ||
-                  (Math.ceil((_end - _now)/86400000) <= 5);
+                  (_duration <= 2 + _adjust[todoFilter] && Math.floor((_end - _now)/86400000) < 1) ||
+                  (_duration <= 6 + _adjust[todoFilter] && _duration > 2 + _adjust[todoFilter] && Math.floor((_end - _now)/86400000) < 2) ||
+                  (_duration <= 13 + _adjust[todoFilter] && _duration > 6 + _adjust[todoFilter] && Math.floor((_end - _now)/86400000) < 3) ||
+                  (_duration <= 20 + _adjust[todoFilter] && _duration > 13 + _adjust[todoFilter] && Math.floor((_end - _now)/86400000) < 4) ||
+                  (_duration > 20 + _adjust[todoFilter] && Math.floor((_end - _now)/86400000) < 5);
             }
             if (todoFilter === 'week' && !_filter && !task.parent) {
               _filter =
-                  (_duration <= 6 && Math.ceil((_end - _now)/86400000) <= 2) ||
-                  (_duration <= 14 && Math.ceil((_end - _now)/86400000) <= 3) ||
-                  (_duration <= 21 && Math.ceil((_end - _now)/86400000) <= 4) ||
-                  (_duration <= 28 && Math.ceil((_end - _now)/86400000) <= 6) ||
-                  (Math.ceil((_end - _now)/86400000) <= 8);
+                  (_duration <= 6 && Math.floor((_end - _now)/86400000) < 2) ||
+                  (_duration <= 14 && _duration > 6 && Math.floor((_end - _now)/86400000) < 3) ||
+                  (_duration <= 21 && _duration > 14 && Math.floor((_end - _now)/86400000) < 4) ||
+                  (_duration <= 28 && _duration > 21 && Math.floor((_end - _now)/86400000) < 6) ||
+                  (_duration > 28 && Math.floor((_end - _now)/86400000) < 8);
             }
           }
           if (_filter) {
@@ -30441,7 +30447,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
             task._section = 3;
           }
         } else if (task.timeType === 'exact') { // 2)
-          _filter = Math.ceil((task.startTime + shift - _now)/86400000) <= _adjust[todoFilter];
+          _filter = Math.floor((task.startTime + shift - _now)/86400000) <= _adjust[todoFilter];
           task._section = 2;
         }
       }
@@ -30453,7 +30459,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
       // dates are encoded with 9 last digits which is 11 days max - perfectly fits to 1 week
       var value = 10 - task._section,
           _duration = Math.ceil((task.endTime + 1 - task.startTime)/86400000),
-          _tillEnd = Math.ceil((task.endTime - Date.now())/86400000);
+          _tillEnd = Math.floor((task.endTime - Date.now())/86400000);
 
       if (task.timeType === 'period') {
         value = value * 10 + (task.important ? 1 : 0);
