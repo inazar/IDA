@@ -27680,7 +27680,12 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         return task;
       },
       closeApp: function(){
-        return (navigator.app && $rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) ? navigator.app.exitApp() : $location.path('/todo');
+        if (navigator.app && $rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) {
+          $notifications.stop();
+          navigator.app.exitApp();
+        } else {
+          $location.path('/todo');
+        }
       },
       clearTasks: function (which) {
         var icon, criteria, title;
@@ -27790,18 +27795,33 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       },
       editTask: function (id) {
         // find the task
-        var task = $tasks.get(id);
+        var task = $tasks.get(id), _task, start = moment().startOf('day').valueOf();
         if (task.repeatTask) {
           // if task is repeated
           task = $tasks.get(task.repeatTask)._strip();
-          var start = moment(task.startTime);
+          start = moment(task.startTime);
           task.startTime = moment().hours(start.hours()).minutes(start.minutes()).startOf('minute').valueOf();
           if (task.repeatType === 'date') {
             task.repeatLimit = moment(task.repeatLimit).add('milliseconds', task.startTime - start.valueOf());
           }
           delete task.id;
           task = $tasks.add(task);
+        } else {
+          if (task.timeType === 'exact' && task.startTime < start || task.timeType === 'period' && task.endTime < start) {
+            _task = task._strip();
+            task.deleted = true;
+            task.checked = false;
+            delete _task.id;
+            start = moment(_task.startTime);
+            if (_task.timeType === 'exact') {
+               _task.startTime = moment().hours(start.hours()).minutes(start.minutes()).startOf('minute').valueOf();
+            } else if (_task.timeType === 'period') {
+               _task.endTime = moment().endOf('day').valueOf();
+            }
+            task = $tasks.add(_task);
+          }
         }
+        task._hidden = true;
         return $modal('templates/modal.plan.html', task).$promise.then(function (obj) {
           if (obj.focused) { task.durationType = true; }
           task.saveTask(obj.hours, obj.minutes);
@@ -28124,7 +28144,8 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
       notification.local.add({
         id:         'focus',
         date:       new Date(deadline),
-        title:      'Sluta fokusera på ' + task.title,
+        title:      'Avsluta din fokustid!', 
+        message:    'Dags av sluta fokusrea på ' + task.title,
         autoCancel: true,
       });
     });
@@ -28188,15 +28209,17 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
         if (timeLeft > 1) {
           $timeout(repeat, 1000);
         } else {
-          if (powerManagement) { powerManagement.release(); }
-          if (notification) { _stopNotifying(); }
-          if (!$scope.cancelled) {
-            if ($scope.$root.$active) {
-              ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(_onOver);
-            } else {
-              _onOver();
-            }
-          } else { $scope.cancelled = true; }
+          $timeout(function () {
+            if (powerManagement) { powerManagement.release(); }
+            if (notification) { _stopNotifying(); }
+            if (!$scope.cancelled) {
+              if ($scope.$root.$active) {
+                ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(_onOver);
+              } else {
+                _onOver();
+              }
+            } else { $scope.cancelled = true; }
+          });
         }
       });
     },
@@ -28304,6 +28327,7 @@ App.controller('OrganiseCtrl', ['$scope', '$timeout', '$routeParams', '$title', 
   $scope.$root.title = $title;
 
   angular.extend($scope, {
+    organize: true,
     filter: function () {
       var tasks = $tasks.filter({ deleted: false, finished: false, isChild: false, planned: true }), i;
       $scope.children = false;
@@ -29749,11 +29773,15 @@ App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout,
     }
   };
 
+  Sounds.prototype.getFile = function(sound) {
+    return 'file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3');
+  };
+
   Sounds.prototype.register = function() {
     var sound, _this = this;
     Media.prototype.onStop = Audio.prototype.onStop;
     function _register(sound) {
-      var self = _this.sounds[sound] = new Media('file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.mp3'), function () {
+      var self = _this.sounds[sound] = new Media(_this.getFile(sound), function () {
         if (typeof self._onStop === 'function') { self._onStop(); }
       });
     }
@@ -29812,6 +29840,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     delete clone._parent;
     delete clone._modal;
     delete clone._background;
+    delete clone._hidden;
     return clone;
   };
 
@@ -29835,7 +29864,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         title:      'Påminnelse',  // The title of the message
         // repeat:     String,  // Has the options of 'hourly', 'daily', 'weekly', 'monthly', 'yearly'
         // badge:      Number,  // Displays number badge to notification
-        // sound:      String,  // A sound to be played
+        sound:      $sounds.getFile($config.sounds[this.shortSignal ? 'short' : 'long']), // A sound to be played
         // json:       String,  // Data to be passed through the notification
         autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
         // ongoing:    Boolean, // Prevent clearing of notification (Android only)
@@ -29897,6 +29926,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     var _this = this;
     this.timeUpdated = Date.now();
     delete this.timer;
+    delete this._hidden;
     if (this.timeType !== 'exact') { this.repeated = false; }
     else { this.repeated = this.repeatPeriod !== 'once'; }
     this.startTime = Math.floor(this.startTime / 1000) * 1000;
@@ -30357,7 +30387,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     return _.reduce(
       _.sortBy(
         _.filter(_this.tasks, function (task) {
-          var valid = task.deleted === false && task.planned === true && task.finished === false;
+          var valid = task.deleted === false && task.planned === true && task.finished === false && !task._hidden;
           if (task.timeType === 'exact') {
             return valid && task.startTime >= start && task.startTime < end;
           } else if (task.timeType === 'period') {

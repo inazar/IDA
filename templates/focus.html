@@ -7,7 +7,7 @@
 
   <p class="task-label" ng-show="timeLeft > 0&&showFocusInputs" ng-bind="task.title"></p>
 
-  <button ng-show="!showFocusInputs&&timeLeft==0" ng-click="$tasks.collapse();showFocusInputs=true;title='Fokusera på...';">Starta timer igen</button>
+  <button ng-show="!showFocusInputs&&timeLeft==0" ng-click="$tasks.collapse();showFocusInputs=true;$root.timeLeft = 10;;title='Fokusera på...';">Starta timer igen</button>
 
   <div id="duration-picker" ng-hide="timeLeft > 0 || !showFocusInputs"><!--
   --><label>timmar</label><!--
