@@ -29781,7 +29781,7 @@ App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout,
   };
 
   Sounds.prototype.getFile = function(sound) {
-    return 'file://' + location.pathname.replace('index.html', 'sounds/'+sound+this.type);
+    return 'sounds/'+sound+this.type;
   };
 
   Sounds.prototype.register = function() {
