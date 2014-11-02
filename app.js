@@ -29770,7 +29770,7 @@ App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout,
         sound.pause();
         sound.currentTime = 0;
       } else {
-        if (sound.isPlaying()) { sound.stop(); }
+        sound.stop();
       }
     } else {
       for (sound in this.sounds) {
