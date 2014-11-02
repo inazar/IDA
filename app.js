@@ -29857,7 +29857,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     var notification = $window.plugin.notification;
     notification.local.cancel(''+this.id);
     if (this.reminderTime) {
-      console.log('sound file: /www/sounds/' + $config.sounds[this.shortSignal ? 'short' : 'long'] + '.mp3');
+      console.log('sound file: www/sounds/' + $config.sounds[this.shortSignal ? 'short' : 'long'] + '.mp3');
       notification.local.add({
         id:         ''+this.id,  // A unique id of the notification
         date:       new Date(this.reminderTime),    // This expects a date object
@@ -29865,7 +29865,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         title:      'Påminnelse',  // The title of the message
         // repeat:     String,  // Has the options of 'hourly', 'daily', 'weekly', 'monthly', 'yearly'
         // badge:      Number,  // Displays number badge to notification
-        sound:      '/www/sounds/' + $config.sounds[this.shortSignal ? 'short' : 'long'] + '.mp3', // A sound to be played
+        sound:      'www/sounds/' + $config.sounds[this.shortSignal ? 'short' : 'long'] + '.mp3', // A sound to be played
         // json:       String,  // Data to be passed through the notification
         autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
         // ongoing:    Boolean, // Prevent clearing of notification (Android only)
