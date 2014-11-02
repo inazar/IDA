@@ -28150,7 +28150,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
         date:       new Date(deadline),
         title:      'Avsluta din fokustid!', 
         message:    'Dags av sluta fokusrea på ' + task.title,
-        sound:      '/www/sounds/' + $config.sounds.focus + $sounds.type,
+        sound:      $sounds.getFile('focus'),
         autoCancel: true,
       });
     });
