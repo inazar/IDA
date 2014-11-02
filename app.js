@@ -28022,7 +28022,11 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         $window.cordova.getAppVersion(function (ver) { $rootScope.$version = ver; });
       }
       $document[0].addEventListener('backbutton', function() { return false; }, false);
-      if ($window.device && $window.device.platform === 'Android') { $sounds.register(); }
+      if ($window.device && $window.device.platform === 'Android') {
+        $sounds.register();
+      } else {
+        $sounds.type = '.caf';
+      }
       if ($window.plugin && (notification = $window.plugin.notification) && (vibrate = notification.vibrate)) {
         notification.local.ontrigger = function (id, state) {
           if (id === 'focus') {
@@ -29722,7 +29726,7 @@ App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout,
     this.labels = {};
     sounds = sounds || {};
     for (sound in sounds) {
-      this.sounds[sound] = new Audio('sounds/'+sound+'.caf');
+      this.sounds[sound] = new Audio('sounds/'+sound+this.type);
       this.sounds[sound].addEventListener('ended', _stopListener(this.sounds[sound]));
       this.sounds[sound].addEventListener('pause', _stopListener(this.sounds[sound]));
       this.labels[sound] = sounds[sound];
@@ -29730,6 +29734,8 @@ App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout,
   };
 
   Audio.prototype.onStop = function(callback) { this._onStop = callback; };
+
+  Sounds.prototype.type = '.mp3';
 
   Sounds.prototype.play = function(type) {
     var name = $config.sounds[type], sound, volume, _this = this, d = $q.defer(), res;
@@ -29764,7 +29770,7 @@ App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout,
         sound.pause();
         sound.currentTime = 0;
       } else {
-        sound.stop();
+        if (sound.isPlaying()) { sound.stop(); }
       }
     } else {
       for (sound in this.sounds) {
@@ -29774,7 +29780,7 @@ App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout,
   };
 
   Sounds.prototype.getFile = function(sound) {
-    return 'file://' + location.pathname.replace('index.html', 'sounds/'+sound+'.caf');
+    return 'file://' + location.pathname.replace('index.html', 'sounds/'+sound+this.type);
   };
 
   Sounds.prototype.register = function() {
@@ -29865,7 +29871,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         title:      'Påminnelse',  // The title of the message
         // repeat:     String,  // Has the options of 'hourly', 'daily', 'weekly', 'monthly', 'yearly'
         // badge:      Number,  // Displays number badge to notification
-        sound:      'sounds/' + $config.sounds[this.shortSignal ? 'short' : 'long'] + '.caf', // A sound to be played
+        sound:      'sounds/' + $config.sounds[this.shortSignal ? 'short' : 'long'] + $sounds.type, // A sound to be played
         // json:       String,  // Data to be passed through the notification
         autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
         // ongoing:    Boolean, // Prevent clearing of notification (Android only)
