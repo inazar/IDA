@@ -28150,6 +28150,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
         date:       new Date(deadline),
         title:      'Avsluta din fokustid!', 
         message:    'Dags av sluta fokusrea på ' + task.title,
+        sound:      '/www/sounds/' + $config.sounds.focus + $sounds.type,
         autoCancel: true,
       });
     });
@@ -29871,7 +29872,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         title:      'Påminnelse',  // The title of the message
         // repeat:     String,  // Has the options of 'hourly', 'daily', 'weekly', 'monthly', 'yearly'
         // badge:      Number,  // Displays number badge to notification
-        sound:      'sounds/' + $config.sounds[this.shortSignal ? 'short' : 'long'] + $sounds.type, // A sound to be played
+        sound:      'www/sounds/' + $config.sounds[this.shortSignal ? 'short' : 'long'] + $sounds.type, // A sound to be played
         // json:       String,  // Data to be passed through the notification
         autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
         // ongoing:    Boolean, // Prevent clearing of notification (Android only)
