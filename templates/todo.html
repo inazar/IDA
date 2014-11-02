@@ -26,7 +26,7 @@
       </label>
     </h2>
     <ul class="todo-list">
-      <li class="list-item" ng-repeat="task in $root.$list track by $index" ida-item="task"></li>
+      <li class="list-item" ng-class="{'section-divider':$root.$list[$index-1]&&$root.$list[$index-1]._section<task._section}" ng-repeat="task in $root.$list track by $index" ida-item="task"></li>
     </ul>
   </div>
   <br>

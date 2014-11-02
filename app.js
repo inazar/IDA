@@ -28150,7 +28150,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
         date:       new Date(deadline),
         title:      'Avsluta din fokustid!', 
         message:    'Dags av sluta fokusrea på ' + task.title,
-        sound:      $sounds.getFile($config.sounds.focus),
+        // sound:      $sounds.getFile($config.sounds.focus),
         autoCancel: true,
       });
     });
@@ -29784,23 +29784,23 @@ App.service('idaSounds', ['$q', '$timeout', '$window', 'idaConfig', function ($q
     return 'file://' + location.pathname.replace('index.html', 'sounds/'+sound+this.type);
   };
 
-  Sounds.prototype.getFullPath = function(sound) {
-    var resolveLocalFileSystemURL = $window.resolveLocalFileSystemURL,
-        file = this.getFile(sound), d = $q.defer();
-    if (resolveLocalFileSystemURL) {
-      resolveLocalFileSystemURL(file, function (fileEntry) {
-        console.log('Resolved: '+fileEntry.fullPath);
-        d.resolve(fileEntry.fullPath);
-      }, function (e) {
-        console.log('Resolve error: '+e.target.error.code+', '+file);
-        d.resolve(file);
-      });
-    } else {
-      console.log('Resolve direct: '+file);
-      d.resolve(file);
-    }
-    return d.promise;
-  };
+  // Sounds.prototype.getFullPath = function(sound) {
+  //   var resolveLocalFileSystemURL = $window.resolveLocalFileSystemURL,
+  //       file = this.getFile(sound), d = $q.defer();
+  //   if (resolveLocalFileSystemURL) {
+  //     resolveLocalFileSystemURL(file, function (fileEntry) {
+  //       console.log('Resolved: '+fileEntry.fullPath);
+  //       d.resolve(fileEntry.fullPath);
+  //     }, function (e) {
+  //       console.log('Resolve error: '+e.target.error.code+', '+file);
+  //       d.resolve(file);
+  //     });
+  //   } else {
+  //     console.log('Resolve direct: '+file);
+  //     d.resolve(file);
+  //   }
+  //   return d.promise;
+  // };
 
   Sounds.prototype.register = function() {
     var sound, _this = this;
@@ -29866,6 +29866,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     delete clone._modal;
     delete clone._background;
     delete clone._hidden;
+    delete clone._section;
     return clone;
   };
 
@@ -29882,19 +29883,17 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     var notification = $window.plugin.notification;
     notification.local.cancel(''+this.id);
     if (this.reminderTime) {
-      $sounds.getFullPath($config.sounds[this.shortSignal ? 'short' : 'long']).then(function (path) {
-        notification.local.add({
-          id:         ''+this.id,  // A unique id of the notification
-          date:       new Date(this.reminderTime),    // This expects a date object
-          message:    this.title,  // The message that is displayed
-          title:      'Påminnelse',  // The title of the message
-          // repeat:     String,  // Has the options of 'hourly', 'daily', 'weekly', 'monthly', 'yearly'
-          // badge:      Number,  // Displays number badge to notification
-          sound:      path, // A sound to be played
-          // json:       String,  // Data to be passed through the notification
-          autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
-          // ongoing:    Boolean, // Prevent clearing of notification (Android only)
-        });
+      notification.local.add({
+        id:         ''+this.id,  // A unique id of the notification
+        date:       new Date(this.reminderTime),    // This expects a date object
+        message:    this.title,  // The message that is displayed
+        title:      'Påminnelse',  // The title of the message
+        // repeat:     String,  // Has the options of 'hourly', 'daily', 'weekly', 'monthly', 'yearly'
+        // badge:      Number,  // Displays number badge to notification
+        // sound:      $sounds.getFile($config.sounds[this.shortSignal ? 'short' : 'long']), // A sound to be played
+        // json:       String,  // Data to be passed through the notification
+        autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
+        // ongoing:    Boolean, // Prevent clearing of notification (Android only)
       });
     }
   };
@@ -30511,25 +30510,25 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
       return _filter;
     }), function (task) {
       // sorting (decimal places):
-      //    period: [section (1)][important (1)][till end (2)][duration (2)][creation(9)] (15)
-      //    exact: [section (1)][starttime (9)][important (1)][complex 1][3] (15)
+      //    period: [section (1)][important (1)][till end (2)][duration (2)][updated(9)] (15)
+      //    exact: [section (1)][starttime (9)][important (1)][0][3] (15)
       // dates are encoded with 9 last digits which is 11 days max - perfectly fits to 1 week
       var value = 10 - task._section,
           _duration = Math.ceil((task.endTime + 1 - task.startTime)/86400000),
           _tillEnd = Math.floor((task.endTime - Date.now())/86400000);
 
       if (task.timeType === 'period') {
-        value = value * 10 + (task.important ? 1 : 0);
-        value = value * 100 + (_tillEnd < 100 ? _tillEnd : 99);
+        value = value * 10 + (task.important ? (task.complex ? 3 : 4) : (task.complex ? 1 : 2 ));
+        value = value * 100 + 100 - (_tillEnd < 100 ? _tillEnd : 100);
         value = value * 100 + (_duration < 100 ? _duration : 99);
         value = value * _bil + (task.timeUpdated % _bil);
       } else {
-        value = value * (_bil + 1) - (task.startTime % _bil);
-        value = value * 10 + (task.important ? 1 : 0);
-        value = value * 10 + (task.complex ? 1 : 0);
-        value = value * _K + (task.timeUpdated % _bil);
+        value = value * _bil + (task.startTime % _bil);
+        value = value * 10 + (task.important ? (task.complex ? 3 : 4) : (task.complex ? 1 : 2 ));
+        value = value * 10;
+        value = value * _K;
       }
-      delete task._section;
+      console.log(task._section, value);
       return -value;
     });
   };

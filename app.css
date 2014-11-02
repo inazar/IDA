@@ -4837,6 +4837,9 @@ div.focus-distraction-list-confirmation-modal {
   .list-item .list-item > div.is-child > div > div.right > div.right {
     border-left: 10px solid #a40aaa; }
 
+.list-item.section-divider {
+  border-top: 3px solid #a40aaa; }
+
 @keyframes blink {
   0% {
     opacity: 0.1; }
