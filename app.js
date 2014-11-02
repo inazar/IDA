@@ -29785,14 +29785,14 @@ App.service('idaSounds', ['$q', '$timeout', '$window', 'idaConfig', function ($q
   };
 
   Sounds.prototype.getFullPath = function(sound) {
-    var resolveLocalFileSystemURI = $window.resolveLocalFileSystemURI,
+    var resolveLocalFileSystemURL = $window.resolveLocalFileSystemURL,
         file = this.getFile(sound), d = $q.defer();
-    if (resolveLocalFileSystemURI) {
-      resolveLocalFileSystemURI(file, function (fileEntry) {
+    if (resolveLocalFileSystemURL) {
+      resolveLocalFileSystemURL(file, function (fileEntry) {
         console.log('Resolved: '+fileEntry.fullPath);
         d.resolve(fileEntry.fullPath);
       }, function (e) {
-        console.log('Resolve errpr: '+e.target.error.code+', '+file);
+        console.log('Resolve error: '+e.target.error.code+', '+file);
         d.resolve(file);
       });
     } else {
