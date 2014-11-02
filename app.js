@@ -29713,7 +29713,7 @@ App.service('idaPopups', function () {
 
 /* jshint strict: false */
 /* global App, Audio, Media */
-App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout, $config) {
+App.service('idaSounds', ['$q', '$timeout', '$window', 'idaConfig', function ($q, $timeout, $window, $config) {
 
   function _stopListener (audio) {
     return function () {
@@ -29781,7 +29781,25 @@ App.service('idaSounds', ['$q', '$timeout', 'idaConfig', function ($q, $timeout,
   };
 
   Sounds.prototype.getFile = function(sound) {
-    return location.pathname.replace('index.html', 'sounds/'+sound+this.type);
+    return 'file://' + location.pathname.replace('index.html', 'sounds/'+sound+this.type);
+  };
+
+  Sounds.prototype.getFullPath = function(sound) {
+    var resolveLocalFileSystemURI = $window.resolveLocalFileSystemURI,
+        file = this.getFile(sound), d = $q.defer();
+    if (resolveLocalFileSystemURI) {
+      resolveLocalFileSystemURI(file, function (fileEntry) {
+        console.log('Resolved: '+fileEntry.fullPath);
+        d.resolve(fileEntry.fullPath);
+      }, function (e) {
+        console.log('Resolve errpr: '+e.target.error.code+', '+file);
+        d.resolve(file);
+      });
+    } else {
+      console.log('Resolve direct: '+file);
+      d.resolve(file);
+    }
+    return d.promise;
   };
 
   Sounds.prototype.register = function() {
@@ -29864,18 +29882,19 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     var notification = $window.plugin.notification;
     notification.local.cancel(''+this.id);
     if (this.reminderTime) {
-      console.log('sound file: www/sounds/' + $config.sounds[this.shortSignal ? 'short' : 'long'] + '.mp3');
-      notification.local.add({
-        id:         ''+this.id,  // A unique id of the notification
-        date:       new Date(this.reminderTime),    // This expects a date object
-        message:    this.title,  // The message that is displayed
-        title:      'Påminnelse',  // The title of the message
-        // repeat:     String,  // Has the options of 'hourly', 'daily', 'weekly', 'monthly', 'yearly'
-        // badge:      Number,  // Displays number badge to notification
-        sound:      $sounds.getFile($config.sounds[this.shortSignal ? 'short' : 'long']), // A sound to be played
-        // json:       String,  // Data to be passed through the notification
-        autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
-        // ongoing:    Boolean, // Prevent clearing of notification (Android only)
+      $sounds.getFullPath($config.sounds[this.shortSignal ? 'short' : 'long']).then(function (path) {
+        notification.local.add({
+          id:         ''+this.id,  // A unique id of the notification
+          date:       new Date(this.reminderTime),    // This expects a date object
+          message:    this.title,  // The message that is displayed
+          title:      'Påminnelse',  // The title of the message
+          // repeat:     String,  // Has the options of 'hourly', 'daily', 'weekly', 'monthly', 'yearly'
+          // badge:      Number,  // Displays number badge to notification
+          sound:      path, // A sound to be played
+          // json:       String,  // Data to be passed through the notification
+          autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
+          // ongoing:    Boolean, // Prevent clearing of notification (Android only)
+        });
       });
     }
   };
