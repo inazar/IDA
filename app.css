@@ -3462,7 +3462,7 @@ div.focus-distraction-list-confirmation-modal {
   background: #eee;
   width: 100%;
   padding: 10px;
-  text-align: right; }
+  text-align: center; }
   .confirmation.reset-all-tasks {
     text-align: center; }
     .confirmation.reset-all-tasks > a {
@@ -3521,7 +3521,7 @@ div.focus-distraction-list-confirmation-modal {
     .confirmation > button:disabled {
       opacity: 0.3; }
   .confirmation .modal-buttons {
-    text-align: right; }
+    text-align: center; }
     .confirmation .modal-buttons > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -5816,7 +5816,7 @@ div.calendar-page.date-picker {
     width: 100%;
     line-height: 40px;
     padding: 15px 20px 15px;
-    text-align: left; }
+    text-align: center; }
     .date-picker > div.confirmation > span {
       padding-right: 10px;
       display: inline-block; }
@@ -5847,7 +5847,6 @@ div.calendar-page.date-picker {
       font-size: 1.2em;
       padding: 13px 0 14px;
       width: auto;
-      float: right;
       margin-top: 5px;
       padding: 5px 20px 6px; }
       .date-picker > div.confirmation > button:active, .date-picker > div.confirmation > button.active {

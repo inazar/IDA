@@ -28149,7 +28149,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
         id:         'focus',
         date:       new Date(deadline),
         title:      'Avsluta din fokustid!', 
-        message:    'Dags av sluta fokusrea på ' + task.title,
+        message:    'Sluta fokusera på ' + task.title,
         // sound:      $sounds.getFile($config.sounds.focus),
         autoCancel: true,
       });
@@ -30523,7 +30523,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         value = value * 100 + (_duration < 100 ? _duration : 99);
         value = value * _bil + (task.timeUpdated % _bil);
       } else {
-        value = value * _bil + (task.startTime % _bil);
+        value = (value + 1) * _bil - (task.startTime % _bil);
         value = value * 10 + (task.important ? (task.complex ? 3 : 4) : (task.complex ? 1 : 2 ));
         value = value * 10;
         value = value * _K;
