@@ -1,7 +1,12 @@
 (function(previousOnError) {
 
 window.onerror = function(errorMsg, url, lineNumber) {
-  var formattedMsg = url+":"+lineNumber+" "+errorMsg;
+  var formattedMsg;
+  if (typeof errorMsg === 'string') {
+    formattedMsg = url+":"+lineNumber+" "+errorMsg;
+  } else {
+    formattedMsg = errorMsg.name+(errorMsg.lineNumber?'('+errorMsg.lineNumber+'): ':': ')+(errorMsg.message);
+  }
   console.log(formattedMsg);
   alert(formattedMsg);
 
@@ -27759,11 +27764,22 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           'fireworks.gif',
           'star.png',
           'thumb.png',
-          'thumbs-up.png'
+          'thumbs-up.png',
+          'check.png',
+          'check1.png',
+          'cup.png',
+          'hamta.png',
+          'hamta1.png',
+          'skyline.png',
+          'thumb1.png',
+          'thumbsup.png',
+          'thumbup.png',
+          'wow.png'
         ];
         task.checked = true;
         return $popup.confirm({
           type: 'taskComplete',
+          popupClass: 'popup-complete',
           sound: noSound ? '' : 'task',
           title: 'Klar med '+task.title,
           template: '<div class="popup-text enforcement purple inset"><b>'+enforcements[Math.floor(Math.random()*enforcements.length)]+'</b></div>' +
@@ -27809,8 +27825,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         } else {
           if (task.timeType === 'exact' && task.startTime < start || task.timeType === 'period' && task.endTime < start) {
             _task = task._strip();
-            task.deleted = true;
-            task.checked = false;
+            $tasks.kill(task);
             delete _task.id;
             start = moment(_task.startTime);
             if (_task.timeType === 'exact') {
@@ -27826,11 +27841,12 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           if (obj.focused) { task.durationType = true; }
           task.saveTask(obj.hours, obj.minutes);
           $rootScope.getTodoList();
-          $route.reload();
+          if ($rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) { $route.reload(); }
           return task;
         }, function () {
           $tasks.reload();
           $rootScope.getTodoList();
+          if ($rootScope.page.indexOf('/fokusera-pa-aktivitet') !== 0) { $route.reload(); }
           return $q.reject();
         });
       },
@@ -28163,24 +28179,26 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
   }
 
   function _onOver() {
-    if (notification) { notification.local.cancel('focus'); }
-    $scope.$root.timeLeft = 0;
-    if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
-      $scope.$root.showFocusInputs = false;
-      $scope.$root.showNav = false;
-      $scope.title = 'Gå igenom Distraktionslistan';
-    }
-    // $scope.completeTask($scope.task).then(function (agree) {
-    //   if (agree && !$tasks.distractionListTasks($scope.loadFocusTime).length) {
-    //     $timeout(function () { $location.path('/todo'); });
-    //   } else {
-    //       if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
-    //       $scope.$root.showFocusInputs = false;
-    //       $scope.$root.showNav = false;
-    //       $scope.title = 'Gå igenom Distraktionslistan';
-    //     }
-    //   }
-    // });
+    $timeout(function () {
+      if (notification) { notification.local.cancel('focus'); }
+      $scope.$root.timeLeft = 0;
+      if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
+        $scope.$root.showFocusInputs = false;
+        $scope.$root.showNav = false;
+        $scope.title = 'Gå igenom Distraktionslistan';
+      }
+      // $scope.completeTask($scope.task).then(function (agree) {
+      //   if (agree && !$tasks.distractionListTasks($scope.loadFocusTime).length) {
+      //     $timeout(function () { $location.path('/todo'); });
+      //   } else {
+      //       if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
+      //       $scope.$root.showFocusInputs = false;
+      //       $scope.$root.showNav = false;
+      //       $scope.title = 'Gå igenom Distraktionslistan';
+      //     }
+      //   }
+      // });
+    });
   }
 
   $scope.$on('ida:focus', _onOver);
@@ -28498,8 +28516,10 @@ App.directive('idaCalendar', ['idaTasks', '$timeout', '$q', '$location', '$ancho
         {start: $scope.periods[0].start, end: $scope.periods[0].end},
         {start: $scope.periods[i].start, end: $scope.periods[i].end}
       ];
-      $transclude($scope, function (clone) { element.append(clone); });
-      $scope.scrollTo('tag'+moment($scope.time).startOf('day').valueOf());
+      $transclude($scope, function (clone) {
+        element.append(clone);
+        $timeout(function () { $scope.scrollTo('tag'+moment($scope.time).startOf('day').valueOf()); });
+      });
     }
   };
 }]);
@@ -28602,6 +28622,14 @@ App.directive('idaItem', ['idaConfig', function ($config) {
             return label;
           } else {
             return $scope.priorityLabel(task);
+          }
+        },
+        alertLabel: function (task) {
+          var format = (moment(task.reminderTime).startOf('day').valueOf() !== moment().startOf('day').valueOf() ? 'D/M, ' : '')+'HH:mm';
+          if  (task.planned || !task.timer) {
+            return moment(task.reminderTime).format(format);
+          } else {
+            return task.timeRemaining;
           }
         },
         alertClick: function () {
@@ -28850,7 +28878,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
     stackPushDelay: 50
   };
   var POPUP_TPL =
-    '<div class="popup">' +
+    '<div class="popup {{popupClass}}">' +
       '<div class="popup-box">' +
         '<div class="popup-head" ng-if="title">' +
           '<h3 class="popup-title" ng-bind-html="title"></h3>' +
@@ -28938,6 +28966,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
         subTitle: options.subTitle,
         withLimit: options.withLimit,
         withPrevent: options.withPrevent,
+        popupClass: options.popupClass,
         $sound: options.sound,
         $$_pData: {},
         $prevent: function () { $popups.prevent(options.type); },
@@ -30394,6 +30423,11 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     this.save();
   };
 
+  Tasks.prototype.kill = function (id) {
+    id = id.id || id;
+    this.tasks = _.reject(this.tasks, function(t) { return t.id !== id; });
+  };
+
   // Retrieve task children
   Tasks.prototype.getChildren = function (ids) {
     var _this = this;
@@ -30528,7 +30562,6 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         value = value * 10;
         value = value * _K;
       }
-      console.log(task._section, value);
       return -value;
     });
   };

@@ -7,7 +7,7 @@
 
   <p class="task-label" ng-show="timeLeft > 0&&showFocusInputs" ng-bind="task.title"></p>
 
-  <button ng-show="!showFocusInputs&&timeLeft==0" ng-click="$tasks.collapse();showFocusInputs=true;$root.timeLeft = 10;;title='Fokusera på...';">Starta timer igen</button>
+  <button ng-show="!showFocusInputs&&timeLeft==0" ng-click="$tasks.collapse();showFocusInputs=true;$root.timeLeft=0;title='Fokusera på...';">Starta timer igen</button>
 
   <div id="duration-picker" ng-hide="timeLeft > 0 || !showFocusInputs"><!--
   --><label>timmar</label><!--
@@ -49,10 +49,13 @@
     </ul>
   </div>
 
-  <p class="distraction-list-empty" ng-hide="timeLeft > 0 || $parent.showFocusInputs || $tasks.distractionListTasks(loadFocusTime).length > 0">
-    Du har gått igenom hela Distraktionslistan. Bra jobbat!
-    <a ng-href="#/todo">Till Att Göra-listan</a>
-  </p>
+  <div class="distraction-list-empty" ng-hide="timeLeft>0||$parent.showFocusInputs||$tasks.distractionListTasks(loadFocusTime).length>0">
+    <ul><li ng-if="timeLeft==0" class="list-item current-task" ida-item="task"></li></ul>
+    <p>
+      Du har gått igenom hela Distraktionslistan. Bra jobbat!
+      <a ng-href="#/todo">Till Att Göra-listan</a>
+    </p>
+  </div>
 
   <br>
   <span id="focusBottom"></span>
