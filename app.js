@@ -5,7 +5,8 @@ window.onerror = function(errorMsg, url, lineNumber) {
   if (typeof errorMsg === 'string') {
     formattedMsg = url+":"+lineNumber+" "+errorMsg;
   } else {
-    formattedMsg = errorMsg.name+(errorMsg.lineNumber?'('+errorMsg.lineNumber+'): ':': ')+(errorMsg.message);
+    formattedMsg = angular.toJson(errorMsg);
+    // formattedMsg = errorMsg.name+(errorMsg.lineNumber?'('+errorMsg.lineNumber+'): ':': ')+(errorMsg.message);
   }
   console.log(formattedMsg);
   alert(formattedMsg);
@@ -28232,6 +28233,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
         if (timeLeft > 1) {
           $timeout(repeat, 1000);
         } else {
+          $scope.$root.timeLeft = 10;
           $timeout(function () {
             if (powerManagement) { powerManagement.release(); }
             if (notification) { _stopNotifying(); }
