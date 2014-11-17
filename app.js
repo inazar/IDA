@@ -5,7 +5,10 @@ window.onerror = function(errorMsg, url, lineNumber) {
   if (typeof errorMsg === 'string') {
     formattedMsg = url+":"+lineNumber+" "+errorMsg;
   } else {
-    formattedMsg = angular.toJson(errorMsg);
+    formattedMsg = '';
+    for (var key in errorMsg) {
+      formattedMsg += "'"+key+"' => '"+errorMsg[key]+"'";
+    }
     // formattedMsg = errorMsg.name+(errorMsg.lineNumber?'('+errorMsg.lineNumber+'): ':': ')+(errorMsg.message);
   }
   console.log(formattedMsg);
