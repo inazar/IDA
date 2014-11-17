@@ -42,7 +42,7 @@
     <span ng-click="showDistractionListForXSeconds()"><i class="fa fa-ban"></i> Distraktionslista</span>
     <p ng-if="timeLeft==0">Fortsätt fokusera genom att starta timern igen eller gå igenom allt på Distraktionslistan och aktiviteten du nyss jobbat med.</p>
     <ul ng-show="timeLeft==0||showDistractionList" ng-class="{'disabled': timeLeft > 0}">
-      <li ng-if="timeLeft==0" class="list-item current-task" ida-item="task"></li>
+      <li ng-if="timeLeft==0&&!task.complete&&!task.deleted" class="list-item current-task" ida-item="task"></li>
       <li class="list-item"
           ng-repeat="dtask in $tasks.distractionListTasks(loadFocusTime) | orderBy:['-updated'] track by $index"
           ida-item="dtask"></li>
@@ -50,7 +50,7 @@
   </div>
 
   <div class="distraction-list-empty" ng-hide="timeLeft>0||showFocusInputs||$tasks.distractionListTasks(loadFocusTime).length>0">
-    <ul><li ng-if="timeLeft==0" class="list-item current-task" ida-item="task"></li></ul>
+    <ul><li ng-if="timeLeft==0&&!task.complete&&!task.deleted" class="list-item current-task" ida-item="task"></li></ul>
     <p>
       Du har gått igenom hela Distraktionslistan. Bra jobbat!
       <a ng-href="#/todo">Till Att Göra-listan</a>

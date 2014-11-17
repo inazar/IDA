@@ -1,22 +1,19 @@
+/* jshint strict: false */
+/* global window, alert */
+
 (function(previousOnError) {
 
 window.onerror = function(errorMsg, url, lineNumber) {
   var formattedMsg;
   if (typeof errorMsg === 'string') {
-    formattedMsg = url+":"+lineNumber+" "+errorMsg;
-  } else {
-    formattedMsg = '';
-    for (var key in errorMsg) {
-      formattedMsg += "'"+key+"' => '"+errorMsg[key]+"'";
-    }
-    // formattedMsg = errorMsg.name+(errorMsg.lineNumber?'('+errorMsg.lineNumber+'): ':': ')+(errorMsg.message);
-  }
-  console.log(formattedMsg);
-  alert(formattedMsg);
+    formattedMsg = url+':'+lineNumber+' '+errorMsg;
+    console.log(formattedMsg);
+    alert(formattedMsg);
 
-  if (previousOnError) {
-    previousOnError(errorMsg, url, lineNumber);
-  };
+    if (previousOnError) {
+      previousOnError(errorMsg, url, lineNumber);
+    }
+  }
 };
 
 })(window.onerror);
