@@ -26,6 +26,7 @@
     <preference name="permissions" value="none"/>
 
     <icon src="icon.png" />
+    <icon src="sounds/little-bells.mp3" gap:qualifier="">
 
     <!-- ios -->
 
