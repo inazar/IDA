@@ -28183,11 +28183,13 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
     $timeout(function () {
       if (notification) { notification.local.cancel('focus'); }
       $scope.$root.timeLeft = 0;
-      if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
+      // if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
         $scope.$root.showFocusInputs = false;
+        $scope.showDistractionList = true;
+        $scope.showMainTask = true;
         $scope.$root.showNav = false;
         $scope.title = 'Gå igenom Distraktionslistan';
-      }
+      // }
       // $scope.completeTask($scope.task).then(function (agree) {
       //   if (agree && !$tasks.distractionListTasks($scope.loadFocusTime).length) {
       //     $timeout(function () { $location.path('/todo'); });

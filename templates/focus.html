@@ -7,9 +7,9 @@
 
   <p class="task-label" ng-show="timeLeft > 0&&showFocusInputs" ng-bind="task.title"></p>
 
-  <button ng-show="!showFocusInputs&&timeLeft==0" ng-click="$tasks.collapse();showFocusInputs=true;$root.timeLeft=0;title='Fokusera på...';">Starta timer igen</button>
+  <button ng-show="!showFocusInputs&&timeLeft==0" ng-click="$tasks.collapse();showFocusInputs=true;$root.timeLeft=0;showMainTask=false;showDistractionList=false;title='Fokusera på...';">Starta timer igen</button>
 
-  <div id="duration-picker" ng-hide="timeLeft > 0 || !showFocusInputs"><!--
+  <div id="duration-picker" ng-hide="timeLeft>0||!showFocusInputs"><!--
   --><label>timmar</label><!--
   --><label>minuter</label><!--
   --><br><!--
@@ -40,9 +40,9 @@
   </form>
   <div id="distraction-list" ng-show="$tasks.distractionListTasks(loadFocusTime).length > 0">
     <span ng-click="showDistractionListForXSeconds()"><i class="fa fa-ban"></i> Distraktionslista</span>
-    <p ng-if="timeLeft==0">Fortsätt fokusera genom att starta timern igen eller gå igenom allt på Distraktionslistan och aktiviteten du nyss jobbat med.</p>
-    <ul ng-show="timeLeft==0||showDistractionList" ng-class="{'disabled': timeLeft > 0}">
-      <li ng-if="timeLeft==0&&!task.complete&&!task.deleted" class="list-item current-task" ida-item="task"></li>
+    <p ng-if="timeLeft==0&&showMainTask">Fortsätt fokusera genom att starta timern igen eller gå igenom allt på Distraktionslistan och aktiviteten du nyss jobbat med.</p>
+    <ul ng-show="showDistractionList" ng-class="{'disabled': timeLeft>0}"> <!-- ||!showMainTask -->
+      <li ng-if="timeLeft==0&&!task.complete&&!task.deleted&&showMainTask" class="list-item current-task" ida-item="task"></li>
       <li class="list-item"
           ng-repeat="dtask in $tasks.distractionListTasks(loadFocusTime) | orderBy:['-updated'] track by $index"
           ida-item="dtask"></li>
