@@ -28183,34 +28183,29 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
     $timeout(function () {
       if (notification) { notification.local.cancel('focus'); }
       $scope.$root.timeLeft = 0;
-      // if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
-        $scope.$root.showFocusInputs = false;
-        $scope.showDistractionList = true;
-        $scope.showMainTask = true;
-        $scope.$root.showNav = false;
-        $scope.title = 'Gå igenom Distraktionslistan';
-      // }
-      // $scope.completeTask($scope.task).then(function (agree) {
-      //   if (agree && !$tasks.distractionListTasks($scope.loadFocusTime).length) {
-      //     $timeout(function () { $location.path('/todo'); });
-      //   } else {
-      //       if ($tasks.distractionListTasks($scope.loadFocusTime).length > 0) {
-      //       $scope.$root.showFocusInputs = false;
-      //       $scope.$root.showNav = false;
-      //       $scope.title = 'Gå igenom Distraktionslistan';
-      //     }
-      //   }
-      // });
+      $scope.view = 'review';
+      $scope.showDistractionList = true;
+      $scope.showMainTask = true;
+      $scope.$root.showNav = false;
+      $scope.title = 'Gå igenom Distraktionslistan';
     });
   }
 
   $scope.$on('ida:focus', _onOver);
 
   angular.extend($scope, {
+    view: 'input',
     minutes: 25,
     task: task,
-    preventConfirmation: false,
+    created: created,
     cancelled: false,
+    restartTimer: function () {
+      $tasks.collapse();
+      $scope.view = 'input';
+      $scope.showMainTask=false;
+      $scope.showDistractionList=false;
+      $scope.title='Fokusera på...';
+    },
     setTime: function () {
       if (!$scope.hours && !$scope.minutes) { return; }
       if (created) { created = 1; }
@@ -28222,8 +28217,9 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
         $document[0].addEventListener('pause', _onPause, false);
         $document[0].addEventListener('resume', _onResume, false);
       }
+      $scope.view = 'focus';
       $timeout(function repeat(){
-        var timeLeft = $scope.timeLeft, _currTimeLeft;
+        var timeLeft = $scope.$root.timeLeft, _currTimeLeft;
         if (timeLeft > 0) {
           _currTimeLeft = deadline - Date.now();
           $scope.$root.timeLeft = (_currTimeLeft <= 0) ? 1 : _currTimeLeft;
@@ -28239,13 +28235,11 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
           $timeout(function () {
             if (powerManagement) { powerManagement.release(); }
             if (notification) { _stopNotifying(); }
-            if (!$scope.cancelled) {
-              if ($scope.$root.$active) {
-                ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(_onOver);
-              } else {
-                _onOver();
-              }
-            } else { $scope.cancelled = true; }
+            if (!$scope.cancelled && $scope.$root.$active) {
+              ($scope.$root.$sound = $sounds.play('focus', true)).$promise.finally(_onOver);
+            } else {
+              _onOver();
+            }
           });
         }
       });
@@ -28259,19 +28253,13 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
           case 'todo':
             $timeout(function () { $location.path('/todo'); });
             break;
-          case 'dlist':
-            $scope.$root.showFocusInputs = false;
-            $scope.$root.showNav = false;
-            $scope.title = 'Gå igenom Distraktionslistan';
+          case 'stop':
+            _onOver();
             break;
+          default:
+            $scope.cancelled = false;
         }
       }, function () { $scope.cancelled = false; });
-    },
-    cancel: function () {
-      $scope.cancelled = true;
-      deadline = Date.now();
-      $scope.$root.timeLeft = 0;
-      if (notification) { _stopNotifying(); }
     },
     showDistractionListForXSeconds: function () {
       $scope.showDistractionList = true;
@@ -28317,17 +28305,15 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
   });
 
   $scope.$on('$locationChangeStart', function(e) {
-    if (!$scope.preventConfirmation){
-      if ($tasks.distractionListTasks().length > 0) {
-        e.preventDefault();
-        $scope.cancelled = true;
-        $scope.setModal('templates/modal.focus.distraction_list_confirmation.html').then(function (action) {
-          if (action) {
-            $location.path('/todo');
-          }
-        }, function () { $scope.cancelled = false; });
-        return false;
-      }
+    if ($tasks.distractionListTasks().length > 0) {
+      e.preventDefault();
+      $scope.cancelled = true;
+      $scope.setModal('templates/modal.focus.distraction_list_confirmation.html').then(function (action) {
+        if (action) {
+          $location.path('/todo');
+        }
+      }, function () { $scope.cancelled = false; });
+      return false;
     }
   });
 
@@ -28338,7 +28324,7 @@ App.controller('FocusCtrl', ['$scope', '$window', '$document', '$route', '$route
     if (notification) { _stopNotifying(); }
     if (powerManagement) { powerManagement.release(); }
     $scope.$root.hideTopNav = false;
-    if (created === 1&&$scope.task.title) { $tasks.save(); } else { $tasks.reload(); }
+    if (created === 1 && $scope.task.title) { $tasks.save(); } else { $tasks.reload(); }
   });
 
 }]);
@@ -29923,7 +29909,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         title:      'Påminnelse',  // The title of the message
         // repeat:     String,  // Has the options of 'hourly', 'daily', 'weekly', 'monthly', 'yearly'
         // badge:      Number,  // Displays number badge to notification
-        sound:      '/www/sounds/'+$config.sounds[this.shortSignal ? 'short' : 'long']+$sounds.type, // A sound to be played
+        // sound:      '/www/sounds/'+$config.sounds[this.shortSignal ? 'short' : 'long'], // A sound to be played
         // json:       String,  // Data to be passed through the notification
         autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
         // ongoing:    Boolean, // Prevent clearing of notification (Android only)
