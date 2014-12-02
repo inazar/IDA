@@ -4,7 +4,7 @@
   <input class="task-label" ng-model="task.title" placeholder="Ange aktivitet..." ng-show="created&&view==='input'">
 
   <!-- input view -->
-  <p class="task-label" ng-show="!crated&&view==='input'">{{task.title}}</p>
+  <p class="task-label" ng-show="!crated&&view==='input'||view=='focus'">{{task.title}}</p>
 
   <!-- review view -->
   <button ng-show="view==='review'" ng-click="restartTimer()">Starta timer igen</button>
