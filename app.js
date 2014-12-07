@@ -29578,7 +29578,7 @@ App.service('idaModal', [
 
 /* jshint strict: false */
 /* global App, moment */
-App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTasks', 'idaSounds', 'idaConfig', function ($rootScope, $timeout, $interval, $tasks, $sounds, $config) {
+App.service('idaNotifications', ['$rootScope', '$window', '$timeout', '$interval', 'idaTasks', 'idaSounds', 'idaConfig', function ($rootScope, $window, $timeout, $interval, $tasks, $sounds, $config) {
 
   function _fireEvents () {
     var i, task, now = Math.floor(Date.now()/1000), duration, reminder, hrs, min, sec, update = false;
@@ -29632,9 +29632,10 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
 
   var Notifications = function () { this.start(); };
 
-  var _interval, _timeout;
+  var _interval, _timeout, _device = $window.device;
 
   Notifications.prototype.start = function() {
+    if (_device.platform === 'Android') { $tasks.clearNotifications(); }
     _timeout = setTimeout(function () {
       _interval = setInterval(_fireEvents, 1000);
       _timeout = null;
@@ -29642,6 +29643,7 @@ App.service('idaNotifications', ['$rootScope', '$timeout', '$interval', 'idaTask
   };
 
   Notifications.prototype.stop = function() {
+    if (_device.platform === 'Android') { $tasks.setNotifications(); }
     if (_timeout) {
       clearTimeout(_timeout);
       _timeout = null;
@@ -30295,11 +30297,20 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
         this.tasks = _.where(this.tasks, id);
         break;
       default:
-        _.each(this.tasks, function (task) { if (task.reminder) { task.setTimer(); } });
+        this.clearNotifications();
         this.tasks = [];
     }
     this.save();
-  };  
+  };
+
+  Tasks.prototype.clearNotifications = function() {
+    _.each(this.tasks, function (task) { if (task.reminder) { task.setTimer(); } });
+  };
+
+  Tasks.prototype.setNotifications = function() {
+    var _now = Date.now();
+    _.each(this.tasks, function (task) { if (task.reminder && task.reminder > _now) { task.setTimer(task.reminder); } });
+  };
 
   // Get the task(s)
   Tasks.prototype.get = function (id) {
