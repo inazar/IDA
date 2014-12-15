@@ -27616,7 +27616,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   'idaModal',
   'idaDatepicker',
   'idaNotifications',
-  function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popups, $popup, $loading, $sounds, $modal, $datepicker, $notifications) {
+  'idaDevice',
+  function($rootScope, $location, $anchorScroll, $route, $timeout, $window, $document, $q, $tasks, $events, $config, $popups, $popup, $loading, $sounds, $modal, $datepicker, $notifications, $device) {
 
     Audio.prototype.stop = function () {
       this.pause();
@@ -28029,9 +28030,8 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     $document[0].addEventListener('pause', function() { $timeout(function () { $notifications.stop(); $sounds.stop(); }); $rootScope.$active = false; }, false);
     $document[0].addEventListener('resume', function() { $timeout(function () { $notifications.start(); }); $rootScope.$active = true; }, false);
 
-    $document[0].addEventListener('deviceready', function() {
+    $device.then(function (device) {
       var notification, vibrate;
-      var device = $rootScope.$cordova = $window.device;
       if (device.platform === 'iOS' && parseFloat(device.version) >= 7.0) {
         angular.element($document[0].body).addClass('ios7');
       }
@@ -28097,6 +28097,7 @@ App.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
           $rootScope._background = (state !== 'background');
         };
       }
+      return device;
     }, false);
 
     if (!$config.reminder || $config.reminder < Date.now()) { _setOrganize(); }
@@ -29440,6 +29441,18 @@ App.service('idaDatepicker', [
 ]);
 
 /* jshint strict: false */
+/* global App */
+App.service('idaDevice', ['$rootScope', '$window', '$document', '$timeout', '$q', function ($rootScope, $window, $document, $timeout, $q) {
+  var Device = $q.defer();
+
+  $document[0].addEventListener('deviceready', function() {
+    Device.resolve($rootScope.$cordova = $window.device);
+  });
+
+  return Device.promise;
+}]);
+
+/* jshint strict: false */
 /* global App, _ */
 App.service('idaEvents', function () {
 
@@ -29578,7 +29591,7 @@ App.service('idaModal', [
 
 /* jshint strict: false */
 /* global App, moment */
-App.service('idaNotifications', ['$rootScope', '$window', '$timeout', '$interval', 'idaTasks', 'idaSounds', 'idaConfig', function ($rootScope, $window, $timeout, $interval, $tasks, $sounds, $config) {
+App.service('idaNotifications', ['$rootScope', '$window', '$timeout', '$interval', 'idaTasks', 'idaSounds', 'idaConfig', 'idaDevice', function ($rootScope, $window, $timeout, $interval, $tasks, $sounds, $config, $device) {
 
   function _fireEvents () {
     var i, task, now = Math.floor(Date.now()/1000), duration, reminder, hrs, min, sec, update = false;
@@ -29632,10 +29645,13 @@ App.service('idaNotifications', ['$rootScope', '$window', '$timeout', '$interval
 
   var Notifications = function () { this.start(); };
 
-  var _interval, _timeout, _device = $window.device;
+  var _interval, _timeout;
 
   Notifications.prototype.start = function() {
-    if (_device.platform === 'Android') { $tasks.clearNotifications(); }
+    $device.then(function (device) {
+      if (device.platform === 'Android') { $tasks.clearNotifications(); }
+      return device;
+    });
     _timeout = setTimeout(function () {
       _interval = setInterval(_fireEvents, 1000);
       _timeout = null;
@@ -29643,7 +29659,10 @@ App.service('idaNotifications', ['$rootScope', '$window', '$timeout', '$interval
   };
 
   Notifications.prototype.stop = function() {
-    if (_device.platform === 'Android') { $tasks.setNotifications(); }
+    $device.then(function (device) {
+      if (device.platform === 'Android') { $tasks.setNotifications(); }
+      return device;
+    });
     if (_timeout) {
       clearTimeout(_timeout);
       _timeout = null;
@@ -30280,24 +30299,28 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
 
   Tasks.prototype.reload = function() {
       var _this = this;
+      this.clearNotifications();
       try {
         this.tasks = _.map(JSON.parse(localStorage.getItem('tasks')) || [], function (task) { return new Task(task, _this); });
       } catch (e) {
         this.tasks = [];
       }
+      this.setNotifications();
   };
 
   // Clear tasks
   Tasks.prototype.clear = function (id) {
+    this.clearNotifications();
     switch (typeof id) {
       case 'string':
         this.tasks = _.reject(this.tasks, function(t) { return t.id === id; });
+        this.setNotifications();
         break;
       case 'object':
         this.tasks = _.where(this.tasks, id);
+        this.setNotifications();
         break;
       default:
-        this.clearNotifications();
         this.tasks = [];
     }
     this.save();
@@ -30425,8 +30448,10 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
   };
 
   Tasks.prototype.kill = function (id) {
+    var task = id.id ? id : this.get(id);
+    task.setTimer();
     id = id.id || id;
-    this.tasks = _.reject(this.tasks, function(t) { return t.id !== id; });
+    this.tasks = _.reject(this.tasks, function(t) { return t.id === id; });
   };
 
   // Retrieve task children
