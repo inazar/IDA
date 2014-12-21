@@ -30514,7 +30514,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     });
   };
 
-  var _bil = Math.pow(10, 9), _K = Math.pow(10, 3);
+  var _fillLen = 14, _fill = Math.pow(10, _fillLen);
+  function _pad (num, len) { return (new Array(len).join('0') + num).slice(-len); }
 
   Tasks.prototype.getTodoList = function (todoFilter) {
     var shift = $config.pragmaticDayshift, _now = Date.now();
@@ -30570,26 +30571,25 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
       return _filter;
     }), function (task) {
       // sorting (decimal places):
-      //    period: [section (1)][important (1)][till end (2)][duration (2)][updated(9)] (15)
-      //    exact: [section (1)][starttime (9)][important (1)][0][3] (15)
-      // dates are encoded with 9 last digits which is 11 days max - perfectly fits to 1 week
-      var value = 10 - task._section,
+      //    period: [section (1)][important (1)][till end (2)][duration (2)][updated(14)] (20)
+      //    exact: [section (1)][starttime (14)][important (1)][0][3] (20)
+      // dates are encoded with 14 last digits
+      var value = '' + task._section,
           _duration = Math.ceil((task.endTime + 1 - task.startTime)/86400000),
           _tillEnd = Math.floor((task.endTime - Date.now())/86400000);
 
       if (task.timeType === 'period') {
-        value = value * 10 + (task.important ? (task.complex ? 3 : 4) : (task.complex ? 1 : 2 ));
-        value = value * 100 + 100 - (_tillEnd < 100 ? _tillEnd : 100);
-        value = value * 100 + (_duration < 100 ? _duration : 99);
-        value = value * _bil + (task.timeUpdated % _bil);
+        value += (task.important ? (task.complex ? 3 : 4) : (task.complex ? 1 : 2 ));
+        value += (_tillEnd < 100 ? 100 - _tillEnd : '00');
+        value += (_duration < 100 ? _duration : '99');
+        value += _pad(task.timeUpdated, 14);
       } else {
-        value = (value + 1) * _bil - (task.startTime % _bil);
-        value = value * 10 + (task.important ? (task.complex ? 3 : 4) : (task.complex ? 1 : 2 ));
-        value = value * 10;
-        value = value * _K;
+        value += _pad(_fill - task.startTime, 14);
+        value += (task.important ? (task.complex ? 3 : 4) : (task.complex ? 1 : 2 ));
+        value += '0000';
       }
-      return -value;
-    });
+      return value;
+    }).reverse();
   };
 
   Tasks.prototype.getTimePeriods = function () {
