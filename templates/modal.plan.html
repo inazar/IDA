@@ -22,7 +22,7 @@
 
   <br>
 
-  <div ida-help="templates/help/plan/exact.html" help-title="Välj datum och klockslag" class="exact" ng-show="modal.task.timeType==='exact'">
+  <div ida-help="templates/help/plan/exact.html" help-title="Välj datum och klockslag" class="exact" ng-if="modal.task.timeType==='exact'">
     <button class="start-time"
             ng-click="setDatepicker('templates/modal.pick_starttime.html')"
             ng-class="{'selected': modal.task.startTime}"
@@ -31,7 +31,7 @@
     <div ida-timepicker model-date="modal.task.startTime"></div>
   </div>
 
-  <div ida-help="templates/help/plan/period.html" help-title="Välj tidsperiod" class="period" ng-show="modal.task.timeType == 'period'">
+  <div ida-help="templates/help/plan/period.html" help-title="Välj tidsperiod" class="period" ng-if="modal.task.timeType == 'period'">
     <label>
       <select ng-change="modal.task.updatePeriodInput()" ng-init="modal.task.timeInputType = modal.task.startTime ? 'exact' : 'today';modal.task.updatePeriodInput();" ng-model="modal.task.timeInputType">
         <option value="today">Görs idag</option><!-- Today -->
@@ -47,11 +47,11 @@
     </label>
   </div>
 
-  <div class="within-x-days" ng-show="modal.task.timeType == 'period' && modal.task.timeInputType == 'x-days'">
+  <div class="within-x-days" ng-if="modal.task.timeType == 'period' && modal.task.timeInputType == 'x-days'">
     Inom <input ng-model="xDays" type="number" value="1" placeholder="1" min="1" ng-change="modal.task.xDays=((!isNumber(xDays)||xDays<1)?(xDays=null):xDays);modal.task.updatePeriodInput();"> dagar
   </div>
 
-  <div ida-help='hidden' class="period" ng-show="modal.task.timeType==='period'">
+  <div ida-help='hidden' class="period" ng-if="modal.task.timeType==='period'">
     <div class="datepickers">
       <button ng-click="setDatepicker('templates/modal.pick_starttimeperiod.html');modal.task.timeInputType='exact'"
               ng-class="{ 'selected': modal.task.startTime }"
@@ -65,7 +65,7 @@
 
   <br>
 
-  <div ng-show="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
+  <div ng-if="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
     <div ida-help="templates/help/plan/duration.html" help-title="Hur lång tid tar aktiviten att göra?" class="duration">
       <div ng-init="$parent.hours=isNumber(modal.task.duration)?Math.floor(modal.task.duration/3600000):null;$parent.minutes=isNumber(modal.task.duration)?Math.floor((modal.task.duration%3600000)/60000):null;">
         <div class="estimate-toggle" ng-click="modal.task.timeEstimated=!modal.task.timeEstimated">
@@ -84,7 +84,7 @@
 
   <br>
 
-  <div ng-show="modal.task.timeType=='exact'">
+  <div ng-if="modal.task.timeType=='exact'">
     <div ida-help="templates/help/plan/ereminder.html" help-title="Påminnelse" class="reminder">
       <label>
         <select ng-model="modal.task.reminderTimeAdvance"
@@ -103,8 +103,8 @@
         </select>
       </label>
     </div>
-    <div ida-help="hidden" class="reminder" ng-show="modal.task.reminderTimeAdvance==0">
-      <div class="reminder-time" ng-show="modal.task.reminderTimeAdvance==0" ng-init="modal.task.reminderTime=modal.task.reminderTime||Date.now()">
+    <div ida-help="hidden" class="reminder" ng-if="modal.task.reminderTimeAdvance==0">
+      <div class="reminder-time" ng-if="modal.task.reminderTimeAdvance==0" ng-init="modal.task.reminderTime=modal.task.reminderTime||Date.now()">
         <button class="exact-reminder" ng-if="modal.task.reminderTimeAdvance==0"
               ng-click="setDatepicker('templates/modal.pick_remindertime.html')"
               ng-class="{'selected':modal.task.reminderTime}"
@@ -138,33 +138,33 @@
               ng-change="console.log(repeatLength);repeatLength=(isNumber(repeatLength)&&repeatLength<1?null:repeatLength||null);modal.task.repeatLength=repeatLength||1"
               ng-model="repeatLength"
               type="number" placeholder="1" min="1">
-        <span ng-show="modal.task.repeatPeriod=='daily'">Dag</span>
-        <span ng-show="modal.task.repeatPeriod=='weekly'">Veck</span>
-        <span ng-show="modal.task.repeatPeriod=='monthly'">Månad</span>
-        <span ng-show="modal.task.repeatPeriod=='yearly'">År</span>
+        <span ng-if="modal.task.repeatPeriod=='daily'">Dag</span>
+        <span ng-if="modal.task.repeatPeriod=='weekly'">Veck</span>
+        <span ng-if="modal.task.repeatPeriod=='monthly'">Månad</span>
+        <span ng-if="modal.task.repeatPeriod=='yearly'">År</span>
         <br>
       </div>
-      <div class="weekly-repeat" ng-show="modal.task.repeatPeriod == 'weekly'">
+      <div class="weekly-repeat" ng-if="modal.task.repeatPeriod == 'weekly'">
         <div ng-click="modal.task.checkDay(1)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(1) !== -1"></i></div> M
+          <div class="checkbox"><i class="fa fa-check" ng-if="modal.task.repeatDays.indexOf(1) !== -1"></i></div> M
         </div>
         <div ng-click="modal.task.checkDay(2)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(2) !== -1"></i></div> T
+          <div class="checkbox"><i class="fa fa-check" ng-if="modal.task.repeatDays.indexOf(2) !== -1"></i></div> T
         </div>
         <div ng-click="modal.task.checkDay(3)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(3) !== -1"></i></div> O
+          <div class="checkbox"><i class="fa fa-check" ng-if="modal.task.repeatDays.indexOf(3) !== -1"></i></div> O
         </div>
         <div ng-click="modal.task.checkDay(4)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(4) !== -1"></i></div> T
+          <div class="checkbox"><i class="fa fa-check" ng-if="modal.task.repeatDays.indexOf(4) !== -1"></i></div> T
         </div>
         <div ng-click="modal.task.checkDay(5)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(5) !== -1"></i></div> F
+          <div class="checkbox"><i class="fa fa-check" ng-if="modal.task.repeatDays.indexOf(5) !== -1"></i></div> F
         </div>
         <div ng-click="modal.task.checkDay(6)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(6) !== -1"></i></div> L
+          <div class="checkbox"><i class="fa fa-check" ng-if="modal.task.repeatDays.indexOf(6) !== -1"></i></div> L
         </div>
         <div ng-click="modal.task.checkDay(0)">
-          <div class="checkbox"><i class="fa fa-check" ng-show="modal.task.repeatDays.indexOf(0) !== -1"></i></div> S
+          <div class="checkbox"><i class="fa fa-check" ng-if="modal.task.repeatDays.indexOf(0) !== -1"></i></div> S
         </div>
       </div>
       <div ng-if="modal.task.repeatPeriod!=='once'" ng-init="modal.task.repeatType=modal.task.repeatType||'week'">
@@ -187,7 +187,7 @@
     </div>
   </div>
 
-  <div ng-show="modal.task.timeType=='period'&&modal.task.startTime&&modal.task.endTime">
+  <div ng-if="modal.task.timeType=='period'&&modal.task.startTime&&modal.task.endTime">
     <div ida-help="templates/help/plan/preminder.html" help-title="Påminnelse för tidsperioder" class="period-reminder">
       <label class="reminder">
         <select ng-model="modal.task.reminderTimePeriod"
@@ -219,7 +219,7 @@
 
   <br>
 
-  <div ng-show="modal.task.timeType == 'exact'">
+  <div ng-if="modal.task.timeType == 'exact'">
     <label ida-help="templates/help/plan/eremove.html" help-title="Flytta aktivitet från Att-Göra-listan" class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
@@ -231,7 +231,7 @@
     </label>
   </div>
 
-  <div ng-show="modal.task.timeType == 'period'">
+  <div ng-if="modal.task.timeType == 'period'">
     <label ida-help="templates/help/plan/premove.html" help-title="Flytta aktivitet från Att-Göra-listan" class="show-in-todo">
       <select ng-model="modal.task.showInTodo">
         <option value="until marked as done">Bort när Klar</option>
@@ -243,7 +243,7 @@
 
   <br>
 
-  <div ng-show="
+  <div ng-if="
     (modal.task.title) &&
     (modal.task.important == true || modal.task.important == false) &&
     (modal.task.complex == true || modal.task.complex == false) &&

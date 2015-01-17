@@ -29762,14 +29762,15 @@ App.service('idaSounds', ['$q', '$timeout', '$window', 'idaConfig', function ($q
   }
 
   var Sounds = function (sounds) {
-    var sound;
+    var sound, audio;
     this.sounds = {};
     this.labels = {};
     sounds = sounds || {};
     for (sound in sounds) {
-      this.sounds[sound] = new Audio('sounds/'+sound+this.type);
-      this.sounds[sound].addEventListener('ended', _stopListener(this.sounds[sound]));
-      this.sounds[sound].addEventListener('pause', _stopListener(this.sounds[sound]));
+      audio = new Audio('sounds/'+sound+this.type);
+      audio.addEventListener('ended', _stopListener(audio));
+      audio.addEventListener('pause', _stopListener(audio));
+      this.sounds[sound] = audio;
       this.labels[sound] = sounds[sound];
     }
   };
