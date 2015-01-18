@@ -29649,18 +29649,18 @@ App.service('idaNotifications', ['$rootScope', '$window', '$timeout', '$interval
 
   Notifications.prototype.start = function() {
     $device.then(function (device) {
-      if (device.platform === 'Android') { $tasks.clearNotifications(); }
+      if (device.platform === 'Android') { $tasks.clearNative(); }
       return device;
     });
     _timeout = setTimeout(function () {
       _interval = setInterval(_fireEvents, 1000);
       _timeout = null;
-    }, moment().milliseconds());
+    }, 1000 - moment().milliseconds());
   };
 
   Notifications.prototype.stop = function() {
     $device.then(function (device) {
-      if (device.platform === 'Android') { $tasks.setNotifications(); }
+      if (device.platform === 'Android') { $tasks.setNative(); }
       return device;
     });
     if (_timeout) {
@@ -29920,10 +29920,20 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     this.reminderTime = time || 0;
     this.reminder = !!time;
     this.timer = timer;
+    this.clearNative();
+    this.setNative();
+  };
+
+  Task.prototype.clearNative = function() {
     if (!$window.plugin || !$window.plugin.notification || !$window.plugin.notification.local) { return; }
     var notification = $window.plugin.notification;
     notification.local.cancel(''+this.id);
-    if (this.reminderTime) {
+  };
+
+  Task.prototype.setNative = function() {
+    var notification, _now = Date.now();
+    if (this.reminder && this.reminderTime > _now && $window.plugin && $window.plugin.notification && $window.plugin.notification.local) {
+      notification = $window.plugin.notification;
       notification.local.add({
         id:         ''+this.id,  // A unique id of the notification
         date:       new Date(this.reminderTime),    // This expects a date object
@@ -30333,7 +30343,16 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
 
   Tasks.prototype.setNotifications = function() {
     var _now = Date.now();
-    _.each(this.tasks, function (task) { if (task.reminder && task.reminder > _now) { task.setTimer(task.reminder); } });
+    _.each(this.tasks, function (task) { if (task.reminder && task.reminderTime > _now) { task.setTimer(task.reminderTime); } });
+  };
+
+  Tasks.prototype.clearNative = function() {
+    _.each(this.tasks, function (task) { if (task.reminder) { task.clearNative(); } });
+  };
+
+  Tasks.prototype.setNative = function() {
+    var _now = Date.now();
+    _.each(this.tasks, function (task) { if (task.reminder && task.reminderTime > _now) { task.setNative(); } });
   };
 
   // Get the task(s)
