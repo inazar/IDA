@@ -29919,7 +29919,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
     $events.add('reminderSet');
     this.reminderTime = time || 0;
     this.reminder = !!time;
-    this.timer = timer;
+    this.timer = !!timer;
     this.clearNative();
     this.setNative();
   };
@@ -30343,7 +30343,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
 
   Tasks.prototype.setNotifications = function() {
     var _now = Date.now();
-    _.each(this.tasks, function (task) { if (task.reminder && task.reminderTime > _now) { task.setTimer(task.reminderTime); } });
+    _.each(this.tasks, function (task) { if (task.reminder && task.reminderTime > _now) { task.setTimer(task.reminderTime, task.timer); } });
   };
 
   Tasks.prototype.clearNative = function() {
