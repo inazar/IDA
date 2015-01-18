@@ -29871,7 +29871,7 @@ App.service('idaSounds', ['$q', '$timeout', '$window', 'idaConfig', function ($q
 
 /* jshint strict: false */
 /* global App, moment, _ */
-App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q', 'idaEvents', 'idaConfig', 'idaSounds', function ($rootScope, $window, $timeout, $interval, $q, $events, $config, $sounds) {
+App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q', 'idaEvents', 'idaConfig', 'idaSounds', 'idaDevice', function ($rootScope, $window, $timeout, $interval, $q, $events, $config, $sounds, $device) {
 
   var _tasks;
 	var Task = function (task, collection) {
@@ -29916,12 +29916,16 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
   };
 
   Task.prototype.setTimer = function(time, timer) {
+    var self = this;
     $events.add('reminderSet');
     this.reminderTime = time || 0;
     this.reminder = !!time;
     this.timer = !!timer;
     this.clearNative();
-    this.setNative();
+    $device.then(function (device) {
+      if (device.platform !== 'Android') { self.setNative(); }
+      return device;
+    });
   };
 
   Task.prototype.clearNative = function() {
