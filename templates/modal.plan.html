@@ -65,7 +65,7 @@
 
   <br>
 
-  <div ng-if="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
+  <div ng-show="modal.task.timeType == 'exact' || modal.task.timeType == 'period'">
     <div ida-help="templates/help/plan/duration.html" help-title="Hur lång tid tar aktiviten att göra?" class="duration">
       <div ng-init="$parent.hours=isNumber(modal.task.duration)?Math.floor(modal.task.duration/3600000):null;$parent.minutes=isNumber(modal.task.duration)?Math.floor((modal.task.duration%3600000)/60000):null;">
         <div class="estimate-toggle" ng-click="modal.task.timeEstimated=!modal.task.timeEstimated">
