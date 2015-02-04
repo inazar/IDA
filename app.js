@@ -30018,7 +30018,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
       } else {
         this.reminder = false;
       }
-    } else {
+    } else if (this.timeType === 'period') {
       if (this.reminderTimePeriod === 'none') {
         this.reminder = false;
       } else {
@@ -30027,6 +30027,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
           this.reminderTime = this.setReminderTime();
         }
       }
+    } else {
+      this.reminder = false;
     }
     this.setTimer(this.reminder ? this.reminderTime : null);
     if (this.timeType === 'exact') { delete this.endTime; }
