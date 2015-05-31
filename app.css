@@ -1972,16 +1972,19 @@ table {
   content: "\f1e2";
 }
 
+/* line 89, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 body {
   font-family: 'Helvetica', Arial, sans-serif;
   font-size: 100%;
   line-height: 1.4; }
 
+/* line 95, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 h2 {
   font-size: 1em;
   font-weight: bold;
   margin: 0 0 0.25em; }
 
+/* line 113, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 * {
   text-rendering: auto !important;
   -webkit-box-sizing: border-box;
@@ -1990,55 +1993,67 @@ h2 {
   -webkit-tap-highlight-color: transparent; }
 
 @-webkit-keyframes scaleOut {
+  /* line 23, stdin */
   from {
     -webkit-transform: scale(1);
     opacity: 1; }
 
+  /* line 24, stdin */
   to {
     -webkit-transform: scale(0.8);
     opacity: 0; } }
 
 @-moz-keyframes scaleOut {
+  /* line 27, stdin */
   from {
     -moz-transform: scale(1);
     opacity: 1; }
 
+  /* line 28, stdin */
   to {
     -moz-transform: scale(0.8);
     opacity: 0; } }
 
 @keyframes scaleOut {
+  /* line 31, stdin */
   from {
     transform: scale(1);
     opacity: 1; }
 
+  /* line 32, stdin */
   to {
     transform: scale(0.8);
     opacity: 0; } }
 
 @-webkit-keyframes superScaleIn {
+  /* line 40, stdin */
   from {
     -webkit-transform: scale(1.2);
     opacity: 0; }
 
+  /* line 41, stdin */
   to {
     -webkit-transform: scale(1);
     opacity: 1; } }
 
 @-moz-keyframes superScaleIn {
+  /* line 44, stdin */
   from {
     -moz-transform: scale(1.2);
     opacity: 0; }
 
+  /* line 45, stdin */
   to {
     -moz-transform: scale(1);
     opacity: 1; } }
 
 @keyframes superScaleIn {
+  /* line 48, stdin */
   from {
     transform: scale(1.2);
     opacity: 0; }
 
+  /* line 49, stdin */
   to {
     transform: scale(1);
     opacity: 1; } }
@@ -2047,6 +2062,7 @@ h2 {
  * Popups
  * --------------------------------------------------
  */
+/* line 57, stdin */
 .popup {
   position: fixed;
   top: 50%;
@@ -2059,8 +2075,10 @@ h2 {
   overflow: hidden;
   border-radius: 15px;
   background-color: rgba(235, 235, 235, 0.95); }
+  /* line 77, stdin */
   .popup.popup-complete {
     background: white; }
+  /* line 81, stdin */
   .popup.popup-hidden {
     -webkit-animation-name: scaleOut;
     -moz-animation-name: scaleOut;
@@ -2074,8 +2092,10 @@ h2 {
     -webkit-animation-fill-mode: both;
     -moz-animation-fill-mode: both;
     animation-fill-mode: both; }
+  /* line 88, stdin */
   .popup.popup-showing {
     visibility: visible; }
+  /* line 92, stdin */
   .popup.active {
     -webkit-animation-name: superScaleIn;
     -moz-animation-name: superScaleIn;
@@ -2090,6 +2110,7 @@ h2 {
     -moz-animation-fill-mode: both;
     animation-fill-mode: both; }
 
+/* line 100, stdin */
 .popup-box {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2105,11 +2126,13 @@ h2 {
   flex-direction: column;
   padding-top: 10px; }
 
+/* line 106, stdin */
 .popup-head {
   padding: 10px 0px;
   border-bottom: 1px solid #eee;
   text-align: center; }
 
+/* line 111, stdin */
 .popup-title {
   margin: 0;
   padding: 0;
@@ -2118,12 +2141,14 @@ h2 {
   overflow: hidden;
   text-overflow: ellipsis; }
 
+/* line 117, stdin */
 .popup-sub-title {
   margin: 5px 0 0 0;
   padding: 0;
   font-weight: normal;
   font-size: 11px; }
 
+/* line 123, stdin */
 .popup-body {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -2133,14 +2158,18 @@ h2 {
   flex: 1;
   overflow: auto;
   padding: 0 10px; }
+  /* line 127, stdin */
   .popup-body .popup-icon {
     font-size: 30px;
     text-align: center; }
+  /* line 131, stdin */
   .popup-body .popup-text {
     text-align: center; }
+    /* line 133, stdin */
     .popup-body .popup-text.enforcement {
       margin: 1em 0;
       font-size: 1.2em; }
+    /* line 137, stdin */
     .popup-body .popup-text input {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -2153,14 +2182,18 @@ h2 {
       outline: 0;
       padding: 0.45em 10px; }
 
+/* line 143, stdin */
 .popup-limit, .popup-prevent {
   text-align: center;
   margin-bottom: 10px; }
 
+/* line 148, stdin */
 .popup-buttons {
   text-align: center; }
+  /* line 150, stdin */
   .popup-buttons.row {
     padding: 10px 10px; }
+  /* line 154, stdin */
   .popup-buttons .btn {
     margin: 20px 5px 0;
     padding: 0 16px;
@@ -2186,21 +2219,25 @@ h2 {
     border-top: 2px solid transparent;
     text-decoration: none;
     outline: 0; }
+    /* line 562, ../src/styles/mixins.scss */
     .popup-buttons .btn:active, .popup-buttons .btn.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
+    /* line 163, stdin */
     .popup-buttons .btn:first-child {
       margin-left: 0px; }
+    /* line 166, stdin */
     .popup-buttons .btn:last-child {
       margin-right: 0px; }
+    /* line 169, stdin */
     .popup-buttons .btn.btn-main {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -2214,30 +2251,37 @@ h2 {
       border-top: 2px solid transparent;
       text-decoration: none;
       outline: 0; }
+      /* line 562, ../src/styles/mixins.scss */
       .popup-buttons .btn.btn-main:active, .popup-buttons .btn.btn-main.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
 
+/* line 175, stdin */
 .popup-open {
   pointer-events: none; }
+  /* line 178, stdin */
   .popup-open.modal-open .modal {
     pointer-events: none; }
+  /* line 182, stdin */
   .popup-open .popup-backdrop, .popup-open .popup {
     pointer-events: auto; }
 
+/* line 89, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 body {
   font-family: 'Helvetica', Arial, sans-serif;
   font-size: 100%;
   line-height: 1.4; }
 
+/* line 95, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 h2 {
   font-size: 1em;
   font-weight: bold;
   margin: 0 0 0.25em; }
 
+/* line 113, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 * {
   text-rendering: auto !important;
   -webkit-box-sizing: border-box;
@@ -2249,6 +2293,7 @@ h2 {
  * Range
  * --------------------------------------------------
  */
+/* line 8, stdin */
 input[type="range"] {
   display: inline-block;
   overflow: hidden;
@@ -2265,6 +2310,7 @@ input[type="range"] {
   background-size: 99% 8px;
   background-repeat: no-repeat;
   -webkit-appearance: none; }
+  /* line 25, stdin */
   input[type="range"]::-webkit-slider-thumb {
     position: relative;
     width: 25px;
@@ -2274,6 +2320,7 @@ input[type="range"] {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5), 1px 3px 5px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     -webkit-appearance: none; }
+  /* line 36, stdin */
   input[type="range"]::-webkit-slider-thumb:before {
     /* what creates the colorful line on the left side of the slider */
     position: absolute;
@@ -2283,6 +2330,7 @@ input[type="range"] {
     height: 8px;
     background: #555;
     content: ' '; }
+  /* line 47, stdin */
   input[type="range"]::-webkit-slider-thumb:after {
     /* create a larger (but hidden) hit area */
     position: absolute;
@@ -2291,6 +2339,7 @@ input[type="range"] {
     padding: 30px;
     content: ' '; }
 
+/* line 60, stdin */
 .range {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2304,11 +2353,14 @@ input[type="range"] {
   -moz-align-items: center;
   align-items: center;
   padding: 2px 4px; }
+  /* line 30, ../src/styles/mixins.scss */
   .range.range-gray input::-webkit-slider-thumb:before {
     background: #555; }
+  /* line 30, ../src/styles/mixins.scss */
   .range.range-purple input::-webkit-slider-thumb:before {
     background: #a40aaa; }
 
+/* line 73, stdin */
 .range .icon {
   -webkit-box-flex: 0;
   -webkit-flex: 0;
@@ -2320,13 +2372,17 @@ input[type="range"] {
   min-width: 24px;
   text-align: center;
   font-size: 24px; }
+  /* line 79, stdin */
   .range .icon.icon-large {
     font-size: 28.8px; }
+  /* line 82, stdin */
   .range .icon.icon-small {
     font-size: 19.2px; }
+  /* line 85, stdin */
   .range .icon.icon-tiny {
     font-size: 12px; }
 
+/* line 90, stdin */
 .range input {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -2338,6 +2394,7 @@ input[type="range"] {
   margin-right: 10px;
   margin-left: 10px; }
 
+/* line 97, stdin */
 .range-label {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
@@ -2349,23 +2406,28 @@ input[type="range"] {
   white-space: nowrap;
   margin-right: 1em; }
 
+/* line 104, stdin */
 .range-label:first-child {
   padding-left: 5px; }
 
+/* line 107, stdin */
 .range input + .range-label {
   padding-right: 5px;
   padding-left: 0; }
 
+/* line 89, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 body {
   font-family: 'Helvetica', Arial, sans-serif;
   font-size: 100%;
   line-height: 1.4; }
 
+/* line 95, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 h2 {
   font-size: 1em;
   font-weight: bold;
   margin: 0 0 0.25em; }
 
+/* line 113, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 * {
   text-rendering: auto !important;
   -webkit-box-sizing: border-box;
@@ -2373,46 +2435,59 @@ h2 {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
 
+/* line 15, stdin */
 .purple {
   color: #a40aaa; }
 
+/* line 19, stdin */
 .purple-bg {
   color: white;
   background: #a40aaa;
   padding: 5px; }
 
+/* line 26, stdin */
 .gray {
   color: #555; }
 
+/* line 30, stdin */
 .green {
   color: #48B82C; }
 
+/* line 34, stdin */
 .yellow {
   color: #CCA528; }
 
+/* line 38, stdin */
 .red {
   color: #DD2330; }
 
+/* line 42, stdin */
 .blue {
   color: #5d96c5; }
 
+/* line 46, stdin */
 .large {
   font-size: 1.5em; }
 
+/* line 50, stdin */
 .invisible {
   visibility: hidden; }
 
+/* line 54, stdin */
 .inset {
   text-shadow: #fff 0px 1px 0, #000 0 -1px 0; }
 
+/* line 56, stdin */
 html {
   height: 100%; }
 
+/* line 60, stdin */
 body {
   -webkit-text-size-adjust: none;
   position: absolute;
   height: 100%;
   width: 100%; }
+  /* line 65, stdin */
   body > #clickWait {
     pointer-events: auto;
     position: fixed;
@@ -2438,8 +2513,10 @@ body {
     align-items: center;
     background: rgba(255, 255, 255, 0.5);
     z-index: 2000; }
+    /* line 78, stdin */
     body > #clickWait.ng-click-active > div {
       display: none; }
+    /* line 82, stdin */
     body > #clickWait > div {
       background: rgba(0, 0, 0, 0.3);
       padding: 2em;
@@ -2447,17 +2524,22 @@ body {
       color: #eee;
       font-weight: bold;
       max-width: 50%; }
+  /* line 92, stdin */
   body.ios7 > #wrapper {
     padding-top: 20px; }
+    /* line 94, stdin */
     body.ios7 > #wrapper > nav {
       top: 20px; }
+    /* line 97, stdin */
     body.ios7 > #wrapper > div#main > div#top {
       top: 20px; }
+  /* line 101, stdin */
   body > #wrapper {
     height: 100%;
     font-size: 0.95em;
     position: relative;
     overflow: hidden; }
+    /* line 107, stdin */
     body > #wrapper > nav {
       -webkit-transition: all 300ms;
       -moz-transition: all 300ms;
@@ -2470,6 +2552,7 @@ body {
       position: fixed;
       top: 0;
       width: 100%; }
+      /* line 117, stdin */
       body > #wrapper > nav > ul {
         height: 95%;
         list-style: none;
@@ -2479,15 +2562,20 @@ body {
         position: absolute;
         top: 5%;
         width: 80%; }
+        /* line 126, stdin */
         body > #wrapper > nav > ul > li {
           height: 9.75%;
           width: 100%; }
+          /* line 130, stdin */
           body > #wrapper > nav > ul > li.active .help-container {
             background: #a40aaa; }
+          /* line 132, stdin */
           body > #wrapper > nav > ul > li .help-button {
             margin-right: 10px; }
+          /* line 135, stdin */
           body > #wrapper > nav > ul > li .help-container {
             height: 100%; }
+          /* line 138, stdin */
           body > #wrapper > nav > ul > li .help-line {
             height: 100%;
             position: relative;
@@ -2497,6 +2585,7 @@ body {
             -moz-flex: 1;
             -ms-flex: 1;
             flex: 1; }
+            /* line 139, stdin */
             body > #wrapper > nav > ul > li .help-line > a {
               color: white;
               display: block;
@@ -2504,17 +2593,20 @@ body {
               height: 100%;
               line-height: 0;
               text-decoration: none; }
+            /* line 151, stdin */
             body > #wrapper > nav > ul > li .help-line span {
               display: inline-block;
               left: 1em;
               position: absolute;
               top: 50%;
               vertical-align: middle; }
+              /* line 157, stdin */
               body > #wrapper > nav > ul > li .help-line span > i.fa {
                 display: inline-block;
                 line-height: 0;
                 vertical-align: top;
                 width: 1.5em; }
+    /* line 169, stdin */
     body > #wrapper #loading {
       position: fixed;
       left: 0;
@@ -2528,6 +2620,7 @@ body {
       font-weight: bold;
       font-size: 14px;
       z-index: 100; }
+    /* line 184, stdin */
     body > #wrapper > div#main {
       -webkit-box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
       box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
@@ -2539,12 +2632,13 @@ body {
       position: relative;
       width: 100%;
       overflow: hidden; }
+      /* line 196, stdin */
       body > #wrapper > div#main > div#top {
         -webkit-transition: margin-left 300ms;
         -moz-transition: margin-left 300ms;
         transition: margin-left 300ms;
         background: #a40aaa;
-        border-bottom: 2px solid #5d0662;
+        border-bottom: 2px solid #5e0662;
         color: white;
         font-size: 1.15em;
         font-weight: bold;
@@ -2560,37 +2654,46 @@ body {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box; }
+        /* line 213, stdin */
         body > #wrapper > div#main > div#top > span {
           display: block;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis; }
+        /* line 219, stdin */
         body > #wrapper > div#main > div#top > a {
           display: block;
           position: absolute;
           top: 0; }
+          /* line 223, stdin */
           body > #wrapper > div#main > div#top > a > i {
             display: inline-block;
             font-size: 1.3em;
             height: 45px;
             line-height: 45px;
             padding: 0 0.65em; }
+          /* line 230, stdin */
           body > #wrapper > div#main > div#top > a.nav {
             left: 0; }
+          /* line 231, stdin */
           body > #wrapper > div#main > div#top > a.avsluta {
             display: inline-block;
             right: 0;
             width: 54px; }
+          /* line 232, stdin */
           body > #wrapper > div#main > div#top > a.clean {
             display: inline-block;
             right: 54px;
             width: 54px; }
+        /* line 234, stdin */
         body > #wrapper > div#main > div#top.hide {
           background: white;
           border-bottom: 1px solid transparent;
           color: black; }
+          /* line 238, stdin */
           body > #wrapper > div#main > div#top.hide > a {
             display: none; }
+      /* line 242, stdin */
       body > #wrapper > div#main > #context-wrapper {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -2601,21 +2704,27 @@ body {
         width: 100%;
         overflow-x: hidden;
         overflow-y: auto; }
+        /* line 250, stdin */
         body > #wrapper > div#main > #context-wrapper > #context {
           padding: 15px 5px 5px 5px;
           width: 100%;
           height: 100%; }
 
+/* line 261, stdin */
 body.show-nav #wrapper > nav {
   left: 0; }
+  /* line 263, stdin */
   body.show-nav #wrapper > nav > ul {
     left: 0;
     opacity: 1; }
+/* line 268, stdin */
 body.show-nav #wrapper #context-wrapper {
   pointer-events: none; }
+/* line 270, stdin */
 body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #wrapper .confirmation {
   margin-left: 80%; }
 
+/* line 283, stdin */
 .modal-container {
   position: absolute;
   top: 0;
@@ -2626,9 +2735,11 @@ body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #w
   overflow-y: auto;
   z-index: 90; }
 
+/* line 294, stdin */
 .ios7 .modal-container {
   top: 20px; }
 
+/* line 301, stdin */
 div.delete-task-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -2636,6 +2747,7 @@ div.delete-task-modal {
   position: fixed;
   top: 0;
   width: 100%; }
+  /* line 671, ../src/styles/mixins.scss */
   div.delete-task-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -2644,6 +2756,7 @@ div.delete-task-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
+    /* line 679, ../src/styles/mixins.scss */
     div.delete-task-modal > div > button.cancel {
       background: none;
       border: none;
@@ -2653,25 +2766,29 @@ div.delete-task-modal {
       position: absolute;
       right: 0;
       top: 5px; }
+    /* line 689, ../src/styles/mixins.scss */
     div.delete-task-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
+    /* line 695, ../src/styles/mixins.scss */
     div.delete-task-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
+    /* line 701, ../src/styles/mixins.scss */
     div.delete-task-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
+  /* line 304, stdin */
   div.delete-task-modal > div > button.yes {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2692,12 +2809,14 @@ div.delete-task-modal {
     margin-bottom: 15px;
     padding: 6px 20px 7px;
     width: auto; }
+    /* line 562, ../src/styles/mixins.scss */
     div.delete-task-modal > div > button.yes:active, div.delete-task-modal > div > button.yes.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
+  /* line 311, stdin */
   div.delete-task-modal > div > button.no {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -2722,18 +2841,21 @@ div.delete-task-modal {
     display: block;
     padding: 6px 20px 7px;
     width: auto; }
+    /* line 562, ../src/styles/mixins.scss */
     div.delete-task-modal > div > button.no:active, div.delete-task-modal > div > button.no.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
+  /* line 317, stdin */
   div.delete-task-modal > div > span {
     color: #aaa;
     display: inline-block;
     font-style: italic;
     padding: 10px 40px 0 0; }
 
+/* line 330, stdin */
 div.edit-task-name-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -2741,6 +2863,7 @@ div.edit-task-name-modal {
   position: fixed;
   top: 0;
   width: 100%; }
+  /* line 671, ../src/styles/mixins.scss */
   div.edit-task-name-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -2749,6 +2872,7 @@ div.edit-task-name-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
+    /* line 679, ../src/styles/mixins.scss */
     div.edit-task-name-modal > div > button.cancel {
       background: none;
       border: none;
@@ -2758,20 +2882,24 @@ div.edit-task-name-modal {
       position: absolute;
       right: 0;
       top: 5px; }
+    /* line 689, ../src/styles/mixins.scss */
     div.edit-task-name-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
+    /* line 695, ../src/styles/mixins.scss */
     div.edit-task-name-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
+    /* line 701, ../src/styles/mixins.scss */
     div.edit-task-name-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
+  /* line 333, stdin */
   div.edit-task-name-modal > div > textarea {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -2786,11 +2914,12 @@ div.edit-task-name-modal {
     width: 100%;
     height: 5em;
     margin-bottom: 20px; }
+  /* line 339, stdin */
   div.edit-task-name-modal > div > button.done {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2811,13 +2940,15 @@ div.edit-task-name-modal {
     padding: 6px 20px 7px;
     width: auto;
     float: right; }
+    /* line 562, ../src/styles/mixins.scss */
     div.edit-task-name-modal > div > button.done:active, div.edit-task-name-modal > div > button.done.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
 
+/* line 353, stdin */
 div.later-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -2825,6 +2956,7 @@ div.later-modal {
   position: fixed;
   top: 0;
   width: 100%; }
+  /* line 671, ../src/styles/mixins.scss */
   div.later-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -2833,6 +2965,7 @@ div.later-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
+    /* line 679, ../src/styles/mixins.scss */
     div.later-modal > div > button.cancel {
       background: none;
       border: none;
@@ -2842,30 +2975,36 @@ div.later-modal {
       position: absolute;
       right: 0;
       top: 5px; }
+    /* line 689, ../src/styles/mixins.scss */
     div.later-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
+    /* line 695, ../src/styles/mixins.scss */
     div.later-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
+    /* line 701, ../src/styles/mixins.scss */
     div.later-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
+  /* line 357, stdin */
   div.later-modal > div > div.reminder-in > span {
     visibility: hidden; }
+  /* line 359, stdin */
   div.later-modal > div > div.reminder-in, div.later-modal > div div.reminder-today {
     padding: 5px 0 0;
     overflow: auto; }
+    /* line 362, stdin */
     div.later-modal > div > div.reminder-in > button, div.later-modal > div div.reminder-today > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -2888,12 +3027,14 @@ div.later-modal {
       margin-right: 5px;
       padding: 6px 20px 7px;
       width: auto; }
+      /* line 562, ../src/styles/mixins.scss */
       div.later-modal > div > div.reminder-in > button:active, div.later-modal > div > div.reminder-in > button.active, div.later-modal > div div.reminder-today > button:active, div.later-modal > div div.reminder-today > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
+    /* line 371, stdin */
     div.later-modal > div > div.reminder-in > input, div.later-modal > div div.reminder-today > input {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -2911,16 +3052,18 @@ div.later-modal {
       padding: 6px 10px 7px;
       text-align: right;
       width: 60px; }
+    /* line 380, stdin */
     div.later-modal > div > div.reminder-in > span, div.later-modal > div div.reminder-today > span {
       display: inline-block;
       float: left;
       font-size: 1.2em;
       padding: 6px 0 7px; }
+  /* line 387, stdin */
   div.later-modal > div > button.breakdown, div.later-modal > div button.postpone {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2942,17 +3085,19 @@ div.later-modal {
     margin-top: 10px;
     padding: 6px 20px 7px;
     width: auto; }
+    /* line 562, ../src/styles/mixins.scss */
     div.later-modal > div > button.breakdown:active, div.later-modal > div > button.breakdown.active, div.later-modal > div button.postpone:active, div.later-modal > div button.postpone.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
+  /* line 395, stdin */
   div.later-modal > div > button.abort {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -2974,13 +3119,15 @@ div.later-modal {
     margin-top: 10px;
     padding: 6px 20px 7px;
     width: auto; }
+    /* line 562, ../src/styles/mixins.scss */
     div.later-modal > div > button.abort:active, div.later-modal > div > button.abort.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
 
+/* line 410, stdin */
 div.timer-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -2988,6 +3135,7 @@ div.timer-modal {
   position: fixed;
   top: 0;
   width: 100%; }
+  /* line 671, ../src/styles/mixins.scss */
   div.timer-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -2996,6 +3144,7 @@ div.timer-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
+    /* line 679, ../src/styles/mixins.scss */
     div.timer-modal > div > button.cancel {
       background: none;
       border: none;
@@ -3005,20 +3154,24 @@ div.timer-modal {
       position: absolute;
       right: 0;
       top: 5px; }
+    /* line 689, ../src/styles/mixins.scss */
     div.timer-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
+    /* line 695, ../src/styles/mixins.scss */
     div.timer-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
+    /* line 701, ../src/styles/mixins.scss */
     div.timer-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
+  /* line 414, stdin */
   div.timer-modal > div > div > div.time-inputs {
     display: -webkit-box;
     display: -webkit-flex;
@@ -3042,6 +3195,7 @@ div.timer-modal {
     -webkit-align-items: center;
     -moz-align-items: center;
     align-items: center; }
+    /* line 419, stdin */
     div.timer-modal > div > div > div.time-inputs > label.time-options {
       display: inline-block;
       position: relative;
@@ -3054,6 +3208,7 @@ div.timer-modal {
       -ms-flex: 1;
       flex: 1;
       display: block; }
+      /* line 295, ../src/styles/mixins.scss */
       div.timer-modal > div > div > div.time-inputs > label.time-options::after {
         position: absolute;
         top: 50%;
@@ -3065,14 +3220,15 @@ div.timer-modal {
         border-left: 5px solid transparent;
         content: "";
         pointer-events: none; }
+      /* line 318, ../src/styles/mixins.scss */
       div.timer-modal > div > div > div.time-inputs > label.time-options > select {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #5d0662;
-        box-shadow: 0 2px 0 0 #5d0662;
+        -webkit-box-shadow: 0 2px 0 0 #5e0662;
+        box-shadow: 0 2px 0 0 #5e0662;
         background: #a40aaa;
         border: none;
         border-top: 2px solid transparent;
@@ -3081,27 +3237,33 @@ div.timer-modal {
         font-weight: bold;
         outline: 0;
         padding: 3px 30px 4px 10px; }
+        /* line 330, ../src/styles/mixins.scss */
         div.timer-modal > div > div > div.time-inputs > label.time-options > select:focus {
           -webkit-box-shadow: none;
           box-shadow: none;
-          background: #8b0992;
-          border-top: 2px solid #5d0662; }
+          background: #8d0992;
+          border-top: 2px solid #5e0662; }
+      /* line 341, ../src/styles/mixins.scss */
       div.timer-modal > div > div > div.time-inputs > label.time-options::before {
         right: 20px;
         top: 6px;
         font-size: 1.4em; }
+      /* line 346, ../src/styles/mixins.scss */
       div.timer-modal > div > div > div.time-inputs > label.time-options > select {
         width: 100%;
         padding: 10px 50px 12px 20px; }
+      /* line 422, stdin */
       div.timer-modal > div > div > div.time-inputs > label.time-options > select {
         margin-bottom: 2px; }
+    /* line 427, stdin */
     div.timer-modal > div > div > div.time-inputs > .time-picker {
       margin-left: 10px; }
+  /* line 431, stdin */
   div.timer-modal > div > div > button.start {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -3122,12 +3284,14 @@ div.timer-modal {
     padding: 6px 20px 7px;
     width: auto;
     float: right; }
+    /* line 562, ../src/styles/mixins.scss */
     div.timer-modal > div > div > button.start:active, div.timer-modal > div > div > button.start.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
+  /* line 438, stdin */
   div.timer-modal > div > div > button.clear {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3154,14 +3318,17 @@ div.timer-modal {
     width: auto;
     float: right;
     margin-right: 10px; }
+    /* line 562, ../src/styles/mixins.scss */
     div.timer-modal > div > div > button.clear:active, div.timer-modal > div > div > button.clear.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
+  /* line 483, stdin */
   div.timer-modal > div > div.timer {
     overflow: auto; }
+    /* line 485, stdin */
     div.timer-modal > div > div.timer > div {
       display: block;
       font-size: 2em;
@@ -3169,14 +3336,16 @@ div.timer-modal {
       line-height: 58px;
       margin: 0 0 10px;
       text-align: center; }
+    /* line 493, stdin */
     div.timer-modal > div > div.timer > .buttons {
       float: right;
       text-align: right; }
+      /* line 496, stdin */
       div.timer-modal > div > div.timer > .buttons > button.clear {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #5d0662;
-        box-shadow: 0 2px 0 0 #5d0662;
+        -webkit-box-shadow: 0 2px 0 0 #5e0662;
+        box-shadow: 0 2px 0 0 #5e0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -3198,13 +3367,15 @@ div.timer-modal {
         padding: 6px 20px 7px;
         margin-top: 15px;
         width: auto; }
+        /* line 562, ../src/styles/mixins.scss */
         div.timer-modal > div > div.timer > .buttons > button.clear:active, div.timer-modal > div > div.timer > .buttons > button.clear.active {
           -webkit-box-shadow: none;
           box-shadow: none;
-          background: #8b0992;
-          border-top: 2px solid #5d0662;
+          background: #8d0992;
+          border-top: 2px solid #5e0662;
           top: 0px; }
 
+/* line 513, stdin */
 div.pick-parent-task-modal {
   position: absolute;
   top: 0;
@@ -3214,6 +3385,7 @@ div.pick-parent-task-modal {
   background: white;
   border: 5px solid #eee;
   padding: 40px 5px 100px; }
+  /* line 523, stdin */
   div.pick-parent-task-modal > button.cancel {
     background: none;
     border: none;
@@ -3224,25 +3396,32 @@ div.pick-parent-task-modal {
     right: 0;
     top: 5px;
     outline: 0; }
+  /* line 525, stdin */
   div.pick-parent-task-modal > div.child-task {
     color: #aaa;
     margin: 0 0 15px; }
+    /* line 528, stdin */
     div.pick-parent-task-modal > div.child-task > p {
       margin: 10px 0 15px; }
+    /* line 529, stdin */
     div.pick-parent-task-modal > div.child-task > i {
       padding-left: 40px; }
+  /* line 532, stdin */
   div.pick-parent-task-modal > ul {
     margin: 0 -5px;
     padding: 0;
     list-style: none; }
+    /* line 536, stdin */
     div.pick-parent-task-modal > ul > li {
       padding: 0 5px;
       border-bottom: 1px solid #dddddd;
       line-height: 50px; }
+      /* line 540, stdin */
       div.pick-parent-task-modal > ul > li.active {
         background: #a40aaa;
         color: white; }
 
+/* line 552, stdin */
 div.focus-stop-timer-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -3250,6 +3429,7 @@ div.focus-stop-timer-modal {
   position: fixed;
   top: 0;
   width: 100%; }
+  /* line 671, ../src/styles/mixins.scss */
   div.focus-stop-timer-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -3258,6 +3438,7 @@ div.focus-stop-timer-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
+    /* line 679, ../src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > button.cancel {
       background: none;
       border: none;
@@ -3267,27 +3448,32 @@ div.focus-stop-timer-modal {
       position: absolute;
       right: 0;
       top: 5px; }
+    /* line 689, ../src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
+    /* line 695, ../src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
+    /* line 701, ../src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
+  /* line 555, stdin */
   div.focus-stop-timer-modal > div > div.divider {
     margin-top: 30px; }
+  /* line 559, stdin */
   div.focus-stop-timer-modal > div > button.reset-timer, div.focus-stop-timer-modal > div > button.stop-focussing {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -3310,12 +3496,14 @@ div.focus-stop-timer-modal {
     padding: 6px 20px 7px;
     width: auto;
     text-align: left; }
+    /* line 562, ../src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > button.reset-timer:active, div.focus-stop-timer-modal > div > button.reset-timer.active, div.focus-stop-timer-modal > div > button.stop-focussing:active, div.focus-stop-timer-modal > div > button.stop-focussing.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
+  /* line 568, stdin */
   div.focus-stop-timer-modal > div > button.continue-focussing {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3343,6 +3531,7 @@ div.focus-stop-timer-modal {
     padding: 6px 20px 7px;
     width: auto;
     text-align: left; }
+    /* line 562, ../src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > button.continue-focussing:active, div.focus-stop-timer-modal > div > button.continue-focussing.active {
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -3350,6 +3539,7 @@ div.focus-stop-timer-modal {
       border-top: 2px solid #9b9b9b;
       top: 0px; }
 
+/* line 585, stdin */
 div.focus-distraction-list-confirmation-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -3357,6 +3547,7 @@ div.focus-distraction-list-confirmation-modal {
   position: fixed;
   top: 0;
   width: 100%; }
+  /* line 671, ../src/styles/mixins.scss */
   div.focus-distraction-list-confirmation-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -3365,6 +3556,7 @@ div.focus-distraction-list-confirmation-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
+    /* line 679, ../src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > button.cancel {
       background: none;
       border: none;
@@ -3374,27 +3566,32 @@ div.focus-distraction-list-confirmation-modal {
       position: absolute;
       right: 0;
       top: 5px; }
+    /* line 689, ../src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
+    /* line 695, ../src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
+    /* line 701, ../src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
+  /* line 588, stdin */
   div.focus-distraction-list-confirmation-modal > div > h1 {
     padding-right: 30px; }
+  /* line 590, stdin */
   div.focus-distraction-list-confirmation-modal > div > button.plan-now {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -3417,12 +3614,14 @@ div.focus-distraction-list-confirmation-modal {
     padding: 6px 20px 7px;
     width: auto;
     text-align: left; }
+    /* line 562, ../src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > button.plan-now:active, div.focus-distraction-list-confirmation-modal > div > button.plan-now.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
+  /* line 599, stdin */
   div.focus-distraction-list-confirmation-modal > div > button.plan-later {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3450,6 +3649,7 @@ div.focus-distraction-list-confirmation-modal {
     padding: 6px 20px 7px;
     width: auto;
     text-align: left; }
+    /* line 562, ../src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > button.plan-later:active, div.focus-distraction-list-confirmation-modal > div > button.plan-later.active {
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -3457,6 +3657,7 @@ div.focus-distraction-list-confirmation-modal {
       border-top: 2px solid #9b9b9b;
       top: 0px; }
 
+/* line 614, stdin */
 .confirmation {
   position: fixed;
   bottom: 0;
@@ -3465,13 +3666,15 @@ div.focus-distraction-list-confirmation-modal {
   width: 100%;
   padding: 10px;
   text-align: center; }
+  /* line 622, stdin */
   .confirmation.reset-all-tasks {
     text-align: center; }
+    /* line 624, stdin */
     .confirmation.reset-all-tasks > a {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -3485,17 +3688,19 @@ div.focus-distraction-list-confirmation-modal {
       border-top: 2px solid transparent;
       text-decoration: none;
       outline: 0; }
+      /* line 562, ../src/styles/mixins.scss */
       .confirmation.reset-all-tasks > a:active, .confirmation.reset-all-tasks > a.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
+  /* line 628, stdin */
   .confirmation > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -3514,16 +3719,20 @@ div.focus-distraction-list-confirmation-modal {
     padding: 13px 0 14px;
     width: auto;
     padding: 5px 20px 6px; }
+    /* line 562, ../src/styles/mixins.scss */
     .confirmation > button:active, .confirmation > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
+    /* line 632, stdin */
     .confirmation > button:disabled {
       opacity: 0.3; }
+  /* line 634, stdin */
   .confirmation .modal-buttons {
     text-align: center; }
+    /* line 636, stdin */
     .confirmation .modal-buttons > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -3547,19 +3756,22 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       width: auto;
       padding: 5px 20px 6px; }
+      /* line 562, ../src/styles/mixins.scss */
       .confirmation .modal-buttons > button:active, .confirmation .modal-buttons > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
+      /* line 640, stdin */
       .confirmation .modal-buttons > button:disabled {
         opacity: 0.3; }
+      /* line 641, stdin */
       .confirmation .modal-buttons > button.main {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #5d0662;
-        box-shadow: 0 2px 0 0 #5d0662;
+        -webkit-box-shadow: 0 2px 0 0 #5e0662;
+        box-shadow: 0 2px 0 0 #5e0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -3578,13 +3790,15 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         width: auto;
         padding: 5px 20px 6px; }
+        /* line 562, ../src/styles/mixins.scss */
         .confirmation .modal-buttons > button.main:active, .confirmation .modal-buttons > button.main.active {
           -webkit-box-shadow: none;
           box-shadow: none;
-          background: #8b0992;
-          border-top: 2px solid #5d0662;
+          background: #8d0992;
+          border-top: 2px solid #5e0662;
           top: 0px; }
 
+/* line 659, stdin */
 .help-container {
   display: -webkit-box;
   display: -webkit-flex;
@@ -3609,6 +3823,7 @@ div.focus-distraction-list-confirmation-modal {
   -moz-align-items: center;
   align-items: center; }
 
+/* line 666, stdin */
 .help-line {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -3617,6 +3832,7 @@ div.focus-distraction-list-confirmation-modal {
   -ms-flex: 1;
   flex: 1; }
 
+/* line 670, stdin */
 .help-button {
   width: 25px;
   height: 25px;
@@ -3632,12 +3848,15 @@ div.focus-distraction-list-confirmation-modal {
   margin: 0 5px 0 10px;
   padding: 0; }
 
+/* line 681, stdin */
 .help-hidden .help-button {
   display: none; }
 
+/* line 693, stdin */
 .timepicker {
   width: 60px; }
 
+/* line 697, stdin */
 .timepicker-field {
   width: 3em;
   padding: 7px 5px;
@@ -3646,6 +3865,7 @@ div.focus-distraction-list-confirmation-modal {
   border: 1px solid #aaa;
   display: inline-block; }
 
+/* line 705, stdin */
 .timepicker-button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -3664,6 +3884,7 @@ div.focus-distraction-list-confirmation-modal {
   border-top: 2px solid transparent;
   text-decoration: none;
   outline: 0; }
+  /* line 562, ../src/styles/mixins.scss */
   .timepicker-button:active, .timepicker-button.active {
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3671,6 +3892,7 @@ div.focus-distraction-list-confirmation-modal {
     border-top: 2px solid #9b9b9b;
     top: 0px; }
 
+/* line 709, stdin */
 .plan {
   background: white;
   border: 5px solid #eee;
@@ -3680,6 +3902,7 @@ div.focus-distraction-list-confirmation-modal {
   position: absolute;
   top: 0;
   width: 100%; }
+  /* line 719, stdin */
   .plan > button.cancel {
     background: none;
     border: none;
@@ -3690,6 +3913,7 @@ div.focus-distraction-list-confirmation-modal {
     right: 0;
     top: 5px;
     outline: 0; }
+  /* line 721, stdin */
   .plan > input.task-title {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -3702,6 +3926,7 @@ div.focus-distraction-list-confirmation-modal {
     outline: 0;
     padding: 0.45em 10px;
     width: 100%; }
+  /* line 726, stdin */
   .plan > div.priority .help-line > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3726,19 +3951,22 @@ div.focus-distraction-list-confirmation-modal {
     font-size: 1.5em;
     width: 23%;
     margin-left: 2.5%; }
+    /* line 562, ../src/styles/mixins.scss */
     .plan > div.priority .help-line > button:active, .plan > div.priority .help-line > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
+    /* line 731, stdin */
     .plan > div.priority .help-line > button:first-child {
       margin-left: 0; }
+    /* line 732, stdin */
     .plan > div.priority .help-line > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -3757,12 +3985,14 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       font-size: 1.5em;
       width: 23%; }
+      /* line 562, ../src/styles/mixins.scss */
       .plan > div.priority .help-line > button.active:active, .plan > div.priority .help-line > button.active.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
+  /* line 739, stdin */
   .plan > div.type .help-line > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3787,19 +4017,22 @@ div.focus-distraction-list-confirmation-modal {
     font-size: 0.9em;
     width: 31%;
     margin-left: 3%; }
+    /* line 562, ../src/styles/mixins.scss */
     .plan > div.type .help-line > button:active, .plan > div.type .help-line > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
+    /* line 744, stdin */
     .plan > div.type .help-line > button:first-child {
       margin-left: 0; }
+    /* line 745, stdin */
     .plan > div.type .help-line > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -3818,12 +4051,14 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       font-size: 0.9em;
       width: 31%; }
+      /* line 562, ../src/styles/mixins.scss */
       .plan > div.type .help-line > button.active:active, .plan > div.type .help-line > button.active.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
+  /* line 752, stdin */
   .plan > div.exact .help-line {
     display: -webkit-box;
     display: -webkit-flex;
@@ -3847,6 +4082,7 @@ div.focus-distraction-list-confirmation-modal {
     -webkit-align-items: center;
     -moz-align-items: center;
     align-items: center; }
+    /* line 757, stdin */
     .plan > div.exact .help-line > button.start-time {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -3876,17 +4112,19 @@ div.focus-distraction-list-confirmation-modal {
       -ms-flex: 1;
       flex: 1;
       display: block; }
+      /* line 562, ../src/styles/mixins.scss */
       .plan > div.exact .help-line > button.start-time:active, .plan > div.exact .help-line > button.start-time.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
+      /* line 759, stdin */
       .plan > div.exact .help-line > button.start-time.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #5d0662;
-        box-shadow: 0 2px 0 0 #5d0662;
+        -webkit-box-shadow: 0 2px 0 0 #5e0662;
+        box-shadow: 0 2px 0 0 #5e0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -3905,17 +4143,20 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         font-size: 1em;
         display: block; }
+        /* line 562, ../src/styles/mixins.scss */
         .plan > div.exact .help-line > button.start-time.selected:active, .plan > div.exact .help-line > button.start-time.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
-          background: #8b0992;
-          border-top: 2px solid #5d0662;
+          background: #8d0992;
+          border-top: 2px solid #5e0662;
           top: 0px; }
+  /* line 771, stdin */
   .plan > div.period .help-line > label {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em; }
+    /* line 295, ../src/styles/mixins.scss */
     .plan > div.period .help-line > label::after {
       position: absolute;
       top: 50%;
@@ -3927,14 +4168,15 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
+    /* line 318, ../src/styles/mixins.scss */
     .plan > div.period .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -3943,18 +4185,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
+      /* line 330, ../src/styles/mixins.scss */
       .plan > div.period .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662; }
+        background: #8d0992;
+        border-top: 2px solid #5e0662; }
+    /* line 341, ../src/styles/mixins.scss */
     .plan > div.period .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
+    /* line 346, ../src/styles/mixins.scss */
     .plan > div.period .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
+  /* line 772, stdin */
   .plan > div.period .help-line > div.datepickers {
     margin-top: 10px;
     -webkit-box-flex: 1;
@@ -3963,6 +4209,7 @@ div.focus-distraction-list-confirmation-modal {
     -moz-flex: 1;
     -ms-flex: 1;
     flex: 1; }
+    /* line 775, stdin */
     .plan > div.period .help-line > div.datepickers > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -3986,17 +4233,19 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       font-size: 1.2em;
       padding: 5px 0 5px; }
+      /* line 562, ../src/styles/mixins.scss */
       .plan > div.period .help-line > div.datepickers > button:active, .plan > div.period .help-line > div.datepickers > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
+      /* line 777, stdin */
       .plan > div.period .help-line > div.datepickers > button.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #5d0662;
-        box-shadow: 0 2px 0 0 #5d0662;
+        -webkit-box-shadow: 0 2px 0 0 #5e0662;
+        box-shadow: 0 2px 0 0 #5e0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -4015,34 +4264,41 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         font-size: 1.2em;
         padding: 5px 0 5px; }
+        /* line 562, ../src/styles/mixins.scss */
         .plan > div.period .help-line > div.datepickers > button.selected:active, .plan > div.period .help-line > div.datepickers > button.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
-          background: #8b0992;
-          border-top: 2px solid #5d0662;
+          background: #8d0992;
+          border-top: 2px solid #5e0662;
           top: 0px; }
+        /* line 779, stdin */
         .plan > div.period .help-line > div.datepickers > button.selected:first-child {
           -webkit-border-bottom-left-radius: 0;
           border-bottom-left-radius: 0;
           -webkit-border-bottom-right-radius: 0;
           border-bottom-right-radius: 0; }
+        /* line 782, stdin */
         .plan > div.period .help-line > div.datepickers > button.selected:last-child {
           -webkit-border-top-left-radius: 0;
           border-top-left-radius: 0;
           -webkit-border-top-right-radius: 0;
           border-top-right-radius: 0; }
+      /* line 788, stdin */
       .plan > div.period .help-line > div.datepickers > button:first-child {
         -webkit-border-bottom-left-radius: 0;
         border-bottom-left-radius: 0;
         -webkit-border-bottom-right-radius: 0;
         border-bottom-right-radius: 0; }
+      /* line 791, stdin */
       .plan > div.period .help-line > div.datepickers > button:last-child {
         -webkit-border-top-left-radius: 0;
         border-top-left-radius: 0;
         -webkit-border-top-right-radius: 0;
         border-top-right-radius: 0; }
+  /* line 800, stdin */
   .plan > div.within-x-days {
     margin-top: 10px; }
+    /* line 802, stdin */
     .plan > div.within-x-days > input {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4055,6 +4311,7 @@ div.focus-distraction-list-confirmation-modal {
       outline: 0;
       padding: 0.45em 10px;
       width: 60px; }
+  /* line 810, stdin */
   .plan > div > div.duration .help-line > div {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4079,8 +4336,10 @@ div.focus-distraction-list-confirmation-modal {
     -moz-align-items: center;
     align-items: center;
     overflow: auto; }
+    /* line 811, stdin */
     .plan > div > div.duration .help-line > div > span {
       visibility: hidden; }
+    /* line 817, stdin */
     .plan > div > div.duration .help-line > div > div.estimate-toggle {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4094,6 +4353,7 @@ div.focus-distraction-list-confirmation-modal {
       width: 100%;
       display: block;
       height: 50px; }
+      /* line 825, stdin */
       .plan > div > div.duration .help-line > div > div.estimate-toggle > button {
         -webkit-user-select: none;
         background: #d4d4d4;
@@ -4107,16 +4367,19 @@ div.focus-distraction-list-confirmation-modal {
         padding: 0 10px;
         text-align: center;
         width: 100%; }
+        /* line 838, stdin */
         .plan > div > div.duration .help-line > div > div.estimate-toggle > button.active {
           opacity: 1;
           background: #a40aaa;
           color: white; }
+  /* line 848, stdin */
   .plan > div > label.show-in-todo .help-line {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     display: block; }
+    /* line 295, ../src/styles/mixins.scss */
     .plan > div > label.show-in-todo .help-line::after {
       position: absolute;
       top: 50%;
@@ -4128,14 +4391,15 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
+    /* line 318, ../src/styles/mixins.scss */
     .plan > div > label.show-in-todo .help-line > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -4144,18 +4408,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
+      /* line 330, ../src/styles/mixins.scss */
       .plan > div > label.show-in-todo .help-line > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662; }
+        background: #8d0992;
+        border-top: 2px solid #5e0662; }
+    /* line 341, ../src/styles/mixins.scss */
     .plan > div > label.show-in-todo .help-line::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
+    /* line 346, ../src/styles/mixins.scss */
     .plan > div > label.show-in-todo .help-line > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
+  /* line 853, stdin */
   .plan > div > div.checkbox {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4167,16 +4435,19 @@ div.focus-distraction-list-confirmation-modal {
     bottom: -2px;
     margin-right: 5px;
     z-index: 1; }
+    /* line 363, ../src/styles/mixins.scss */
     .plan > div > div.checkbox > i {
       left: 0;
       position: absolute;
       top: 0; }
+  /* line 856, stdin */
   .plan > div > .reminder .help-line > label {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin-top: 10px; }
+    /* line 295, ../src/styles/mixins.scss */
     .plan > div > .reminder .help-line > label::after {
       position: absolute;
       top: 50%;
@@ -4188,14 +4459,15 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
+    /* line 318, ../src/styles/mixins.scss */
     .plan > div > .reminder .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -4204,18 +4476,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
+      /* line 330, ../src/styles/mixins.scss */
       .plan > div > .reminder .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662; }
+        background: #8d0992;
+        border-top: 2px solid #5e0662; }
+    /* line 341, ../src/styles/mixins.scss */
     .plan > div > .reminder .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
+    /* line 346, ../src/styles/mixins.scss */
     .plan > div > .reminder .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
+  /* line 860, stdin */
   .plan > div > .reminder .help-line > .reminder-time {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4240,6 +4516,7 @@ div.focus-distraction-list-confirmation-modal {
     -moz-align-items: center;
     align-items: center;
     margin: 10px 0; }
+    /* line 866, stdin */
     .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4269,17 +4546,19 @@ div.focus-distraction-list-confirmation-modal {
       -ms-flex: 1;
       flex: 1;
       display: block; }
+      /* line 562, ../src/styles/mixins.scss */
       .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder:active, .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
+      /* line 868, stdin */
       .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #5d0662;
-        box-shadow: 0 2px 0 0 #5d0662;
+        -webkit-box-shadow: 0 2px 0 0 #5e0662;
+        box-shadow: 0 2px 0 0 #5e0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -4298,12 +4577,14 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         font-size: 1em;
         display: block; }
+        /* line 562, ../src/styles/mixins.scss */
         .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected:active, .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
-          background: #8b0992;
-          border-top: 2px solid #5d0662;
+          background: #8d0992;
+          border-top: 2px solid #5e0662;
           top: 0px; }
+  /* line 880, stdin */
   .plan > div .alarm-toggle .help-line {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4318,6 +4599,7 @@ div.focus-distraction-list-confirmation-modal {
     display: block;
     height: 50px;
     margin: 10px 0 0; }
+    /* line 888, stdin */
     .plan > div .alarm-toggle .help-line button {
       -webkit-user-select: none;
       background: #d4d4d4;
@@ -4331,16 +4613,19 @@ div.focus-distraction-list-confirmation-modal {
       padding: 0 10px;
       text-align: center;
       width: 100%; }
+      /* line 901, stdin */
       .plan > div .alarm-toggle .help-line button.active {
         opacity: 1;
         background: #a40aaa;
         color: white; }
+  /* line 911, stdin */
   .plan > div > div.repeated .help-line > label {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin: 10px 0; }
+    /* line 295, ../src/styles/mixins.scss */
     .plan > div > div.repeated .help-line > label::after {
       position: absolute;
       top: 50%;
@@ -4352,14 +4637,15 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
+    /* line 318, ../src/styles/mixins.scss */
     .plan > div > div.repeated .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -4368,18 +4654,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
+      /* line 330, ../src/styles/mixins.scss */
       .plan > div > div.repeated .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662; }
+        background: #8d0992;
+        border-top: 2px solid #5e0662; }
+    /* line 341, ../src/styles/mixins.scss */
     .plan > div > div.repeated .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
+    /* line 346, ../src/styles/mixins.scss */
     .plan > div > div.repeated .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
+  /* line 915, stdin */
   .plan > div > div.repeated .help-line input.period-input {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -4392,12 +4682,15 @@ div.focus-distraction-list-confirmation-modal {
     outline: 0;
     padding: 0.45em 10px;
     width: 60px; }
+  /* line 920, stdin */
   .plan > div > div.repeated .help-line .weekly-repeat {
     margin: 10px 0; }
+    /* line 922, stdin */
     .plan > div > div.repeated .help-line .weekly-repeat > div {
       display: inline-block;
       margin-right: 1px;
       padding: 10px 0; }
+      /* line 926, stdin */
       .plan > div > div.repeated .help-line .weekly-repeat > div > div.checkbox {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -4410,16 +4703,19 @@ div.focus-distraction-list-confirmation-modal {
         margin-right: 5px;
         z-index: 1;
         margin-right: 0; }
+        /* line 363, ../src/styles/mixins.scss */
         .plan > div > div.repeated .help-line .weekly-repeat > div > div.checkbox > i {
           left: 0;
           position: absolute;
           top: 0; }
+  /* line 932, stdin */
   .plan > div > div.repeated .help-line .repeat-end {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin: 10px 0 0; }
+    /* line 295, ../src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-end::after {
       position: absolute;
       top: 50%;
@@ -4431,14 +4727,15 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
+    /* line 318, ../src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-end > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -4447,18 +4744,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
+      /* line 330, ../src/styles/mixins.scss */
       .plan > div > div.repeated .help-line .repeat-end > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662; }
+        background: #8d0992;
+        border-top: 2px solid #5e0662; }
+    /* line 341, ../src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-end::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
+    /* line 346, ../src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-end > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
+  /* line 936, stdin */
   .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4483,17 +4784,19 @@ div.focus-distraction-list-confirmation-modal {
     margin: 10px 0 0;
     display: block;
     font-size: 1em; }
+    /* line 562, ../src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit:active, .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
+    /* line 941, stdin */
     .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.selected {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -4512,14 +4815,17 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       font-size: 1em;
       display: block; }
+      /* line 562, ../src/styles/mixins.scss */
       .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.selected:active, .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.selected.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
+  /* line 950, stdin */
   .plan .reminder-time {
     margin: 10px 0 0; }
+  /* line 953, stdin */
   .plan .exact-reminder {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4541,17 +4847,19 @@ div.focus-distraction-list-confirmation-modal {
     width: 100%;
     font-size: 1.2em;
     padding: 13px 0 14px; }
+    /* line 562, ../src/styles/mixins.scss */
     .plan .exact-reminder:active, .plan .exact-reminder.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
+    /* line 955, stdin */
     .plan .exact-reminder.selected {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -4568,17 +4876,20 @@ div.focus-distraction-list-confirmation-modal {
       width: 100%;
       font-size: 1.2em;
       padding: 13px 0 14px; }
+      /* line 562, ../src/styles/mixins.scss */
       .plan .exact-reminder.selected:active, .plan .exact-reminder.selected.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
+  /* line 965, stdin */
   .plan div.period-reminder .help-line > label {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em; }
+    /* line 295, ../src/styles/mixins.scss */
     .plan div.period-reminder .help-line > label::after {
       position: absolute;
       top: 50%;
@@ -4590,14 +4901,15 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
+    /* line 318, ../src/styles/mixins.scss */
     .plan div.period-reminder .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -4606,18 +4918,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
+      /* line 330, ../src/styles/mixins.scss */
       .plan div.period-reminder .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662; }
+        background: #8d0992;
+        border-top: 2px solid #5e0662; }
+    /* line 341, ../src/styles/mixins.scss */
     .plan div.period-reminder .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
+    /* line 346, ../src/styles/mixins.scss */
     .plan div.period-reminder .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
+  /* line 968, stdin */
   .plan div.period-reminder .help-line > .reminder-time {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4641,6 +4957,7 @@ div.focus-distraction-list-confirmation-modal {
     -webkit-align-items: center;
     -moz-align-items: center;
     align-items: center; }
+    /* line 973, stdin */
     .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4670,17 +4987,19 @@ div.focus-distraction-list-confirmation-modal {
       -ms-flex: 1;
       flex: 1;
       display: block; }
+      /* line 562, ../src/styles/mixins.scss */
       .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder:active, .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
+      /* line 975, stdin */
       .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #5d0662;
-        box-shadow: 0 2px 0 0 #5d0662;
+        -webkit-box-shadow: 0 2px 0 0 #5e0662;
+        box-shadow: 0 2px 0 0 #5e0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -4699,12 +5018,14 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         font-size: 1em;
         display: block; }
+        /* line 562, ../src/styles/mixins.scss */
         .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected:active, .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
-          background: #8b0992;
-          border-top: 2px solid #5d0662;
+          background: #8d0992;
+          border-top: 2px solid #5e0662;
           top: 0px; }
+  /* line 985, stdin */
   .plan div.period-reminder .help-line > div.alarm-toggle {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4719,6 +5040,7 @@ div.focus-distraction-list-confirmation-modal {
     display: block;
     height: 50px;
     margin: 10px 0 20px; }
+    /* line 993, stdin */
     .plan div.period-reminder .help-line > div.alarm-toggle > button {
       -webkit-user-select: none;
       background: #d4d4d4;
@@ -4732,13 +5054,16 @@ div.focus-distraction-list-confirmation-modal {
       padding: 0 10px;
       text-align: center;
       width: 100%; }
+      /* line 1006, stdin */
       .plan div.period-reminder .help-line > div.alarm-toggle > button.active {
         opacity: 1;
         background: #a40aaa;
         color: white; }
+  /* line 1016, stdin */
   .plan > div.no-time > div.confirm-no-time {
     overflow: auto;
     padding: 15px 0 4px; }
+    /* line 1019, stdin */
     .plan > div.no-time > div.confirm-no-time > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4763,19 +5088,22 @@ div.focus-distraction-list-confirmation-modal {
       width: 49%;
       display: block;
       float: left; }
+      /* line 562, ../src/styles/mixins.scss */
       .plan > div.no-time > div.confirm-no-time > button:active, .plan > div.no-time > div.confirm-no-time > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
+      /* line 1024, stdin */
       .plan > div.no-time > div.confirm-no-time > button:first-child {
         margin-right: 2%; }
+      /* line 1025, stdin */
       .plan > div.no-time > div.confirm-no-time > button.active {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 2px 0 0 #5d0662;
-        box-shadow: 0 2px 0 0 #5d0662;
+        -webkit-box-shadow: 0 2px 0 0 #5e0662;
+        box-shadow: 0 2px 0 0 #5e0662;
         -webkit-user-select: none;
         background: #a40aaa;
         border: none;
@@ -4795,17 +5123,19 @@ div.focus-distraction-list-confirmation-modal {
         width: 49%;
         display: block;
         float: left; }
+        /* line 562, ../src/styles/mixins.scss */
         .plan > div.no-time > div.confirm-no-time > button.active:active, .plan > div.no-time > div.confirm-no-time > button.active.active {
           -webkit-box-shadow: none;
           box-shadow: none;
-          background: #8b0992;
-          border-top: 2px solid #5d0662;
+          background: #8d0992;
+          border-top: 2px solid #5e0662;
           top: 0px; }
+  /* line 1035, stdin */
   .plan > div > button.save {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -4825,92 +5155,125 @@ div.focus-distraction-list-confirmation-modal {
     float: right;
     width: auto;
     padding: 12px 20px 13px; }
+    /* line 562, ../src/styles/mixins.scss */
     .plan > div > button.save:active, .plan > div > button.save.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
 
+/* line 1056, stdin */
 .list-item .list-item > div.is-child {
   margin-left: 20px; }
+  /* line 1060, stdin */
   .list-item .list-item > div.is-child > div > div.right > div.checkbox-wrapper {
     margin-left: 10px; }
+  /* line 1061, stdin */
   .list-item .list-item > div.is-child > div > div.right > div.right {
     border-left: 10px solid #a40aaa; }
 
+/* line 1066, stdin */
 .list-item.section-divider {
   border-top: 3px solid #a40aaa; }
 
 @keyframes blink {
+  /* line 1071, stdin */
   0% {
     opacity: 0.1; }
 
+  /* line 1072, stdin */
   100% {
     opacity: 1; } }
 
 @-webkit-keyframes blink {
+  /* line 1075, stdin */
   0% {
     opacity: 0.1; }
 
+  /* line 1076, stdin */
   100% {
     opacity: 1; } }
 
+/* line 1079, stdin */
 span.time-label {
   display: block;
   font-size: 12px;
   line-height: 20px;
   color: #aaa; }
+  /* line 1084, stdin */
   span.time-label::after {
     content: '\00a0'; }
 
+/* line 1087, stdin */
 .list-item {
   -webkit-user-select: none;
   overflow: auto; }
+  /* line 1091, stdin */
   .list-item.unplanned > div {
     background: none; }
+    /* line 1093, stdin */
     .list-item.unplanned > div > div > div.right {
       background: none; }
+      /* line 1095, stdin */
       .list-item.unplanned > div > div > div.right > div.right {
         background: none; }
+      /* line 1096, stdin */
       .list-item.unplanned > div > div > div.right .parent-task, .list-item.unplanned > div > div > div.right .time-label {
         display: none !important; }
+      /* line 1097, stdin */
       .list-item.unplanned > div > div > div.right .checkbox-wrapper {
         padding: 14px 10px 10px; }
+      /* line 1098, stdin */
       .list-item.unplanned > div > div > div.right .task-text {
         padding: 10px 0 !important; }
+  /* line 1102, stdin */
   .list-item.current-task > div > div > div.right > div.right {
     background: #A9D4EE; }
+  /* line 1105, stdin */
   .list-item > div {
     background: #f2f2f2;
     border-bottom: 1px solid #dddddd; }
+    /* line 1108, stdin */
     .list-item > div.checked {
       border-bottom: 1px solid #555;
       opacity: 0.3; }
+      /* line 1112, stdin */
       .list-item > div.checked > div > div.right > div.right > span.task-text {
         pointer-events: none; }
+      /* line 1116, stdin */
       .list-item > div.checked.expanded > div > div.right > div.right > span.task-text {
         white-space: nowrap; }
+      /* line 1117, stdin */
       .list-item > div.checked.expanded > div > div.right > div.right > div.actions {
         display: none; }
+      /* line 1122, stdin */
       .list-item > div.checked.expanded.has-child-task-controls > div > div.sub-task-ctrls > button.make-sub-task {
         display: none; }
+      /* line 1123, stdin */
       .list-item > div.checked.expanded.has-child-task-controls > div > div.sub-task-ctrls > button.add-sub-task {
         display: none; }
+      /* line 1125, stdin */
       .list-item > div.checked.expanded.has-child-task-controls > div > div.right {
         padding-left: 0px; }
+      /* line 1128, stdin */
       .list-item > div.checked.expanded.has-child-task-controls.is-child > div > div.sub-task-ctrls {
         display: none; }
+    /* line 1134, stdin */
     .list-item > div.is-parent > button.caret {
       display: block; }
+    /* line 1135, stdin */
     .list-item > div.is-parent > div {
       padding-left: 50px; }
+    /* line 1137, stdin */
     .list-item > div.show-children {
       background: #a40aaa; }
+      /* line 1139, stdin */
       .list-item > div.show-children > button.caret {
         background: #a40aaa;
         color: white;
         outline: 0; }
+        /* line 510, ../src/styles/mixins.scss */
         .list-item > div.show-children > button.caret::before {
           content: '\f0d7';
           display: inline-block;
@@ -4918,51 +5281,72 @@ span.time-label {
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
+    /* line 1147, stdin */
     .list-item > div.expanded > div > div.right > div.right > span.task-text {
       white-space: normal; }
+    /* line 1148, stdin */
     .list-item > div.expanded > div > div.right > div.right > div.actions {
       display: block;
       padding-bottom: 10px; }
+    /* line 1153, stdin */
     .list-item > div.has-child-task-controls.expanded > div > div.sub-task-ctrls > button.make-sub-task {
       display: block; }
+    /* line 1154, stdin */
     .list-item > div.has-child-task-controls.expanded > div > div.sub-task-ctrls > button.add-sub-task {
       display: block; }
+    /* line 1156, stdin */
     .list-item > div.has-child-task-controls.expanded > div > div.right {
       padding-left: 30px; }
+    /* line 1160, stdin */
     .list-item > div.has-child-task-controls.expanded.is-parent > div > div.sub-task-ctrls {
       margin-left: 1px; }
+      /* line 1162, stdin */
       .list-item > div.has-child-task-controls.expanded.is-parent > div > div.sub-task-ctrls > button.make-sub-task {
         display: none; }
+      /* line 1163, stdin */
       .list-item > div.has-child-task-controls.expanded.is-parent > div > div.sub-task-ctrls > button.add-sub-task {
         height: 100px; }
+      /* line 1164, stdin */
       .list-item > div.has-child-task-controls.expanded.is-parent > div > div.sub-task-ctrls > button.make-free-task {
         display: none; }
+    /* line 1166, stdin */
     .list-item > div.has-child-task-controls.expanded.is-parent > div > div.right {
       border-left: 1px solid white; }
+    /* line 1169, stdin */
     .list-item > div.has-child-task-controls.expanded.is-child {
       margin-left: 0px;
       border-bottom: none; }
+      /* line 1173, stdin */
       .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls {
         width: 20px; }
+        /* line 1175, stdin */
         .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls > button {
           width: 20px;
           outline: 0; }
+          /* line 1178, stdin */
           .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls > button.make-sub-task {
             display: none; }
+          /* line 1179, stdin */
           .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls > button.add-sub-task {
             display: none; }
+          /* line 1180, stdin */
           .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls > button.make-free-task {
             display: block;
             height: 100px;
             padding: 0; }
+      /* line 1187, stdin */
       .list-item > div.has-child-task-controls.expanded.is-child > div > div.right {
         padding-left: 20px; }
+        /* line 1190, stdin */
         .list-item > div.has-child-task-controls.expanded.is-child > div > div.right > div.right {
           border-bottom: 1px solid #dddddd; }
+    /* line 1196, stdin */
     .list-item > div.last-day > div > div.right {
       background: #F4F7A0; }
+      /* line 1198, stdin */
       .list-item > div.last-day > div > div.right > div.right {
         background: #F4F7A0; }
+        /* line 510, ../src/styles/mixins.scss */
         .list-item > div.last-day > div > div.right > div.right::before {
           content: '\f12a\00a0 Sista dagen';
           display: inline-block;
@@ -4970,16 +5354,20 @@ span.time-label {
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
+        /* line 1202, stdin */
         .list-item > div.last-day > div > div.right > div.right::before {
           bottom: 0px;
           font-size: 0.8em;
           position: absolute;
           right: 5px; }
+    /* line 1216, stdin */
     .list-item > div.started > div > div.right {
       background: #62D160; }
+      /* line 1218, stdin */
       .list-item > div.started > div > div.right > div.right {
         color: #fff;
         background: #62D160; }
+        /* line 510, ../src/styles/mixins.scss */
         .list-item > div.started > div > div.right > div.right::before {
           content: '\f12a\00a0 P\00E5 b\00f6 rjad';
           display: inline-block;
@@ -4987,19 +5375,24 @@ span.time-label {
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
+        /* line 1222, stdin */
         .list-item > div.started > div > div.right > div.right::before {
           bottom: 0px;
           color: #eee;
           font-size: 0.8em;
           position: absolute;
           right: 5px; }
+        /* line 1229, stdin */
         .list-item > div.started > div > div.right > div.right span.time-label, .list-item > div.started > div > div.right > div.right div.actions > button {
           color: #eee; }
+    /* line 1236, stdin */
     .list-item > div.warning > div > div.right {
       background: #C73535; }
+      /* line 1238, stdin */
       .list-item > div.warning > div > div.right > div.right {
         color: #fff;
         background: #C73535; }
+        /* line 510, ../src/styles/mixins.scss */
         .list-item > div.warning > div > div.right > div.right::before {
           content: '\f071\00a0 Passerad';
           display: inline-block;
@@ -5007,18 +5400,23 @@ span.time-label {
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
+        /* line 1242, stdin */
         .list-item > div.warning > div > div.right > div.right::before {
           bottom: 0px;
           color: #ddd;
           font-size: 0.8em;
           position: absolute;
           right: 5px; }
+        /* line 1249, stdin */
         .list-item > div.warning > div > div.right > div.right span.time-label, .list-item > div.warning > div > div.right > div.right div.actions > button {
           color: #ddd; }
+    /* line 1255, stdin */
     .list-item > div.warning.expanded > div > div.right > div.right > div.actions {
       padding-bottom: 15px; }
+    /* line 1258, stdin */
     .list-item > div.warning.is-child.has-child-task-controls.expanded > div > div.right {
       background: white; }
+    /* line 1261, stdin */
     .list-item > div > button.caret {
       background: #f2f2f2;
       border: none;
@@ -5033,6 +5431,7 @@ span.time-label {
       float: left;
       font-size: 30px;
       padding: 0; }
+      /* line 601, ../src/styles/mixins.scss */
       .list-item > div > button.caret::before {
         left: 50%;
         margin: -15px 0 0 -10px;
@@ -5040,6 +5439,7 @@ span.time-label {
         text-align: center;
         top: 50%;
         width: 20px; }
+      /* line 510, ../src/styles/mixins.scss */
       .list-item > div > button.caret::before {
         content: '\f0da';
         display: inline-block;
@@ -5047,8 +5447,10 @@ span.time-label {
         font-style: normal;
         font-weight: normal;
         text-decoration: inherit; }
+    /* line 1270, stdin */
     .list-item > div > div > div.sub-task-ctrls {
       float: left; }
+      /* line 1272, stdin */
       .list-item > div > div > div.sub-task-ctrls > button {
         background: #f2f2f2;
         border: none;
@@ -5061,6 +5463,7 @@ span.time-label {
         outline: 0;
         display: none;
         border-bottom: 1px solid white; }
+        /* line 601, ../src/styles/mixins.scss */
         .list-item > div > div > div.sub-task-ctrls > button::before {
           left: 50%;
           margin: -7.5px 0 0 -10px;
@@ -5068,6 +5471,7 @@ span.time-label {
           text-align: center;
           top: 50%;
           width: 20px; }
+        /* line 510, ../src/styles/mixins.scss */
         .list-item > div > div > div.sub-task-ctrls > button.make-sub-task::before {
           content: '\f054';
           display: inline-block;
@@ -5075,6 +5479,7 @@ span.time-label {
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
+        /* line 510, ../src/styles/mixins.scss */
         .list-item > div > div > div.sub-task-ctrls > button.add-sub-task::before {
           content: '\f067';
           display: inline-block;
@@ -5082,6 +5487,7 @@ span.time-label {
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
+        /* line 510, ../src/styles/mixins.scss */
         .list-item > div > div > div.sub-task-ctrls > button.make-free-task::before {
           content: '\f053';
           display: inline-block;
@@ -5089,14 +5495,17 @@ span.time-label {
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
+    /* line 1281, stdin */
     .list-item > div > div > div.right {
       background: white; }
+      /* line 1283, stdin */
       .list-item > div > div > div.right > div.checkbox-wrapper {
         float: left;
         padding: 24px 0 24px 10px;
         width: 35px;
         position: relative;
         z-index: 10; }
+        /* line 1289, stdin */
         .list-item > div > div > div.right > div.checkbox-wrapper > div.checkbox {
           -webkit-border-radius: 4px;
           border-radius: 4px;
@@ -5105,26 +5514,32 @@ span.time-label {
           position: relative;
           width: 16px;
           z-index: 1; }
+          /* line 1296, stdin */
           .list-item > div > div > div.right > div.checkbox-wrapper > div.checkbox > i {
             left: 0;
             position: absolute;
             top: 0; }
+      /* line 1303, stdin */
       .list-item > div > div > div.right > div.right {
         background: white;
         padding: 2px 0 2px 35px;
         position: relative; }
+        /* line 1307, stdin */
         .list-item > div > div > div.right > div.right > span.parent-task, .list-item > div > div > div.right > div.right > span.time-label {
           display: block;
           font-size: 12px;
           line-height: 20px;
           color: #aaa; }
+          /* line 1312, stdin */
           .list-item > div > div > div.right > div.right > span.parent-task::after, .list-item > div > div > div.right > div.right > span.time-label::after {
             content: '\00a0'; }
+        /* line 1314, stdin */
         .list-item > div > div > div.right > div.right > span.parent-task {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           padding-right: 100px; }
+        /* line 1320, stdin */
         .list-item > div > div > div.right > div.right > span.alert {
           -webkit-border-radius: 4px;
           border-radius: 4px;
@@ -5136,6 +5551,7 @@ span.time-label {
           line-height: 14px;
           padding: 0 3px 0 4px;
           border: 1px solid #dddddd; }
+          /* line 510, ../src/styles/mixins.scss */
           .list-item > div > div > div.right > div.right > span.alert::before {
             content: '\f0f3\00a0';
             display: inline-block;
@@ -5143,22 +5559,27 @@ span.time-label {
             font-style: normal;
             font-weight: normal;
             text-decoration: inherit; }
+          /* line 1331, stdin */
           .list-item > div > div > div.right > div.right > span.alert.overdue {
             background: #C73535;
             color: white;
             -webkit-animation: blink 1s linear infinite;
             -moz-animation: blink 1s linear infinite;
             animation: blink 1s linear infinite; }
+        /* line 1339, stdin */
         .list-item > div > div > div.right > div.right > span.task-text {
           display: block;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           padding: 0 5px 0 0; }
+          /* line 1345, stdin */
           .list-item > div > div > div.right > div.right > span.task-text > span.prio {
             font-weight: bold; }
+        /* line 1347, stdin */
         .list-item > div > div > div.right > div.right > div.actions {
           display: none; }
+          /* line 1349, stdin */
           .list-item > div > div > div.right > div.right > div.actions > button {
             background: none;
             display: inline-block;
@@ -5166,20 +5587,25 @@ span.time-label {
             padding: 10px 0;
             margin-right: 5px;
             font-size: 12px; }
+  /* line 1362, stdin */
   .list-item > ul {
     margin: 0;
     padding: 0;
     list-style: none;
     height: 0;
     overflow: hidden; }
+    /* line 1368, stdin */
     .list-item > ul.show {
       height: auto; }
 
+/* line 1387, stdin */
 form.add-task {
   margin: 0 0 15px;
   position: relative; }
+  /* line 1390, stdin */
   form.add-task > div {
     margin-right: 45px; }
+    /* line 1392, stdin */
     form.add-task > div > input {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -5193,11 +5619,12 @@ form.add-task {
       padding: 0.45em 10px;
       width: 100%;
       height: 35px; }
+  /* line 1398, stdin */
   form.add-task > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -5218,35 +5645,45 @@ form.add-task {
     position: absolute;
     right: 0;
     width: 40px; }
+    /* line 562, ../src/styles/mixins.scss */
     form.add-task > button:active, form.add-task > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
 
+/* line 1413, stdin */
 div.todo-page .list-item > .finished, div.todo-page .list-item > .deleted {
   display: none; }
+/* line 1415, stdin */
 div.todo-page.breakdown {
   padding-bottom: 55px; }
+/* line 1417, stdin */
 div.todo-page > div > h2 {
   padding-top: 10px; }
+/* line 1420, stdin */
 div.todo-page > div > ul {
   list-style: none;
   padding: 0;
   margin: 0 -5px 10px;
   font-size: 15px;
   line-height: 21px; }
+/* line 1427, stdin */
 div.todo-page > div.unplanned {
   margin: 0 -5px 15px;
   padding: 0 5px; }
+  /* line 1430, stdin */
   div.todo-page > div.unplanned > ul {
     background: #ebd6eb; }
+/* line 1433, stdin */
 div.todo-page > div.todo > h2 {
   padding-top: 5px; }
+  /* line 1435, stdin */
   div.todo-page > div.todo > h2 > label {
     display: inline-block;
     position: relative; }
+    /* line 295, ../src/styles/mixins.scss */
     div.todo-page > div.todo > h2 > label::after {
       position: absolute;
       top: 50%;
@@ -5258,14 +5695,15 @@ div.todo-page > div.todo > h2 {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
+    /* line 318, ../src/styles/mixins.scss */
     div.todo-page > div.todo > h2 > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -5274,16 +5712,19 @@ div.todo-page > div.todo > h2 {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
+      /* line 330, ../src/styles/mixins.scss */
       div.todo-page > div.todo > h2 > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662; }
+        background: #8d0992;
+        border-top: 2px solid #5e0662; }
+/* line 1440, stdin */
 div.todo-page > label.temp {
   display: inline-block;
   position: relative;
   width: 100%;
   font-size: 1.2em; }
+  /* line 295, ../src/styles/mixins.scss */
   div.todo-page > label.temp::after {
     position: absolute;
     top: 50%;
@@ -5295,14 +5736,15 @@ div.todo-page > label.temp {
     border-left: 5px solid transparent;
     content: "";
     pointer-events: none; }
+  /* line 318, ../src/styles/mixins.scss */
   div.todo-page > label.temp > select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     background: #a40aaa;
     border: none;
     border-top: 2px solid transparent;
@@ -5311,40 +5753,50 @@ div.todo-page > label.temp {
     font-weight: bold;
     outline: 0;
     padding: 3px 30px 4px 10px; }
+    /* line 330, ../src/styles/mixins.scss */
     div.todo-page > label.temp > select:focus {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662; }
+      background: #8d0992;
+      border-top: 2px solid #5e0662; }
+  /* line 341, ../src/styles/mixins.scss */
   div.todo-page > label.temp::before {
     right: 20px;
     top: 6px;
     font-size: 1.4em; }
+  /* line 346, ../src/styles/mixins.scss */
   div.todo-page > label.temp > select {
     width: 100%;
     padding: 10px 50px 12px 20px; }
 
+/* line 1458, stdin */
 div.organize-page .todo-list {
   list-style: none;
   padding: 0;
   margin: 0 -5px 10px;
   font-size: 15px;
   line-height: 21px; }
+/* line 1465, stdin */
 div.organize-page > div.controls {
   margin: 10px 0;
   overflow: auto;
   padding: 0 0 5px; }
+  /* line 1469, stdin */
   div.organize-page > div.controls > div {
     float: left; }
+    /* line 1471, stdin */
     div.organize-page > div.controls > div > div {
       font-style: italic; }
+    /* line 1472, stdin */
     div.organize-page > div.controls > div.sort {
       margin-right: 5%;
       width: 62%; }
+      /* line 1475, stdin */
       div.organize-page > div.controls > div.sort > label {
         display: inline-block;
         position: relative;
         width: 100%; }
+        /* line 295, ../src/styles/mixins.scss */
         div.organize-page > div.controls > div.sort > label::after {
           position: absolute;
           top: 50%;
@@ -5356,14 +5808,15 @@ div.organize-page > div.controls {
           border-left: 5px solid transparent;
           content: "";
           pointer-events: none; }
+        /* line 318, ../src/styles/mixins.scss */
         div.organize-page > div.controls > div.sort > label > select {
           -webkit-appearance: none;
           -moz-appearance: none;
           appearance: none;
           -webkit-border-radius: 4px;
           border-radius: 4px;
-          -webkit-box-shadow: 0 2px 0 0 #5d0662;
-          box-shadow: 0 2px 0 0 #5d0662;
+          -webkit-box-shadow: 0 2px 0 0 #5e0662;
+          box-shadow: 0 2px 0 0 #5e0662;
           background: #a40aaa;
           border: none;
           border-top: 2px solid transparent;
@@ -5372,15 +5825,19 @@ div.organize-page > div.controls {
           font-weight: bold;
           outline: 0;
           padding: 3px 30px 4px 10px; }
+          /* line 330, ../src/styles/mixins.scss */
           div.organize-page > div.controls > div.sort > label > select:focus {
             -webkit-box-shadow: none;
             box-shadow: none;
-            background: #8b0992;
-            border-top: 2px solid #5d0662; }
+            background: #8d0992;
+            border-top: 2px solid #5e0662; }
+        /* line 1478, stdin */
         div.organize-page > div.controls > div.sort > label > select {
           width: 100%; }
+    /* line 1481, stdin */
     div.organize-page > div.controls > div.expand-collapse {
       width: 33%; }
+      /* line 1483, stdin */
       div.organize-page > div.controls > div.expand-collapse > button {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -5404,15 +5861,18 @@ div.organize-page > div.controls {
         margin-top: 2px;
         padding: 3px 0 4px;
         width: 48%; }
+        /* line 562, ../src/styles/mixins.scss */
         div.organize-page > div.controls > div.expand-collapse > button:active, div.organize-page > div.controls > div.expand-collapse > button.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #bbb;
           border-top: 2px solid #9b9b9b;
           top: 0px; }
+        /* line 1490, stdin */
         div.organize-page > div.controls > div.expand-collapse > button:first-of-type {
           margin-right: 4%; }
 
+/* line 1510, stdin */
 div.focus-page > input.task-label {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -5429,6 +5889,7 @@ div.focus-page > input.task-label {
   font-weight: bold;
   font-size: 1.4em;
   margin: 10px 5% 0; }
+/* line 1519, stdin */
 div.focus-page > p.task-label {
   text-align: center;
   font-weight: bold;
@@ -5437,9 +5898,11 @@ div.focus-page > p.task-label {
   width: 90%;
   margin: 10px 5% 25px;
   padding: 0.45em 10px 0; }
+/* line 1529, stdin */
 div.focus-page > div#duration-picker {
   margin: 80px 0 70px;
   text-align: center; }
+  /* line 1532, stdin */
   div.focus-page > div#duration-picker > label {
     text-align: left;
     color: #222;
@@ -5447,8 +5910,10 @@ div.focus-page > div#duration-picker {
     display: inline-block;
     padding: 0 5px;
     font-weight: bold; }
+    /* line 1539, stdin */
     div.focus-page > div#duration-picker > label:first-child {
       width: 70px; }
+  /* line 1541, stdin */
   div.focus-page > div#duration-picker > input {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -5467,13 +5932,15 @@ div.focus-page > div#duration-picker {
     height: 50px;
     font-size: 30px;
     line-height: 40px; }
+    /* line 1550, stdin */
     div.focus-page > div#duration-picker > input[ng-model="hours"] {
       width: 60px; }
+  /* line 1552, stdin */
   div.focus-page > div#duration-picker > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -5491,21 +5958,26 @@ div.focus-page > div#duration-picker {
     padding: 6px 10px 7px;
     text-align: left;
     width: 170px; }
+    /* line 562, ../src/styles/mixins.scss */
     div.focus-page > div#duration-picker > button:active, div.focus-page > div#duration-picker > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
+    /* line 1558, stdin */
     div.focus-page > div#duration-picker > button b {
       font-size: 1.2em; }
+/* line 1564, stdin */
 div.focus-page > div#pie-timer {
   margin-top: 20px;
   text-align: center; }
+  /* line 1567, stdin */
   div.focus-page > div#pie-timer > span {
     font-size: 2em;
     padding: 10px 0 0;
     display: inline-block; }
+  /* line 1572, stdin */
   div.focus-page > div#pie-timer #timer {
     background: #a40aaa;
     border-radius: 50%;
@@ -5515,13 +5987,16 @@ div.focus-page > div#pie-timer {
     width: 1em;
     height: 1em;
     margin: 0 auto; }
+    /* line 1581, stdin */
     div.focus-page > div#pie-timer #timer > #slice {
       position: absolute;
       width: 1em;
       height: 1em;
       clip: rect(0px, 1em, 1em, 0.5em); }
+      /* line 1586, stdin */
       div.focus-page > div#pie-timer #timer > #slice.gt50 {
         clip: rect(auto, auto, auto, auto); }
+      /* line 1589, stdin */
       div.focus-page > div#pie-timer #timer > #slice > .pie {
         border: 0.1em solid #c0c0c0;
         position: absolute;
@@ -5533,18 +6008,21 @@ div.focus-page > div#pie-timer {
         background-color: #eee;
         width: 1em;
         height: 1em; }
+        /* line 1600, stdin */
         div.focus-page > div#pie-timer #timer > #slice > .pie.fill {
           -moz-transform: rotate(180deg) !important;
           -webkit-transform: rotate(180deg) !important;
           -o-transform: rotate(180deg) !important;
           transform: rotate(180deg) !important; }
+/* line 1610, stdin */
 div.focus-page > form.add-task {
   margin: 30px 0 20px; }
+/* line 1611, stdin */
 div.focus-page > button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 2px 0 0 #5d0662;
-  box-shadow: 0 2px 0 0 #5d0662;
+  -webkit-box-shadow: 0 2px 0 0 #5e0662;
+  box-shadow: 0 2px 0 0 #5e0662;
   -webkit-user-select: none;
   background: #a40aaa;
   border: none;
@@ -5561,35 +6039,43 @@ div.focus-page > button {
   margin: 0 0 15px;
   padding: 6px 10px 7px;
   text-align: left; }
+  /* line 562, ../src/styles/mixins.scss */
   div.focus-page > button:active, div.focus-page > button.active {
     -webkit-box-shadow: none;
     box-shadow: none;
-    background: #8b0992;
-    border-top: 2px solid #5d0662;
+    background: #8d0992;
+    border-top: 2px solid #5e0662;
     top: 0px; }
+  /* line 1616, stdin */
   div.focus-page > button b {
     font-size: 1.2em; }
+/* line 1621, stdin */
 div.focus-page > div#distraction-list, div.focus-page .distraction-list-empty {
   text-align: left; }
+  /* line 1623, stdin */
   div.focus-page > div#distraction-list > span, div.focus-page .distraction-list-empty > span {
     font-weight: bold;
     color: #aaa; }
+  /* line 1627, stdin */
   div.focus-page > div#distraction-list > ul, div.focus-page .distraction-list-empty > ul {
     list-style: none;
     padding: 0;
     margin: 0 -5px 10px;
     font-size: 15px;
     line-height: 21px; }
+    /* line 1633, stdin */
     div.focus-page > div#distraction-list > ul.disabled, div.focus-page .distraction-list-empty > ul.disabled {
       opacity: 0.4;
       pointer-events: none; }
+  /* line 1638, stdin */
   div.focus-page > div#distraction-list > p, div.focus-page .distraction-list-empty > p {
     padding: 0 20px; }
+    /* line 1640, stdin */
     div.focus-page > div#distraction-list > p > a, div.focus-page .distraction-list-empty > p > a {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -5604,24 +6090,30 @@ div.focus-page > div#distraction-list, div.focus-page .distraction-list-empty {
       text-decoration: none;
       outline: 0;
       margin-top: 10px; }
+      /* line 562, ../src/styles/mixins.scss */
       div.focus-page > div#distraction-list > p > a:active, div.focus-page > div#distraction-list > p > a.active, div.focus-page .distraction-list-empty > p > a:active, div.focus-page .distraction-list-empty > p > a.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
 
+/* line 1661, stdin */
 div.calendar-page.date-picker {
   padding: 0 0 71px 0; }
+  /* line 1663, stdin */
   div.calendar-page.date-picker > ul {
     margin: 0 -5px; }
 
+/* line 1665, stdin */
 .time-picker {
   display: inline-block; }
 
+/* line 1669, stdin */
 .date-picker {
   position: relative;
   padding: 52px 0 71px; }
+  /* line 1672, stdin */
   .date-picker > button.cancel {
     background: none;
     border: none;
@@ -5632,6 +6124,7 @@ div.calendar-page.date-picker {
     right: 0;
     top: 5px;
     outline: 0; }
+  /* line 1675, stdin */
   .date-picker > ul {
     background: #333;
     list-style: none;
@@ -5640,37 +6133,51 @@ div.calendar-page.date-picker {
     position: relative;
     padding: 0;
     margin: 0; }
+    /* line 1683, stdin */
     .date-picker > ul > li {
       position: relative;
       line-height: 50px;
       display: block;
       background: white;
       padding-left: 50px; }
+      /* line 1689, stdin */
       .date-picker > ul > li:nth-child(even) {
         background: #F6F6F6; }
+        /* line 1691, stdin */
         .date-picker > ul > li:nth-child(even) > button {
           background: #e5e5e5; }
+      /* line 1694, stdin */
       .date-picker > ul > li.weekend > span {
         border-left: 10px solid rgba(0, 0, 0, 0.1); }
+      /* line 1696, stdin */
       .date-picker > ul > li.start-day {
         background: #87D15E; }
+      /* line 1699, stdin */
       .date-picker > ul > li.end-day {
         background: #FF5F5F; }
+      /* line 1702, stdin */
       .date-picker > ul > li.week-line {
         background: #aaa;
         line-height: 25px; }
+        /* line 1705, stdin */
         .date-picker > ul > li.week-line > span {
           padding-top: 3px; }
+        /* line 1708, stdin */
         .date-picker > ul > li.week-line > div.exact-busyness {
           top: 16px; }
+        /* line 1711, stdin */
         .date-picker > ul > li.week-line > div.overall-busyness {
           top: 0; }
+      /* line 1715, stdin */
       .date-picker > ul > li.hide-button {
         padding-left: 0; }
+        /* line 1717, stdin */
         .date-picker > ul > li.hide-button > button {
           display: none; }
+        /* line 1718, stdin */
         .date-picker > ul > li.hide-button > span {
           padding-left: 15px; }
+      /* line 1720, stdin */
       .date-picker > ul > li > button {
         background: #f2f2f2;
         border: none;
@@ -5689,6 +6196,7 @@ div.calendar-page.date-picker {
         line-height: 32px;
         padding: 0;
         height: 100%; }
+        /* line 601, ../src/styles/mixins.scss */
         .date-picker > ul > li > button::before {
           left: 50%;
           margin: -15px 0 0 -10px;
@@ -5696,6 +6204,7 @@ div.calendar-page.date-picker {
           text-align: center;
           top: 50%;
           width: 20px; }
+        /* line 510, ../src/styles/mixins.scss */
         .date-picker > ul > li > button::before {
           content: '\f0da';
           display: inline-block;
@@ -5703,9 +6212,11 @@ div.calendar-page.date-picker {
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
+        /* line 1731, stdin */
         .date-picker > ul > li > button.active {
           background: #a40aaa;
           color: white; }
+          /* line 510, ../src/styles/mixins.scss */
           .date-picker > ul > li > button.active::before {
             content: '\f0d7';
             display: inline-block;
@@ -5713,6 +6224,7 @@ div.calendar-page.date-picker {
             font-style: normal;
             font-weight: normal;
             text-decoration: inherit; }
+      /* line 1737, stdin */
       .date-picker > ul > li > span {
         padding: 10px 5px 5px;
         display: inline-block;
@@ -5720,24 +6232,30 @@ div.calendar-page.date-picker {
         line-height: 16px;
         vertical-align: top;
         height: 100%; }
+        /* line 1742, stdin */
         .date-picker > ul > li > span:first-letter {
           text-transform: capitalize; }
+        /* line 1747, stdin */
         .date-picker > ul > li > span.active {
           background: #a40aaa;
           color: white; }
+        /* line 1751, stdin */
         .date-picker > ul > li > span.no-sub-label {
           padding-top: 17px;
           padding-bottom: 17px; }
+        /* line 1755, stdin */
         .date-picker > ul > li > span > i {
           font-size: 11px;
           line-height: 11px;
           font-style: italic; }
+      /* line 1761, stdin */
       .date-picker > ul > li > div.picker-tasks {
         border-left: 15px solid #333333;
         padding-left: 15px;
         line-height: 22px;
         white-space: pre-wrap;
         background: white; }
+      /* line 1768, stdin */
       .date-picker > ul > li > div.picker-task-add {
         border-left: 15px solid #333333;
         padding-left: 15px;
@@ -5745,6 +6263,7 @@ div.calendar-page.date-picker {
         white-space: pre-wrap;
         color: #a40aaa;
         background: white; }
+        /* line 510, ../src/styles/mixins.scss */
         .date-picker > ul > li > div.picker-task-add::before {
           content: '\f067';
           display: inline-block;
@@ -5752,6 +6271,7 @@ div.calendar-page.date-picker {
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
+      /* line 1777, stdin */
       .date-picker > ul > li > div.exact-busyness {
         width: 60px;
         height: 10px;
@@ -5765,15 +6285,18 @@ div.calendar-page.date-picker {
         line-height: 0;
         white-space: nowrap;
         font-size: 0; }
+        /* line 1788, stdin */
         .date-picker > ul > li > div.exact-busyness > div.exact-times {
           height: 10px;
           background: rgba(0, 0, 0, 0.5);
           display: inline-block; }
+        /* line 1793, stdin */
         .date-picker > ul > li > div.exact-busyness > div.circa-times {
-          background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-          background: linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+          background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
+          background: linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
           height: 10px;
           display: inline-block; }
+      /* line 1799, stdin */
       .date-picker > ul > li > div.overall-busyness {
         width: 40px;
         height: 40px;
@@ -5785,53 +6308,69 @@ div.calendar-page.date-picker {
         right: 5px;
         text-align: center;
         top: 3px; }
+        /* line 1806, stdin */
         .date-picker > ul > li > div.overall-busyness > div {
           -webkit-border-radius: 50%;
           border-radius: 50%;
           background: #94B82D;
           display: inline-block;
           vertical-align: middle; }
+          /* line 1811, stdin */
           .date-picker > ul > li > div.overall-busyness > div > i {
             color: white; }
+          /* line 1812, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-0 {
             background: #48B82C; }
+          /* line 1813, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-1 {
             background: #66BC2C; }
+          /* line 1814, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-2 {
             background: #86C02B; }
+          /* line 1815, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-3 {
             background: #A8C42A; }
+          /* line 1816, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-4 {
             background: #C8C429; }
+          /* line 1817, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-5 {
             background: #CCA528; }
+          /* line 1818, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-6 {
             background: #D08527; }
+          /* line 1819, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-7 {
             background: #D46225; }
+          /* line 1820, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-8 {
             background: #D83D24; }
+          /* line 1821, stdin */
           .date-picker > ul > li > div.overall-busyness > div.color-9 {
             background: #DD2330; }
+  /* line 1826, stdin */
   .date-picker > div.confirmation {
     background: #eeeeee;
     width: 100%;
     line-height: 40px;
     padding: 15px 20px 15px;
     text-align: center; }
+    /* line 1832, stdin */
     .date-picker > div.confirmation > span {
       padding-right: 10px;
       display: inline-block; }
+    /* line 1836, stdin */
     .date-picker > div.confirmation input {
       width: 60px;
       text-align: right;
       padding: 6px;
       margin: 0 3px; }
+    /* line 1842, stdin */
     .date-picker > div.confirmation > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -5851,17 +6390,21 @@ div.calendar-page.date-picker {
       width: auto;
       margin-top: 5px;
       padding: 5px 20px 6px; }
+      /* line 562, ../src/styles/mixins.scss */
       .date-picker > div.confirmation > button:active, .date-picker > div.confirmation > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
+      /* line 1848, stdin */
       .date-picker > div.confirmation > button:disabled {
         opacity: 0.3; }
 
+/* line 1963, stdin */
 div.archive-page > div.toggle-tab {
   margin-bottom: 10px; }
+  /* line 1965, stdin */
   div.archive-page > div.toggle-tab > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -5884,23 +6427,27 @@ div.archive-page > div.toggle-tab {
     font-size: 1.2em;
     padding: 13px 0 14px;
     width: 50%; }
+    /* line 562, ../src/styles/mixins.scss */
     div.archive-page > div.toggle-tab > button:active, div.archive-page > div.toggle-tab > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
+    /* line 1968, stdin */
     div.archive-page > div.toggle-tab > button.done {
       -webkit-border-radius: 4px 0 0 4px;
       border-radius: 4px 0 0 4px; }
+    /* line 1969, stdin */
     div.archive-page > div.toggle-tab > button.deleted {
       -webkit-border-radius: 0 4px 4px 0;
       border-radius: 0 4px 4px 0; }
+    /* line 1970, stdin */
     div.archive-page > div.toggle-tab > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       -webkit-user-select: none;
       background: #a40aaa;
       border: none;
@@ -5918,18 +6465,22 @@ div.archive-page > div.toggle-tab {
       font-size: 1.2em;
       padding: 13px 0 14px;
       width: 50%; }
+      /* line 562, ../src/styles/mixins.scss */
       div.archive-page > div.toggle-tab > button.active:active, div.archive-page > div.toggle-tab > button.active.active {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662;
+        background: #8d0992;
+        border-top: 2px solid #5e0662;
         top: 0px; }
+      /* line 1973, stdin */
       div.archive-page > div.toggle-tab > button.active.done {
         -webkit-border-radius: 4px 0 0 4px;
         border-radius: 4px 0 0 4px; }
+      /* line 1974, stdin */
       div.archive-page > div.toggle-tab > button.active.deleted {
         -webkit-border-radius: 0 4px 4px 0;
         border-radius: 0 4px 4px 0; }
+/* line 1978, stdin */
 div.archive-page > ul {
   list-style: none;
   padding: 0;
@@ -5937,11 +6488,12 @@ div.archive-page > ul {
   font-size: 15px;
   line-height: 21px; }
 
+/* line 2000, stdin */
 div.help-page > a.feedback {
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 2px 0 0 #5d0662;
-  box-shadow: 0 2px 0 0 #5d0662;
+  -webkit-box-shadow: 0 2px 0 0 #5e0662;
+  box-shadow: 0 2px 0 0 #5e0662;
   -webkit-user-select: none;
   background: #a40aaa;
   border: none;
@@ -5959,25 +6511,31 @@ div.help-page > a.feedback {
   font-size: 1.2em;
   padding: 13px 0 14px;
   margin-bottom: 30px; }
+  /* line 562, ../src/styles/mixins.scss */
   div.help-page > a.feedback:active, div.help-page > a.feedback.active {
     -webkit-box-shadow: none;
     box-shadow: none;
-    background: #8b0992;
-    border-top: 2px solid #5d0662;
+    background: #8d0992;
+    border-top: 2px solid #5e0662;
     top: 0px; }
+/* line 637, ../src/styles/mixins.scss */
 div.help-page > div.help-text > h1 {
   color: #555;
   font-size: 1.8em;
   margin: 0 0 0.8em; }
+/* line 642, ../src/styles/mixins.scss */
 div.help-page > div.help-text > h2 {
   color: #555;
   font-size: 1.5em;
   margin: 1em 0 0.3em; }
+/* line 647, ../src/styles/mixins.scss */
 div.help-page > div.help-text > p {
   margin: 0 0 0.8em; }
+/* line 2006, stdin */
 div.help-page > div.help-text h3, div.help-page > div.help-text h4 {
   margin-bottom: 0; }
 
+/* line 2009, stdin */
 span.alert {
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -5986,6 +6544,7 @@ span.alert {
   line-height: 14px;
   padding: 0 3px 0 4px;
   border: 1px solid #dddddd; }
+  /* line 510, ../src/styles/mixins.scss */
   span.alert::before {
     content: '\f0f3\00a0';
     display: inline-block;
@@ -5994,6 +6553,7 @@ span.alert {
     font-weight: normal;
     text-decoration: inherit; }
 
+/* line 2019, stdin */
 span.exact-busyness {
   width: 25px;
   height: 10px;
@@ -6005,38 +6565,45 @@ span.exact-busyness {
   white-space: nowrap;
   font-size: 0;
   display: inline-block; }
+  /* line 2028, stdin */
   span.exact-busyness > .exact-times {
     height: 10px;
     background: rgba(0, 0, 0, 0.5);
     display: inline-block;
     width: 15px; }
+  /* line 2034, stdin */
   span.exact-busyness > .circa-times {
-    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-    background: linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
+    background: linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
     height: 10px;
     display: inline-block;
     width: 10px; }
 
+/* line 637, ../src/styles/mixins.scss */
 div.about-page > h1 {
   color: #555;
   font-size: 1.8em;
   margin: 0 0 0.8em; }
+/* line 642, ../src/styles/mixins.scss */
 div.about-page > h2 {
   color: #555;
   font-size: 1.5em;
   margin: 1em 0 0.3em; }
+/* line 647, ../src/styles/mixins.scss */
 div.about-page > p {
   margin: 0 0 0.8em; }
 
+/* line 2069, stdin */
 div.statistics-page > div.quick-select {
   margin: 0 0 10px;
   padding: 3px 0;
   overflow: auto; }
+  /* line 2073, stdin */
   div.statistics-page > div.quick-select > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -6060,24 +6627,29 @@ div.statistics-page > div.quick-select {
     margin-right: 2%;
     padding: 0 0 2px;
     width: 32%; }
+    /* line 562, ../src/styles/mixins.scss */
     div.statistics-page > div.quick-select > button:active, div.statistics-page > div.quick-select > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
+    /* line 2082, stdin */
     div.statistics-page > div.quick-select > button:last-child {
       margin-right: 0; }
+    /* line 2083, stdin */
     div.statistics-page > div.quick-select > button > span {
       display: inline-block;
       vertical-align: middle; }
+/* line 2089, stdin */
 div.statistics-page > div.date-range-select {
   margin: 0 0 30px; }
+  /* line 2091, stdin */
   div.statistics-page > div.date-range-select > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 2px 0 0 #5d0662;
-    box-shadow: 0 2px 0 0 #5d0662;
+    -webkit-box-shadow: 0 2px 0 0 #5e0662;
+    box-shadow: 0 2px 0 0 #5e0662;
     -webkit-user-select: none;
     background: #a40aaa;
     border: none;
@@ -6094,44 +6666,55 @@ div.statistics-page > div.date-range-select {
     width: 100%;
     font-size: 1.2em;
     padding: 13px 0 14px; }
+    /* line 562, ../src/styles/mixins.scss */
     div.statistics-page > div.date-range-select > button:active, div.statistics-page > div.date-range-select > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
-      background: #8b0992;
-      border-top: 2px solid #5d0662;
+      background: #8d0992;
+      border-top: 2px solid #5e0662;
       top: 0px; }
+/* line 2095, stdin */
 div.statistics-page > div.stats-table {
   margin: 0 -5px; }
+  /* line 2097, stdin */
   div.statistics-page > div.stats-table > table {
     width: 100%;
     margin: 0 0 20px; }
+    /* line 2101, stdin */
     div.statistics-page > div.stats-table > table tr:nth-child(odd) {
       background: rgba(0, 0, 0, 0.05); }
+    /* line 2104, stdin */
     div.statistics-page > div.stats-table > table tr > td {
       height: 3em;
       padding: 5px 10px; }
+      /* line 2107, stdin */
       div.statistics-page > div.stats-table > table tr > td.name {
         width: 66%;
         background: rgba(0, 0, 0, 0.05); }
+      /* line 2111, stdin */
       div.statistics-page > div.stats-table > table tr > td.value {
         width: 34%;
         text-align: right; }
 
+/* line 2122, stdin */
 .settings-page .separator {
   padding: 24px 8px 2px;
   font-size: 1.2em;
   font-weight: bold;
   border-bottom: 2px solid #a40aaa;
   margin-bottom: 16px; }
+/* line 2129, stdin */
 .settings-page .range {
   width: 100%; }
+  /* line 2131, stdin */
   .settings-page .range label {
     width: 10em; }
+/* line 2135, stdin */
 .settings-page .clear-all-tasks {
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 2px 0 0 #5d0662;
-  box-shadow: 0 2px 0 0 #5d0662;
+  -webkit-box-shadow: 0 2px 0 0 #5e0662;
+  box-shadow: 0 2px 0 0 #5e0662;
   -webkit-user-select: none;
   background: #a40aaa;
   border: none;
@@ -6149,13 +6732,15 @@ div.statistics-page > div.stats-table {
   font-size: 1.2em;
   padding: 13px 0 14px;
   font-size: 1em; }
+  /* line 562, ../src/styles/mixins.scss */
   .settings-page .clear-all-tasks:active, .settings-page .clear-all-tasks.active {
     -webkit-box-shadow: none;
     box-shadow: none;
-    background: #8b0992;
-    border-top: 2px solid #5d0662;
+    background: #8d0992;
+    border-top: 2px solid #5e0662;
     top: 0px; }
 
+/* line 2141, stdin */
 .select-item {
   display: -webkit-box;
   display: -webkit-flex;
@@ -6170,9 +6755,11 @@ div.statistics-page > div.stats-table {
   align-items: center;
   height: 45px;
   padding: 2px 4px; }
+  /* line 2146, stdin */
   .select-item label {
     display: inline-block;
     position: relative; }
+    /* line 295, ../src/styles/mixins.scss */
     .select-item label::after {
       position: absolute;
       top: 50%;
@@ -6184,14 +6771,15 @@ div.statistics-page > div.stats-table {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
+    /* line 318, ../src/styles/mixins.scss */
     .select-item label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       -webkit-border-radius: 4px;
       border-radius: 4px;
-      -webkit-box-shadow: 0 2px 0 0 #5d0662;
-      box-shadow: 0 2px 0 0 #5d0662;
+      -webkit-box-shadow: 0 2px 0 0 #5e0662;
+      box-shadow: 0 2px 0 0 #5e0662;
       background: #a40aaa;
       border: none;
       border-top: 2px solid transparent;
@@ -6200,21 +6788,25 @@ div.statistics-page > div.stats-table {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
+      /* line 330, ../src/styles/mixins.scss */
       .select-item label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
-        background: #8b0992;
-        border-top: 2px solid #5d0662; }
+        background: #8d0992;
+        border-top: 2px solid #5e0662; }
+    /* line 2149, stdin */
     .select-item label.disabled > select {
       -webkit-box-shadow: 0 2px 0 0 #555;
       box-shadow: 0 2px 0 0 #555;
       background: #aaa; }
+      /* line 2152, stdin */
       .select-item label.disabled > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #aaa;
         border-top: 2px solid #555; }
 
+/* line 2162, stdin */
 .select-label {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -6227,9 +6819,11 @@ div.statistics-page > div.stats-table {
   margin-right: 1em;
   line-height: 1em; }
 
+/* line 2170, stdin */
 .select-label:first-child {
   padding-left: 5px; }
 
+/* line 2174, stdin */
 .fa-stack-sm {
   position: relative;
   display: inline-block;
@@ -6237,10 +6831,12 @@ div.statistics-page > div.stats-table {
   height: 1em;
   line-height: 1em;
   vertical-align: middle; }
+  /* line 2181, stdin */
   .fa-stack-sm.fa-li {
     width: 2.14286em;
     position: absolute; }
 
+/* line 2187, stdin */
 .fa-stack-half {
   position: absolute;
   text-align: center;
@@ -6248,16 +6844,19 @@ div.statistics-page > div.stats-table {
   right: -1px;
   top: 0; }
 
+/* line 89, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 body {
   font-family: 'Helvetica', Arial, sans-serif;
   font-size: 100%;
   line-height: 1.4; }
 
+/* line 95, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 h2 {
   font-size: 1em;
   font-weight: bold;
   margin: 0 0 0.25em; }
 
+/* line 113, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 * {
   text-rendering: auto !important;
   -webkit-box-sizing: border-box;
@@ -6269,6 +6868,7 @@ h2 {
  * Toggle
  * --------------------------------------------------
  */
+/* line 8, stdin */
 .toggle-item {
   display: -webkit-box;
   display: -webkit-flex;
@@ -6283,6 +6883,7 @@ h2 {
   align-items: center;
   padding: 4px 4px; }
 
+/* line 14, stdin */
 .toggle-group {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
@@ -6301,6 +6902,7 @@ h2 {
   -moz-align-items: center;
   align-items: center; }
 
+/* line 20, stdin */
 .toggle-label {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -6313,6 +6915,7 @@ h2 {
   margin-right: 1em;
   line-height: 1em; }
 
+/* line 28, stdin */
 .toggle-on, .toggle-off {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
@@ -6324,15 +6927,19 @@ h2 {
   white-space: nowrap;
   align-self: center; }
 
+/* line 35, stdin */
 .toggle-on {
   margin-left: 0.5em; }
 
+/* line 39, stdin */
 .toggle-off {
   margin-right: 0.5em; }
 
+/* line 43, stdin */
 .toggle-label:first-child {
   padding-left: 5px; }
 
+/* line 47, stdin */
 .toggle {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
@@ -6345,22 +6952,28 @@ h2 {
   pointer-events: auto;
   margin: -5px;
   padding: 5px; }
+  /* line 40, ../src/styles/mixins.scss */
   .toggle input:checked + .track {
     border-color: #a40aaa;
     background-color: #a40aaa; }
+  /* line 59, stdin */
   .toggle.dragging .handle {
     background-color: #f2f2f2 !important; }
+  /* line 40, ../src/styles/mixins.scss */
   .toggle.toggle-purple input:checked + .track {
     border-color: #a40aaa;
     background-color: #a40aaa; }
+  /* line 40, ../src/styles/mixins.scss */
   .toggle.toggle-gray input:checked + .track {
     border-color: #555;
     background-color: #555; }
 
+/* line 72, stdin */
 .toggle input {
   display: none; }
 
 /* the track appearance when the toggle is "off" */
+/* line 78, stdin */
 .toggle .track {
   -webkit-transition-timing-function: ease-in-out;
   -moz-transition-timing-function: ease-in-out;
@@ -6384,11 +6997,13 @@ h2 {
 
 /* Fix to avoid background color bleeding */
 /* (occured on (at least) Android 4.2, Asus MeMO Pad HD7 ME173X) */
+/* line 97, stdin */
 .platform-android4_2 .toggle .track {
   -webkit-background-clip: padding-box; }
 
 /* the handle (circle) thats inside the toggle's track area */
 /* also the handle's appearance when it is "off" */
+/* line 103, stdin */
 .toggle .handle {
   -webkit-transition: 0.2s ease-in-out;
   -moz-transition: 0.2s ease-in-out;
@@ -6401,6 +7016,7 @@ h2 {
   background-color: #eee;
   top: 7px;
   left: 7px; }
+  /* line 114, stdin */
   .toggle .handle:before {
     position: absolute;
     top: -4px;
@@ -6408,12 +7024,14 @@ h2 {
     padding: 19px 35px;
     content: " "; }
 
+/* line 124, stdin */
 .toggle input:checked + .track .handle {
   -webkit-transform: translate3d(22px, 0, 0);
   -moz-transform: translate3d(22px, 0, 0);
   transform: translate3d(22px, 0, 0);
   background-color: #eee; }
 
+/* line 130, stdin */
 .toggle input:disabled + .track {
-  opacity: 0.6; }
+  opacity: .6; }
 
