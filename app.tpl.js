@@ -1,4 +1,4 @@
-angular.module('app.tpl', ['about.tpl.html', 'archive.tpl.html', 'calendar.tpl.html', 'focus.tpl.html', 'kalender.tpl.html', 'help.tpl.html', 'list_item.tpl.html', 'modal.delete.tpl.html', 'modal.focus.distraction_list_confirmation.tpl.html', 'modal.edit_task_name.tpl.html', 'modal.focus.stop_timer.tpl.html', 'modal.later.tpl.html', 'modal.pick_postponetime.tpl.html', 'modal.pick_endtime.tpl.html', 'modal.pick_parent_task.tpl.html', 'modal.pick_latertime.tpl.html', 'modal.pick_repeattime.tpl.html', 'modal.pick_remindertime.tpl.html', 'modal.pick_starttime.tpl.html', 'modal.timer.tpl.html', 'modal.postpone.tpl.html', 'modal.pick_starttimeperiod.tpl.html', 'modal.plan.tpl.html', 'statistics.tpl.html', 'settings.tpl.html', 'organize.tpl.html', 'todo.tpl.html', 'help/about.tpl.html', 'help/archive.tpl.html', 'help/focus.tpl.html', 'help/calendar.tpl.html', 'help/exit.tpl.html', 'help/organize.tpl.html', 'help/help.tpl.html', 'help/statistics.tpl.html', 'help/settings.tpl.html', 'help/todo.tpl.html', 'help/plan/ereminder.tpl.html', 'help/plan/exact.tpl.html', 'help/plan/duration.tpl.html', 'help/plan/period.tpl.html', 'help/plan/eremove.tpl.html', 'help/plan/preminder.tpl.html', 'help/plan/premove.tpl.html', 'help/plan/type.tpl.html', 'help/settings/ball.tpl.html', 'help/plan/priority.tpl.html', 'help/plan/repeat.tpl.html', 'help/settings/clean.tpl.html', 'help/settings/plan.tpl.html', 'help/settings/nav.tpl.html', 'help/settings/popups.tpl.html', 'help/settings/sdone.tpl.html', 'help/settings/sfocus.tpl.html', 'help/settings/settings.tpl.html', 'help/settings/slong.tpl.html', 'help/settings/slope.tpl.html', 'help/settings/weeks.tpl.html', 'help/settings/sshort.tpl.html']);
+angular.module('app.tpl', ['about.tpl.html', 'archive.tpl.html', 'calendar.tpl.html', 'kalender.tpl.html', 'list_item.tpl.html', 'help.tpl.html', 'focus.tpl.html', 'modal.delete.tpl.html', 'modal.focus.distraction_list_confirmation.tpl.html', 'modal.edit_task_name.tpl.html', 'modal.focus.stop_timer.tpl.html', 'modal.later.tpl.html', 'modal.pick_parent_task.tpl.html', 'modal.pick_postponetime.tpl.html', 'modal.pick_endtime.tpl.html', 'modal.pick_latertime.tpl.html', 'modal.pick_repeattime.tpl.html', 'modal.pick_remindertime.tpl.html', 'modal.pick_starttime.tpl.html', 'modal.pick_starttimeperiod.tpl.html', 'modal.postpone.tpl.html', 'modal.timer.tpl.html', 'modal.plan.tpl.html', 'statistics.tpl.html', 'organize.tpl.html', 'settings.tpl.html', 'todo.tpl.html', 'help/calendar.tpl.html', 'help/exit.tpl.html', 'help/about.tpl.html', 'help/archive.tpl.html', 'help/help.tpl.html', 'help/organize.tpl.html', 'help/settings.tpl.html', 'help/focus.tpl.html', 'help/statistics.tpl.html', 'help/todo.tpl.html', 'help/settings/nav.tpl.html', 'help/settings/clean.tpl.html', 'help/settings/ball.tpl.html', 'help/settings/plan.tpl.html', 'help/settings/sdone.tpl.html', 'help/settings/settings.tpl.html', 'help/settings/sfocus.tpl.html', 'help/settings/sshort.tpl.html', 'help/settings/popups.tpl.html', 'help/settings/slong.tpl.html', 'help/settings/weeks.tpl.html', 'help/settings/slope.tpl.html', 'help/plan/duration.tpl.html', 'help/plan/exact.tpl.html', 'help/plan/ereminder.tpl.html', 'help/plan/eremove.tpl.html', 'help/plan/preminder.tpl.html', 'help/plan/period.tpl.html', 'help/plan/premove.tpl.html', 'help/plan/type.tpl.html', 'help/plan/repeat.tpl.html', 'help/plan/priority.tpl.html']);
 
 angular.module("about.tpl.html", []).run(["$templateCache", function($templateCache) {
     $templateCache.put("about.tpl.html",
@@ -6,9 +6,17 @@ angular.module("about.tpl.html", []).run(["$templateCache", function($templateCa
         "  <h1>Om IDA-appen</h1>\n" +
         "  <p>IDA - från kaos till koll</p>\n" +
         "  <p>Version: {{$root.$version||'1.2'}}</p>\n" +
-        "  <p>Utvecklad av Viktor Kaldo (primär kravställare) och Berkeh Nasri vid Karolinska Institutet (KI) och Remente AB.</p>\n" +
-        "  <p>Utvecklingen är ett forskningssamarbete mellan KI och Remente där IDA-appen ingått som en del i ett internet-baserat behandlingsprogram för vuxna med ADHD.</p>\n" +
+        "  <p>IDA-appen är utvecklad inom ett forskningssamarbete mellan Karolinska Institutet, med Viktor Kaldo som ansvarig forskare inom Nils Lindefors forskningsgrupp och Remente AB. IDA-appen har ingått som en del i ett internetbaserat behandlingsprogram  för vuxna med ADHD.</p>\n" +
+        "  <p>Ursprunglig ide och övergripande funktioner: Niels Eék, Viktor Kaldo och Berkeh Nasri</p>\n" +
+        "  <p>Kravspecifikation: Viktor Kaldo</p>\n" +
+        "  <p>Gränssnitt och layout: Erik Frisk och Viktor Kaldo</p>\n" +
+        "  <p>Utveckling: Luuk van Egeraat och Nazar Ivanenko</p>\n" +
+        "  <p>Testning: Viktor Kaldo, med stöd av Maria Cassel och Berkeh Nasri</p>\n" +
+        "  <br/>\n" +
+        "  <p>Projektledning Karolinska Institutet: Viktor Kaldo</p>\n" +
+        "  <p>Projektledning Remente: David Brudö</p>\n" +
         "</div>\n" +
+        "\n" +
         "");
 }]);
 
