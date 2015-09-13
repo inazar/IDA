@@ -28346,13 +28346,15 @@ App.controller('OrganiseCtrl', ['$scope', '$timeout', '$filter', '$routeParams',
     showChildren: function (shown) { $tasks.showChildren(shown); },
     addTask: function (parent) {
       if (!$scope.newTask && !parent) { return; }
+      $scope.$root.currentSort = $scope.sorting;
       var task = $tasks.add($scope.newTask, parent);
       $scope.newTask = '';
       $scope.editTask(task.id).then(function () {
         $scope.reload();
+        $scope.sorting = $scope.$root.currentSort || '+startTime';
         $timeout(function () { $tasks.get(parent).showChildren = true; });
       }, function() {
-
+        $scope.sorting = $scope.$root.currentSort || '+startTime';
       });
     }
   });
@@ -29315,6 +29317,7 @@ function($compile, $controller, $q, $sce, $timeout, $rootScope, $document, $popu
 /* global App, _ */
 App.service('idaConfig', function () {
   var defaults = {
+    maxVolume: 0.5,
     defaultReminder: 36000000,
     defaultDuration: 1800000,
     pragmaticDayshift: 14400000,
@@ -29779,8 +29782,8 @@ App.service('idaSounds', ['$q', '$timeout', '$window', 'idaConfig', function ($q
       volume = parseFloat($config.volume[type]);
       if (volume !== 0) {
         if (isNaN(volume)) { volume = 1; }
-        if (sound instanceof Audio) { sound.volume = volume; }
-        else { sound.setVolume(volume); }
+        if (sound instanceof Audio) { sound.volume = volume * $config.maxVolume; }
+        else { sound.setVolume(volume * $config.maxVolume); }
         sound.onStop(function () {
           sound.onStop();
           d.resolve();
@@ -30476,7 +30479,8 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
   // Retrieve task children
   Tasks.prototype.getChildren = function (ids) {
     var _this = this;
-    return _.map(ids, function(id) { return _.findWhere(_this.tasks, { id: id }); });
+    return _.sortBy(
+      _.map(ids, function(id) { return _.findWhere(_this.tasks, { id: id }); }), 'startTime');
   };
 
   Tasks.prototype.moveFinishedTasksToArchive = function () {
@@ -30593,7 +30597,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
       //    period: [section (1)][important (1)][till end (2)][duration (2)][updated(14)] (20)
       //    exact: [section (1)][starttime (14)][important (1)][0][3] (20)
       // dates are encoded with 14 last digits
-      var value = '' + task._section,
+      var value = '' + 4-task._section,
           _duration = Math.ceil((task.endTime + 1 - task.startTime)/86400000),
           _tillEnd = Math.floor((task.endTime - Date.now())/86400000);
 
@@ -30605,7 +30609,7 @@ App.service('idaTasks', ['$rootScope', '$window', '$timeout', '$interval', '$q',
       } else {
         value += _pad(_fill - task.startTime, 14);
         value += (task.important ? (task.complex ? 3 : 4) : (task.complex ? 1 : 2 ));
-        value += '0000';
+        value += '000';
       }
       return value;
     }).reverse();
