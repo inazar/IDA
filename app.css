@@ -1993,67 +1993,49 @@ h2 {
   -webkit-tap-highlight-color: transparent; }
 
 @-webkit-keyframes scaleOut {
-  /* line 23, stdin */
   from {
     -webkit-transform: scale(1);
     opacity: 1; }
-
-  /* line 24, stdin */
   to {
     -webkit-transform: scale(0.8);
     opacity: 0; } }
 
 @-moz-keyframes scaleOut {
-  /* line 27, stdin */
   from {
     -moz-transform: scale(1);
     opacity: 1; }
-
-  /* line 28, stdin */
   to {
     -moz-transform: scale(0.8);
     opacity: 0; } }
 
 @keyframes scaleOut {
-  /* line 31, stdin */
   from {
     transform: scale(1);
     opacity: 1; }
-
-  /* line 32, stdin */
   to {
     transform: scale(0.8);
     opacity: 0; } }
 
 @-webkit-keyframes superScaleIn {
-  /* line 40, stdin */
   from {
     -webkit-transform: scale(1.2);
     opacity: 0; }
-
-  /* line 41, stdin */
   to {
     -webkit-transform: scale(1);
     opacity: 1; } }
 
 @-moz-keyframes superScaleIn {
-  /* line 44, stdin */
   from {
     -moz-transform: scale(1.2);
     opacity: 0; }
-
-  /* line 45, stdin */
   to {
     -moz-transform: scale(1);
     opacity: 1; } }
 
 @keyframes superScaleIn {
-  /* line 48, stdin */
   from {
     transform: scale(1.2);
     opacity: 0; }
-
-  /* line 49, stdin */
   to {
     transform: scale(1);
     opacity: 1; } }
@@ -2062,7 +2044,7 @@ h2 {
  * Popups
  * --------------------------------------------------
  */
-/* line 57, stdin */
+/* line 57, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
 .popup {
   position: fixed;
   top: 50%;
@@ -2075,10 +2057,10 @@ h2 {
   overflow: hidden;
   border-radius: 15px;
   background-color: rgba(235, 235, 235, 0.95); }
-  /* line 77, stdin */
+  /* line 77, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup.popup-complete {
     background: white; }
-  /* line 81, stdin */
+  /* line 81, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup.popup-hidden {
     -webkit-animation-name: scaleOut;
     -moz-animation-name: scaleOut;
@@ -2092,10 +2074,10 @@ h2 {
     -webkit-animation-fill-mode: both;
     -moz-animation-fill-mode: both;
     animation-fill-mode: both; }
-  /* line 88, stdin */
+  /* line 88, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup.popup-showing {
     visibility: visible; }
-  /* line 92, stdin */
+  /* line 92, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup.active {
     -webkit-animation-name: superScaleIn;
     -moz-animation-name: superScaleIn;
@@ -2110,7 +2092,7 @@ h2 {
     -moz-animation-fill-mode: both;
     animation-fill-mode: both; }
 
-/* line 100, stdin */
+/* line 100, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
 .popup-box {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2126,13 +2108,13 @@ h2 {
   flex-direction: column;
   padding-top: 10px; }
 
-/* line 106, stdin */
+/* line 106, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
 .popup-head {
   padding: 10px 0px;
   border-bottom: 1px solid #eee;
   text-align: center; }
 
-/* line 111, stdin */
+/* line 111, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
 .popup-title {
   margin: 0;
   padding: 0;
@@ -2141,14 +2123,14 @@ h2 {
   overflow: hidden;
   text-overflow: ellipsis; }
 
-/* line 117, stdin */
+/* line 117, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
 .popup-sub-title {
   margin: 5px 0 0 0;
   padding: 0;
   font-weight: normal;
   font-size: 11px; }
 
-/* line 123, stdin */
+/* line 123, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
 .popup-body {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -2158,18 +2140,18 @@ h2 {
   flex: 1;
   overflow: auto;
   padding: 0 10px; }
-  /* line 127, stdin */
+  /* line 127, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup-body .popup-icon {
     font-size: 30px;
     text-align: center; }
-  /* line 131, stdin */
+  /* line 131, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup-body .popup-text {
     text-align: center; }
-    /* line 133, stdin */
+    /* line 133, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
     .popup-body .popup-text.enforcement {
       margin: 1em 0;
       font-size: 1.2em; }
-    /* line 137, stdin */
+    /* line 137, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
     .popup-body .popup-text input {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -2182,18 +2164,18 @@ h2 {
       outline: 0;
       padding: 0.45em 10px; }
 
-/* line 143, stdin */
+/* line 143, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
 .popup-limit, .popup-prevent {
   text-align: center;
   margin-bottom: 10px; }
 
-/* line 148, stdin */
+/* line 148, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
 .popup-buttons {
   text-align: center; }
-  /* line 150, stdin */
+  /* line 150, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup-buttons.row {
     padding: 10px 10px; }
-  /* line 154, stdin */
+  /* line 154, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup-buttons .btn {
     margin: 20px 5px 0;
     padding: 0 16px;
@@ -2219,20 +2201,20 @@ h2 {
     border-top: 2px solid transparent;
     text-decoration: none;
     outline: 0; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .popup-buttons .btn:active, .popup-buttons .btn.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-    /* line 163, stdin */
+    /* line 163, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
     .popup-buttons .btn:first-child {
       margin-left: 0px; }
-    /* line 166, stdin */
+    /* line 166, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
     .popup-buttons .btn:last-child {
       margin-right: 0px; }
-    /* line 169, stdin */
+    /* line 169, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
     .popup-buttons .btn.btn-main {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -2251,7 +2233,7 @@ h2 {
       border-top: 2px solid transparent;
       text-decoration: none;
       outline: 0; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .popup-buttons .btn.btn-main:active, .popup-buttons .btn.btn-main.active {
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -2259,13 +2241,13 @@ h2 {
         border-top: 2px solid #5e0662;
         top: 0px; }
 
-/* line 175, stdin */
+/* line 175, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
 .popup-open {
   pointer-events: none; }
-  /* line 178, stdin */
+  /* line 178, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup-open.modal-open .modal {
     pointer-events: none; }
-  /* line 182, stdin */
+  /* line 182, /Users/nazar/Projects/adhd-app/src/styles/popup.scss */
   .popup-open .popup-backdrop, .popup-open .popup {
     pointer-events: auto; }
 
@@ -2293,7 +2275,7 @@ h2 {
  * Range
  * --------------------------------------------------
  */
-/* line 8, stdin */
+/* line 8, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
 input[type="range"] {
   display: inline-block;
   overflow: hidden;
@@ -2310,7 +2292,7 @@ input[type="range"] {
   background-size: 99% 8px;
   background-repeat: no-repeat;
   -webkit-appearance: none; }
-  /* line 25, stdin */
+  /* line 25, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
   input[type="range"]::-webkit-slider-thumb {
     position: relative;
     width: 25px;
@@ -2320,7 +2302,7 @@ input[type="range"] {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5), 1px 3px 5px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     -webkit-appearance: none; }
-  /* line 36, stdin */
+  /* line 36, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
   input[type="range"]::-webkit-slider-thumb:before {
     /* what creates the colorful line on the left side of the slider */
     position: absolute;
@@ -2330,7 +2312,7 @@ input[type="range"] {
     height: 8px;
     background: #555;
     content: ' '; }
-  /* line 47, stdin */
+  /* line 47, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
   input[type="range"]::-webkit-slider-thumb:after {
     /* create a larger (but hidden) hit area */
     position: absolute;
@@ -2339,7 +2321,7 @@ input[type="range"] {
     padding: 30px;
     content: ' '; }
 
-/* line 60, stdin */
+/* line 60, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
 .range {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2353,14 +2335,14 @@ input[type="range"] {
   -moz-align-items: center;
   align-items: center;
   padding: 2px 4px; }
-  /* line 30, ../src/styles/mixins.scss */
+  /* line 30, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   .range.range-gray input::-webkit-slider-thumb:before {
     background: #555; }
-  /* line 30, ../src/styles/mixins.scss */
+  /* line 30, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   .range.range-purple input::-webkit-slider-thumb:before {
     background: #a40aaa; }
 
-/* line 73, stdin */
+/* line 73, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
 .range .icon {
   -webkit-box-flex: 0;
   -webkit-flex: 0;
@@ -2372,17 +2354,17 @@ input[type="range"] {
   min-width: 24px;
   text-align: center;
   font-size: 24px; }
-  /* line 79, stdin */
+  /* line 79, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
   .range .icon.icon-large {
     font-size: 28.8px; }
-  /* line 82, stdin */
+  /* line 82, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
   .range .icon.icon-small {
     font-size: 19.2px; }
-  /* line 85, stdin */
+  /* line 85, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
   .range .icon.icon-tiny {
     font-size: 12px; }
 
-/* line 90, stdin */
+/* line 90, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
 .range input {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -2394,7 +2376,7 @@ input[type="range"] {
   margin-right: 10px;
   margin-left: 10px; }
 
-/* line 97, stdin */
+/* line 97, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
 .range-label {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
@@ -2406,15 +2388,16 @@ input[type="range"] {
   white-space: nowrap;
   margin-right: 1em; }
 
-/* line 104, stdin */
+/* line 104, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
 .range-label:first-child {
   padding-left: 5px; }
 
-/* line 107, stdin */
+/* line 107, /Users/nazar/Projects/adhd-app/src/styles/range.scss */
 .range input + .range-label {
   padding-right: 5px;
   padding-left: 0; }
 
+@charset "UTF-8";
 /* line 89, /Users/nazar/Projects/adhd-app/src/styles/reset.scss */
 body {
   font-family: 'Helvetica', Arial, sans-serif;
@@ -2435,59 +2418,59 @@ h2 {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; }
 
-/* line 15, stdin */
+/* line 15, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .purple {
   color: #a40aaa; }
 
-/* line 19, stdin */
+/* line 19, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .purple-bg {
   color: white;
   background: #a40aaa;
   padding: 5px; }
 
-/* line 26, stdin */
+/* line 26, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .gray {
   color: #555; }
 
-/* line 30, stdin */
+/* line 30, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .green {
   color: #48B82C; }
 
-/* line 34, stdin */
+/* line 34, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .yellow {
   color: #CCA528; }
 
-/* line 38, stdin */
+/* line 38, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .red {
   color: #DD2330; }
 
-/* line 42, stdin */
+/* line 42, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .blue {
   color: #5d96c5; }
 
-/* line 46, stdin */
+/* line 46, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .large {
   font-size: 1.5em; }
 
-/* line 50, stdin */
+/* line 50, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .invisible {
   visibility: hidden; }
 
-/* line 54, stdin */
+/* line 54, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .inset {
   text-shadow: #fff 0px 1px 0, #000 0 -1px 0; }
 
-/* line 56, stdin */
+/* line 56, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 html {
   height: 100%; }
 
-/* line 60, stdin */
+/* line 60, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 body {
   -webkit-text-size-adjust: none;
   position: absolute;
   height: 100%;
   width: 100%; }
-  /* line 65, stdin */
+  /* line 65, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   body > #clickWait {
     pointer-events: auto;
     position: fixed;
@@ -2513,10 +2496,10 @@ body {
     align-items: center;
     background: rgba(255, 255, 255, 0.5);
     z-index: 2000; }
-    /* line 78, stdin */
+    /* line 78, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     body > #clickWait.ng-click-active > div {
       display: none; }
-    /* line 82, stdin */
+    /* line 82, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     body > #clickWait > div {
       background: rgba(0, 0, 0, 0.3);
       padding: 2em;
@@ -2524,22 +2507,22 @@ body {
       color: #eee;
       font-weight: bold;
       max-width: 50%; }
-  /* line 92, stdin */
+  /* line 92, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   body.ios7 > #wrapper {
     padding-top: 20px; }
-    /* line 94, stdin */
+    /* line 94, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     body.ios7 > #wrapper > nav {
       top: 20px; }
-    /* line 97, stdin */
+    /* line 97, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     body.ios7 > #wrapper > div#main > div#top {
       top: 20px; }
-  /* line 101, stdin */
+  /* line 101, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   body > #wrapper {
     height: 100%;
     font-size: 0.95em;
     position: relative;
     overflow: hidden; }
-    /* line 107, stdin */
+    /* line 107, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     body > #wrapper > nav {
       -webkit-transition: all 300ms;
       -moz-transition: all 300ms;
@@ -2552,7 +2535,7 @@ body {
       position: fixed;
       top: 0;
       width: 100%; }
-      /* line 117, stdin */
+      /* line 117, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       body > #wrapper > nav > ul {
         height: 95%;
         list-style: none;
@@ -2562,20 +2545,20 @@ body {
         position: absolute;
         top: 5%;
         width: 80%; }
-        /* line 126, stdin */
+        /* line 126, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         body > #wrapper > nav > ul > li {
           height: 9.75%;
           width: 100%; }
-          /* line 130, stdin */
+          /* line 130, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           body > #wrapper > nav > ul > li.active .help-container {
             background: #a40aaa; }
-          /* line 132, stdin */
+          /* line 132, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           body > #wrapper > nav > ul > li .help-button {
             margin-right: 10px; }
-          /* line 135, stdin */
+          /* line 135, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           body > #wrapper > nav > ul > li .help-container {
             height: 100%; }
-          /* line 138, stdin */
+          /* line 138, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           body > #wrapper > nav > ul > li .help-line {
             height: 100%;
             position: relative;
@@ -2585,7 +2568,7 @@ body {
             -moz-flex: 1;
             -ms-flex: 1;
             flex: 1; }
-            /* line 139, stdin */
+            /* line 139, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
             body > #wrapper > nav > ul > li .help-line > a {
               color: white;
               display: block;
@@ -2593,20 +2576,20 @@ body {
               height: 100%;
               line-height: 0;
               text-decoration: none; }
-            /* line 151, stdin */
+            /* line 151, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
             body > #wrapper > nav > ul > li .help-line span {
               display: inline-block;
               left: 1em;
               position: absolute;
               top: 50%;
               vertical-align: middle; }
-              /* line 157, stdin */
+              /* line 157, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
               body > #wrapper > nav > ul > li .help-line span > i.fa {
                 display: inline-block;
                 line-height: 0;
                 vertical-align: top;
                 width: 1.5em; }
-    /* line 169, stdin */
+    /* line 169, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     body > #wrapper #loading {
       position: fixed;
       left: 0;
@@ -2620,7 +2603,7 @@ body {
       font-weight: bold;
       font-size: 14px;
       z-index: 100; }
-    /* line 184, stdin */
+    /* line 184, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     body > #wrapper > div#main {
       -webkit-box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
       box-shadow: -2px 0px 6px rgba(0, 0, 0, 0.6);
@@ -2632,7 +2615,7 @@ body {
       position: relative;
       width: 100%;
       overflow: hidden; }
-      /* line 196, stdin */
+      /* line 196, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       body > #wrapper > div#main > div#top {
         -webkit-transition: margin-left 300ms;
         -moz-transition: margin-left 300ms;
@@ -2654,46 +2637,46 @@ body {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box; }
-        /* line 213, stdin */
+        /* line 213, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         body > #wrapper > div#main > div#top > span {
           display: block;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis; }
-        /* line 219, stdin */
+        /* line 219, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         body > #wrapper > div#main > div#top > a {
           display: block;
           position: absolute;
           top: 0; }
-          /* line 223, stdin */
+          /* line 223, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           body > #wrapper > div#main > div#top > a > i {
             display: inline-block;
             font-size: 1.3em;
             height: 45px;
             line-height: 45px;
             padding: 0 0.65em; }
-          /* line 230, stdin */
+          /* line 230, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           body > #wrapper > div#main > div#top > a.nav {
             left: 0; }
-          /* line 231, stdin */
+          /* line 231, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           body > #wrapper > div#main > div#top > a.avsluta {
             display: inline-block;
             right: 0;
             width: 54px; }
-          /* line 232, stdin */
+          /* line 232, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           body > #wrapper > div#main > div#top > a.clean {
             display: inline-block;
             right: 54px;
             width: 54px; }
-        /* line 234, stdin */
+        /* line 234, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         body > #wrapper > div#main > div#top.hide {
           background: white;
           border-bottom: 1px solid transparent;
           color: black; }
-          /* line 238, stdin */
+          /* line 238, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           body > #wrapper > div#main > div#top.hide > a {
             display: none; }
-      /* line 242, stdin */
+      /* line 242, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       body > #wrapper > div#main > #context-wrapper {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -2704,27 +2687,29 @@ body {
         width: 100%;
         overflow-x: hidden;
         overflow-y: auto; }
-        /* line 250, stdin */
+        /* line 250, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         body > #wrapper > div#main > #context-wrapper > #context {
           padding: 15px 5px 5px 5px;
           width: 100%;
           height: 100%; }
 
-/* line 261, stdin */
+/* line 261, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 body.show-nav #wrapper > nav {
   left: 0; }
-  /* line 263, stdin */
+  /* line 263, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   body.show-nav #wrapper > nav > ul {
     left: 0;
     opacity: 1; }
-/* line 268, stdin */
+
+/* line 268, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 body.show-nav #wrapper #context-wrapper {
   pointer-events: none; }
-/* line 270, stdin */
+
+/* line 270, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #wrapper .confirmation {
   margin-left: 80%; }
 
-/* line 283, stdin */
+/* line 283, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .modal-container {
   position: absolute;
   top: 0;
@@ -2735,11 +2720,11 @@ body.show-nav #wrapper > div#main, body.show-nav #wrapper #top, body.show-nav #w
   overflow-y: auto;
   z-index: 90; }
 
-/* line 294, stdin */
+/* line 294, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .ios7 .modal-container {
   top: 20px; }
 
-/* line 301, stdin */
+/* line 301, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.delete-task-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -2747,7 +2732,7 @@ div.delete-task-modal {
   position: fixed;
   top: 0;
   width: 100%; }
-  /* line 671, ../src/styles/mixins.scss */
+  /* line 671, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.delete-task-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -2756,7 +2741,7 @@ div.delete-task-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
-    /* line 679, ../src/styles/mixins.scss */
+    /* line 679, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.delete-task-modal > div > button.cancel {
       background: none;
       border: none;
@@ -2766,24 +2751,24 @@ div.delete-task-modal {
       position: absolute;
       right: 0;
       top: 5px; }
-    /* line 689, ../src/styles/mixins.scss */
+    /* line 689, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.delete-task-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
-    /* line 695, ../src/styles/mixins.scss */
+    /* line 695, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.delete-task-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
-    /* line 701, ../src/styles/mixins.scss */
+    /* line 701, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.delete-task-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
-  /* line 304, stdin */
+  /* line 304, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.delete-task-modal > div > button.yes {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -2809,14 +2794,14 @@ div.delete-task-modal {
     margin-bottom: 15px;
     padding: 6px 20px 7px;
     width: auto; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.delete-task-modal > div > button.yes:active, div.delete-task-modal > div > button.yes.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662;
       top: 0px; }
-  /* line 311, stdin */
+  /* line 311, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.delete-task-modal > div > button.no {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -2841,21 +2826,21 @@ div.delete-task-modal {
     display: block;
     padding: 6px 20px 7px;
     width: auto; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.delete-task-modal > div > button.no:active, div.delete-task-modal > div > button.no.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-  /* line 317, stdin */
+  /* line 317, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.delete-task-modal > div > span {
     color: #aaa;
     display: inline-block;
     font-style: italic;
     padding: 10px 40px 0 0; }
 
-/* line 330, stdin */
+/* line 330, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.edit-task-name-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -2863,7 +2848,7 @@ div.edit-task-name-modal {
   position: fixed;
   top: 0;
   width: 100%; }
-  /* line 671, ../src/styles/mixins.scss */
+  /* line 671, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.edit-task-name-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -2872,7 +2857,7 @@ div.edit-task-name-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
-    /* line 679, ../src/styles/mixins.scss */
+    /* line 679, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.edit-task-name-modal > div > button.cancel {
       background: none;
       border: none;
@@ -2882,24 +2867,24 @@ div.edit-task-name-modal {
       position: absolute;
       right: 0;
       top: 5px; }
-    /* line 689, ../src/styles/mixins.scss */
+    /* line 689, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.edit-task-name-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
-    /* line 695, ../src/styles/mixins.scss */
+    /* line 695, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.edit-task-name-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
-    /* line 701, ../src/styles/mixins.scss */
+    /* line 701, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.edit-task-name-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
-  /* line 333, stdin */
+  /* line 333, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.edit-task-name-modal > div > textarea {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -2914,7 +2899,7 @@ div.edit-task-name-modal {
     width: 100%;
     height: 5em;
     margin-bottom: 20px; }
-  /* line 339, stdin */
+  /* line 339, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.edit-task-name-modal > div > button.done {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -2940,7 +2925,7 @@ div.edit-task-name-modal {
     padding: 6px 20px 7px;
     width: auto;
     float: right; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.edit-task-name-modal > div > button.done:active, div.edit-task-name-modal > div > button.done.active {
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -2948,7 +2933,7 @@ div.edit-task-name-modal {
       border-top: 2px solid #5e0662;
       top: 0px; }
 
-/* line 353, stdin */
+/* line 353, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.later-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -2956,7 +2941,7 @@ div.later-modal {
   position: fixed;
   top: 0;
   width: 100%; }
-  /* line 671, ../src/styles/mixins.scss */
+  /* line 671, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.later-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -2965,7 +2950,7 @@ div.later-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
-    /* line 679, ../src/styles/mixins.scss */
+    /* line 679, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.later-modal > div > button.cancel {
       background: none;
       border: none;
@@ -2975,31 +2960,31 @@ div.later-modal {
       position: absolute;
       right: 0;
       top: 5px; }
-    /* line 689, ../src/styles/mixins.scss */
+    /* line 689, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.later-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
-    /* line 695, ../src/styles/mixins.scss */
+    /* line 695, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.later-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
-    /* line 701, ../src/styles/mixins.scss */
+    /* line 701, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.later-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
-  /* line 357, stdin */
+  /* line 357, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.later-modal > div > div.reminder-in > span {
     visibility: hidden; }
-  /* line 359, stdin */
+  /* line 359, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.later-modal > div > div.reminder-in, div.later-modal > div div.reminder-today {
     padding: 5px 0 0;
     overflow: auto; }
-    /* line 362, stdin */
+    /* line 362, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.later-modal > div > div.reminder-in > button, div.later-modal > div div.reminder-today > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -3027,14 +3012,14 @@ div.later-modal {
       margin-right: 5px;
       padding: 6px 20px 7px;
       width: auto; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       div.later-modal > div > div.reminder-in > button:active, div.later-modal > div > div.reminder-in > button.active, div.later-modal > div div.reminder-today > button:active, div.later-modal > div div.reminder-today > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662;
         top: 0px; }
-    /* line 371, stdin */
+    /* line 371, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.later-modal > div > div.reminder-in > input, div.later-modal > div div.reminder-today > input {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -3052,13 +3037,13 @@ div.later-modal {
       padding: 6px 10px 7px;
       text-align: right;
       width: 60px; }
-    /* line 380, stdin */
+    /* line 380, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.later-modal > div > div.reminder-in > span, div.later-modal > div div.reminder-today > span {
       display: inline-block;
       float: left;
       font-size: 1.2em;
       padding: 6px 0 7px; }
-  /* line 387, stdin */
+  /* line 387, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.later-modal > div > button.breakdown, div.later-modal > div button.postpone {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3085,14 +3070,14 @@ div.later-modal {
     margin-top: 10px;
     padding: 6px 20px 7px;
     width: auto; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.later-modal > div > button.breakdown:active, div.later-modal > div > button.breakdown.active, div.later-modal > div button.postpone:active, div.later-modal > div button.postpone.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662;
       top: 0px; }
-  /* line 395, stdin */
+  /* line 395, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.later-modal > div > button.abort {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3119,7 +3104,7 @@ div.later-modal {
     margin-top: 10px;
     padding: 6px 20px 7px;
     width: auto; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.later-modal > div > button.abort:active, div.later-modal > div > button.abort.active {
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -3127,7 +3112,7 @@ div.later-modal {
       border-top: 2px solid #5e0662;
       top: 0px; }
 
-/* line 410, stdin */
+/* line 410, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.timer-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -3135,7 +3120,7 @@ div.timer-modal {
   position: fixed;
   top: 0;
   width: 100%; }
-  /* line 671, ../src/styles/mixins.scss */
+  /* line 671, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.timer-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -3144,7 +3129,7 @@ div.timer-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
-    /* line 679, ../src/styles/mixins.scss */
+    /* line 679, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.timer-modal > div > button.cancel {
       background: none;
       border: none;
@@ -3154,24 +3139,24 @@ div.timer-modal {
       position: absolute;
       right: 0;
       top: 5px; }
-    /* line 689, ../src/styles/mixins.scss */
+    /* line 689, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.timer-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
-    /* line 695, ../src/styles/mixins.scss */
+    /* line 695, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.timer-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
-    /* line 701, ../src/styles/mixins.scss */
+    /* line 701, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.timer-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
-  /* line 414, stdin */
+  /* line 414, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.timer-modal > div > div > div.time-inputs {
     display: -webkit-box;
     display: -webkit-flex;
@@ -3195,7 +3180,7 @@ div.timer-modal {
     -webkit-align-items: center;
     -moz-align-items: center;
     align-items: center; }
-    /* line 419, stdin */
+    /* line 419, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.timer-modal > div > div > div.time-inputs > label.time-options {
       display: inline-block;
       position: relative;
@@ -3208,7 +3193,7 @@ div.timer-modal {
       -ms-flex: 1;
       flex: 1;
       display: block; }
-      /* line 295, ../src/styles/mixins.scss */
+      /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       div.timer-modal > div > div > div.time-inputs > label.time-options::after {
         position: absolute;
         top: 50%;
@@ -3220,7 +3205,7 @@ div.timer-modal {
         border-left: 5px solid transparent;
         content: "";
         pointer-events: none; }
-      /* line 318, ../src/styles/mixins.scss */
+      /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       div.timer-modal > div > div > div.time-inputs > label.time-options > select {
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -3237,28 +3222,28 @@ div.timer-modal {
         font-weight: bold;
         outline: 0;
         padding: 3px 30px 4px 10px; }
-        /* line 330, ../src/styles/mixins.scss */
+        /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         div.timer-modal > div > div > div.time-inputs > label.time-options > select:focus {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8d0992;
           border-top: 2px solid #5e0662; }
-      /* line 341, ../src/styles/mixins.scss */
+      /* line 341, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       div.timer-modal > div > div > div.time-inputs > label.time-options::before {
         right: 20px;
         top: 6px;
         font-size: 1.4em; }
-      /* line 346, ../src/styles/mixins.scss */
+      /* line 346, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       div.timer-modal > div > div > div.time-inputs > label.time-options > select {
         width: 100%;
         padding: 10px 50px 12px 20px; }
-      /* line 422, stdin */
+      /* line 422, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.timer-modal > div > div > div.time-inputs > label.time-options > select {
         margin-bottom: 2px; }
-    /* line 427, stdin */
+    /* line 427, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.timer-modal > div > div > div.time-inputs > .time-picker {
       margin-left: 10px; }
-  /* line 431, stdin */
+  /* line 431, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.timer-modal > div > div > button.start {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3284,14 +3269,14 @@ div.timer-modal {
     padding: 6px 20px 7px;
     width: auto;
     float: right; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.timer-modal > div > div > button.start:active, div.timer-modal > div > div > button.start.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662;
       top: 0px; }
-  /* line 438, stdin */
+  /* line 438, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.timer-modal > div > div > button.clear {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3318,17 +3303,17 @@ div.timer-modal {
     width: auto;
     float: right;
     margin-right: 10px; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.timer-modal > div > div > button.clear:active, div.timer-modal > div > div > button.clear.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-  /* line 483, stdin */
+  /* line 483, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.timer-modal > div > div.timer {
     overflow: auto; }
-    /* line 485, stdin */
+    /* line 485, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.timer-modal > div > div.timer > div {
       display: block;
       font-size: 2em;
@@ -3336,11 +3321,11 @@ div.timer-modal {
       line-height: 58px;
       margin: 0 0 10px;
       text-align: center; }
-    /* line 493, stdin */
+    /* line 493, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.timer-modal > div > div.timer > .buttons {
       float: right;
       text-align: right; }
-      /* line 496, stdin */
+      /* line 496, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.timer-modal > div > div.timer > .buttons > button.clear {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -3367,7 +3352,7 @@ div.timer-modal {
         padding: 6px 20px 7px;
         margin-top: 15px;
         width: auto; }
-        /* line 562, ../src/styles/mixins.scss */
+        /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         div.timer-modal > div > div.timer > .buttons > button.clear:active, div.timer-modal > div > div.timer > .buttons > button.clear.active {
           -webkit-box-shadow: none;
           box-shadow: none;
@@ -3375,7 +3360,7 @@ div.timer-modal {
           border-top: 2px solid #5e0662;
           top: 0px; }
 
-/* line 513, stdin */
+/* line 513, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.pick-parent-task-modal {
   position: absolute;
   top: 0;
@@ -3385,7 +3370,7 @@ div.pick-parent-task-modal {
   background: white;
   border: 5px solid #eee;
   padding: 40px 5px 100px; }
-  /* line 523, stdin */
+  /* line 523, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.pick-parent-task-modal > button.cancel {
     background: none;
     border: none;
@@ -3396,32 +3381,32 @@ div.pick-parent-task-modal {
     right: 0;
     top: 5px;
     outline: 0; }
-  /* line 525, stdin */
+  /* line 525, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.pick-parent-task-modal > div.child-task {
     color: #aaa;
     margin: 0 0 15px; }
-    /* line 528, stdin */
+    /* line 528, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.pick-parent-task-modal > div.child-task > p {
       margin: 10px 0 15px; }
-    /* line 529, stdin */
+    /* line 529, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.pick-parent-task-modal > div.child-task > i {
       padding-left: 40px; }
-  /* line 532, stdin */
+  /* line 532, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.pick-parent-task-modal > ul {
     margin: 0 -5px;
     padding: 0;
     list-style: none; }
-    /* line 536, stdin */
+    /* line 536, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.pick-parent-task-modal > ul > li {
       padding: 0 5px;
       border-bottom: 1px solid #dddddd;
       line-height: 50px; }
-      /* line 540, stdin */
+      /* line 540, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.pick-parent-task-modal > ul > li.active {
         background: #a40aaa;
         color: white; }
 
-/* line 552, stdin */
+/* line 552, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.focus-stop-timer-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -3429,7 +3414,7 @@ div.focus-stop-timer-modal {
   position: fixed;
   top: 0;
   width: 100%; }
-  /* line 671, ../src/styles/mixins.scss */
+  /* line 671, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.focus-stop-timer-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -3438,7 +3423,7 @@ div.focus-stop-timer-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
-    /* line 679, ../src/styles/mixins.scss */
+    /* line 679, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > button.cancel {
       background: none;
       border: none;
@@ -3448,27 +3433,27 @@ div.focus-stop-timer-modal {
       position: absolute;
       right: 0;
       top: 5px; }
-    /* line 689, ../src/styles/mixins.scss */
+    /* line 689, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
-    /* line 695, ../src/styles/mixins.scss */
+    /* line 695, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
-    /* line 701, ../src/styles/mixins.scss */
+    /* line 701, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
-  /* line 555, stdin */
+  /* line 555, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-stop-timer-modal > div > div.divider {
     margin-top: 30px; }
-  /* line 559, stdin */
+  /* line 559, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-stop-timer-modal > div > button.reset-timer, div.focus-stop-timer-modal > div > button.stop-focussing {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3496,14 +3481,14 @@ div.focus-stop-timer-modal {
     padding: 6px 20px 7px;
     width: auto;
     text-align: left; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > button.reset-timer:active, div.focus-stop-timer-modal > div > button.reset-timer.active, div.focus-stop-timer-modal > div > button.stop-focussing:active, div.focus-stop-timer-modal > div > button.stop-focussing.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662;
       top: 0px; }
-  /* line 568, stdin */
+  /* line 568, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-stop-timer-modal > div > button.continue-focussing {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3531,7 +3516,7 @@ div.focus-stop-timer-modal {
     padding: 6px 20px 7px;
     width: auto;
     text-align: left; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-stop-timer-modal > div > button.continue-focussing:active, div.focus-stop-timer-modal > div > button.continue-focussing.active {
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -3539,7 +3524,7 @@ div.focus-stop-timer-modal {
       border-top: 2px solid #9b9b9b;
       top: 0px; }
 
-/* line 585, stdin */
+/* line 585, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.focus-distraction-list-confirmation-modal {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -3547,7 +3532,7 @@ div.focus-distraction-list-confirmation-modal {
   position: fixed;
   top: 0;
   width: 100%; }
-  /* line 671, ../src/styles/mixins.scss */
+  /* line 671, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.focus-distraction-list-confirmation-modal > div {
     -webkit-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -3556,7 +3541,7 @@ div.focus-distraction-list-confirmation-modal {
     padding: 25px 20px 40px;
     position: absolute;
     width: 100%; }
-    /* line 679, ../src/styles/mixins.scss */
+    /* line 679, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > button.cancel {
       background: none;
       border: none;
@@ -3566,27 +3551,27 @@ div.focus-distraction-list-confirmation-modal {
       position: absolute;
       right: 0;
       top: 5px; }
-    /* line 689, ../src/styles/mixins.scss */
+    /* line 689, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > h1 {
       font-size: 1.2em;
       line-height: 1.4em;
       margin: 0 0 20px;
       padding: 0 40px 0 0; }
-    /* line 695, ../src/styles/mixins.scss */
+    /* line 695, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > h2.modal-sub-heading {
       font-size: 1.2em;
       line-height: 1.4em;
       font-weight: normal;
       color: #aaa; }
-    /* line 701, ../src/styles/mixins.scss */
+    /* line 701, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > div.divider {
       background: #d4d4d4;
       height: 1px;
       margin: 20px -20px 25px; }
-  /* line 588, stdin */
+  /* line 588, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-distraction-list-confirmation-modal > div > h1 {
     padding-right: 30px; }
-  /* line 590, stdin */
+  /* line 590, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-distraction-list-confirmation-modal > div > button.plan-now {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3614,14 +3599,14 @@ div.focus-distraction-list-confirmation-modal {
     padding: 6px 20px 7px;
     width: auto;
     text-align: left; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > button.plan-now:active, div.focus-distraction-list-confirmation-modal > div > button.plan-now.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662;
       top: 0px; }
-  /* line 599, stdin */
+  /* line 599, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-distraction-list-confirmation-modal > div > button.plan-later {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3649,7 +3634,7 @@ div.focus-distraction-list-confirmation-modal {
     padding: 6px 20px 7px;
     width: auto;
     text-align: left; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-distraction-list-confirmation-modal > div > button.plan-later:active, div.focus-distraction-list-confirmation-modal > div > button.plan-later.active {
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -3657,7 +3642,7 @@ div.focus-distraction-list-confirmation-modal {
       border-top: 2px solid #9b9b9b;
       top: 0px; }
 
-/* line 614, stdin */
+/* line 614, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .confirmation {
   position: fixed;
   bottom: 0;
@@ -3666,10 +3651,10 @@ div.focus-distraction-list-confirmation-modal {
   width: 100%;
   padding: 10px;
   text-align: center; }
-  /* line 622, stdin */
+  /* line 622, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .confirmation.reset-all-tasks {
     text-align: center; }
-    /* line 624, stdin */
+    /* line 624, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .confirmation.reset-all-tasks > a {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -3688,14 +3673,14 @@ div.focus-distraction-list-confirmation-modal {
       border-top: 2px solid transparent;
       text-decoration: none;
       outline: 0; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .confirmation.reset-all-tasks > a:active, .confirmation.reset-all-tasks > a.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662;
         top: 0px; }
-  /* line 628, stdin */
+  /* line 628, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .confirmation > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3719,20 +3704,20 @@ div.focus-distraction-list-confirmation-modal {
     padding: 13px 0 14px;
     width: auto;
     padding: 5px 20px 6px; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .confirmation > button:active, .confirmation > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662;
       top: 0px; }
-    /* line 632, stdin */
+    /* line 632, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .confirmation > button:disabled {
       opacity: 0.3; }
-  /* line 634, stdin */
+  /* line 634, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .confirmation .modal-buttons {
     text-align: center; }
-    /* line 636, stdin */
+    /* line 636, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .confirmation .modal-buttons > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -3756,17 +3741,17 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       width: auto;
       padding: 5px 20px 6px; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .confirmation .modal-buttons > button:active, .confirmation .modal-buttons > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
-      /* line 640, stdin */
+      /* line 640, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .confirmation .modal-buttons > button:disabled {
         opacity: 0.3; }
-      /* line 641, stdin */
+      /* line 641, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .confirmation .modal-buttons > button.main {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -3790,7 +3775,7 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         width: auto;
         padding: 5px 20px 6px; }
-        /* line 562, ../src/styles/mixins.scss */
+        /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .confirmation .modal-buttons > button.main:active, .confirmation .modal-buttons > button.main.active {
           -webkit-box-shadow: none;
           box-shadow: none;
@@ -3798,7 +3783,7 @@ div.focus-distraction-list-confirmation-modal {
           border-top: 2px solid #5e0662;
           top: 0px; }
 
-/* line 659, stdin */
+/* line 659, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .help-container {
   display: -webkit-box;
   display: -webkit-flex;
@@ -3823,7 +3808,7 @@ div.focus-distraction-list-confirmation-modal {
   -moz-align-items: center;
   align-items: center; }
 
-/* line 666, stdin */
+/* line 666, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .help-line {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -3832,7 +3817,7 @@ div.focus-distraction-list-confirmation-modal {
   -ms-flex: 1;
   flex: 1; }
 
-/* line 670, stdin */
+/* line 670, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .help-button {
   width: 25px;
   height: 25px;
@@ -3848,15 +3833,15 @@ div.focus-distraction-list-confirmation-modal {
   margin: 0 5px 0 10px;
   padding: 0; }
 
-/* line 681, stdin */
+/* line 681, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .help-hidden .help-button {
   display: none; }
 
-/* line 693, stdin */
+/* line 693, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .timepicker {
   width: 60px; }
 
-/* line 697, stdin */
+/* line 697, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .timepicker-field {
   width: 3em;
   padding: 7px 5px;
@@ -3865,7 +3850,7 @@ div.focus-distraction-list-confirmation-modal {
   border: 1px solid #aaa;
   display: inline-block; }
 
-/* line 705, stdin */
+/* line 705, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .timepicker-button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -3884,7 +3869,7 @@ div.focus-distraction-list-confirmation-modal {
   border-top: 2px solid transparent;
   text-decoration: none;
   outline: 0; }
-  /* line 562, ../src/styles/mixins.scss */
+  /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   .timepicker-button:active, .timepicker-button.active {
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3892,7 +3877,7 @@ div.focus-distraction-list-confirmation-modal {
     border-top: 2px solid #9b9b9b;
     top: 0px; }
 
-/* line 709, stdin */
+/* line 709, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .plan {
   background: white;
   border: 5px solid #eee;
@@ -3902,7 +3887,7 @@ div.focus-distraction-list-confirmation-modal {
   position: absolute;
   top: 0;
   width: 100%; }
-  /* line 719, stdin */
+  /* line 719, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > button.cancel {
     background: none;
     border: none;
@@ -3913,7 +3898,7 @@ div.focus-distraction-list-confirmation-modal {
     right: 0;
     top: 5px;
     outline: 0; }
-  /* line 721, stdin */
+  /* line 721, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > input.task-title {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -3926,7 +3911,7 @@ div.focus-distraction-list-confirmation-modal {
     outline: 0;
     padding: 0.45em 10px;
     width: 100%; }
-  /* line 726, stdin */
+  /* line 726, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div.priority .help-line > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -3951,17 +3936,17 @@ div.focus-distraction-list-confirmation-modal {
     font-size: 1.5em;
     width: 23%;
     margin-left: 2.5%; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div.priority .help-line > button:active, .plan > div.priority .help-line > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-    /* line 731, stdin */
+    /* line 731, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div.priority .help-line > button:first-child {
       margin-left: 0; }
-    /* line 732, stdin */
+    /* line 732, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div.priority .help-line > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -3985,14 +3970,14 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       font-size: 1.5em;
       width: 23%; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div.priority .help-line > button.active:active, .plan > div.priority .help-line > button.active.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662;
         top: 0px; }
-  /* line 739, stdin */
+  /* line 739, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div.type .help-line > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4017,17 +4002,17 @@ div.focus-distraction-list-confirmation-modal {
     font-size: 0.9em;
     width: 31%;
     margin-left: 3%; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div.type .help-line > button:active, .plan > div.type .help-line > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-    /* line 744, stdin */
+    /* line 744, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div.type .help-line > button:first-child {
       margin-left: 0; }
-    /* line 745, stdin */
+    /* line 745, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div.type .help-line > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4051,14 +4036,14 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       font-size: 0.9em;
       width: 31%; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div.type .help-line > button.active:active, .plan > div.type .help-line > button.active.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662;
         top: 0px; }
-  /* line 752, stdin */
+  /* line 752, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div.exact .help-line {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4082,7 +4067,7 @@ div.focus-distraction-list-confirmation-modal {
     -webkit-align-items: center;
     -moz-align-items: center;
     align-items: center; }
-    /* line 757, stdin */
+    /* line 757, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div.exact .help-line > button.start-time {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4112,14 +4097,14 @@ div.focus-distraction-list-confirmation-modal {
       -ms-flex: 1;
       flex: 1;
       display: block; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div.exact .help-line > button.start-time:active, .plan > div.exact .help-line > button.start-time.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
-      /* line 759, stdin */
+      /* line 759, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div.exact .help-line > button.start-time.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -4143,20 +4128,20 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         font-size: 1em;
         display: block; }
-        /* line 562, ../src/styles/mixins.scss */
+        /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .plan > div.exact .help-line > button.start-time.selected:active, .plan > div.exact .help-line > button.start-time.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8d0992;
           border-top: 2px solid #5e0662;
           top: 0px; }
-  /* line 771, stdin */
+  /* line 771, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div.period .help-line > label {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em; }
-    /* line 295, ../src/styles/mixins.scss */
+    /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div.period .help-line > label::after {
       position: absolute;
       top: 50%;
@@ -4168,7 +4153,7 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
-    /* line 318, ../src/styles/mixins.scss */
+    /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div.period .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4185,22 +4170,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      /* line 330, ../src/styles/mixins.scss */
+      /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div.period .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662; }
-    /* line 341, ../src/styles/mixins.scss */
+    /* line 341, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div.period .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
-    /* line 346, ../src/styles/mixins.scss */
+    /* line 346, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div.period .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
-  /* line 772, stdin */
+  /* line 772, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div.period .help-line > div.datepickers {
     margin-top: 10px;
     -webkit-box-flex: 1;
@@ -4209,7 +4194,7 @@ div.focus-distraction-list-confirmation-modal {
     -moz-flex: 1;
     -ms-flex: 1;
     flex: 1; }
-    /* line 775, stdin */
+    /* line 775, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div.period .help-line > div.datepickers > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4233,14 +4218,14 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       font-size: 1.2em;
       padding: 5px 0 5px; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div.period .help-line > div.datepickers > button:active, .plan > div.period .help-line > div.datepickers > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
-      /* line 777, stdin */
+      /* line 777, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div.period .help-line > div.datepickers > button.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -4264,41 +4249,41 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         font-size: 1.2em;
         padding: 5px 0 5px; }
-        /* line 562, ../src/styles/mixins.scss */
+        /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .plan > div.period .help-line > div.datepickers > button.selected:active, .plan > div.period .help-line > div.datepickers > button.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8d0992;
           border-top: 2px solid #5e0662;
           top: 0px; }
-        /* line 779, stdin */
+        /* line 779, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .plan > div.period .help-line > div.datepickers > button.selected:first-child {
           -webkit-border-bottom-left-radius: 0;
           border-bottom-left-radius: 0;
           -webkit-border-bottom-right-radius: 0;
           border-bottom-right-radius: 0; }
-        /* line 782, stdin */
+        /* line 782, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .plan > div.period .help-line > div.datepickers > button.selected:last-child {
           -webkit-border-top-left-radius: 0;
           border-top-left-radius: 0;
           -webkit-border-top-right-radius: 0;
           border-top-right-radius: 0; }
-      /* line 788, stdin */
+      /* line 788, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div.period .help-line > div.datepickers > button:first-child {
         -webkit-border-bottom-left-radius: 0;
         border-bottom-left-radius: 0;
         -webkit-border-bottom-right-radius: 0;
         border-bottom-right-radius: 0; }
-      /* line 791, stdin */
+      /* line 791, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div.period .help-line > div.datepickers > button:last-child {
         -webkit-border-top-left-radius: 0;
         border-top-left-radius: 0;
         -webkit-border-top-right-radius: 0;
         border-top-right-radius: 0; }
-  /* line 800, stdin */
+  /* line 800, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div.within-x-days {
     margin-top: 10px; }
-    /* line 802, stdin */
+    /* line 802, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div.within-x-days > input {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4311,7 +4296,7 @@ div.focus-distraction-list-confirmation-modal {
       outline: 0;
       padding: 0.45em 10px;
       width: 60px; }
-  /* line 810, stdin */
+  /* line 810, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > div.duration .help-line > div {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4336,10 +4321,10 @@ div.focus-distraction-list-confirmation-modal {
     -moz-align-items: center;
     align-items: center;
     overflow: auto; }
-    /* line 811, stdin */
+    /* line 811, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div > div.duration .help-line > div > span {
       visibility: hidden; }
-    /* line 817, stdin */
+    /* line 817, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div > div.duration .help-line > div > div.estimate-toggle {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4353,7 +4338,7 @@ div.focus-distraction-list-confirmation-modal {
       width: 100%;
       display: block;
       height: 50px; }
-      /* line 825, stdin */
+      /* line 825, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div > div.duration .help-line > div > div.estimate-toggle > button {
         -webkit-user-select: none;
         background: #d4d4d4;
@@ -4367,19 +4352,19 @@ div.focus-distraction-list-confirmation-modal {
         padding: 0 10px;
         text-align: center;
         width: 100%; }
-        /* line 838, stdin */
+        /* line 838, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .plan > div > div.duration .help-line > div > div.estimate-toggle > button.active {
           opacity: 1;
           background: #a40aaa;
           color: white; }
-  /* line 848, stdin */
+  /* line 848, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > label.show-in-todo .help-line {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     display: block; }
-    /* line 295, ../src/styles/mixins.scss */
+    /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > label.show-in-todo .help-line::after {
       position: absolute;
       top: 50%;
@@ -4391,7 +4376,7 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
-    /* line 318, ../src/styles/mixins.scss */
+    /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > label.show-in-todo .help-line > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4408,22 +4393,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      /* line 330, ../src/styles/mixins.scss */
+      /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div > label.show-in-todo .help-line > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662; }
-    /* line 341, ../src/styles/mixins.scss */
+    /* line 341, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > label.show-in-todo .help-line::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
-    /* line 346, ../src/styles/mixins.scss */
+    /* line 346, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > label.show-in-todo .help-line > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
-  /* line 853, stdin */
+  /* line 853, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > div.checkbox {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4435,19 +4420,19 @@ div.focus-distraction-list-confirmation-modal {
     bottom: -2px;
     margin-right: 5px;
     z-index: 1; }
-    /* line 363, ../src/styles/mixins.scss */
+    /* line 363, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.checkbox > i {
       left: 0;
       position: absolute;
       top: 0; }
-  /* line 856, stdin */
+  /* line 856, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > .reminder .help-line > label {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin-top: 10px; }
-    /* line 295, ../src/styles/mixins.scss */
+    /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > .reminder .help-line > label::after {
       position: absolute;
       top: 50%;
@@ -4459,7 +4444,7 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
-    /* line 318, ../src/styles/mixins.scss */
+    /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > .reminder .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4476,22 +4461,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      /* line 330, ../src/styles/mixins.scss */
+      /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div > .reminder .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662; }
-    /* line 341, ../src/styles/mixins.scss */
+    /* line 341, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > .reminder .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
-    /* line 346, ../src/styles/mixins.scss */
+    /* line 346, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > .reminder .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
-  /* line 860, stdin */
+  /* line 860, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > .reminder .help-line > .reminder-time {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4516,7 +4501,7 @@ div.focus-distraction-list-confirmation-modal {
     -moz-align-items: center;
     align-items: center;
     margin: 10px 0; }
-    /* line 866, stdin */
+    /* line 866, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4546,14 +4531,14 @@ div.focus-distraction-list-confirmation-modal {
       -ms-flex: 1;
       flex: 1;
       display: block; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder:active, .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
-      /* line 868, stdin */
+      /* line 868, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -4577,14 +4562,14 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         font-size: 1em;
         display: block; }
-        /* line 562, ../src/styles/mixins.scss */
+        /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected:active, .plan > div > .reminder .help-line > .reminder-time > button.exact-reminder.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8d0992;
           border-top: 2px solid #5e0662;
           top: 0px; }
-  /* line 880, stdin */
+  /* line 880, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div .alarm-toggle .help-line {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4599,7 +4584,7 @@ div.focus-distraction-list-confirmation-modal {
     display: block;
     height: 50px;
     margin: 10px 0 0; }
-    /* line 888, stdin */
+    /* line 888, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div .alarm-toggle .help-line button {
       -webkit-user-select: none;
       background: #d4d4d4;
@@ -4613,19 +4598,19 @@ div.focus-distraction-list-confirmation-modal {
       padding: 0 10px;
       text-align: center;
       width: 100%; }
-      /* line 901, stdin */
+      /* line 901, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div .alarm-toggle .help-line button.active {
         opacity: 1;
         background: #a40aaa;
         color: white; }
-  /* line 911, stdin */
+  /* line 911, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > div.repeated .help-line > label {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin: 10px 0; }
-    /* line 295, ../src/styles/mixins.scss */
+    /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.repeated .help-line > label::after {
       position: absolute;
       top: 50%;
@@ -4637,7 +4622,7 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
-    /* line 318, ../src/styles/mixins.scss */
+    /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.repeated .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4654,22 +4639,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      /* line 330, ../src/styles/mixins.scss */
+      /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div > div.repeated .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662; }
-    /* line 341, ../src/styles/mixins.scss */
+    /* line 341, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.repeated .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
-    /* line 346, ../src/styles/mixins.scss */
+    /* line 346, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.repeated .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
-  /* line 915, stdin */
+  /* line 915, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > div.repeated .help-line input.period-input {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -4682,15 +4667,15 @@ div.focus-distraction-list-confirmation-modal {
     outline: 0;
     padding: 0.45em 10px;
     width: 60px; }
-  /* line 920, stdin */
+  /* line 920, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > div.repeated .help-line .weekly-repeat {
     margin: 10px 0; }
-    /* line 922, stdin */
+    /* line 922, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div > div.repeated .help-line .weekly-repeat > div {
       display: inline-block;
       margin-right: 1px;
       padding: 10px 0; }
-      /* line 926, stdin */
+      /* line 926, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div > div.repeated .help-line .weekly-repeat > div > div.checkbox {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -4703,19 +4688,19 @@ div.focus-distraction-list-confirmation-modal {
         margin-right: 5px;
         z-index: 1;
         margin-right: 0; }
-        /* line 363, ../src/styles/mixins.scss */
+        /* line 363, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .plan > div > div.repeated .help-line .weekly-repeat > div > div.checkbox > i {
           left: 0;
           position: absolute;
           top: 0; }
-  /* line 932, stdin */
+  /* line 932, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > div.repeated .help-line .repeat-end {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em;
     margin: 10px 0 0; }
-    /* line 295, ../src/styles/mixins.scss */
+    /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-end::after {
       position: absolute;
       top: 50%;
@@ -4727,7 +4712,7 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
-    /* line 318, ../src/styles/mixins.scss */
+    /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-end > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4744,22 +4729,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      /* line 330, ../src/styles/mixins.scss */
+      /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div > div.repeated .help-line .repeat-end > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662; }
-    /* line 341, ../src/styles/mixins.scss */
+    /* line 341, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-end::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
-    /* line 346, ../src/styles/mixins.scss */
+    /* line 346, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-end > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
-  /* line 936, stdin */
+  /* line 936, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4784,14 +4769,14 @@ div.focus-distraction-list-confirmation-modal {
     margin: 10px 0 0;
     display: block;
     font-size: 1em; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit:active, .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-    /* line 941, stdin */
+    /* line 941, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.selected {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4815,17 +4800,17 @@ div.focus-distraction-list-confirmation-modal {
       padding: 13px 0 14px;
       font-size: 1em;
       display: block; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.selected:active, .plan > div > div.repeated .help-line .repeat-time > button.repeat-limit.selected.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662;
         top: 0px; }
-  /* line 950, stdin */
+  /* line 950, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan .reminder-time {
     margin: 10px 0 0; }
-  /* line 953, stdin */
+  /* line 953, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan .exact-reminder {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -4847,14 +4832,14 @@ div.focus-distraction-list-confirmation-modal {
     width: 100%;
     font-size: 1.2em;
     padding: 13px 0 14px; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan .exact-reminder:active, .plan .exact-reminder.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-    /* line 955, stdin */
+    /* line 955, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan .exact-reminder.selected {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4876,20 +4861,20 @@ div.focus-distraction-list-confirmation-modal {
       width: 100%;
       font-size: 1.2em;
       padding: 13px 0 14px; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan .exact-reminder.selected:active, .plan .exact-reminder.selected.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662;
         top: 0px; }
-  /* line 965, stdin */
+  /* line 965, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan div.period-reminder .help-line > label {
     display: inline-block;
     position: relative;
     width: 100%;
     font-size: 1.2em; }
-    /* line 295, ../src/styles/mixins.scss */
+    /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan div.period-reminder .help-line > label::after {
       position: absolute;
       top: 50%;
@@ -4901,7 +4886,7 @@ div.focus-distraction-list-confirmation-modal {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
-    /* line 318, ../src/styles/mixins.scss */
+    /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan div.period-reminder .help-line > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -4918,22 +4903,22 @@ div.focus-distraction-list-confirmation-modal {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      /* line 330, ../src/styles/mixins.scss */
+      /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan div.period-reminder .help-line > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662; }
-    /* line 341, ../src/styles/mixins.scss */
+    /* line 341, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan div.period-reminder .help-line > label::before {
       right: 20px;
       top: 6px;
       font-size: 1.4em; }
-    /* line 346, ../src/styles/mixins.scss */
+    /* line 346, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan div.period-reminder .help-line > label > select {
       width: 100%;
       padding: 10px 50px 12px 20px; }
-  /* line 968, stdin */
+  /* line 968, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan div.period-reminder .help-line > .reminder-time {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4957,7 +4942,7 @@ div.focus-distraction-list-confirmation-modal {
     -webkit-align-items: center;
     -moz-align-items: center;
     align-items: center; }
-    /* line 973, stdin */
+    /* line 973, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -4987,14 +4972,14 @@ div.focus-distraction-list-confirmation-modal {
       -ms-flex: 1;
       flex: 1;
       display: block; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder:active, .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
-      /* line 975, stdin */
+      /* line 975, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -5018,14 +5003,14 @@ div.focus-distraction-list-confirmation-modal {
         padding: 13px 0 14px;
         font-size: 1em;
         display: block; }
-        /* line 562, ../src/styles/mixins.scss */
+        /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected:active, .plan div.period-reminder .help-line > .reminder-time > button.exact-reminder.selected.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8d0992;
           border-top: 2px solid #5e0662;
           top: 0px; }
-  /* line 985, stdin */
+  /* line 985, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan div.period-reminder .help-line > div.alarm-toggle {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -5040,7 +5025,7 @@ div.focus-distraction-list-confirmation-modal {
     display: block;
     height: 50px;
     margin: 10px 0 20px; }
-    /* line 993, stdin */
+    /* line 993, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan div.period-reminder .help-line > div.alarm-toggle > button {
       -webkit-user-select: none;
       background: #d4d4d4;
@@ -5054,16 +5039,16 @@ div.focus-distraction-list-confirmation-modal {
       padding: 0 10px;
       text-align: center;
       width: 100%; }
-      /* line 1006, stdin */
+      /* line 1006, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan div.period-reminder .help-line > div.alarm-toggle > button.active {
         opacity: 1;
         background: #a40aaa;
         color: white; }
-  /* line 1016, stdin */
+  /* line 1016, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div.no-time > div.confirm-no-time {
     overflow: auto;
     padding: 15px 0 4px; }
-    /* line 1019, stdin */
+    /* line 1019, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .plan > div.no-time > div.confirm-no-time > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -5088,17 +5073,17 @@ div.focus-distraction-list-confirmation-modal {
       width: 49%;
       display: block;
       float: left; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .plan > div.no-time > div.confirm-no-time > button:active, .plan > div.no-time > div.confirm-no-time > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #bbb;
         border-top: 2px solid #9b9b9b;
         top: 0px; }
-      /* line 1024, stdin */
+      /* line 1024, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div.no-time > div.confirm-no-time > button:first-child {
         margin-right: 2%; }
-      /* line 1025, stdin */
+      /* line 1025, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .plan > div.no-time > div.confirm-no-time > button.active {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -5123,14 +5108,14 @@ div.focus-distraction-list-confirmation-modal {
         width: 49%;
         display: block;
         float: left; }
-        /* line 562, ../src/styles/mixins.scss */
+        /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .plan > div.no-time > div.confirm-no-time > button.active:active, .plan > div.no-time > div.confirm-no-time > button.active.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #8d0992;
           border-top: 2px solid #5e0662;
           top: 0px; }
-  /* line 1035, stdin */
+  /* line 1035, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .plan > div > button.save {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -5155,7 +5140,7 @@ div.focus-distraction-list-confirmation-modal {
     float: right;
     width: auto;
     padding: 12px 20px 13px; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .plan > div > button.save:active, .plan > div > button.save.active {
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -5163,260 +5148,254 @@ div.focus-distraction-list-confirmation-modal {
       border-top: 2px solid #5e0662;
       top: 0px; }
 
-/* line 1056, stdin */
+/* line 1056, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .list-item .list-item > div.is-child {
   margin-left: 20px; }
-  /* line 1060, stdin */
+  /* line 1060, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .list-item .list-item > div.is-child > div > div.right > div.checkbox-wrapper {
     margin-left: 10px; }
-  /* line 1061, stdin */
+  /* line 1061, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .list-item .list-item > div.is-child > div > div.right > div.right {
     border-left: 10px solid #a40aaa; }
 
-/* line 1066, stdin */
+/* line 1066, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .list-item.section-divider {
   border-top: 3px solid #a40aaa; }
 
 @keyframes blink {
-  /* line 1071, stdin */
   0% {
     opacity: 0.1; }
-
-  /* line 1072, stdin */
   100% {
     opacity: 1; } }
 
 @-webkit-keyframes blink {
-  /* line 1075, stdin */
   0% {
     opacity: 0.1; }
-
-  /* line 1076, stdin */
   100% {
     opacity: 1; } }
 
-/* line 1079, stdin */
+/* line 1079, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 span.time-label {
   display: block;
   font-size: 12px;
   line-height: 20px;
   color: #aaa; }
-  /* line 1084, stdin */
+  /* line 1084, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   span.time-label::after {
     content: '\00a0'; }
 
-/* line 1087, stdin */
+/* line 1087, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .list-item {
   -webkit-user-select: none;
   overflow: auto; }
-  /* line 1091, stdin */
+  /* line 1091, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .list-item.unplanned > div {
     background: none; }
-    /* line 1093, stdin */
+    /* line 1093, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item.unplanned > div > div > div.right {
       background: none; }
-      /* line 1095, stdin */
+      /* line 1095, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item.unplanned > div > div > div.right > div.right {
         background: none; }
-      /* line 1096, stdin */
+      /* line 1096, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item.unplanned > div > div > div.right .parent-task, .list-item.unplanned > div > div > div.right .time-label {
         display: none !important; }
-      /* line 1097, stdin */
+      /* line 1097, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item.unplanned > div > div > div.right .checkbox-wrapper {
         padding: 14px 10px 10px; }
-      /* line 1098, stdin */
+      /* line 1098, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item.unplanned > div > div > div.right .task-text {
         padding: 10px 0 !important; }
-  /* line 1102, stdin */
+  /* line 1102, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .list-item.current-task > div > div > div.right > div.right {
     background: #A9D4EE; }
-  /* line 1105, stdin */
+  /* line 1105, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .list-item > div {
     background: #f2f2f2;
     border-bottom: 1px solid #dddddd; }
-    /* line 1108, stdin */
+    /* line 1108, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.checked {
       border-bottom: 1px solid #555;
       opacity: 0.3; }
-      /* line 1112, stdin */
+      /* line 1112, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.checked > div > div.right > div.right > span.task-text {
         pointer-events: none; }
-      /* line 1116, stdin */
+      /* line 1116, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.checked.expanded > div > div.right > div.right > span.task-text {
         white-space: nowrap; }
-      /* line 1117, stdin */
+      /* line 1117, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.checked.expanded > div > div.right > div.right > div.actions {
         display: none; }
-      /* line 1122, stdin */
+      /* line 1122, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.checked.expanded.has-child-task-controls > div > div.sub-task-ctrls > button.make-sub-task {
         display: none; }
-      /* line 1123, stdin */
+      /* line 1123, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.checked.expanded.has-child-task-controls > div > div.sub-task-ctrls > button.add-sub-task {
         display: none; }
-      /* line 1125, stdin */
+      /* line 1125, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.checked.expanded.has-child-task-controls > div > div.right {
         padding-left: 0px; }
-      /* line 1128, stdin */
+      /* line 1128, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.checked.expanded.has-child-task-controls.is-child > div > div.sub-task-ctrls {
         display: none; }
-    /* line 1134, stdin */
+    /* line 1134, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.is-parent > button.caret {
       display: block; }
-    /* line 1135, stdin */
+    /* line 1135, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.is-parent > div {
       padding-left: 50px; }
-    /* line 1137, stdin */
+    /* line 1137, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.show-children {
       background: #a40aaa; }
-      /* line 1139, stdin */
+      /* line 1139, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.show-children > button.caret {
         background: #a40aaa;
         color: white;
         outline: 0; }
-        /* line 510, ../src/styles/mixins.scss */
+        /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .list-item > div.show-children > button.caret::before {
-          content: '\f0d7';
+          content: "";
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
-    /* line 1147, stdin */
+    /* line 1147, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.expanded > div > div.right > div.right > span.task-text {
       white-space: normal; }
-    /* line 1148, stdin */
+    /* line 1148, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.expanded > div > div.right > div.right > div.actions {
       display: block;
       padding-bottom: 10px; }
-    /* line 1153, stdin */
+    /* line 1153, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.has-child-task-controls.expanded > div > div.sub-task-ctrls > button.make-sub-task {
       display: block; }
-    /* line 1154, stdin */
+    /* line 1154, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.has-child-task-controls.expanded > div > div.sub-task-ctrls > button.add-sub-task {
       display: block; }
-    /* line 1156, stdin */
+    /* line 1156, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.has-child-task-controls.expanded > div > div.right {
       padding-left: 30px; }
-    /* line 1160, stdin */
+    /* line 1160, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.has-child-task-controls.expanded.is-parent > div > div.sub-task-ctrls {
       margin-left: 1px; }
-      /* line 1162, stdin */
+      /* line 1162, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.has-child-task-controls.expanded.is-parent > div > div.sub-task-ctrls > button.make-sub-task {
         display: none; }
-      /* line 1163, stdin */
+      /* line 1163, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.has-child-task-controls.expanded.is-parent > div > div.sub-task-ctrls > button.add-sub-task {
         height: 100px; }
-      /* line 1164, stdin */
+      /* line 1164, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.has-child-task-controls.expanded.is-parent > div > div.sub-task-ctrls > button.make-free-task {
         display: none; }
-    /* line 1166, stdin */
+    /* line 1166, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.has-child-task-controls.expanded.is-parent > div > div.right {
       border-left: 1px solid white; }
-    /* line 1169, stdin */
+    /* line 1169, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.has-child-task-controls.expanded.is-child {
       margin-left: 0px;
       border-bottom: none; }
-      /* line 1173, stdin */
+      /* line 1173, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls {
         width: 20px; }
-        /* line 1175, stdin */
+        /* line 1175, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls > button {
           width: 20px;
           outline: 0; }
-          /* line 1178, stdin */
+          /* line 1178, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls > button.make-sub-task {
             display: none; }
-          /* line 1179, stdin */
+          /* line 1179, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls > button.add-sub-task {
             display: none; }
-          /* line 1180, stdin */
+          /* line 1180, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .list-item > div.has-child-task-controls.expanded.is-child > div > div.sub-task-ctrls > button.make-free-task {
             display: block;
             height: 100px;
             padding: 0; }
-      /* line 1187, stdin */
+      /* line 1187, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.has-child-task-controls.expanded.is-child > div > div.right {
         padding-left: 20px; }
-        /* line 1190, stdin */
+        /* line 1190, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div.has-child-task-controls.expanded.is-child > div > div.right > div.right {
           border-bottom: 1px solid #dddddd; }
-    /* line 1196, stdin */
+    /* line 1196, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.last-day > div > div.right {
       background: #F4F7A0; }
-      /* line 1198, stdin */
+      /* line 1198, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.last-day > div > div.right > div.right {
         background: #F4F7A0; }
-        /* line 510, ../src/styles/mixins.scss */
+        /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .list-item > div.last-day > div > div.right > div.right::before {
-          content: '\f12a\00a0 Sista dagen';
+          content: " Sista dagen";
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
-        /* line 1202, stdin */
+        /* line 1202, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div.last-day > div > div.right > div.right::before {
           bottom: 0px;
           font-size: 0.8em;
           position: absolute;
           right: 5px; }
-    /* line 1216, stdin */
+    /* line 1216, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.started > div > div.right {
       background: #62D160; }
-      /* line 1218, stdin */
+      /* line 1218, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.started > div > div.right > div.right {
         color: #fff;
         background: #62D160; }
-        /* line 510, ../src/styles/mixins.scss */
+        /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .list-item > div.started > div > div.right > div.right::before {
-          content: '\f12a\00a0 P\00E5 b\00f6 rjad';
+          content: " Påbörjad";
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
-        /* line 1222, stdin */
+        /* line 1222, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div.started > div > div.right > div.right::before {
           bottom: 0px;
           color: #eee;
           font-size: 0.8em;
           position: absolute;
           right: 5px; }
-        /* line 1229, stdin */
+        /* line 1229, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div.started > div > div.right > div.right span.time-label, .list-item > div.started > div > div.right > div.right div.actions > button {
           color: #eee; }
-    /* line 1236, stdin */
+    /* line 1236, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.warning > div > div.right {
       background: #C73535; }
-      /* line 1238, stdin */
+      /* line 1238, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div.warning > div > div.right > div.right {
         color: #fff;
         background: #C73535; }
-        /* line 510, ../src/styles/mixins.scss */
+        /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .list-item > div.warning > div > div.right > div.right::before {
-          content: '\f071\00a0 Passerad';
+          content: " Passerad";
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
-        /* line 1242, stdin */
+        /* line 1242, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div.warning > div > div.right > div.right::before {
           bottom: 0px;
           color: #ddd;
           font-size: 0.8em;
           position: absolute;
           right: 5px; }
-        /* line 1249, stdin */
+        /* line 1249, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div.warning > div > div.right > div.right span.time-label, .list-item > div.warning > div > div.right > div.right div.actions > button {
           color: #ddd; }
-    /* line 1255, stdin */
+    /* line 1255, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.warning.expanded > div > div.right > div.right > div.actions {
       padding-bottom: 15px; }
-    /* line 1258, stdin */
+    /* line 1258, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div.warning.is-child.has-child-task-controls.expanded > div > div.right {
       background: white; }
-    /* line 1261, stdin */
+    /* line 1261, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div > button.caret {
       background: #f2f2f2;
       border: none;
@@ -5431,7 +5410,7 @@ span.time-label {
       float: left;
       font-size: 30px;
       padding: 0; }
-      /* line 601, ../src/styles/mixins.scss */
+      /* line 601, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .list-item > div > button.caret::before {
         left: 50%;
         margin: -15px 0 0 -10px;
@@ -5439,18 +5418,18 @@ span.time-label {
         text-align: center;
         top: 50%;
         width: 20px; }
-      /* line 510, ../src/styles/mixins.scss */
+      /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .list-item > div > button.caret::before {
-        content: '\f0da';
+        content: "";
         display: inline-block;
         font-family: FontAwesome;
         font-style: normal;
         font-weight: normal;
         text-decoration: inherit; }
-    /* line 1270, stdin */
+    /* line 1270, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div > div > div.sub-task-ctrls {
       float: left; }
-      /* line 1272, stdin */
+      /* line 1272, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div > div > div.sub-task-ctrls > button {
         background: #f2f2f2;
         border: none;
@@ -5463,7 +5442,7 @@ span.time-label {
         outline: 0;
         display: none;
         border-bottom: 1px solid white; }
-        /* line 601, ../src/styles/mixins.scss */
+        /* line 601, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .list-item > div > div > div.sub-task-ctrls > button::before {
           left: 50%;
           margin: -7.5px 0 0 -10px;
@@ -5471,41 +5450,41 @@ span.time-label {
           text-align: center;
           top: 50%;
           width: 20px; }
-        /* line 510, ../src/styles/mixins.scss */
+        /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .list-item > div > div > div.sub-task-ctrls > button.make-sub-task::before {
-          content: '\f054';
+          content: "";
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
-        /* line 510, ../src/styles/mixins.scss */
+        /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .list-item > div > div > div.sub-task-ctrls > button.add-sub-task::before {
-          content: '\f067';
+          content: "";
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
-        /* line 510, ../src/styles/mixins.scss */
+        /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .list-item > div > div > div.sub-task-ctrls > button.make-free-task::before {
-          content: '\f053';
+          content: "";
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
-    /* line 1281, stdin */
+    /* line 1281, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > div > div > div.right {
       background: white; }
-      /* line 1283, stdin */
+      /* line 1283, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div > div > div.right > div.checkbox-wrapper {
         float: left;
         padding: 24px 0 24px 10px;
         width: 35px;
         position: relative;
         z-index: 10; }
-        /* line 1289, stdin */
+        /* line 1289, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div > div > div.right > div.checkbox-wrapper > div.checkbox {
           -webkit-border-radius: 4px;
           border-radius: 4px;
@@ -5514,32 +5493,32 @@ span.time-label {
           position: relative;
           width: 16px;
           z-index: 1; }
-          /* line 1296, stdin */
+          /* line 1296, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .list-item > div > div > div.right > div.checkbox-wrapper > div.checkbox > i {
             left: 0;
             position: absolute;
             top: 0; }
-      /* line 1303, stdin */
+      /* line 1303, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .list-item > div > div > div.right > div.right {
         background: white;
         padding: 2px 0 2px 35px;
         position: relative; }
-        /* line 1307, stdin */
+        /* line 1307, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div > div > div.right > div.right > span.parent-task, .list-item > div > div > div.right > div.right > span.time-label {
           display: block;
           font-size: 12px;
           line-height: 20px;
           color: #aaa; }
-          /* line 1312, stdin */
+          /* line 1312, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .list-item > div > div > div.right > div.right > span.parent-task::after, .list-item > div > div > div.right > div.right > span.time-label::after {
             content: '\00a0'; }
-        /* line 1314, stdin */
+        /* line 1314, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div > div > div.right > div.right > span.parent-task {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           padding-right: 100px; }
-        /* line 1320, stdin */
+        /* line 1320, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div > div > div.right > div.right > span.alert {
           -webkit-border-radius: 4px;
           border-radius: 4px;
@@ -5551,35 +5530,35 @@ span.time-label {
           line-height: 14px;
           padding: 0 3px 0 4px;
           border: 1px solid #dddddd; }
-          /* line 510, ../src/styles/mixins.scss */
+          /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
           .list-item > div > div > div.right > div.right > span.alert::before {
-            content: '\f0f3\00a0';
+            content: " ";
             display: inline-block;
             font-family: FontAwesome;
             font-style: normal;
             font-weight: normal;
             text-decoration: inherit; }
-          /* line 1331, stdin */
+          /* line 1331, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .list-item > div > div > div.right > div.right > span.alert.overdue {
             background: #C73535;
             color: white;
             -webkit-animation: blink 1s linear infinite;
             -moz-animation: blink 1s linear infinite;
             animation: blink 1s linear infinite; }
-        /* line 1339, stdin */
+        /* line 1339, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div > div > div.right > div.right > span.task-text {
           display: block;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           padding: 0 5px 0 0; }
-          /* line 1345, stdin */
+          /* line 1345, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .list-item > div > div > div.right > div.right > span.task-text > span.prio {
             font-weight: bold; }
-        /* line 1347, stdin */
+        /* line 1347, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .list-item > div > div > div.right > div.right > div.actions {
           display: none; }
-          /* line 1349, stdin */
+          /* line 1349, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .list-item > div > div > div.right > div.right > div.actions > button {
             background: none;
             display: inline-block;
@@ -5587,25 +5566,25 @@ span.time-label {
             padding: 10px 0;
             margin-right: 5px;
             font-size: 12px; }
-  /* line 1362, stdin */
+  /* line 1362, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .list-item > ul {
     margin: 0;
     padding: 0;
     list-style: none;
     height: 0;
     overflow: hidden; }
-    /* line 1368, stdin */
+    /* line 1368, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .list-item > ul.show {
       height: auto; }
 
-/* line 1387, stdin */
+/* line 1387, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 form.add-task {
   margin: 0 0 15px;
   position: relative; }
-  /* line 1390, stdin */
+  /* line 1390, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   form.add-task > div {
     margin-right: 45px; }
-    /* line 1392, stdin */
+    /* line 1392, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     form.add-task > div > input {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -5619,7 +5598,7 @@ form.add-task {
       padding: 0.45em 10px;
       width: 100%;
       height: 35px; }
-  /* line 1398, stdin */
+  /* line 1398, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   form.add-task > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -5645,7 +5624,7 @@ form.add-task {
     position: absolute;
     right: 0;
     width: 40px; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     form.add-task > button:active, form.add-task > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
@@ -5653,37 +5632,42 @@ form.add-task {
       border-top: 2px solid #5e0662;
       top: 0px; }
 
-/* line 1413, stdin */
+/* line 1413, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.todo-page .list-item > .finished, div.todo-page .list-item > .deleted {
   display: none; }
-/* line 1415, stdin */
+
+/* line 1415, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.todo-page.breakdown {
   padding-bottom: 55px; }
-/* line 1417, stdin */
+
+/* line 1417, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.todo-page > div > h2 {
   padding-top: 10px; }
-/* line 1420, stdin */
+
+/* line 1420, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.todo-page > div > ul {
   list-style: none;
   padding: 0;
   margin: 0 -5px 10px;
   font-size: 15px;
   line-height: 21px; }
-/* line 1427, stdin */
+
+/* line 1427, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.todo-page > div.unplanned {
   margin: 0 -5px 15px;
   padding: 0 5px; }
-  /* line 1430, stdin */
+  /* line 1430, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.todo-page > div.unplanned > ul {
     background: #ebd6eb; }
-/* line 1433, stdin */
+
+/* line 1433, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.todo-page > div.todo > h2 {
   padding-top: 5px; }
-  /* line 1435, stdin */
+  /* line 1435, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.todo-page > div.todo > h2 > label {
     display: inline-block;
     position: relative; }
-    /* line 295, ../src/styles/mixins.scss */
+    /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.todo-page > div.todo > h2 > label::after {
       position: absolute;
       top: 50%;
@@ -5695,7 +5679,7 @@ div.todo-page > div.todo > h2 {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
-    /* line 318, ../src/styles/mixins.scss */
+    /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.todo-page > div.todo > h2 > label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -5712,19 +5696,20 @@ div.todo-page > div.todo > h2 {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      /* line 330, ../src/styles/mixins.scss */
+      /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       div.todo-page > div.todo > h2 > label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662; }
-/* line 1440, stdin */
+
+/* line 1440, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.todo-page > label.temp {
   display: inline-block;
   position: relative;
   width: 100%;
   font-size: 1.2em; }
-  /* line 295, ../src/styles/mixins.scss */
+  /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.todo-page > label.temp::after {
     position: absolute;
     top: 50%;
@@ -5736,7 +5721,7 @@ div.todo-page > label.temp {
     border-left: 5px solid transparent;
     content: "";
     pointer-events: none; }
-  /* line 318, ../src/styles/mixins.scss */
+  /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.todo-page > label.temp > select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -5753,50 +5738,51 @@ div.todo-page > label.temp {
     font-weight: bold;
     outline: 0;
     padding: 3px 30px 4px 10px; }
-    /* line 330, ../src/styles/mixins.scss */
+    /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.todo-page > label.temp > select:focus {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662; }
-  /* line 341, ../src/styles/mixins.scss */
+  /* line 341, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.todo-page > label.temp::before {
     right: 20px;
     top: 6px;
     font-size: 1.4em; }
-  /* line 346, ../src/styles/mixins.scss */
+  /* line 346, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.todo-page > label.temp > select {
     width: 100%;
     padding: 10px 50px 12px 20px; }
 
-/* line 1458, stdin */
+/* line 1458, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.organize-page .todo-list {
   list-style: none;
   padding: 0;
   margin: 0 -5px 10px;
   font-size: 15px;
   line-height: 21px; }
-/* line 1465, stdin */
+
+/* line 1465, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.organize-page > div.controls {
   margin: 10px 0;
   overflow: auto;
   padding: 0 0 5px; }
-  /* line 1469, stdin */
+  /* line 1469, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.organize-page > div.controls > div {
     float: left; }
-    /* line 1471, stdin */
+    /* line 1471, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.organize-page > div.controls > div > div {
       font-style: italic; }
-    /* line 1472, stdin */
+    /* line 1472, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.organize-page > div.controls > div.sort {
       margin-right: 5%;
       width: 62%; }
-      /* line 1475, stdin */
+      /* line 1475, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.organize-page > div.controls > div.sort > label {
         display: inline-block;
         position: relative;
         width: 100%; }
-        /* line 295, ../src/styles/mixins.scss */
+        /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         div.organize-page > div.controls > div.sort > label::after {
           position: absolute;
           top: 50%;
@@ -5808,7 +5794,7 @@ div.organize-page > div.controls {
           border-left: 5px solid transparent;
           content: "";
           pointer-events: none; }
-        /* line 318, ../src/styles/mixins.scss */
+        /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         div.organize-page > div.controls > div.sort > label > select {
           -webkit-appearance: none;
           -moz-appearance: none;
@@ -5825,19 +5811,19 @@ div.organize-page > div.controls {
           font-weight: bold;
           outline: 0;
           padding: 3px 30px 4px 10px; }
-          /* line 330, ../src/styles/mixins.scss */
+          /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
           div.organize-page > div.controls > div.sort > label > select:focus {
             -webkit-box-shadow: none;
             box-shadow: none;
             background: #8d0992;
             border-top: 2px solid #5e0662; }
-        /* line 1478, stdin */
+        /* line 1478, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         div.organize-page > div.controls > div.sort > label > select {
           width: 100%; }
-    /* line 1481, stdin */
+    /* line 1481, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.organize-page > div.controls > div.expand-collapse {
       width: 33%; }
-      /* line 1483, stdin */
+      /* line 1483, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.organize-page > div.controls > div.expand-collapse > button {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -5861,18 +5847,18 @@ div.organize-page > div.controls {
         margin-top: 2px;
         padding: 3px 0 4px;
         width: 48%; }
-        /* line 562, ../src/styles/mixins.scss */
+        /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         div.organize-page > div.controls > div.expand-collapse > button:active, div.organize-page > div.controls > div.expand-collapse > button.active {
           -webkit-box-shadow: none;
           box-shadow: none;
           background: #bbb;
           border-top: 2px solid #9b9b9b;
           top: 0px; }
-        /* line 1490, stdin */
+        /* line 1490, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         div.organize-page > div.controls > div.expand-collapse > button:first-of-type {
           margin-right: 4%; }
 
-/* line 1510, stdin */
+/* line 1510, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.focus-page > input.task-label {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -5889,7 +5875,8 @@ div.focus-page > input.task-label {
   font-weight: bold;
   font-size: 1.4em;
   margin: 10px 5% 0; }
-/* line 1519, stdin */
+
+/* line 1519, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.focus-page > p.task-label {
   text-align: center;
   font-weight: bold;
@@ -5898,11 +5885,12 @@ div.focus-page > p.task-label {
   width: 90%;
   margin: 10px 5% 25px;
   padding: 0.45em 10px 0; }
-/* line 1529, stdin */
+
+/* line 1529, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.focus-page > div#duration-picker {
   margin: 80px 0 70px;
   text-align: center; }
-  /* line 1532, stdin */
+  /* line 1532, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-page > div#duration-picker > label {
     text-align: left;
     color: #222;
@@ -5910,10 +5898,10 @@ div.focus-page > div#duration-picker {
     display: inline-block;
     padding: 0 5px;
     font-weight: bold; }
-    /* line 1539, stdin */
+    /* line 1539, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.focus-page > div#duration-picker > label:first-child {
       width: 70px; }
-  /* line 1541, stdin */
+  /* line 1541, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-page > div#duration-picker > input {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -5932,10 +5920,10 @@ div.focus-page > div#duration-picker {
     height: 50px;
     font-size: 30px;
     line-height: 40px; }
-    /* line 1550, stdin */
+    /* line 1550, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.focus-page > div#duration-picker > input[ng-model="hours"] {
       width: 60px; }
-  /* line 1552, stdin */
+  /* line 1552, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-page > div#duration-picker > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -5958,26 +5946,27 @@ div.focus-page > div#duration-picker {
     padding: 6px 10px 7px;
     text-align: left;
     width: 170px; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.focus-page > div#duration-picker > button:active, div.focus-page > div#duration-picker > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662;
       top: 0px; }
-    /* line 1558, stdin */
+    /* line 1558, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.focus-page > div#duration-picker > button b {
       font-size: 1.2em; }
-/* line 1564, stdin */
+
+/* line 1564, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.focus-page > div#pie-timer {
   margin-top: 20px;
   text-align: center; }
-  /* line 1567, stdin */
+  /* line 1567, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-page > div#pie-timer > span {
     font-size: 2em;
     padding: 10px 0 0;
     display: inline-block; }
-  /* line 1572, stdin */
+  /* line 1572, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-page > div#pie-timer #timer {
     background: #a40aaa;
     border-radius: 50%;
@@ -5987,16 +5976,16 @@ div.focus-page > div#pie-timer {
     width: 1em;
     height: 1em;
     margin: 0 auto; }
-    /* line 1581, stdin */
+    /* line 1581, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.focus-page > div#pie-timer #timer > #slice {
       position: absolute;
       width: 1em;
       height: 1em;
       clip: rect(0px, 1em, 1em, 0.5em); }
-      /* line 1586, stdin */
+      /* line 1586, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.focus-page > div#pie-timer #timer > #slice.gt50 {
         clip: rect(auto, auto, auto, auto); }
-      /* line 1589, stdin */
+      /* line 1589, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.focus-page > div#pie-timer #timer > #slice > .pie {
         border: 0.1em solid #c0c0c0;
         position: absolute;
@@ -6008,16 +5997,18 @@ div.focus-page > div#pie-timer {
         background-color: #eee;
         width: 1em;
         height: 1em; }
-        /* line 1600, stdin */
+        /* line 1600, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         div.focus-page > div#pie-timer #timer > #slice > .pie.fill {
           -moz-transform: rotate(180deg) !important;
           -webkit-transform: rotate(180deg) !important;
           -o-transform: rotate(180deg) !important;
           transform: rotate(180deg) !important; }
-/* line 1610, stdin */
+
+/* line 1610, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.focus-page > form.add-task {
   margin: 30px 0 20px; }
-/* line 1611, stdin */
+
+/* line 1611, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.focus-page > button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -6039,38 +6030,39 @@ div.focus-page > button {
   margin: 0 0 15px;
   padding: 6px 10px 7px;
   text-align: left; }
-  /* line 562, ../src/styles/mixins.scss */
+  /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.focus-page > button:active, div.focus-page > button.active {
     -webkit-box-shadow: none;
     box-shadow: none;
     background: #8d0992;
     border-top: 2px solid #5e0662;
     top: 0px; }
-  /* line 1616, stdin */
+  /* line 1616, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-page > button b {
     font-size: 1.2em; }
-/* line 1621, stdin */
+
+/* line 1621, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.focus-page > div#distraction-list, div.focus-page .distraction-list-empty {
   text-align: left; }
-  /* line 1623, stdin */
+  /* line 1623, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-page > div#distraction-list > span, div.focus-page .distraction-list-empty > span {
     font-weight: bold;
     color: #aaa; }
-  /* line 1627, stdin */
+  /* line 1627, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-page > div#distraction-list > ul, div.focus-page .distraction-list-empty > ul {
     list-style: none;
     padding: 0;
     margin: 0 -5px 10px;
     font-size: 15px;
     line-height: 21px; }
-    /* line 1633, stdin */
+    /* line 1633, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.focus-page > div#distraction-list > ul.disabled, div.focus-page .distraction-list-empty > ul.disabled {
       opacity: 0.4;
       pointer-events: none; }
-  /* line 1638, stdin */
+  /* line 1638, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.focus-page > div#distraction-list > p, div.focus-page .distraction-list-empty > p {
     padding: 0 20px; }
-    /* line 1640, stdin */
+    /* line 1640, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.focus-page > div#distraction-list > p > a, div.focus-page .distraction-list-empty > p > a {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -6090,7 +6082,7 @@ div.focus-page > div#distraction-list, div.focus-page .distraction-list-empty {
       text-decoration: none;
       outline: 0;
       margin-top: 10px; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       div.focus-page > div#distraction-list > p > a:active, div.focus-page > div#distraction-list > p > a.active, div.focus-page .distraction-list-empty > p > a:active, div.focus-page .distraction-list-empty > p > a.active {
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -6098,22 +6090,22 @@ div.focus-page > div#distraction-list, div.focus-page .distraction-list-empty {
         border-top: 2px solid #5e0662;
         top: 0px; }
 
-/* line 1661, stdin */
+/* line 1661, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.calendar-page.date-picker {
   padding: 0 0 71px 0; }
-  /* line 1663, stdin */
+  /* line 1663, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.calendar-page.date-picker > ul {
     margin: 0 -5px; }
 
-/* line 1665, stdin */
+/* line 1665, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .time-picker {
   display: inline-block; }
 
-/* line 1669, stdin */
+/* line 1669, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .date-picker {
   position: relative;
   padding: 52px 0 71px; }
-  /* line 1672, stdin */
+  /* line 1672, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .date-picker > button.cancel {
     background: none;
     border: none;
@@ -6124,7 +6116,7 @@ div.calendar-page.date-picker {
     right: 0;
     top: 5px;
     outline: 0; }
-  /* line 1675, stdin */
+  /* line 1675, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .date-picker > ul {
     background: #333;
     list-style: none;
@@ -6133,51 +6125,51 @@ div.calendar-page.date-picker {
     position: relative;
     padding: 0;
     margin: 0; }
-    /* line 1683, stdin */
+    /* line 1683, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .date-picker > ul > li {
       position: relative;
       line-height: 50px;
       display: block;
       background: white;
       padding-left: 50px; }
-      /* line 1689, stdin */
+      /* line 1689, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li:nth-child(even) {
         background: #F6F6F6; }
-        /* line 1691, stdin */
+        /* line 1691, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li:nth-child(even) > button {
           background: #e5e5e5; }
-      /* line 1694, stdin */
+      /* line 1694, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li.weekend > span {
         border-left: 10px solid rgba(0, 0, 0, 0.1); }
-      /* line 1696, stdin */
+      /* line 1696, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li.start-day {
         background: #87D15E; }
-      /* line 1699, stdin */
+      /* line 1699, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li.end-day {
         background: #FF5F5F; }
-      /* line 1702, stdin */
+      /* line 1702, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li.week-line {
         background: #aaa;
         line-height: 25px; }
-        /* line 1705, stdin */
+        /* line 1705, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li.week-line > span {
           padding-top: 3px; }
-        /* line 1708, stdin */
+        /* line 1708, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li.week-line > div.exact-busyness {
           top: 16px; }
-        /* line 1711, stdin */
+        /* line 1711, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li.week-line > div.overall-busyness {
           top: 0; }
-      /* line 1715, stdin */
+      /* line 1715, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li.hide-button {
         padding-left: 0; }
-        /* line 1717, stdin */
+        /* line 1717, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li.hide-button > button {
           display: none; }
-        /* line 1718, stdin */
+        /* line 1718, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li.hide-button > span {
           padding-left: 15px; }
-      /* line 1720, stdin */
+      /* line 1720, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li > button {
         background: #f2f2f2;
         border: none;
@@ -6196,7 +6188,7 @@ div.calendar-page.date-picker {
         line-height: 32px;
         padding: 0;
         height: 100%; }
-        /* line 601, ../src/styles/mixins.scss */
+        /* line 601, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .date-picker > ul > li > button::before {
           left: 50%;
           margin: -15px 0 0 -10px;
@@ -6204,27 +6196,27 @@ div.calendar-page.date-picker {
           text-align: center;
           top: 50%;
           width: 20px; }
-        /* line 510, ../src/styles/mixins.scss */
+        /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .date-picker > ul > li > button::before {
-          content: '\f0da';
+          content: "";
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
-        /* line 1731, stdin */
+        /* line 1731, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li > button.active {
           background: #a40aaa;
           color: white; }
-          /* line 510, ../src/styles/mixins.scss */
+          /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
           .date-picker > ul > li > button.active::before {
-            content: '\f0d7';
+            content: "";
             display: inline-block;
             font-family: FontAwesome;
             font-style: normal;
             font-weight: normal;
             text-decoration: inherit; }
-      /* line 1737, stdin */
+      /* line 1737, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li > span {
         padding: 10px 5px 5px;
         display: inline-block;
@@ -6232,30 +6224,30 @@ div.calendar-page.date-picker {
         line-height: 16px;
         vertical-align: top;
         height: 100%; }
-        /* line 1742, stdin */
+        /* line 1742, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li > span:first-letter {
           text-transform: capitalize; }
-        /* line 1747, stdin */
+        /* line 1747, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li > span.active {
           background: #a40aaa;
           color: white; }
-        /* line 1751, stdin */
+        /* line 1751, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li > span.no-sub-label {
           padding-top: 17px;
           padding-bottom: 17px; }
-        /* line 1755, stdin */
+        /* line 1755, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li > span > i {
           font-size: 11px;
           line-height: 11px;
           font-style: italic; }
-      /* line 1761, stdin */
+      /* line 1761, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li > div.picker-tasks {
         border-left: 15px solid #333333;
         padding-left: 15px;
         line-height: 22px;
         white-space: pre-wrap;
         background: white; }
-      /* line 1768, stdin */
+      /* line 1768, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li > div.picker-task-add {
         border-left: 15px solid #333333;
         padding-left: 15px;
@@ -6263,15 +6255,15 @@ div.calendar-page.date-picker {
         white-space: pre-wrap;
         color: #a40aaa;
         background: white; }
-        /* line 510, ../src/styles/mixins.scss */
+        /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
         .date-picker > ul > li > div.picker-task-add::before {
-          content: '\f067';
+          content: "";
           display: inline-block;
           font-family: FontAwesome;
           font-style: normal;
           font-weight: normal;
           text-decoration: inherit; }
-      /* line 1777, stdin */
+      /* line 1777, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li > div.exact-busyness {
         width: 60px;
         height: 10px;
@@ -6285,18 +6277,18 @@ div.calendar-page.date-picker {
         line-height: 0;
         white-space: nowrap;
         font-size: 0; }
-        /* line 1788, stdin */
+        /* line 1788, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li > div.exact-busyness > div.exact-times {
           height: 10px;
           background: rgba(0, 0, 0, 0.5);
           display: inline-block; }
-        /* line 1793, stdin */
+        /* line 1793, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li > div.exact-busyness > div.circa-times {
           background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
           background: linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
           height: 10px;
           display: inline-block; }
-      /* line 1799, stdin */
+      /* line 1799, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > ul > li > div.overall-busyness {
         width: 40px;
         height: 40px;
@@ -6308,64 +6300,64 @@ div.calendar-page.date-picker {
         right: 5px;
         text-align: center;
         top: 3px; }
-        /* line 1806, stdin */
+        /* line 1806, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
         .date-picker > ul > li > div.overall-busyness > div {
           -webkit-border-radius: 50%;
           border-radius: 50%;
           background: #94B82D;
           display: inline-block;
           vertical-align: middle; }
-          /* line 1811, stdin */
+          /* line 1811, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div > i {
             color: white; }
-          /* line 1812, stdin */
+          /* line 1812, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-0 {
             background: #48B82C; }
-          /* line 1813, stdin */
+          /* line 1813, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-1 {
             background: #66BC2C; }
-          /* line 1814, stdin */
+          /* line 1814, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-2 {
             background: #86C02B; }
-          /* line 1815, stdin */
+          /* line 1815, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-3 {
             background: #A8C42A; }
-          /* line 1816, stdin */
+          /* line 1816, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-4 {
             background: #C8C429; }
-          /* line 1817, stdin */
+          /* line 1817, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-5 {
             background: #CCA528; }
-          /* line 1818, stdin */
+          /* line 1818, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-6 {
             background: #D08527; }
-          /* line 1819, stdin */
+          /* line 1819, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-7 {
             background: #D46225; }
-          /* line 1820, stdin */
+          /* line 1820, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-8 {
             background: #D83D24; }
-          /* line 1821, stdin */
+          /* line 1821, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
           .date-picker > ul > li > div.overall-busyness > div.color-9 {
             background: #DD2330; }
-  /* line 1826, stdin */
+  /* line 1826, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .date-picker > div.confirmation {
     background: #eeeeee;
     width: 100%;
     line-height: 40px;
     padding: 15px 20px 15px;
     text-align: center; }
-    /* line 1832, stdin */
+    /* line 1832, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .date-picker > div.confirmation > span {
       padding-right: 10px;
       display: inline-block; }
-    /* line 1836, stdin */
+    /* line 1836, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .date-picker > div.confirmation input {
       width: 60px;
       text-align: right;
       padding: 6px;
       margin: 0 3px; }
-    /* line 1842, stdin */
+    /* line 1842, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .date-picker > div.confirmation > button {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -6390,21 +6382,21 @@ div.calendar-page.date-picker {
       width: auto;
       margin-top: 5px;
       padding: 5px 20px 6px; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .date-picker > div.confirmation > button:active, .date-picker > div.confirmation > button.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662;
         top: 0px; }
-      /* line 1848, stdin */
+      /* line 1848, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .date-picker > div.confirmation > button:disabled {
         opacity: 0.3; }
 
-/* line 1963, stdin */
+/* line 1963, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.archive-page > div.toggle-tab {
   margin-bottom: 10px; }
-  /* line 1965, stdin */
+  /* line 1965, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.archive-page > div.toggle-tab > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -6427,22 +6419,22 @@ div.archive-page > div.toggle-tab {
     font-size: 1.2em;
     padding: 13px 0 14px;
     width: 50%; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.archive-page > div.toggle-tab > button:active, div.archive-page > div.toggle-tab > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #bbb;
       border-top: 2px solid #9b9b9b;
       top: 0px; }
-    /* line 1968, stdin */
+    /* line 1968, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.archive-page > div.toggle-tab > button.done {
       -webkit-border-radius: 4px 0 0 4px;
       border-radius: 4px 0 0 4px; }
-    /* line 1969, stdin */
+    /* line 1969, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.archive-page > div.toggle-tab > button.deleted {
       -webkit-border-radius: 0 4px 4px 0;
       border-radius: 0 4px 4px 0; }
-    /* line 1970, stdin */
+    /* line 1970, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.archive-page > div.toggle-tab > button.active {
       -webkit-border-radius: 4px;
       border-radius: 4px;
@@ -6465,22 +6457,23 @@ div.archive-page > div.toggle-tab {
       font-size: 1.2em;
       padding: 13px 0 14px;
       width: 50%; }
-      /* line 562, ../src/styles/mixins.scss */
+      /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       div.archive-page > div.toggle-tab > button.active:active, div.archive-page > div.toggle-tab > button.active.active {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662;
         top: 0px; }
-      /* line 1973, stdin */
+      /* line 1973, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.archive-page > div.toggle-tab > button.active.done {
         -webkit-border-radius: 4px 0 0 4px;
         border-radius: 4px 0 0 4px; }
-      /* line 1974, stdin */
+      /* line 1974, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.archive-page > div.toggle-tab > button.active.deleted {
         -webkit-border-radius: 0 4px 4px 0;
         border-radius: 0 4px 4px 0; }
-/* line 1978, stdin */
+
+/* line 1978, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.archive-page > ul {
   list-style: none;
   padding: 0;
@@ -6488,7 +6481,7 @@ div.archive-page > ul {
   font-size: 15px;
   line-height: 21px; }
 
-/* line 2000, stdin */
+/* line 2000, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.help-page > a.feedback {
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -6511,31 +6504,35 @@ div.help-page > a.feedback {
   font-size: 1.2em;
   padding: 13px 0 14px;
   margin-bottom: 30px; }
-  /* line 562, ../src/styles/mixins.scss */
+  /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   div.help-page > a.feedback:active, div.help-page > a.feedback.active {
     -webkit-box-shadow: none;
     box-shadow: none;
     background: #8d0992;
     border-top: 2px solid #5e0662;
     top: 0px; }
-/* line 637, ../src/styles/mixins.scss */
+
+/* line 637, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
 div.help-page > div.help-text > h1 {
   color: #555;
   font-size: 1.8em;
   margin: 0 0 0.8em; }
-/* line 642, ../src/styles/mixins.scss */
+
+/* line 642, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
 div.help-page > div.help-text > h2 {
   color: #555;
   font-size: 1.5em;
   margin: 1em 0 0.3em; }
-/* line 647, ../src/styles/mixins.scss */
+
+/* line 647, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
 div.help-page > div.help-text > p {
   margin: 0 0 0.8em; }
-/* line 2006, stdin */
+
+/* line 2006, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.help-page > div.help-text h3, div.help-page > div.help-text h4 {
   margin-bottom: 0; }
 
-/* line 2009, stdin */
+/* line 2009, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 span.alert {
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -6544,16 +6541,16 @@ span.alert {
   line-height: 14px;
   padding: 0 3px 0 4px;
   border: 1px solid #dddddd; }
-  /* line 510, ../src/styles/mixins.scss */
+  /* line 510, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   span.alert::before {
-    content: '\f0f3\00a0';
+    content: " ";
     display: inline-block;
     font-family: FontAwesome;
     font-style: normal;
     font-weight: normal;
     text-decoration: inherit; }
 
-/* line 2019, stdin */
+/* line 2019, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 span.exact-busyness {
   width: 25px;
   height: 10px;
@@ -6565,13 +6562,13 @@ span.exact-busyness {
   white-space: nowrap;
   font-size: 0;
   display: inline-block; }
-  /* line 2028, stdin */
+  /* line 2028, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   span.exact-busyness > .exact-times {
     height: 10px;
     background: rgba(0, 0, 0, 0.5);
     display: inline-block;
     width: 15px; }
-  /* line 2034, stdin */
+  /* line 2034, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   span.exact-busyness > .circa-times {
     background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
     background: linear-gradient(left, rgba(0, 0, 0, 0.5), transparent);
@@ -6579,26 +6576,28 @@ span.exact-busyness {
     display: inline-block;
     width: 10px; }
 
-/* line 637, ../src/styles/mixins.scss */
+/* line 637, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
 div.about-page > h1 {
   color: #555;
   font-size: 1.8em;
   margin: 0 0 0.8em; }
-/* line 642, ../src/styles/mixins.scss */
+
+/* line 642, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
 div.about-page > h2 {
   color: #555;
   font-size: 1.5em;
   margin: 1em 0 0.3em; }
-/* line 647, ../src/styles/mixins.scss */
+
+/* line 647, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
 div.about-page > p {
   margin: 0 0 0.8em; }
 
-/* line 2069, stdin */
+/* line 2069, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.statistics-page > div.quick-select {
   margin: 0 0 10px;
   padding: 3px 0;
   overflow: auto; }
-  /* line 2073, stdin */
+  /* line 2073, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.statistics-page > div.quick-select > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -6627,24 +6626,25 @@ div.statistics-page > div.quick-select {
     margin-right: 2%;
     padding: 0 0 2px;
     width: 32%; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.statistics-page > div.quick-select > button:active, div.statistics-page > div.quick-select > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662;
       top: 0px; }
-    /* line 2082, stdin */
+    /* line 2082, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.statistics-page > div.quick-select > button:last-child {
       margin-right: 0; }
-    /* line 2083, stdin */
+    /* line 2083, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.statistics-page > div.quick-select > button > span {
       display: inline-block;
       vertical-align: middle; }
-/* line 2089, stdin */
+
+/* line 2089, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.statistics-page > div.date-range-select {
   margin: 0 0 30px; }
-  /* line 2091, stdin */
+  /* line 2091, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.statistics-page > div.date-range-select > button {
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -6666,50 +6666,53 @@ div.statistics-page > div.date-range-select {
     width: 100%;
     font-size: 1.2em;
     padding: 13px 0 14px; }
-    /* line 562, ../src/styles/mixins.scss */
+    /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     div.statistics-page > div.date-range-select > button:active, div.statistics-page > div.date-range-select > button.active {
       -webkit-box-shadow: none;
       box-shadow: none;
       background: #8d0992;
       border-top: 2px solid #5e0662;
       top: 0px; }
-/* line 2095, stdin */
+
+/* line 2095, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 div.statistics-page > div.stats-table {
   margin: 0 -5px; }
-  /* line 2097, stdin */
+  /* line 2097, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   div.statistics-page > div.stats-table > table {
     width: 100%;
     margin: 0 0 20px; }
-    /* line 2101, stdin */
+    /* line 2101, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.statistics-page > div.stats-table > table tr:nth-child(odd) {
       background: rgba(0, 0, 0, 0.05); }
-    /* line 2104, stdin */
+    /* line 2104, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     div.statistics-page > div.stats-table > table tr > td {
       height: 3em;
       padding: 5px 10px; }
-      /* line 2107, stdin */
+      /* line 2107, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.statistics-page > div.stats-table > table tr > td.name {
         width: 66%;
         background: rgba(0, 0, 0, 0.05); }
-      /* line 2111, stdin */
+      /* line 2111, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       div.statistics-page > div.stats-table > table tr > td.value {
         width: 34%;
         text-align: right; }
 
-/* line 2122, stdin */
+/* line 2122, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .settings-page .separator {
   padding: 24px 8px 2px;
   font-size: 1.2em;
   font-weight: bold;
   border-bottom: 2px solid #a40aaa;
   margin-bottom: 16px; }
-/* line 2129, stdin */
+
+/* line 2129, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .settings-page .range {
   width: 100%; }
-  /* line 2131, stdin */
+  /* line 2131, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .settings-page .range label {
     width: 10em; }
-/* line 2135, stdin */
+
+/* line 2135, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .settings-page .clear-all-tasks {
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -6732,7 +6735,7 @@ div.statistics-page > div.stats-table {
   font-size: 1.2em;
   padding: 13px 0 14px;
   font-size: 1em; }
-  /* line 562, ../src/styles/mixins.scss */
+  /* line 562, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   .settings-page .clear-all-tasks:active, .settings-page .clear-all-tasks.active {
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -6740,7 +6743,7 @@ div.statistics-page > div.stats-table {
     border-top: 2px solid #5e0662;
     top: 0px; }
 
-/* line 2141, stdin */
+/* line 2141, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .select-item {
   display: -webkit-box;
   display: -webkit-flex;
@@ -6755,11 +6758,11 @@ div.statistics-page > div.stats-table {
   align-items: center;
   height: 45px;
   padding: 2px 4px; }
-  /* line 2146, stdin */
+  /* line 2146, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .select-item label {
     display: inline-block;
     position: relative; }
-    /* line 295, ../src/styles/mixins.scss */
+    /* line 295, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .select-item label::after {
       position: absolute;
       top: 50%;
@@ -6771,7 +6774,7 @@ div.statistics-page > div.stats-table {
       border-left: 5px solid transparent;
       content: "";
       pointer-events: none; }
-    /* line 318, ../src/styles/mixins.scss */
+    /* line 318, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
     .select-item label > select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -6788,25 +6791,25 @@ div.statistics-page > div.stats-table {
       font-weight: bold;
       outline: 0;
       padding: 3px 30px 4px 10px; }
-      /* line 330, ../src/styles/mixins.scss */
+      /* line 330, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
       .select-item label > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #8d0992;
         border-top: 2px solid #5e0662; }
-    /* line 2149, stdin */
+    /* line 2149, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
     .select-item label.disabled > select {
       -webkit-box-shadow: 0 2px 0 0 #555;
       box-shadow: 0 2px 0 0 #555;
       background: #aaa; }
-      /* line 2152, stdin */
+      /* line 2152, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
       .select-item label.disabled > select:focus {
         -webkit-box-shadow: none;
         box-shadow: none;
         background: #aaa;
         border-top: 2px solid #555; }
 
-/* line 2162, stdin */
+/* line 2162, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .select-label {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -6819,11 +6822,11 @@ div.statistics-page > div.stats-table {
   margin-right: 1em;
   line-height: 1em; }
 
-/* line 2170, stdin */
+/* line 2170, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .select-label:first-child {
   padding-left: 5px; }
 
-/* line 2174, stdin */
+/* line 2174, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .fa-stack-sm {
   position: relative;
   display: inline-block;
@@ -6831,12 +6834,12 @@ div.statistics-page > div.stats-table {
   height: 1em;
   line-height: 1em;
   vertical-align: middle; }
-  /* line 2181, stdin */
+  /* line 2181, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
   .fa-stack-sm.fa-li {
-    width: 2.14286em;
+    width: 2.142857142857143em;
     position: absolute; }
 
-/* line 2187, stdin */
+/* line 2187, /Users/nazar/Projects/adhd-app/src/styles/structure.scss */
 .fa-stack-half {
   position: absolute;
   text-align: center;
@@ -6868,7 +6871,7 @@ h2 {
  * Toggle
  * --------------------------------------------------
  */
-/* line 8, stdin */
+/* line 8, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle-item {
   display: -webkit-box;
   display: -webkit-flex;
@@ -6883,7 +6886,7 @@ h2 {
   align-items: center;
   padding: 4px 4px; }
 
-/* line 14, stdin */
+/* line 14, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle-group {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
@@ -6902,7 +6905,7 @@ h2 {
   -moz-align-items: center;
   align-items: center; }
 
-/* line 20, stdin */
+/* line 20, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle-label {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -6915,7 +6918,7 @@ h2 {
   margin-right: 1em;
   line-height: 1em; }
 
-/* line 28, stdin */
+/* line 28, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle-on, .toggle-off {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
@@ -6927,19 +6930,19 @@ h2 {
   white-space: nowrap;
   align-self: center; }
 
-/* line 35, stdin */
+/* line 35, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle-on {
   margin-left: 0.5em; }
 
-/* line 39, stdin */
+/* line 39, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle-off {
   margin-right: 0.5em; }
 
-/* line 43, stdin */
+/* line 43, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle-label:first-child {
   padding-left: 5px; }
 
-/* line 47, stdin */
+/* line 47, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
@@ -6952,28 +6955,28 @@ h2 {
   pointer-events: auto;
   margin: -5px;
   padding: 5px; }
-  /* line 40, ../src/styles/mixins.scss */
+  /* line 40, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   .toggle input:checked + .track {
     border-color: #a40aaa;
     background-color: #a40aaa; }
-  /* line 59, stdin */
+  /* line 59, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
   .toggle.dragging .handle {
     background-color: #f2f2f2 !important; }
-  /* line 40, ../src/styles/mixins.scss */
+  /* line 40, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   .toggle.toggle-purple input:checked + .track {
     border-color: #a40aaa;
     background-color: #a40aaa; }
-  /* line 40, ../src/styles/mixins.scss */
+  /* line 40, /Users/nazar/Projects/adhd-app/src/styles/mixins.scss */
   .toggle.toggle-gray input:checked + .track {
     border-color: #555;
     background-color: #555; }
 
-/* line 72, stdin */
+/* line 72, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle input {
   display: none; }
 
 /* the track appearance when the toggle is "off" */
-/* line 78, stdin */
+/* line 78, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle .track {
   -webkit-transition-timing-function: ease-in-out;
   -moz-transition-timing-function: ease-in-out;
@@ -6997,13 +7000,13 @@ h2 {
 
 /* Fix to avoid background color bleeding */
 /* (occured on (at least) Android 4.2, Asus MeMO Pad HD7 ME173X) */
-/* line 97, stdin */
+/* line 97, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .platform-android4_2 .toggle .track {
   -webkit-background-clip: padding-box; }
 
 /* the handle (circle) thats inside the toggle's track area */
 /* also the handle's appearance when it is "off" */
-/* line 103, stdin */
+/* line 103, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle .handle {
   -webkit-transition: 0.2s ease-in-out;
   -moz-transition: 0.2s ease-in-out;
@@ -7016,7 +7019,7 @@ h2 {
   background-color: #eee;
   top: 7px;
   left: 7px; }
-  /* line 114, stdin */
+  /* line 114, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
   .toggle .handle:before {
     position: absolute;
     top: -4px;
@@ -7024,14 +7027,14 @@ h2 {
     padding: 19px 35px;
     content: " "; }
 
-/* line 124, stdin */
+/* line 124, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle input:checked + .track .handle {
   -webkit-transform: translate3d(22px, 0, 0);
   -moz-transform: translate3d(22px, 0, 0);
   transform: translate3d(22px, 0, 0);
   background-color: #eee; }
 
-/* line 130, stdin */
+/* line 130, /Users/nazar/Projects/adhd-app/src/styles/toggle.scss */
 .toggle input:disabled + .track {
   opacity: .6; }
 
